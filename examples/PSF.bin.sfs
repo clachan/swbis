@@ -1,0 +1,63 @@
+# File: PSF.bin.sf1
+# Example of a binary package that has a single fileset.
+
+distribution
+  # dfiles dfiles	# dfiles is the default value
+  # pfiles pfiles	# pfiles is the default value
+  
+  # Deprecated Name    checksig  <bin/checkdigest.sh
+  checkdigest <bin/checkdigest.sh
+
+# Vendor definition
+	vendor
+   	   the_term_vendor_is_misleading True  # One of: True, False
+	   tag 		root@localhost   # Your E-mail.
+	   title  	Your Name
+	   qualifier 	"author"
+	   description	independent software tycoon
+
+product
+   tag bin_package
+   control_directory ""
+   control_file
+   	source /dev/null
+   	source bin/postinstall.sh
+	path postinstall
+fileset
+    tag bin
+    control_directory ""
+    directory /usr/bin /usr/bin
+    file /usr/bin/swign
+    file /usr/bin/swverify
+    file /usr/bin/swpackage
+    file /usr/bin/swcopy
+
+    directory /usr/libexec/ /usr/libexec/
+       file swbis 
+
+    directory /usr/libexec/swbis /usr/libexec/swbis
+      file arf2arf
+      file swbistar
+      file swbisparse
+    
+    directory /usr/share/doc/ /usr/share/doc/
+       file swbis 
+
+    directory /usr/share/doc/swbis /usr/share/doc/swbis
+	file COPYING
+	file README
+	file lxpsf_1.html
+	file swpackage_8.html
+	file swverify_8.html
+	file swign_1.html
+	file sw_5.html
+	file swbisparse_1.html
+    
+    directory /usr/share/man /usr/share/man
+	file man1/swign.1
+	file man1/swbisparse.1
+	file man5/sw.5
+	file man8/swverify.8
+	file man8/swpackage.8
+
+# End of PSF.

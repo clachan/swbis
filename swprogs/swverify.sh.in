@@ -1,0 +1,1745 @@
+#!@POSIXSHELL@
+#
+# swverify  -- Verify Software
+# An IEEE 1387.2 Conforming Utility with Extensions.
+#
+# Copyright (C) 2004,2005,2006,2007 Jim Lowe
+#
+# COPYING TERMS AND CONDITIONS:
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
+
+PATH=`getconf PATH`:"$PATH"
+trap '/bin/rm -fr /tmp/swverify.$$; exit 1' 1 2 15
+
+SHELL="@POSIXSHELL@"
+SWBISLIBEXECDIR="@SWBISLIBEXECDIR@"
+SWBIS_RELEASE=@SWBIS_RELEASE@
+GTAR="@SWBISGTAR@"
+INSTALLED_SOFTWARE_CATALOG=var/lib/swbis/catalog
+ISWVERIFY="${SWBISLIBEXECDIR}/swbis/iswverify"
+
+export SHELL
+export GTAR
+export SWBISLIBEXECDIR
+export SWBIS_RELEASE
+export INSTALLED_SOFTWARE_CATALOG
+export ISWVERIFY
+
+version() {
+	echo "swverify (swbis) version" ${SWBIS_RELEASE}
+	echo "Copyright (C) 2003,2004,2005,2006,2007 Jim Lowe"
+	echo "This software is distributed under the terms of the GNU General Public License"
+	echo "and comes with NO WARRANTY to the extent permitted by law."
+	echo "See the file named COPYING for details."
+	exit 0;
+}
+
+help() {
+	"$ISWVERIFY" --help
+
+	return 0
+
+		echo  -e -n "\
+	Usage: \n\
+	      swverify [-d|-r] [-F] [-v] [-f file] [-t targetfile] [-x option=value]\\n\
+	               [-X options_file] [-W option[=value]] [software_selections][@target]\n\
+		\n\
+	      swverify -d [@ target]                  # Verify a distribution \n\
+	      swverify software_selections [@ target] # Verify installed software \n\
+	      swverify                                # Verify stdin\n\
+	      swverify --checksig [FILE]\n\
+	      swverify [-Wd] {-WC|-WS}\n\
+	      swverify -W emit-digest-file FILE\n\
+	\n\
+	     -d          Causes swverify to operate on a distribution\n\
+	     -f FILE     Take software selections from FILE.\n\
+	     -F          Correct problems as well as report them\n\
+	     -r          Causes swverify to operate on installed software\n\
+   	                 located at an alternate root.\n\
+	     -t FILE  Specify a FILE containing a list of targets.\n\
+	     -x option=value  Specify posix extended option.\n\
+	     -X FILE[ FILE2 ...]  Specify files that override \n\
+	        system option defaults. Specify empty string to disable \n\
+		option file reading.\n\
+	     -V    increment verbose level\n\
+	     -W optionarg  Specify implementation extension option.\n\
+	     --help    Show this help to stdout (impl. extension).\n\
+	     --scm    Use information in the catalog to verify the catalog, and\n\
+	              set the SW_CONTROL_TAG environment variable to \"checkfile\"\n\
+		      when executing the checkdigest script.\n\
+	     --cvs    Currently, the same as --scm\n\
+	     --order-catalog  Use catalog/dfiles/files to determine the file\n\
+	                      order when verifying the directory.\n\
+	     --checksig  [FILE]  Verifies the archive md5 (and sha1) and gpg\n\
+		     signature. FILE may be a tar archive, directory name or \"-\".\n\
+		     This option performs same operations as the preferred\n\
+		     POSIX syntax \"-d @target\"\n\
+	     --signed-file [FILE]     Same as -WC\n\
+	     --digest-file [FILE]     Same as -WS\n\
+	     --no-checkdigest  Do not run the checkdigest script even if present,\n\
+	                       and exit with gpg's verification status.\n\
+	     -W <option>[=value]   Implementation extension option\n\
+	     -W show-auth-files  Applies to emit-signed-file and emit-digest-file\n\
+	     -W sha1   applies to -Wshow-auth-files operation.\n\
+	     -W d  same as -Wshow-auth-files.\n\
+	     -W checksig [FILE]  same as --checksig.\n\
+	     -W emit-signed-file [FILE]  Writes the signed data to stdout.\n\
+	     -W C   same as -W emit-signed-file [FILE].\n\
+	     -W emit-digest-file [FILE]  Writes the digested archive data to stdout.\n\
+	     -W S   same as -W emit-digest-file.\n\
+	     -W sig-number=N Verify the Nth signature, (0 is last, 1 is first). \n\
+	     -W owner=OWNER    Specify OWNER\n\
+	     -W group=GROUP    Specify GROUP\n\
+	     -W get-sig-if=outputfile [FILE] Same as -G=OUTPUTFILE \n\
+	     -G, --get-sig-if=OUTPUTFILE [ARCHIVEFILE]  Verifies the archive digests \n\
+	               by comparing to the digests in the catalog and if they match\n\
+	               write the sigfile to OUTPUTFILE and the signed data to stdout.\n\
+		       For example: \n\
+		  swverify -G /dev/tty /mnt/tmp/foo-1.1.tar.gz | gpg --verify /dev/tty -\n\
+	\n\
+	The --checksig option and package signing are implementation extensions\n\
+	of the swbis project.  All other options are not implemented.\n\
+	\n\
+	To verify a signed tarball: \n\
+		swverify -d @- <somepackage-0.1.tar.gz\n\
+	\n\
+	To verify a unpacked tarball: \n\
+		swverify -d @`pwd`/somepackage-0.1\n\
+	\n\
+		Note: this requires the package contain the\n\
+			somepackage-0.1/catalog/dfiles/checksig\n\
+			control script.\n\
+	\n\
+	To manually verify *only* the signature of the signed current directory: \n\
+	swverify [--cvs|--order-catalog] -WC . | gpg --verify catalog/dfiles/signature -\n\
+	    # Note: Now you still must use the information in the INFO file to check\n\
+	    # the individual files.  If there is a checkdigest script in the signed\n\
+	    # stream you could run that safely now.\n\
+	\n\
+	Verify the archive digests and if valid write the signed data to stdout\n\
+	for verification by gpg via the local terminal\n\
+	(mainly for the curious and paranoid):\n\
+	   swverify -G /dev/tty foo-1.1.tar.gz | gpg --verify /dev/tty -\n\
+	   # Now copy and paste the signature block and type ctrl-D, gpg should\n\
+	   # then verify the pasted signature.\n\
+	\n\
+	Verify the digests independently (mainly for the curious and paranoid):\n\
+	   swverify -D -S --sha  foo-1.1.tar.gz | sha1sum\n\
+	   swverify -D -S  foo-1.1.tar.gz | md5sum\n\
+	   # IMPORTANT: these are not authenticated digests unless they come from a\n\
+	   # catalog verified with gpg (see the example above).\n\
+	\n\
+	\n\
+	SEE ALSO: \n\
+	libexec/swbis/arf2arf, libexec/swbis/iswverify, libexec/swbis/getopt\n\
+	\n\
+	Identification: swverify (swbis) version ${SWBIS_RELEASE}\n\
+	\n\
+	Report bugs to <bug-swbis@gnu.org>\n\
+	" | sed -e 's/^[[:space:]]//'
+}
+
+missing_which() {
+	pgm="$1"
+	xxname=`which $pgm 2>/dev/null`
+	test -f "$xxname" -o -h "$xxname"
+	case "$?" in
+		0)
+			echo "$xxname"
+			return 0
+			;;
+		*)
+			echo "swverify: Missing $pgm" 1>&2
+			echo "/"
+			return 1
+			;;
+	esac
+}
+
+validate_gpg_status()
+{            
+        gpgmsg=`cat`
+        echo "$gpgmsg" | $GREP "^\[GNUPG:\] VALIDSIG" 1>/dev/null
+	gpgret=$?
+	case "$gpgret" in
+       		0) echo "$gpgmsg" | $GREP -v -e "BADSIG" -e "ERRSIG" -e "EXPSIG" 1>/dev/null
+		gpgret=$?
+		;;
+	esac
+	case "$uverbose" in
+		0|1)
+			;;
+		2)
+			case "$gpgret" in
+				0)
+					echo "$gpgmsg" | grep -v "^\[GNUPG:\]"
+					;;
+			esac
+			;;
+		3)
+			case "$gpgret" in
+				0)
+					echo "$gpgmsg"
+					;;
+			esac
+			;;
+		*)
+			echo "$gpgmsg"
+			;;	
+	esac
+        return $gpgret
+}            
+
+verify_sig_pax() {
+	case "$PAX" in
+		"/")
+			return 1
+			;;
+		"")
+			return 1
+			;;
+	esac
+
+	"${FIND}" "$dirbase"/catalog  -print | $GREP -v '[^/]*/catalog/dfiles/signature*' |
+	"${PAX}" -d -w -b 512 | "${GPG}" --status-fd=1 --verify "$sigfile" - 2>&1 |
+	validate_gpg_status
+	case "$?" in
+		0)
+			detected_username="$username"
+			detected_groupname="$groupname"
+			return 0
+			;;
+		*)
+			detected_username="root"
+			detected_groupname="root"
+			return 1
+			;;
+	esac
+	return 1
+}
+
+do_files_sanity_check() {
+
+	#
+	# Make tar archive from the directory
+	# using a controlled directory entry sort order.
+	#
+	listck1=`$TAR cf - --exclude=CVS --exclude=.svn "$dirbase"/catalog |
+		$TAR tf - | (LC_ALL=C $SORT)`
+
+	ck1=`echo "$listck1" | $TAR cf - --no-recursion --files-from=- | cksum`
+
+	#
+	# Make tar archive from the <dfiles>/files file
+	# using the same controlled directory entry sort order.
+	#
+	listck2=`$GREP "$dirbase"/catalog/ "$dirbase"/catalog/dfiles/files |
+		(LC_ALL=C $SORT)`
+
+	ck2=`echo "$listck2" | $TAR cf - --no-recursion --files-from=- | cksum`
+
+	#
+	# Now, compare the hash of the archives. They should be the same.
+	#
+	if [ "$ck1" = "$ck2" ]; then
+		return 0;
+	else
+		echo "swverify: The use of the --cvs option caused a sanity check on the dfiles/files" 1>&2
+		echo "swverify: contents and this check failed.  Below is diff output which may help" 1>&2
+		#
+		# to be nice show the possible offending cause
+		#
+		tmpfilename="$dirbase"/catalog/swverify.files.tmp
+		echo "$listck2" >"$tmpfilename"
+		echo "$listck1" | diff "$tmpfilename" - | $SED -e 's/^/swverify:/' 1>&2
+		rm "$tmpfilename"
+		return 1;
+	fi
+}
+
+make_cvs_stream() {
+	$GREP "$dirbase"/catalog/ "$dirbase"/catalog/dfiles/files |
+        "${TAR}" cf - ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC} \
+                --exclude=$sigfile  --no-recursion --files-from=-
+}
+
+try_cvs_verify() {
+	make_cvs_stream |
+        "${GPG}" --status-fd=1 --verify "$sigfile" - 2>&1 |
+        validate_gpg_status
+        return $?
+}
+
+make_stream() {
+	"${TAR}" cf - ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC} \
+		--exclude=$sigfile  "$dirbase"/catalog
+}
+
+try_verify() {
+	make_stream |
+	"${GPG}" --status-fd=1 --verify "$sigfile" - 2>&1 |
+	validate_gpg_status
+	return $?
+}
+
+verify_sig_pax_per_verbose() {
+	if [ "$uverbose" -ge 3 ]; then
+		verify_sig_pax
+	else
+		verify_sig_pax 1>/dev/null 2>&1
+	fi
+	return $?
+}
+
+emit_tar_option_lines() {
+	l_gnu_tar_version="$1"
+	case "$l_gnu_tar_version" in 
+		1.14*|1.15*|1.1[6-9]*|1.[2-9][0-9].*|1.[2-9][0-9]*)
+			echo "--format=ustar -b1"
+			echo "--format=oldgnu -b1"
+			echo "--format=gnu -b1"
+			;;
+		1.13*)
+			echo "--posix -b1"
+			echo "-b1"
+			;;
+		*)
+			exit 31
+			;;
+	esac
+}
+
+check_for_gnu_tar()
+{
+	gnu_tar_version="`$TAR --version 2>&1 | $GREP GNU | $HEAD -1 | awk '{print $NF}'`"
+	case "$gnu_tar_version" in 
+		2.[0-9].*)
+			echo 1>/dev/null
+		;;
+		1.14*|1.15*|1.13.17|1.13.25|1.1[6-9]*|1.[2-9]*|1.[2-9][0-9]|2.*|2*)
+			echo 1>/dev/null
+			#echo "It looks like you have a suitable version of GNU tar [$gnu_tar_version]." 1>&2
+		;;
+		*)
+		echo GNU tar is required. 1>&2
+		echo You have tar [$gnu_tar_version]. 1>&2
+		return 1
+		;;
+	esac
+	return 0
+}
+
+verify_cvs_sig_tar() {
+	GNUTAR_OWNER_SPEC="--owner=$username --group=$groupname"
+	case "$uverbose" in [0-5]) ;;  *)
+			echo "swverify: Attempting to verify with ownerships."
+			echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+			;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="$username"
+			detected_groupname="$groupname"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	GNUTAR_OWNER_SPEC="--owner=root --group=root"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="root"
+			detected_groupname="root"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	GNUTAR_OWNER_SPEC="--owner=0 --group=0 --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="0"
+			detected_groupname="0"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	tmpuid="$sesuid"	
+	tmpgid="$sesgid"	
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with session numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	if [ "$opt_owner" -o "$opt_group" ]; then
+	tmpuid=${opt_owner:-$sesuid}
+	tmpgid=${opt_group:-$sesgid}
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with specified numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	tmpuid=${opt_owner:-$sesuid}
+	tmpgid=${opt_group:-$sesgid}
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with specified ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+	fi
+	
+	GNUTAR_OWNER_SPEC=""
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_cvs_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username=""
+			detected_groupname=""
+			case "$emit_signed_file_dir" in  yes) make_cvs_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	detected_username=""
+	detected_groupname=""
+	return 1
+}
+
+verify_sig_tar() {
+	GNUTAR_OWNER_SPEC="--owner=$username --group=$groupname"
+	case "$uverbose" in [0-5]) ;;  *)
+			echo "swverify: Attempting to verify with ownerships."
+			echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+			;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="$username"
+			detected_groupname="$groupname"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	GNUTAR_OWNER_SPEC="--owner=root --group=root"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="root"
+			detected_groupname="root"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	GNUTAR_OWNER_SPEC="--owner=0 --group=0 --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="0"
+			detected_groupname="0"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	tmpuid="$sesuid"	
+	tmpgid="$sesgid"	
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with session numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	if [ "$opt_owner" -o "$opt_group" ]; then
+	tmpuid=${opt_owner:-$sesuid}
+	tmpgid=${opt_group:-$sesgid}
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid --numeric-owner"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with specified numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric="--numeric-owner"
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	tmpuid=${opt_owner:-$sesuid}
+	tmpgid=${opt_group:-$sesgid}
+	GNUTAR_OWNER_SPEC="--owner=$tmpuid --group=$tmpgid"
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with specified ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username="$tmpuid"
+			detected_groupname="$tmpgid"
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+	fi
+	
+	GNUTAR_OWNER_SPEC=""
+	case "$uverbose" in [0-5]) ;;  *)
+		echo "swverify: Attempting to verify with root numeric ownerships."
+		echo "swverify: GNU tar options: ${GNUTAR_OPTIONS} ${GNUTAR_OWNER_SPEC}"
+		;;
+	esac
+	try_verify
+	case "$?" in
+		0)
+			detected_is_numeric=""
+			detected_username=""
+			detected_groupname=""
+			case "$emit_signed_file_dir" in  yes) make_stream; ;; esac
+			return 0
+			;;
+	esac
+
+	detected_username=""
+	detected_groupname=""
+	return 1
+}
+
+is_ambig() {
+	cn=""
+	line=""
+	while read line
+	do
+		cn="${cn}."
+		last="$line"
+		#echo "ambiglast=$line" 1>&2
+	done
+	echo "$last"
+	return `[ ${#cn} -eq 1 ]`
+}
+
+set_mode_by_dash_d() {
+		y_mode="$1"
+		y_did_use_dash_d="$2"
+		case "$y_mode" in
+			checksig)
+				# the default is checkinstalled which means if it now is checksig,
+				# then do not alter it.
+				;;
+			checkinstalled)
+				case "$y_did_use_dash_d" in "") mode="checkinstalled" ;; *) mode="checksig" ;; esac
+				;;
+			*)
+				# avoid overriding the special modes
+				;;
+		esac
+}
+
+resolve_selection() {
+	sel="$1"
+	target="$2"
+	cd "$target"
+	case $? in
+		0) ;; *) return 1;;
+	esac
+	
+	first=${sel%.*}
+	second=${sel#*.}
+	
+	path0="${INSTALLED_SOFTWARE_CATALOG}"/"$first"
+	path1="${INSTALLED_SOFTWARE_CATALOG}"/"$first"/"$second"
+
+	last0=`ls -1drt "$path0" | is_ambig`
+	case "$?" in 0) ;; *) return 8;; esac	
+
+	last1=`ls -1drt "$path1" | is_ambig`
+	case "$?" in 0) ;; *) return 10;; esac	
+
+	lastrev=`ls -1drt "$last1"/* | is_ambig`
+	lastseq=`ls -1drt "$lastrev"/* | is_ambig`
+	echo "$lastseq"
+	return 0
+}
+
+if [ "$1" = "--help" ]; then
+	help 
+	exit 0
+fi
+
+FIXCATALOG="${SWBISLIBEXECDIR}/swbis/fixcatalog.awk"
+GETOPT="${SWBISLIBEXECDIR}/swbis/getopt"
+MTIMETOUCH="${SWBISLIBEXECDIR}/swbis/mtimetouch"
+premode=""
+mode="checkinstalled"
+sigoutputfile=""
+sha1=""
+uverbose=2
+signumber="-1"
+useform="installed"
+did_file=""
+do_catalog_correction="0"  # No catalog meta-data correction
+emit_signed_file_dir=""
+no_checkdigest=""
+sw_control_tag="checkdigest"
+
+case "$GTAR" in "") GTAR=tar; ;; esac
+BASH=/bin/bash
+ID=`missing_which id` || exit 1
+AWK=`missing_which awk` || exit 1
+GPG=`missing_which gpg 2>/dev/null`
+GPGBASENAME=`basename "$GPG"`
+RM=`missing_which rm` || exit 1
+PAX=`missing_which pax 2>/dev/null`
+MKFIFO=`missing_which mkfifo` || exit 1
+HEAD=`missing_which head` || exit 1
+GREP=`missing_which grep` || exit 1
+EGREP=`missing_which egrep` || exit 1
+TAIL=`missing_which tail` || exit 1
+EXPAND=`missing_which expand` || exit 1
+SED=`missing_which sed` || exit 1
+CAT=`missing_which cat` || exit 1
+TAR=`missing_which $GTAR` || exit 1
+SORT=`missing_which sort` || exit 1
+FIND=`missing_which find` || exit 1
+MKDIR=`missing_which mkdir` || exit 1
+SUM=`PATH=/bin:/usr/bin: missing_which sum` || exit 1
+UUIDGEN=`PATH=/bin:/usr/bin: missing_which uuidgen 2>/dev/null`
+UUIDGEN=""
+
+username=`${ID} |  ${SED} -e 's/.*uid=[0-9]*(\([^(]*\)).*/\1/'`
+groupname=`${ID} |  ${SED} -e 's/.*gid=[0-9]*(\([^(]*\)).*/\1/'`
+sigret=127
+
+opt_owner=""
+opt_group=""
+
+# Store the args in variables ARG_1, ARG_2, ..., ARG_N
+# The arg value has a single '_' prefixed.
+a_var=ARG_
+a_x=1
+for iarg in "$@"
+do
+	# echo "$a_x" "$iarg"
+	export eval $a_var$a_x="_$iarg"
+	a_x=$(($a_x+1))
+done
+
+TEMP=`${GETOPT} -o rdDIG:LQCCSSvVHUZYW:x:X:t:f:ibceghpw\
+Aa\
+jkmnoqlu\
+		--long r,d,show-auth-files,sha1,get-sig-if:,scm,no-checkdigest,\
+signed-file,emit-signed-file,digest-file,emit-digest-file,\
+verbose,version,help,cvs,order-catalog,checksig,\
+implementation-extension:,extended-option:\
+options-files:,\
+target-file:,\
+selections-file:,\
+show-options,show-options-files,no-getconf,force,debug-events,debug-task-scripts,\
+enable-ssh-agent-forwarding,disable-ssh-agent-forwarding,\
+allow-ambig,force-locks,no-defaults,debug-task-scripts,sig-level:,\
+check-contents:,check-permissions:,check-requisites:,check-scripts:,check-volatile:,\
+check-mtime:,check-owners:,show-info,catalog-info-name:,system-info-name:,dereference-symlinks,\
+ignore-slack-install,no-summary-report,without-summary-report,no-prelink,shell-command:,remote-shell:,output-form: \
+		-n 'swverify' -- "$@"`
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
+nargs=$#
+
+found_amp=""
+did_use_checksig=""
+did_use_dash_d=""
+auth_files_dash_d=""
+
+while [ "true" ]; do
+	case "$1" in
+		# These args are passed thru to iswverify
+		-A|--enable-ssh-agent-forwarding|-a|--disable-ssh-agent-forwarding|-j|--allow-ambig)
+			premode="checkinstalled"
+			shift
+			;;	
+		-k|--force-locks|-m|--no-defaults|-n|--debug-task-scripts)
+			premode="checkinstalled"
+			shift
+			;;	
+		# These args are passed thru to iswverify
+		-c|--no-getconf|-e|--force|-g|--debug-events|-h|--debug-task-scripts|-p|--dereference-symlinks|-w|--ignore-slack-install|--no-summary-report|--without-summary-report|--no-prelink)
+			premode="checkinstalled"
+			shift
+			;;
+		# These args are passed thru to iswverify
+		-u|--system-info*|-l|--catalog-info*|--output-form)
+			shift
+			shift
+			;;
+		# These args are passed thru to iswverify
+		-i|--show-options|-b|--show-options-files|-q|--show-info)
+			premode="checkinstalled"
+			shift
+			;;
+		-o|--sig-level|--check-contents|--check-permissions|--check-requisites|--check-scripts|--check-volatile|--check-mtime|--check-owners|--shell-command|--remote-shell)
+			shift
+			shift
+			premode="checkinstalled"
+			;;
+		-X|-t|-f)
+			# Assume this indicates checking installed software, this
+			# shell script can't handle them, but iswverify does.	
+			shift
+			shift
+			premode="checkinstalled"
+			;;
+		-Z|--order-catalog)
+			do_catalog_correction="1"
+			shift
+			;;
+		-D|--show-auth-files)
+			auth_files_dash_d="-d"
+			shift;
+			;;
+		-I|--sha1)
+			sha1="--sha1"
+			shift;
+			;;
+		-U|--cvs|--scm)
+			sw_control_tag="checkfile"
+			do_catalog_correction="2"
+			shift
+			;;
+		-G|--get-sig-if)
+			shift
+			useform="distribution"
+			mode="get-sig-if"
+			sigoutputfile=`echo "$1" | sed -e 's/.*=//'`
+			shift;
+			;;
+		-Y|--checksig)  mode="checksig"
+				useform="distribution"
+				did_use_checksig="yes"
+				shift
+				;;
+		-x)
+			shift;
+			case "$1" in
+				verbose=*)
+					uverbose=`echo "$1" | sed -e 's/.*=//'`
+					shift;
+					;;
+				*)
+					# FIXME: audit extended options here
+					shift;
+					# echo "swverify: unsupported extended option" 1>&2
+					# exit 1
+					;;
+			esac
+		;;
+		-W|--implementation-extension|-x)
+			shift;
+			case "$1" in
+				sha1)
+					sha1="--sha1"
+					shift;
+					;;
+				S)
+					mode="emit-digest-file"
+					useform="distribution"
+					shift;
+					;;
+				C)
+					mode="emit-signed-file"
+					useform="distribution"
+					shift;
+					;;	
+				checksig|emit-signed-file|emit-digest-file)
+					useform="distribution"
+					mode="$1"
+					shift;
+					;;	
+				d|show-auth-files)
+					auth_files_dash_d="-d"
+					shift;
+					;;
+				owner=*)
+					opt_owner=`echo "$1" | sed -e 's/.*=//'`
+					shift;
+					;;
+				group=*)
+					opt_group=`echo "$1" | sed -e 's/.*=//'`
+					shift;
+					;;
+				sig-number=*)
+					signumber=`echo "$1" | sed -e 's/.*=//'`
+					shift;
+					;;
+				get-sig-if=*)
+					useform="distribution"
+					mode="get-sig-if"
+					sigoutputfile=`echo "$1" | sed -e 's/.*=//'`
+					shift;
+					;;
+			esac
+			;;
+		-d)	mode="checksig";
+			useform="distribution"
+			did_use_dash_d="yes"
+			shift
+			;;
+		-r) mode="checkinstalled"; useform="installed"; shift;;
+		-H|--help) help; exit 0 ;;
+		-V|--version) version; exit 0 ;;
+		-Q|--no-checkdigest)
+			no_checkdigest="true"
+			shift
+			;;
+		-S|--digest-file|--emit-digest-file)
+			useform="distribution"
+			mode="emit-digest-file"; shift;
+			;;
+		-C|--signed-file|--emit-signed-file)
+			useform="distribution"
+			mode="emit-signed-file"; shift;
+			;;
+		-v|--verbose) uverbose=`expr $uverbose + 1`; shift; ;;
+		--) shift;
+			break ;;
+		*) echo "$0"; help 1>&2; exit 1 ;;
+	esac
+done
+
+#
+# Analyze the args to determine whether checking installed software or
+# a distribution.
+#
+
+#
+# Count the args before the targets
+#
+
+arg_count=0
+a_x=0
+while :;
+do
+	a_x=$(($a_x+1))
+	a_a=$a_var$a_x
+	eval a_X=\$$a_a
+	case "$a_X" in
+		"")
+			break
+			;;
+		_@|_@*)
+			#
+			# this is where the targets begin
+			#
+			found_amp="x"
+			break
+			;;
+		*)
+			arg_count=$(($arg_count+1))
+			;;
+	esac
+done
+					
+
+#
+# check to see if there are selections
+#
+
+has_selections=""
+case "$1" in
+	@|@*|"")
+		;;
+	*)
+		case "$mode" in
+			checkinstalled|checksig)
+				has_selections="true"
+				;;
+		esac
+		;;
+esac
+
+#
+# check for the case of no targets given, this case is special to
+# preserve back-compatible behavoir.
+#
+a_x=$arg_count
+a_a=$a_var$a_x
+eval a_X=\$$a_a
+case "$a_X" in
+	""|_-v*|_verbose=*)
+		mode="checksig"
+		useform="distribution"
+		;;
+esac
+
+a_x=0
+while :;
+do
+	a_x=$(($a_x+1))
+	a_a=$a_var$a_x
+	eval a_X=\$$a_a
+	case "$a_X" in "") break ;;
+	*)
+	arg="${a_X#_}"
+
+	case "$arg" in
+		@)
+			found_amp="x"
+			;;
+		@*)
+			found_amp="x"
+			targ="${arg#@}"
+			a_X=_"${targ}"
+			continue
+			;;
+	esac
+
+	case "$found_amp" in
+		?)
+			# echo JLJL3 [$found_amp] 1>&2
+			# These are targets
+			case "$arg" in
+				-)
+					mode="checksig"
+					useform="distribution"
+					;;		
+				.)
+					mode="checksig"
+					useform="distribution"
+					;;		
+				/|/*)
+					set_mode_by_dash_d "$mode" "$did_use_dash_d"
+					;;
+				:?*)
+					arg="${arg#:}"
+					set_mode_by_dash_d "$mode" "$did_use_dash_d"
+					;;
+				*)
+					set_mode_by_dash_d "$mode" "$did_use_dash_d"
+					;;
+			esac
+		;;
+		"")
+			# These are selections
+
+			case "$arg" in
+				*)
+					# echo  "E_DEBUG: $LINENO: [$arg]" 1>&2
+					set_mode_by_dash_d "$mode" "$did_use_dash_d"
+				;;
+			esac
+		;;
+	esac
+	;;
+	esac
+done
+
+case "$has_selections" in
+	"")
+		;;
+	*)
+		case "$mode" in
+			checksig)
+				echo "$0: software selections not supported when verifying distributions" 1>&2
+				exit 1
+			;;
+		esac
+		;;
+esac
+
+#echo "____________ mode = $mode"
+#echo "____________ arg = [$arg]"
+#echo "____________ has_selections=$has_selections"
+
+#
+# Now make final decisions on whether it is installed software
+# or a distribution.
+#
+
+case "$premode" in
+	"checkinstalled")
+	mode="checkinstalled"
+	case "$did_use_dash_d" in
+		"")
+		;;
+		*)
+			echo "$0: use of -d incompatible with other options" 1>&2
+			echo "$0: exiting with value 1" 1>&2
+			exit 1
+		;;
+	esac
+	;;
+esac
+
+case "$mode" in
+	"checkinstalled")
+			# reconstruct the args
+
+			ARGSTRING=""
+			a_x=0; while :; do
+				a_x=$(($a_x+1))
+				a_a=$a_var$a_x
+				eval a_X=\$$a_a
+				case "$a_X" in "") break ;;
+					*)
+					a_X=\"${a_X#_}\"
+					ARGSTRING="$ARGSTRING $a_X"
+					;;
+				esac
+			done
+
+			# call <libdir>/swverify_installed
+			if [ "$uverbose" -ge 3 ]; then
+				echo "$0: running ${ISWVERIFY} ${ARGSTRING}" 1>&2
+			fi
+			eval exec "${ISWVERIFY}" ${ARGSTRING}
+			echo "$0: exec failed" 1>&2
+			exit 1;
+			;;
+	"checksig")
+			case "$premode" in
+				"checkinstalled")
+				echo "$0: invalid usage mode" 1>&2
+				exit 1
+				;;
+			esac
+			useform="distribution"
+			# just continue
+			;;
+	*)
+		#echo "$0: internal error" 1>&2
+		#exit 1
+		;;
+esac
+
+TRUE=`missing_which true`
+
+case "$mode" in
+	checksig|emit-signed-file|emit-digest-file|get-sig-if|checkinstalled)
+		;;
+	*)
+		echo "swverify: invalid mode or option" 1>&2
+		#help  1>&2
+		exit 1
+		;;
+esac
+
+if [ "$useform" = "installed"  -a "$1" = "" ]; then
+	echo "swverify: invalid usage, must supply a selection arg" 1>&2	
+	exit 1;
+fi
+
+if [ "$1" = "" ]; then
+	ofilename=""
+	filename=""
+else
+	ofilename="$1"
+	filename="$1"
+	case "$filename" in
+		@)
+			shift
+			filename=@"$1"
+			ofilename=@"$1"
+			;;
+		*)
+			;;
+	esac
+	filename="${filename#@}"
+	filename="${filename#:}"
+	filename="${filename# }"
+	shift
+fi
+
+# By default, the useform "installed"
+case "$filename" in
+	"-"|"."|"")
+		useform="distribution"
+		;;
+esac
+
+case "$mode" in
+	emit-signed-file)
+		if [ -d "$filename" ]; then
+			#
+			#
+			mode="checksig"; useform="distribution"
+			did_use_checksig="yes"
+			did_use_dash_d="yes"
+			emit_signed_file_dir="yes"	
+			uverbose=1
+		fi
+		;;
+	*)
+		;;
+esac
+
+targetpath="$filename"
+target="/"
+arg=""
+
+if [ "$mode" = "checkinstalled" -a "$useform" = "installed" ]; then
+	while [ "$1" ]; do
+		arg="$1"
+		shift;
+	done
+	if [ "$arg" ]; then
+		target="${arg#@}"
+	fi
+	selection="$filename"
+	filename=`resolve_selection "$selection" "$target"`
+	case "$filename" in
+		"")
+		echo "swverify: selection not found" 1>&2
+		exit 1
+		;;
+	esac
+	if [ "$uverbose" -ge 5 ]; then
+		echo "swverify: verifying installed software at:"
+		echo "swverify: $target/$filename"
+	fi
+
+	sigfilename=""
+	tmpfilename="$filename"
+	filename=`ls -d "$target"/"$tmpfilename"/export/catalog.tar 2>/dev/null`
+	case "$filename" in
+		"")
+			filename=`ls -d "$target"/"$tmpfilename"/import2/catalog.tar.gz 2>/dev/null`
+			case "$filename" in
+				"")
+				;;
+				*)
+					echo "swverify: error: the installed software catalog is an incompatible version" 1>&2
+				exit 1
+				;;
+			esac	
+			sigfile2=`ls -d "$target"/"$tmpfilename"/export/catalog.tar.sig 2>/dev/null`
+			;;
+	esac
+	case "$filename" in
+		"")
+		echo "swverify: catalog appears corrupt or incompatible with current version" 1>&2
+		exit 1
+		;;
+	esac
+
+elif [ "$mode" = "checksig" -a "$useform" = "distribution" ]; then
+	is_target=""
+	filename="$ofilename"
+	case "$filename" in
+		"@")
+			is_target="yes"
+			filename="$1"
+			;;
+		@*)
+			is_target="yes"
+			filename="${filename#@}"
+			;;
+	esac
+	if [ "$uverbose" -ge 5 ]; then
+		echo "swverify: target=$filename" 1>&2
+	fi
+	case "$filename" in
+		"")
+			filename="-"
+			;;
+		"@")
+			filename="$1"
+			;;
+		@:*)
+			filename="${filename#@}"
+			filename="${filename#:}"
+			;;
+		@*)
+			filename="${filename#@}"
+			;;
+		:*)
+			filename="${filename#:}"
+			;;
+		/*)
+			;;
+		.)
+			;;
+		-)
+			;;
+		*)
+			if [ ! "$is_target" -a ! "$did_use_checksig" ]; then
+				# JL
+				echo "swverify: $filename $@" 1>&2
+				echo "swverify: software selections not supported for this operation" 1>&2
+				exit 1
+			fi
+			if [ "$is_target" -a "$did_use_dash_d" ]; then
+				echo "swverify: remote operations not supported" 1>&2
+				exit 1
+			fi
+			;;
+	esac
+fi
+
+if [ "$filename" = "" ]; then
+	filename="-"
+fi
+
+if [ "$filename" = "." ]; then
+	filename=`pwd`
+fi
+
+case "$filename" in
+	-|.)
+		;;
+	*) 
+	if [ ! -e "$filename" -a "$useform" = "distribution" ]; then
+		echo "swverify: $filename : file not found." 1>&2
+		echo "swverify: Package authenticity not confirmed." 1>&2
+		exit 1
+	fi
+		;;
+esac
+
+sesuid=`$ID | $SED -e 's/^.*uid=\([0-9][0-9]*\)(.*/\1/'`
+sesgid=`$ID | $SED -e 's/^.*gid=\([0-9][0-9]*\)(.*/\1/'`
+
+detected_username="$username"
+detected_groupname="$groupname"
+detected_uid="$sesuid"
+detected_uid="$sesgid"
+
+GNUTAR_ROOT_OWNER_SPEC="--owner=root --group=root"
+case "$username" in
+	root)
+		GNUTAR_ROOT_OWNER_SPEC=""
+		;;		
+esac
+
+if [ -f "$filename" -a "$useform" = "installed" ]; then
+	if [ "$uverbose" -ge 3 ]; then
+		echo "swverify: "
+		echo "swverify: Attempting to verify catalog.tar file."
+	fi
+	"${GPG}" --status-fd=1 --verify "$sigfile2" "$filename" 2>&1 |
+	validate_gpg_status
+	sigret=$?
+elif [ -d "$filename" -a "$useform" = "distribution" ]; then
+	#
+	# --checksig for a distribution directory.
+	# Verify a directory containing a POSIX distribution.
+	#
+	did_file="yes"
+
+	redir_error=""
+	dir="$filename"
+	dirbase=`basename "$dir"`
+	cd "$dir" 
+	case $? in
+		0)
+			;;
+		*)
+			echo "cd: $dir: No such file or directory" 1>&2
+			exit 1
+			;;
+	esac
+	cd ..
+	
+	sigfile=`$FIND "$dirbase"/catalog -print | ${GREP} /signature`
+	check_for_gnu_tar
+	case $? in
+		0)
+			;;
+		*)
+			echo "swverify: GNU tar not found" 1>&2
+			exit 1
+			;;	
+	esac
+	
+	sigret=1
+	if [ "$sigfile" ]; then
+		#
+		# Attempt to verify the unpack tar package
+		#
+		emit_tar_option_lines "$gnu_tar_version" |
+		(
+		sigret=1
+		while read option_line 
+		do
+			#GNUTAR_OPTIONS="--posix -b1"
+			GNUTAR_OPTIONS="$option_line"
+			if [ "$uverbose" -ge 3 ]; then
+				echo "swverify: "
+				echo "swverify: Attempting to verify using $GNUTAR_OPTIONS options."
+			fi
+
+
+			case "$do_catalog_correction" in
+				2)
+				do_files_sanity_check
+				case "$?" in
+					0)
+						;;
+					*)
+						exit 1
+						;;
+				esac	
+
+				cd "$dir"
+				${AWK} -f "${FIXCATALOG}" "${MTIMETOUCH}"
+				sigret=$?
+				case "$sigret" in
+					0)
+						;;
+					*)
+						echo "swverify: fixcatalog.awk failed, perhaps because" 1>&2
+						echo "swverify: the catalog was created with a old verison of swpackage <=0.483" 1>&2
+						echo "swverify: meta-data in the catalog may have been modified." 1>&2
+						exit 1;	
+						;;
+				esac
+				cd ..
+				;;
+			esac
+
+			case "$do_catalog_correction" in
+				0)
+					verify_sig_tar
+					;;
+				1|2)
+					verify_cvs_sig_tar
+					;;
+				*)
+					exit 2
+					;;
+			esac
+			sigret=$?
+			case $sigret in
+				0)
+					break
+					;;
+			esac
+		done
+                exit $sigret
+                )
+		sigret=$?
+	else
+		#
+		# The package is not signed
+		#
+		sigret=10001
+	fi
+
+	case "$emit_signed_file_dir" in
+		"")
+			;;
+		*)
+			case "$sigret" in
+				0)
+					exit 0
+					;;
+				*)
+					# continue, the error sigret will be caught below
+					;;
+			esac
+	esac
+
+	case $sigret in
+		0)
+			#
+			# Good signature.
+			#
+			if [ "$uverbose" -ge 2 ]; then
+				echo "swverify: GPG signature verified."
+			fi
+			;;
+		10001)
+			redir_error="1>&2"
+			sigret=1
+			if [ "$uverbose" -ge 2 ]; then
+				echo "swverify: sig file not found" 1>&2
+			fi
+			exit 1
+			;;
+		*)
+			redir_error="1>&2"
+			case "$mode" in
+				"checksig")
+				if [ "$uverbose" -ge 1 ]; then
+				echo "swverify: Signature failed.  Vendor checksig script not executed." 1>&2
+				echo "swverify: Make sure you have the public key in your GPG homedir" 1>&2
+				echo "swverify: The the verbose option, -vv, it may yield insight." 1>&2
+				echo "swverify: Try the option --order-catalog, or if really desparate --scm" 1>&2
+				echo "swverify: -" 1>&2
+				echo "swverify: If really, really desparate read on..." 1>&2
+				echo "swverify: If attempting to verify the (unpacked) directory form then" 1>&2
+				echo "swverify: there are many possible causes: GNU tar version mis-match," 1>&2
+				echo "swverify: file system directory entry order incompatibility, or the user" 1>&2
+				echo "swverify: name and ids on this system do not match the system that created" 1>&2
+				echo "swverify: the package, and last but not least the package is corrupt." 1>&2
+				echo "swverify: See the INDEX:tar_format_emulation_utility  attribute to" 1>&2
+				echo "swverify: determine the tar format emulation.  GNU tar 1.14,1.15.x cannot" 1>&2
+				echo "swverify: produce the signed bytestream of ustar packages created using" 1>&2
+				echo "swverify: swbis versions <=0.420 since it emulated version 1.13.25." 1>&2
+				echo "swverify: Another possible reason is you have GNU tar 1.13.25 and the" 1>&2
+				echo "swverify: package was made with GNU swpackage version >0.420" 1>&2
+				echo "swverify: Another possible reason is the --files option was not used" 1>&2
+				echo "swverify: when swpackage generated the catalog." 1>&2
+				echo "swverify: " 1>&2
+				echo "swverify: To verify the unpacked form, an Ext2, almost any old Unix, or Ext3" 1>&2
+				echo "swverify: (with b-tree indexes turn off) file system is required" 1>&2
+				echo "swverify: To verify the directory form on ReiserFS, Ext3 and other file" 1>&2
+				echo "swverify: systems with non-traditional file ordering, try the --scm option." 1>&2
+				echo "swverify: or --order-catalog option." 1>&2
+				echo "swverify: Package authenticity not confirmed." 1>&2
+				fi
+				exit 1
+				;;
+				"yes") # posix mode (-r option)
+					if [ "$uverbose" -ge 1 ]; then
+				echo "swverify: error: installed software meta-data authenticity not confirmed" 1>&2
+					fi
+				exit 1
+				;;
+			esac
+			;;
+	esac 
+else
+        sigret=2
+fi
+
+case "$mode" in
+	"checksig"|"checkinstalled")
+	#
+	# if checksig mode continue.
+	#
+	if [ -d "$dirbase" -a "$sigret" = "0" -a "$useform" = "distribution" ]; then
+		#
+		# This is the non-posix checksig mode path.
+		# If here, then the signature is good.
+		#
+		if [ "$uverbose" -ge 2 ]; then
+			echo "swverify: Got it!"
+			echo "swverify: The distributor checkdigest script can now be executed."
+		fi
+		cd "$dirbase" 
+		case $? in
+			0)
+				;;
+			*)
+				echo "cd : $dirbase : no such file or directory" 1>&2
+				exit 1
+				;;
+		esac
+		if [ "$uverbose" -ge 3 ]; then
+			bequiet="2>/dev/null"
+		else
+			bequiet=""
+		fi
+
+		checkdigest=`${FIND} catalog -print | ${GREP} /checksig | $HEAD -1`
+		case "$checkdigest" in
+			"")
+				checkdigest=`${FIND} catalog -print | ${GREP} /checkdigest | $HEAD -1`
+				;;
+			*)
+				echo "swverify: Using the script named 'checksig'." 1>&2
+				echo "swverify: The name 'checksig' should be deprecated for new packages." 1>&2
+				;;
+		esac
+
+		if [ -f "$checkdigest" -a "$no_checkdigest" = "" ]; then
+			SWBIS_CONTROL_NUMERIC_OWNER="$detected_is_numeric" \
+			SWBIS_CONTROL_OWNER="$detected_username" \
+			SWBIS_CONTROL_GROUP="$detected_groupname" \
+			SW_PATH="$PATH" \
+			SW_CONTROL_TAG=${sw_control_tag} \
+				"${SHELL}" "$checkdigest" $bequiet
+			ret=$?
+			case "$ret" in
+				0)
+					echo "swverify: signature authenticity confirmed above." 1>&2
+					echo "swverify: file authenticity confirmed by checkdigest script." 1>&2
+					echo "swverify: exiting with status 0" 1>&2
+					;;	
+				*)
+					echo "swverify: Package authenticity not confirmed." 1>&2
+					;;
+			esac
+			exit "$ret"
+		elif [ -f "$checkdigest" -a "$no_checkdigest" ]; then
+			echo "swverify: The distributor checkdigest script not run at user's option."
+			echo "swverify: Package payload authenticity not confirmed."
+			echo "swverify: exiting with status 0"
+			exit 0
+		else 
+			echo "swverify: checkdigest (nor checksig) script not found" 1>&2
+			echo "swverify: Package authenticity not confirmed." 1>&2
+			exit 1
+		fi
+		exit 2;
+	elif [ "$useform" = "distribution" ]; then
+		if [ "$filename" = "-" -o -f "$filename" ]; then
+			#
+			# --checksig for a archive file
+			#
+			did_file="yes"
+			ret=127
+	
+			case "$mode" in
+				"checksig")
+				#
+				# --checksig for a serial archive file.
+				#
+				case "$UUIDGEN" in
+					"")
+						uuidpath=`date | sum | 
+							expand |  sed -e 's/ .*//' | head -1`
+						;;
+					*)
+						uuidpath=`$UUIDGEN -r | $SUM |
+							expand | sed -e 's/  *//' |
+							$GREP -e '[0-9][0-9]*'`
+						;;
+				esac
+
+				#
+				# Check that uuidpath is good
+				#
+				echo "$uuidpath" | $GREP -v " " | $GREP . 1>/dev/null
+				case "$?" in
+					0)
+						;;
+					*)
+						echo \
+					"swverify : internal error generating temp file name" 1>&2
+						exit 1
+						;;
+				esac
+
+				fifotopdirname="/tmp/swverify.$$"
+				fifodirname="/tmp/swverify.$$/$uuidpath"
+				${RM} -fr "$fifotopdirname"
+				fifoname="$fifodirname/sigfifo"
+				(umask 077; ${MKDIR} $fifotopdirname)
+				case $? in
+					0)
+						;;
+					*)
+						echo "mkdir failed : $fifotopdirname" 1>&2
+						exit 1
+						;;
+				esac
+				(umask 077; ${MKDIR} $fifodirname)
+				case $? in
+					0)
+						;;
+					*)
+						echo "$0: mkdir failed : $fifodirname" 1>&2
+						exit 1
+						;;
+				esac
+
+				"${RM}" -f "$fifoname"
+				"${MKFIFO}" -m u+rw,o-rwx,g-rwx "$fifoname"
+				case $? in
+					0)
+						;;
+					*)
+						echo "$0: mkfifo failed : $fifoname" 1>&2
+						exit 1
+						;;
+				esac	
+	
+				ARF2ARF="${SWBISLIBEXECDIR}/swbis/arf2arf"
+				if [ -z "$ARF2ARF" ]; then
+					echo "swverify: Missing the arf2arf" 1>&2
+					exit 2
+				fi
+	
+				"${ARF2ARF}" --util-name=swverify --sig-number=$signumber --verbose-level="$uverbose" \
+						--checksig-mode "$fifoname" \
+						--gpg-prog "${GPGBASENAME}" "$filename"
+				ret=$?
+				"${RM}" -fr "$fifotopdirname"
+					case "$ret" in
+					0)
+						;;
+					63)
+						echo \
+			"swverify: Package authenticity not confirmed due to decompressor error." 1>&2
+						ret=1;
+						;;
+					*)
+						echo \
+			"swverify: Package authenticity not confirmed." 1>&2
+						ret=1;
+						;;
+				esac
+				exit $ret
+				;;	
+			esac
+			exit $ret
+		fi
+		echo "internal error: exit status 11" 1>&2
+		exit 11 # Never happens
+	else
+		echo "swverify: Warning: file checks not implemented" 1>&2
+		if [ "$sigret" -ne 0 -o "$uverbose" -ge 2 ]; then
+			echo "swverify: signature verification return status=$sigret" |
+			( case "$redir_error" in "") cat ;; *) cat 1>&2 ;; esac )
+		fi
+		# exit "$sigret"
+		exit 1
+	fi
+	echo "internal error: exit status 12" 1>&2
+	exit 12 # Never happens
+;;
+esac
+
+case "$mode" in
+        "emit-digest-file")
+                did_file=""
+                ;;
+esac
+
+if [ "$did_file" = "" ]; then
+	ARF2ARF="${SWBISLIBEXECDIR}/swbis/arf2arf"
+	if [ -z "$ARF2ARF" ]; then
+		echo "swverify: Missing the arf2arf" 1>&2
+		exit 2
+	fi
+	ret=127
+	case "$mode" in
+		"emit-signed-file")
+			${ARF2ARF} --util-name=swverify --sig-number=$signumber --verbose-level="$uverbose" $auth_files_dash_d -C "$filename" 
+			ret=$?
+			;;
+		"emit-digest-file")
+			if [ -d "$filename" ]; then
+				echo "unsupported mode for a directory target" 1>&2
+				exit 1
+			else
+				${ARF2ARF} --util-name=swverify --verbose-level="$uverbose" $sha1 $auth_files_dash_d -S "$filename" 
+			fi
+			ret=$?
+			;;
+		"get-sig-if")
+			${ARF2ARF} --util-name=swverify --sig-number=$signumber --verbose-level="$uverbose" $auth_files_dash_d \
+					-G "$sigoutputfile" "$filename" 
+			ret=$?
+			;;
+		*)
+			echo "swverify: invalid mode" 1>&2
+			exit 1
+			;;
+	esac
+	exit $ret
+fi
+
+if [ "$did_file" = "" ]; then
+	echo "swverify: $filename : file not found." 1>&2
+	echo "swverify: Package authenticity not confirmed." 1>&2
+	exit 1
+else
+	exit 1
+fi
+exit 1

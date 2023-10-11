@@ -1,0 +1,97 @@
+@c Copyright (C) 2004 Jim Lowe
+@c This is part of the swbis manual.
+@c For copying conditions, see the file copying.texi.
+
+
+@node Command Reference
+@appendix Command Reference
+
+@menu
+
+Commands
+
+* swpackage: (swbis_swpackage). 
+* swpackage.8 in one text file::
+
+* swinstall: (swbis_swinstall).
+* swinstall.8 in one text file::
+
+* swremove: (swbis_swremove).
+* swremove.8 in one text file::
+
+* swcopy: (swbis_swcopy).
+* swcopy.8 in one text file::
+
+* swlist: (swbis_swlist).
+* swlist.8 in one text file::
+
+* swverify: (swbis_swverify). 
+* swverify.8 in one text file::
+
+* swconfig: (swbis_swconfig). 
+* swconfig.8 in one text file::
+
+* swign: (swbis_swign). 
+* swign.1 in one text file::
+
+* lxpsf: (swbis_lxpsf). 
+* lxpsf.1 in one text file::
+
+Formats
+
+* sw: (swbis_sw).
+* sw.5 in one text file::
+* swpackage.5 in one text file::
+
+Conventions, User Manual
+
+* swbis(1): (swbis_user).
+* swbis(7): (swbis_swbis).
+
+@end menu
+
+@node swpackage.8 in one text file
+@unnumberedsec swpackage.8 in one text file
+@verbatiminclude ../text/swpackage_8.text
+
+@node swinstall.8 in one text file
+@unnumberedsec swinstall.8 in one text file
+@verbatiminclude ../text/swinstall_8.text
+
+@node swremove.8 in one text file
+@unnumberedsec swremove.8 in one text file
+@verbatiminclude ../text/swremove_8.text
+
+@node swcopy.8 in one text file
+@unnumberedsec swcopy.8 in one text file
+@verbatiminclude ../text/swcopy_8.text
+
+@node swlist.8 in one text file
+@unnumberedsec swlist.8 in one text file
+@verbatiminclude ../text/swlist_8.text
+
+@node swverify.8 in one text file
+@unnumberedsec swverify.8 in one text file
+@verbatiminclude ../text/swverify_8.text
+
+@node swconfig.8 in one text file
+@unnumberedsec swconfig.8 in one text file
+@verbatiminclude ../text/swconfig_8.text
+
+@node swign.1 in one text file
+@unnumberedsec swign.1 in one text file
+@verbatiminclude ../text/swign_1.text
+
+@node lxpsf.1 in one text file
+@unnumberedsec lxpsf.1 in one text file
+@verbatiminclude ../text/lxpsf_1.text
+
+@node swpackage.5 in one text file
+@unnumberedsec swpackage.5 in one text file
+@verbatiminclude ../text/swpackage_5.text
+
+@node sw.5 in one text file
+@unnumberedsec sw.5 in one text file
+@verbatiminclude ../text/sw_5.text
+
+

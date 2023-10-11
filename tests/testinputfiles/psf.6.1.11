@@ -1,0 +1,8 @@
+  distribution
+   layout_version 1.0
+   product
+    tag bc
+    fileset
+	tab tag1
+	directory /etc
+	file hosts /tmp/hosts

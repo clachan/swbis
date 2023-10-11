@@ -1,0 +1,15 @@
+topincdir=@topincdir@
+topdir=@topdir@
+CPP = @CPP@
+prefix= @prefix@
+exec_prefix = @exec_prefix@
+libdir= $(prefix)/lib
+AR = ar
+RANLIB = @RANLIB@
+OPTS = @DEFS@ @SWBISDEFS@
+LIBRPMRC_FILENAME=
+LIBRPMALIAS_FILENAME=
+RPMNLSDIR=
+RPMNLSPACKAGE=
+CFLAGS = @CFLAGS@ $(WARNINGS) $(OPTS) -I. -I$(topincdir)
+LDFLAGS = @LDFLAGS@ -L$(topdir)/lib

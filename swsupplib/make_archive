@@ -1,0 +1,18 @@
+#!/bin/sh
+
+REVISION=0.84
+export REVISION
+(
+cd ..
+find swsupplib-${REVISION} -follow \( ! -type l \) |
+egrep -v swsupplib-${REVISION}/taru\$ |
+egrep -v swsupplib-${REVISION}/uxfio\$ |
+egrep -v swsupplib-${REVISION}/strob\$ |
+egrep -v swsupplib-${REVISION}/misc\$ |
+egrep -v swsupplib-${REVISION}/uinfile\$ |
+egrep -v swsupplib-${REVISION}/sw_parse\$ |
+cpio -o -H ustar |
+gzip -9 >swsupplib-${REVISION}.`date +%Y%m%d%H%M`.tar.gz
+)
+
+

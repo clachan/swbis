@@ -1,0 +1,52 @@
+<!-- 
+Copyright (C) 2004 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+<!DOCTYPE form
+[
+<!ENTITY swextdef SYSTEM "swpackage_extdef.sgml">
+<!ENTITY swconventions SYSTEM "swpackage_conventions.sgml">
+]>
+-->
+<TITLE>
+SWPACKAGE INPUT FILE FORMAT
+</TITLE>
+<PARA>
+The input file is called a product specification file or PSF.  It contains information to
+direct swpackage and information that is package meta-data [that is merely transferred unchanged
+into the global INDEX file]. 
+</PARA>
+<PARA>
+A PSF may contain object keywords, attributes (keyword/value pairs) and Extended Definitions (described below).
+An object keyword connotes a logical object (i.e. software structure) supported by the standard.  An object keyword
+does not have a value field after it, as it contains Attributes and Extended Definitions.
+An attribute keyword conotes an attribute which is always in the form of a keyword/value pair.
+</PARA>
+<PARA>
+Attribute keywords not recognized by the standard are allowed and are transferred into the INDEX file.
+Object keywords not recognized by the standard are not allowed and will generate an error.
+Extended Definitions may only appear in a PSF (never in a INDEX or INFO created by swpackage).
+Extended Definitions are translated [by swpackage] into object keywords (objects) and 
+attributes recognized by the standard.
+</PARA>
+<PARA>
+Comments in a PSF are not transferred into the INDEX file by the swbis implementation of swpackage.
+</PARA>
+<PARA>
+The file syntax is the same as a <FUNCTION>INDEX</FUNCTION>, or <FUNCTION>INFO</FUNCTION> file.
+A PSF may contain all objects defined by the standard as well as extended definitions.<SBR> 
+For additional information see<SBR>
+XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm, or<SBR>
+sw manual page.
+</PARA>
+<!-- 
+<REFSECT2>
+&swextdef;
+</REFSECT2>
+</REFSECT1>
+<REFSECT2>
+&swconventions;
+</REFSECT2>
+-->

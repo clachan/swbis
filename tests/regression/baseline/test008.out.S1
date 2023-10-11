@@ -1,0 +1,568 @@
+S1 ../testinputfiles/psf.skel: F01 PSF stdin
+O01 host
+A02  hostname hostname_A
+A02  os_name os_name_A
+A02  os_release os_release_A
+A02  os_version os_version_A
+A02  machine_type machine_type_A
+A02  rpmversion rpmversion_A
+O02  distribution
+A03   dfiles _ dfiles 6
+A03   pfiles _ pfiles 7
+A03   uuid _ uuid 9
+A03   path _ path 10
+O03   media
+A04    sequence_number _ sequence_number 11
+O03   bundle
+A04    tag _ tag 15
+A04    architecture _ architecture 16
+A04    location _ location 17
+A04    qualifier _ qualifier 18
+A04    revision _ revision 19
+A04    vendor_tag _ vendor_tag 20
+A04    contents _ contents 21
+A04    copyright _ copyright 22
+A04    create_time _ create_time 23
+A04    description _ description 24
+A04    directory _ directory 25
+A04    instance_id _ instance_id 26
+A04    is_locatable _ is_locatable 27
+A04    machine_type _ machine_type 28
+A04    mod_time _ mod_time 29
+A04    number _ number 30
+A04    os_name _ os_name 31
+A04    os_release _ os_release 32
+A04    os_version _ os_version 33
+A04    size _ size 34
+A04    title _ title 35
+O03   vendor
+A04    tag _ tag 38
+A04    title _ title 39
+A04    description _ description 40
+O03   product
+A04    tag _ tag 46
+A04    architecture _ architecture 47
+A04    qualifier _ qualifier 48
+A04    revision _ revision 49
+A04    vendor_tag _ vendor_tag 50
+A04    all_filesets _ all_filesets 51
+A04    control_directory _ control_directory 52
+A04    copyright _ copyright 53
+A04    create_time _ create_time 54
+A04    directory _ directory 55
+A04    description _ description 56
+A04    instance_id _ instance_id 57
+A04    is_locatable _ is_locatable 58
+A04    postkernel _ postkernel 59
+A04    location _ location 60
+A04    machine_type _ machine_type 61
+A04    mod_time _ mod_time 62
+A04    number _ number 63
+A04    os_name _ os_name 64
+A04    os_release _ os_release 65
+A04    os_version _ os_version 66
+A04    size _ size 67
+A04    title _ title 68
+E04    control_file _control_file.sh / 71
+E04    control_file _control_file.sh / 72
+O04    control_file
+A05     tag _ tag 74
+A05     chksum _ chksum 75
+A05     compressed_chksum _ compressed_chksum 76
+A05     compressed_size _ compressed_size 77
+A05     compression_state _ compression_state 78
+A05     compression_type _ compression_type 79
+A05     interpreter _ interpreter 80
+A05     path _ path 81
+A05     revision _ revision 82
+A05     size _ size 83
+A05     source _ source 84
+A05     result _ result 85
+E04    checkinstall _ checkinstall / 88
+E04    preinstall _ preinstall / 89
+E04    postinstall _ postinstall / 90
+E04    verify _ verify / 91
+E04    fix _ fix / 92
+E04    checkremove _ checkremove / 93
+E04    preremove _ preremove / 94
+E04    postremove _ postremove.sh  / 95
+E04    configure _ configure.sh / 96
+E04    unconfigure _ unconfigure.sh / 97
+E04    request _ request.sh / 98
+E04    unpreinstall _ unpreinstall.sh / 99
+E04    unpostinstall _ unpostinstall.sh / 100
+E04    space _ space.sh / 101
+E04    control_file _ control_file.sh / 102
+O04    subproduct
+A05     tag _ tag 105
+A05     contents _ contents 106
+A05     create_time _ create_time 107
+A05     description _ description 108
+A05     mod_time _ mod_time 109
+A05     size _ size 110
+A05     title _ title 111
+O04    fileset
+A05     tag _ tag 114
+A05     control_directory _ control_directory 115
+A05     corequisites _ corequisites 116
+A05     create_time _ create_time 117
+A05     description _ description 118
+A05     exrequisites _ exrequisites 119
+A05     is_reboot _ is_reboot 120
+A05     is_kernel _ is_kernel 121
+A05     is_locatable _ is_locatable 122
+A05     location _ location 123
+A05     media_sequence_number _ media_sequence_number 124
+A05     mod_time _ mod_time 125
+A05     prerequisites _ prerequisites 126
+A05     revision _ revision 127
+A05     size _ size 128
+A05     state _ state 129
+A05     title _ title 130
+O05     control_file
+A06      tag _ tag 133
+A06      chksum _ chksum 134
+A06      compressed_chksum _ compressed_chksum 135
+A06      compressed_size _ compressed_size 136
+A06      compression_state _ compression_state 137
+A06      compression_type _ compression_type 138
+A06      interpreter _ interpreter 139
+A06      path _ path 140
+A06      revision _ revision 141
+A06      size _ size 142
+A06      source _ source 143
+A06      result _ result 144
+E05     file -t f -m 0777 -o root,0 -g root,0 -n -v  / /
+O05     file
+A06      path _ path 149
+A06      chksum _ chksum 150
+A06      compressed_chksum _ compressed_chksum 151
+A06      compressed_size _ compressed_size 152
+A06      compression_state _ compression_state 153
+A06      compression_type _ compression_type 154
+A06      gid _ gid 155
+A06      group _ group 156
+A06      is_volatile _ is_volatile 156
+A06      link_source _ link_source 157
+A06      major _ major 158
+A06      minor _ minor 159
+A06      mode _ mode 160
+A06      mtime _ mtime 161
+A06      owner _ owner 162
+A06      revision _ revision 163
+A06      size _ size 164
+A06      source _ source 165
+A06      type _ type 166
+A06      uid _ uid 167
+E05     checkinstall _ checkinstall / 172
+E05     preinstall _ preinstall / 173
+E05     postinstall _ postinstall / 174
+E05     verify _ verify / 175
+E05     fix _ fix / 176
+E05     checkremove _ checkremove / 177
+E05     preremove _ preremove / 178
+E05     postremove _ postremove.sh  / 179
+E05     configure _ configure.sh / 180
+E05     unconfigure _ unconfigure.sh / 181
+E05     request _ request.sh / 182
+E05     unpreinstall _ unpreinstall.sh / 183
+E05     unpostinstall _ unpostinstall.sh / 184
+E05     space _ space.sh / 185
+E05     control_file _ control_file.sh / 186
+E05     directory _ directory  189
+E05     file_permissions _ file_permissions 190
+E05     exclude _ exclude 191
+E05     file <file192
+O04    fileset
+E05     directory _ directory  197
+O03   vendor
+A04    tag _ tag 201
+A04    title _ title 202
+A04    description _ description 203
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf1: F01 PSF stdin
+O01 host
+A02  hostname localhost
+A02  os_name linux
+O02  distribution
+O03   vendor
+A04    tag FineSoft
+A04    title Fine Software Corporation
+A04    description  Fine Software Corporation\n1233 Technology way\nSunset Bay, Ca. 90456\n1-800-555-1212
+O03   bundle
+A04    tag POSIX-SM
+A04    revision 1.0
+A04    vendor_tag FineSoft
+A04    title POSIX 1387 System Management
+A04    contents POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+A04    contents POSIX-User,r=1.0
+O03   product
+A04    tag POSIX-Software
+A04    revision 2.0
+A04    vendor_tag FineSoft
+A04    number J2326AA
+A04    description </build/data/description
+A04    title POSIX 1387.2 Software Administration
+A04    copyright </build/data/copyright
+A04    machine_type 9000/[78]*
+A04    os_name HP-UX
+A04    os_release ?.09.*
+A04    os_version ?
+A04    directory /
+O04    subproduct
+A05     tag Manager
+A05     title management Utilities
+A05     contents commands agent man
+O04    subproduct
+A05     tag Agent
+A05     title target daemon and agent
+A05     contents agent man
+O04    fileset
+A05     tag commands
+A05     title Commands (management utilities)
+A05     prerequisites POSIX-Software.agent
+E05     configure scripts/configure.data
+E05     directory /build/usr/sbin /usr/bin
+O05     file
+A06      path /is/a/path
+A06      source /is/the/source/path
+E05     file swinstall
+E05     file swconfig
+E05     file swcopy
+O05     file
+A06      path /this/is/a/path
+A06      source /this/is/the/source/path
+E05     file swremove
+E05     file swverify
+O05     file
+A06      path /11this/is/a/path1
+A06      source /11this/is/the/source/path
+E05     file swpackage
+O04    fileset
+A05     tag agent
+A05     title Agent
+E05     configure /build/system/SD-AGENT/customize
+E05     unconfigure /build/system/SD-AGENT/decustomize
+E05     file /build/usr/sbin/swagentd /usr/sbin/swagentd
+E05     file /build/usr/lbin/swagent /usr/lbin/swagent
+O04    fileset
+A05     tag man
+A05     title Manual (man pages)
+E05     directory /build/usr/man/man8 /usr/man/man8
+E05     file swinstall.8
+E05     file swcopy.8
+E05     file swremove.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swconfig.8
+E05     file swpackage.8
+E05     file swagent.8
+E05     file swagentd.8
+E05     directory /build/usr/man/man4 /usr/man/man4
+E05     file swpackage.4
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf2: F01 PSF stdin
+O01 host
+A02  hostname localhost
+A02  os_name linux
+O02  distribution
+O03   vendor
+A04    tag FineSoft
+O03   product
+A04    tag POSIX-Software
+E04    control_file install /usr/bin/install
+O04    fileset
+A05     tag commands
+A05     title Commands (management utilities)
+E05     configure scripts/configure.data
+E05     checkinstall /usr/bin
+E05     directory /build/usr/sbin /usr/bin
+O05     file
+A06      path /is/a/path
+A06      source /is/the/source/path
+E05     file swinstall
+E05     file swconfig
+E05     file swcopy
+O05     file
+A06      path /this/is/a/path
+A06      source /this/is/the/source/path
+E05     file swremove
+E05     file swverify
+O05     file
+A06      path /11this/is/a/path1
+A06      source /11this/is/the/source/path
+E05     file swpackage
+O04    fileset
+A05     title Manual (man pages)
+E05     directory /build/usr/man/man8 /usr/man/man8
+E05     file swinstall.8
+E05     file swcopy.8
+E05     file swremove.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swconfig.8
+E05     file swpackage.8
+E05     file swagent.8
+E05     file swagentd.8
+E05     directory /build/usr/man/man4 /usr/man/man4
+E05     file swpackage.4
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf3: F01 PSF stdin
+O01 distribution
+A02  layout_version 1.0
+A02  dfiles dfiles
+A02  dfiles aaaaaaaa
+O02  vendor
+A03   vendor_tag tagv
+O02  bundle
+A03   tag bundletag
+O02  product
+A03   tag aa
+O03   fileset
+A04    tag tagaa1
+O04    file
+A05     path /usr/tmp/aa1.1
+O04    file
+A05     path /usr/tmp/aa1.2
+O04    file
+A05     path /usr/tmp/aa1.3
+O04    file
+A05     path /usr/tmp/aa1.4
+O03   fileset
+A04    tag tagaa2
+O04    file
+A05     path /usr/tmp/aa2.1
+E04    file /usr/tmp
+O02  product
+A03   tag bb
+O03   fileset
+A04    tag tagbb1
+O04    file
+A05     path /usr/tmp/bb1.1
+O04    file
+A05     path /usr/tmp/bb1.2
+O04    file
+A05     path /usr/tmp/bb1.3
+O03   fileset
+A04    tag tagbb2.1
+A04    tag tagbb2.2
+A04    tag tagbb2.3
+A04    tag tagbb2.4
+A04    tag tagbb2.5
+O04    file
+A05     path /usr/tmp/bb2.1
+O04    file
+A05     path /usr/tmp/bb2.2
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf4.0: F01 PSF stdin
+O01 host
+A02  hostname localhost
+A02  os_name linux
+O02  distribution
+O03   vendor
+A04    tag FineSoft
+A04    title Fine Software Corporation
+A04    description  Fine Software Corporation\n1233 Technology way\nSunset Bay, Ca. 90456\n1-800-555-1212
+O03   bundle
+A04    tag POSIX-SM
+A04    revision 1.0
+A04    vendor_tag FineSoft
+A04    title POSIX 1387 System Management
+A04    contents POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+A04    contents POSIX-User,r=1.0
+O03   product
+A04    tag POSIX-Software
+A04    revision 2.0
+A04    vendor_tag FineSoft
+A04    number J2326AA
+A04    description </build/data/description
+A04    title POSIX 1387.2 Software Administration
+A04    copyright </build/data/copyright
+A04    machine_type 9000/[78]*
+A04    os_name HP-UX
+A04    os_release ?.09.*
+A04    os_version ?
+A04    directory /
+O04    subproduct
+A05     tag Manager
+A05     title management Utilities
+A05     contents commands agent man
+O04    subproduct
+A05     tag Agent
+A05     title target daemon and agent
+A05     contents agent man
+O04    fileset
+A05     tag commands
+A05     title Commands (management utilities)
+A05     prerequisites POSIX-Software.agent
+E05     configure scripts/configure.data
+E05     directory /build/usr/sbin /usr/bin
+O05     file
+A06      path /is/a/path
+A06      source /is/the/source/path
+E05     file swinstall
+E05     file swconfig
+E05     file swcopy
+O05     file
+A06      path /this/is/a/path
+A06      source /this/is/the/source/path
+E05     file swremove
+E05     file swverify
+O05     file
+A06      path /11this/is/a/path1
+A06      source /11this/is/the/source/path
+E05     file swpackage
+O04    fileset
+A05     tag agent
+A05     title Agent
+E05     configure /build/system/SD-AGENT/customize
+E05     unconfigure /build/system/SD-AGENT/decustomize
+E05     file /build/usr/sbin/swagentd /usr/sbin/swagentd
+E05     file /build/usr/lbin/swagent /usr/lbin/swagent
+O04    fileset
+A05     tag man
+A05     title Manual (man pages)
+E05     directory /build/usr/man/man8 /usr/man/man8
+E05     file swinstall.8
+E05     file swcopy.8
+E05     file swremove.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swconfig.8
+E05     file swpackage.8
+E05     file swagent.8
+E05     file swagentd.8
+E05     directory /build/usr/man/man4 /usr/man/man4
+E05     file swpackage.4
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf4.1: F01 PSF stdin
+O01 host
+A02  hostname localhost
+A02  os_name linux
+O02  distribution
+O03   vendor
+A04    tag FineSoft
+A04    title Fine Software Corporation
+A04    description  Fine Software Corporation\n1233 Technology way\nSunset Bay, Ca. 90456\n1-800-555-1212
+O03   bundle
+A04    tag \\POSIX-SM
+A04    revision 1.0
+A04    vendor_tag FineSoft
+A04    title POSIX 1387 System Management
+A04    contents POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+A04    contents POSIX-User,r=1.0
+O03   product
+A04    tag POSIX-Software
+A04    revision 2.0
+A04    vendor_tag FineSoft
+A04    number J2326AA
+A04    description </build/data/description
+A04    title POSIX 1387.2 Software Administration
+A04    copyright </build/data/copyright
+A04    machine_type 9000/[78]*
+A04    os_name HP-UX
+A04    os_release ?.09.*
+A04    os_version ?
+A04    directory /
+O04    subproduct
+A05     tag Manager
+A05     title management Utilities
+A05     contents commands agent man
+O04    subproduct
+A05     tag Agent
+A05     title target daemon and agent
+A05     contents agent man
+O04    fileset
+A05     tag commands
+A05     title Commands (management utilities)
+A05     prerequisites POSIX-Software.agent
+E05     configure scripts/configure.data
+E05     directory /build/usr/sbin /usr/bin
+O05     file
+A06      path /is/a/path
+A06      source /is/the/source/path
+E05     file swinstall
+E05     file swconfig
+E05     file swcopy
+O05     file
+A06      path /this/is/a/path
+A06      source /this/is/the/source/path
+E05     file swremove
+E05     file swverify
+O05     file
+A06      path /11this/is/a/path1
+A06      source /11this/is/the/source/path
+E05     file swpackage
+O04    fileset
+A05     tag agent
+A05     title Agent
+E05     configure /build/system/SD-AGENT/customize
+E05     unconfigure /build/system/SD-AGENT/decustomize
+E05     file /build/usr/sbin/swagentd /usr/sbin/swagentd
+E05     file /build/usr/lbin/swagent /usr/lbin/swagent
+O04    fileset
+A05     tag man
+A05     title Manual (man pages)
+E05     directory /build/usr/man/man8 /usr/man/man8
+E05     file swinstall.8
+E05     file swcopy.8
+E05     file swremove.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swlist.8
+E05     file swverify.8
+E05     file swconfig.8
+E05     file swpackage.8
+E05     file swagent.8
+E05     file swagentd.8
+E05     directory /build/usr/man/man4 /usr/man/man4
+E05     file swpackage.4
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf4.1.1: F01 PSF stdin
+O01 distribution
+O02  vendor
+O02  bundle
+A03   tag #aaa\\POSIX-SM
+A03   tag aaa\\POSIX-SM
+O02  product
+O03   fileset
+E04    file swinstall
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf4.1.2: F01 PSF stdin
+O01 distribution
+O02  vendor
+O02  bundle
+A03   tag a
+A03   tag a#aaa\\POSIX-SM
+A03   tag a#aaa\\POSIX-SM\\n
+A03   tag a#aaa\\POSIX-SM\\n\na\na\na\n
+O02  product
+O03   fileset
+E04    file swinstall
+++++++++++++++++++++++++++++++++++++++++++++++++++
+S1 ../testinputfiles/psf4.1.3: F01 PSF stdin
+O01 distribution
+O02  vendor
+O02  bundle
+A03   tag a
+A03   tag a#aaa\\POSIX-SM
+A03   tag a#aaa\\POSIX-SM\\n
+A03   tag a#aaa\\POSIX-SM\\n\na\na\na\n
+A03   tag \\n
+A03   tag ab\\n
+A03   tag 
+A03   tag "
+A03   tag "\nn\n
+A03   tag ##
+A03   tag ""
+A03   tag \\\\
+O02  product
+O03   fileset
+E04    file swinstall
+++++++++++++++++++++++++++++++++++++++++++++++++++

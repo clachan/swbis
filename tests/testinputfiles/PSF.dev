@@ -1,0 +1,12 @@
+distribution
+	description "Devices"
+
+product
+	tag devices
+	control_directory ""
+
+fileset
+	tag input
+	control_directory ""
+	directory /dev/input  /dev/input
+	file *

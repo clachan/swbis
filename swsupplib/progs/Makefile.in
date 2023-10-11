@@ -1,0 +1,223 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+
+EXE=
+
+RPMLIBS=@RPMLIBS@
+RPMPROGS=@RPMPROGS@
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+DO_DEBUG = @DO_DEBUG@
+
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = 
+endif
+
+#LIBEFENCE = -lefence
+#DEBUG = -g
+installprefix=$(ROOT)
+
+LDFLAGS=-dynamic @LDFLAGS@
+
+################################### Leave this stuff alone
+
+### These are variables meant to be exported
+
+VPATH = $(srcdir)
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+# -----------------------------------------------------------------------
+
+#PROGS = swbistar cpio2tar tar2newc tar2crc sw_parse rpmheaderdump rpm2swpsf list2tar rpmarchivedump lxpsf
+#RPMPROGS = rpmheaderdump rpm2swpsf list2tar rpmarchivedump lxpsf
+PROGS = swbistar cpio2tar tar2newc tar2crc sw_parse arf2arf epochtime mtimetouch getopt $(RPMPROGS)
+
+LIBS= @LIBS@
+LIB=../swsupplib.a
+LOADLIBES = 
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+$(LIB):
+	(cd .. && make swsupplib.a)
+
+cpio2tar: $(LIB) $(OBJS) $(LOADLIBES) cpio2tar.o 
+	$(CC) -o cpio2tar $(LDFLAGS) cpio2tar.o $(OBJS) $(LIBS) $(LIB)   \
+		$(LIBEFENCE)
+
+list2tar: $(LIB) $(OBJS) $(LOADLIBES) list2tar.o 
+	$(CC) -o list2tar  $(LDFLAGS) list2tar.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+tar2newc: $(LIB) $(OBJS) $(LOADLIBES) tar2newc.o 
+	$(CC) -o tar2newc $(LDFLAGS) tar2newc.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+tar2crc: $(LIB) $(OBJS) $(LOADLIBES) tar2crc.o 
+	$(CC) -o tar2crc $(LDFLAGS) tar2crc.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+getopt.o: getopt.c
+	$(CC) $(CFLAGS) -I../getopt -I.. -I. -c -o $@ $<
+
+getopt: getopt.o
+	$(CC) $(LDFLAGS) -o $@ $@.o $(LIB)
+
+sw_parse: sw_parse.o  $(LIB)
+	${CC} -o sw_parse $(LDFLAGS) sw_parse.o $(LIB) $(LIBS) $(LIBEFENCE)
+
+rpmheaderdump: $(OBJS) $(LOADLIBES) rpmheaderdump.o $(LIB)
+	$(CC) -o rpmheaderdump $(LDFLAGS) rpmheaderdump.o $(LIB) $(RPMLIBS) $(LIBS)  $(LIB)  $(LIBEFENCE)
+
+rpmarchivedump: $(OBJS) $(LOADLIBES) rpmarchivedump.o $(LIB)
+	$(CC) -o rpmarchivedump $(LDFLAGS) rpmarchivedump.o $(LIB) $(RPMLIBS) $(LIBS)  $(LIB)  $(LIBEFENCE) ../misc/gettextstub.o
+
+rpm2swpsf: $(OBJS) $(LOADLIBES) rpm2swpsf.o $(LIB)
+	$(CC) -o rpm2swpsf $(LDFLAGS) rpm2swpsf.o  $(LIB) $(RPMLIBS) $(LIBS) $(LIB) $(LIBEFENCE) ../misc/gettextstub.o
+
+lxpsf: $(OBJS) $(LOADLIBES) lxpsf.o $(LIB)
+	$(CC) -o lxpsf $(LDFLAGS) lxpsf.o  $(LIB) $(RPMLIBS) $(LIBS) $(LIBEFENCE) ../misc/gettextstub.o
+
+test: $(OBJS) $(LOADLIBES) test.o $(LIB)
+	$(CC) -o $@ $(LDFLAGS) test.o $(LIB) $(RPMLIBS) $(LIBS) $(LIBEFENCE) ../misc/gettextstub.o
+
+swbistar: $(OBJS) $(LOADLIBES) swbistar.o $(LIB)
+	$(CC) -o swbistar $(LDFLAGS) swbistar.o  $(LIB) $(LIBS) $(LIB) $(LIBEFENCE)
+
+arf2arf: $(OBJS) $(LOADLIBES) arf2arf.o $(LIB)
+	$(CC) -o arf2arf $(LDFLAGS) arf2arf.o  $(LIB) $(LIBS) $(LIB) $(LIBEFENCE)
+
+mtimetouch: mtimetouch.o
+	$(CC) -o mtimetouch $(LDFLAGS) mtimetouch.o 
+
+epochtime: epochtime.o
+	$(CC) -o epochtime $(LDFLAGS) epochtime.o
+
+everything: $(PROGS) $(LIB) 
+
+$(PROGS): $(OBJS) 
+
+install-strip: all
+	strip swbistar$(EXE)
+	strip getopt$(EXE)
+	$(MAKE) -s install
+
+uninstall:
+	if [ -f lxpsf ]; then \
+		rm -f $(DESTDIR)$(libexecdir)/swbis/lxpsf$(EXE); \
+	fi
+	rm $(DESTDIR)$(libexecdir)/swbis/swbistar$(EXE)
+	rm $(DESTDIR)$(libexecdir)/swbis/arf2arf$(EXE)
+	rm $(DESTDIR)$(libexecdir)/swbis/mtimetouch$(EXE)
+	rm $(DESTDIR)$(libexecdir)/swbis/epochtime$(EXE)
+	rm $(DESTDIR)$(libexecdir)/swbis/getopt$(EXE)
+	rmdir $(DESTDIR)$(libexecdir)/swbis; true;
+	if [ ! -d $(DESTDIR)$(libexecdir) ]; then \
+		rmdir $(DESTDIR)$(libexecdir); true; \
+	fi
+
+install: all
+	if [ ! -d $(DESTDIR)$(libexecdir) ]; then \
+		echo "creating $(DESTDIR)$(libexecdir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(libexecdir); \
+	fi
+	$(INSTALL) -m 755 -d $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 swbistar$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 arf2arf$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 mtimetouch$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 epochtime$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 getopt$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	if [ -f lxpsf ]; then \
+		$(INSTALL) -m 755 lxpsf$(EXE) $(DESTDIR)$(libexecdir)/swbis; \
+	fi
+
+.PHONY:		clean
+clean:
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared a.out
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-info:
+installdirs:
+installcheck:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+NOFILE:
+
+.PHONY:		distclean
+distclean:	clean	
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared librpmrc find-provides.sh find-requires.sh 
+	rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+
+
+.PHONY:		depend
+depend:
+	( > .depend )
+#	($(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

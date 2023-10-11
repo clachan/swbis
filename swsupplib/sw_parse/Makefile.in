@@ -1,0 +1,162 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+XFLEX=@XFLEX@
+XBISON=@XBISON@
+
+UXDATE=20100728
+DO_DEBUG = @DO_DEBUG@
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = 
+endif
+
+LIBOBJECTS=swlex_supp.o y.tab.o swlex.o swparse_supp.o swparse_supp1.o swlex.o swyyparse.o
+
+LIB = swparse.a
+PROGS=
+# Source code adapted for rpm from GNU cpio
+LEXFILE = swlex.c_flex-2.5.4_20001014
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: y.tab.h swlex.c y.tab.c $(LIB)
+
+gotlex:
+	flex swlex.l; \
+	case $$? in \
+	0) \
+		mv lex.yy.c swlex.c; \
+		ln -s swlex.c lex.yy.c; ;; \
+	*) echo; echo; echo; echo; echo "************ << ERROR: flex failed, using precompiled version >> *sleeping 3 seconds*"; echo;sleep 3; \
+	rm lex.yy.c swlex.c; $(MAKE) dontgotlex; ;; esac
+
+dontgotlex:
+	cp swlex.c.$(UXDATE) swlex.c
+	ln -s swlex.c lex.yy.c
+
+swlex.c: swlex.l y.tab.h
+	rm -f lex.yy.c swlex.c
+	( \
+		AA=`which $(XFLEX) 2>/dev/null | grep -v "no "`; \
+		if [ "$${XFLEX}" != "_" -a "$$AA" ]; then \
+			case "$$AA" in \
+				"no "flex*) \
+				${MAKE} dontgotlex; ;; \
+				*) /$$AA --version | grep 2.5.4; case $$? in 0) ${MAKE} gotlex; ;; *) ${MAKE} dontgotlex; ;; esac \
+				;; \
+			esac \
+		else \
+			${MAKE} dontgotlex; \
+		fi; exit 0; \
+	)
+
+gotyacc:
+	bison -y -d -v swparse.y; \
+	case $$? in \
+		0) \
+		if [ -f y.tab.c ]; then \
+			mv  -f y.tab.h swparse.tab.h; \
+			mv  -f y.tab.c swparse.tab.c; \
+		fi; \
+		ln -s swparse.tab.h y.tab.h; \
+		ln -s swparse.tab.c y.tab.c; \
+		;; \
+		*) echo; echo; echo; echo "************ << ERROR: bison failed, using precompiled version >> *sleeping 3 seconds*"; echo; echo; echo; sleep3; \
+		rm -f y.tab.h y.tab.c swparse.tab.h swparse.tab.c;  $(MAKE) dontgotyacc; ;; \
+	esac
+
+dontgotyacc:
+	cp swparse.tab.h.$(UXDATE) swparse.tab.h
+	cp swparse.tab.c.$(UXDATE) swparse.tab.c
+	ln -s swparse.tab.h y.tab.h
+	ln -s swparse.tab.c y.tab.c
+
+y.tab.c y.tab.h: swparse.y
+	rm -f y.tab.c y.tab.h
+	( \
+		AA=`which $(XBISON) 2>/dev/null | grep -v "no _"`; \
+		if [ "$${XBISON}" != "_" -a "$$AA" ]; then \
+			case "$$AA" in \
+				"no "bison*) \
+				${MAKE} dontgotyacc; ;; \
+				*) \
+				${MAKE} gotyacc; ;; \
+			esac \
+		else \
+			${MAKE} dontgotyacc; \
+		fi; exit 0; \
+	)
+
+swparse.y:
+	true
+
+$(LIB): $(LIBOBJECTS) 
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS) y.tab.c y.tab.h swlex.c 
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+clean:
+	rm -f *.S *.a *.o $(PROGS) *~ swlex.c y.tab.c y.tab.h y.output swlex swparse swparse.tab.h swparse.tab.c lex.yy.c
+	(find y.tab* -type l -exec /bin/rm -f {} \;; exit 0; )
+	(find swparse.tab* -type l -exec /bin/rm -f {} \;; exit 0; )
+
+distclean: clean
+	rm -f .depend Makefile
+
+depend:
+	$(MAKE) y.tab.c
+	$(MAKE) swlex.c
+	( > .depend )
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.c > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

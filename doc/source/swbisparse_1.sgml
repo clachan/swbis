@@ -1,0 +1,218 @@
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+<!-- 
+Copyright (C) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man sw_parse_1.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<REFENTRY ID="swbisparse_1.sgml">
+<REFMETA>
+<REFENTRYTITLE>
+swbisparse
+</REFENTRYTITLE>
+<REFMISCINFO>
+swbisparse - Software Administration
+</REFMISCINFO>
+<MANVOLNUM>1</MANVOLNUM> 
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+swbisparse
+</REFNAME>
+<REFPURPOSE>
+Read and parse POSIX.7.2 metadata.
+</REFPURPOSE>
+</REFNAMEDIV>
+
+
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>swbisparse</FUNCTION> {--installed|-o,--info|-i,--index|-p,--psf} <OPTIONAL>-b</OPTIONAL> <OPTIONAL>-n</OPTIONAL> <OPTIONAL>-l <REPLACEABLE>level</REPLACEABLE></OPTIONAL> <OPTIONAL><REPLACEABLE>file</REPLACEABLE></OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swbisparse</FUNCTION> {-d,--decode} <OPTIONAL><REPLACEABLE>package_file</REPLACEABLE></OPTIONAL>
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+
+
+<REFSECT1 ID="R1 swbisparse">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>swbisparse</FUNCTION>
+reads and parses POSIX.7.2 metadata files: INDEX, INFO and psf files.
+</PARA>
+<PARA>
+<FUNCTION>swbisparse</FUNCTION>
+writes an implementation defined format to stdout.
+The format indicates the keyword type, (O)bject,
+(A)ttribute, or, (E)xtended, and, containment level.  Newlines in multi-line values
+are translated to '\\n' and output on a single line. <SBR>
+</PARA>
+<PARA>
+When decoding a package file, <REPLACEABLE>package_file</REPLACEABLE>, 
+<FUNCTION>swbisparse</FUNCTION> emits a format that includes the length (in
+bytes) of the attribute value.  The format consists of ASCII data.
+Binary data in the input will cause an error.
+
+</PARA>
+
+<PARA>
+<PROGRAMLISTING>
+For Example, the following PSF file: 
+
+ distribution
+ layout_version 1.0
+ product
+ description "This is a
+ multi line value"
+ tag p1
+ fileset
+ tag p2
+ file
+ path /etc/passwd
+
+is translated to:
+
+ F00 PSF:
+ O01 distribution
+ A02  layout_version 1.0
+ O02  product
+ A03   description "This is a\\nmulti line value"
+ A03   tag p1
+ O03   fileset
+ A04    tag p2
+ O04    file
+ A05     path /etc/passwd
+</PROGRAMLISTING>
+
+</PARA>
+<REFSECT2 ID="R1 sw_parse">
+<TITLE>
+Hewlett-Packard SD-UX Compatibility
+</TITLE>
+<PARA>
+This parser does not use nor require the <FUNCTION>end</FUNCTION> keyword to terminate objects as
+is commonly the practice for PSF files written for Hewlett-Packard's SD-UX equipped systems.  The <FUNCTION>end</FUNCTION> 
+keyword can appear in PSF, INDEX and INFO files, however, it will merely be scanned and the
+token discarded.  Another incompatibility is based on this parser's termination of an object definition
+by the first extended keyword.  This restriction may not
+exist in the SD-UX grammar because the object is bracketed by the nesting of <FUNCTION>end</FUNCTION> keywords and
+not by the existence of the first object or extended keyword.
+</PARA>
+</REFSECT2>
+</REFSECT1>
+
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+OPTIONS
+</TITLE>
+
+<PARA>
+<OPTION>--info</OPTION>
+<OPTION>-o</OPTION>
+    Parse an INFO file.
+</PARA>
+
+<PARA>
+<OPTION>--installed</OPTION>
+    Parse the installed software catalog file INSTALLED.
+</PARA>
+
+<PARA>
+<OPTION>--psf</OPTION>
+<OPTION>-p</OPTION>
+    Parse a PSF file.
+</PARA>
+
+<PARA>
+<OPTION>--index</OPTION>
+<OPTION>-i</OPTION>
+    Parse an INDEX file.
+</PARA>
+
+<PARA>
+<OPTION>-b</OPTION>
+    Beautify by indention and emit a file
+<GLOSSLIST><GLOSSLIST>
+semantically identical to
+the input file.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-n</OPTION>
+    Emit format that is marked up with the 
+<GLOSSLIST><GLOSSLIST>
+value's lengths in bytes. 
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-l</OPTION> <REPLACEABLE>level</REPLACEABLE>
+    Set initial containment level
+<GLOSSLIST><GLOSSLIST>
+to <REPLACEABLE>level</REPLACEABLE>.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+
+
+</REFSECT1>
+
+
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+Conforming to POSIX.7.2, however, A stand-alone parser 
+utility by this (or any) name is not specified in ISO/IEC 15068-2:1999
+</PARA>
+</REFSECT1>
+
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+sw(5)
+</PARA>
+</REFSECT1>
+
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<PARA>
+<VERB>
+ Author: Jim Lowe 
+ Version: 0.481
+ Last Updated 2006-02-15
+ Copying: GNU Free Documentation License v1.1
+</VERB>
+</PARA>
+</REFSECT1>
+
+
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+This program is mainly a testing and development tool.
+</PARA>
+<PARA>
+Requirements for inclusion (exclusion) of certain keywords in (from) the 
+parsed output is not enforced.  Quoted trailing whitespace in the attribute
+value is discarded.
+</PARA>
+</REFSECT1>
+</REFENTRY>

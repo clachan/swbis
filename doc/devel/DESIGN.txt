@@ -1,0 +1,127 @@
+ DESIGN.txt
+
+       some what dated.  -- Jan 2003
+ 
+
+PACKAGE TRANSLATION DESIGN:
+---------------------------
+
+   (stdin)  ,-----------------, (stdout)    (stdin) ,-----------------------,  (stdout)
+            |                 |                     |                       |
+    rpm --->| ./swsupplib/\   |                     |   swpackage program   |
+   dpkg --->|  progs/lxpsf    |>--|----------------->                       |-----> Posix package
+            |   program       |   `-> tar archive   |    using -w           |
+            |                 |      layout:        |                       |
+            |                 |        <path>/      '-----------------------'
+ 'any  ---->|                 |        <path>/PSF   
+ format'    '-----------------'        <path>/<distribution_files>...
+
+
+
+OVERALL SYSTEM DESIGN:
+---------------------- 
+
+                        Install/Query
+                   ,-----------------------------------------,
+                   |    (Modified) Competing Utilities       |
+                   |                                         |
+                   |                                         |
+                   |    rpm'    dpkg'   "any format"         |
+                   |       \     |     /                     |
+                   |        \    |    /                      |
+                   |         '---+---+                       |
+                    '------------|\--------------------------'
+                                 | \  
+                                 |  \                                  package creation 
+                                 |   |                   ,----------->                        package install
+                                 ^   ^                  /                                ,--> 
+                                 |   |             via swpackage                     via swinstall
+                                 |   |                /                                /
+                          swheader  fd  ,-------------+--------------------------------+---------,
+                                 |   | |             |   POSIX.7.2 Utilities/Methods  |          |   
+                                 |   | |           write                           install       |  
+                                 ^   ^ |             ^                                ^          |  
+            ,-----------------,  |   | |       ------|---------                -------|--------, | 
+    rpm --->|                 |  |   | |       |   Array of   |               |   Array of     |<+--<-----.
+   dpkg --->|    MetaData     |>-+---|---->    | "swMetaData" |<------------->|   "swStruct"   | |         `
+            |   Translator    |      | |       |   objects    |  translation  |   objects      | |         |
+ POSIX-7.2->|                 |>-fd--+---->    ----------------       |        ----------------' |         |
+            |                 |        |      Physical Structure  <--------> Logical Structure   |         |
+ 'any  ---->|                 |         '--------------------------------------------------------'         ^
+ format'    '-----------------'                                                                            |
+		  /\/\                                                                                     ^
+           "An implementation defined                                                                      |
+            format consisting of the                                                                       |
+            ascii text `swheader' and                                                                      |
+            a file descriptor for the                                                                  To: swpackage
+            remaining archive"                                                                             |
+                                                                                                           |
+                                                                                                           |
+                                                                                                           |
+   (stdin)  ,-----------------, (stdout)                                                                   ^
+            | TRANSLATOR /    |                                                                            |
+            | NOMALIZER       |                                                                            |
+            |                 |                                                                            |
+    rpm --->| ./swsupplib/\   |                                                                          - OR -
+            |  progs/lxpsf    |>--|-------------------------------------->--------------------------->-----'----<---  PSF file 
+   dpkg --->|   program       |   `-> tar archive                                                                    and files in file system.
+            |                 |      layout:      
+            |                 |        <path>/    
+ 'any  ---->|                 |        <path>/PSF   
+ format'    '-----------------'        <path>/<distribution_files>...
+
+
+
+
+
+        Implemetation Notes for developers:
+        -----------------------------------
+
+             1) All code that must be linked with a utility (rpm, dpkg, et.al.)
+                will be 'C', not 'C++'.  C++ may be used for the `sw' utilities 
+		and as a wrapper for 'C' implementation objects.
+
+             2) Concerning the MetaData Translator 'swheader' Format:
+
+                The format produced by the 'MetaData Translator' looks similar to
+                the output of sw_parse program.  To produce an example,  run:
+                          swprogs/sw_parse --psf -n  < 'any_psf_file'
+                        or 
+                          swsupplib/progs/lxpsf -p <'any_rpm' | swprogs/sw_parse --psf -n
+                
+		o It is ascii text.
+                
+		o Multi line entries are translated to a single line.
+
+                o ./swsupplib/misc/swheader.c
+                        -will iterate and search this output.
+
+                The `sw' utilities operate on a C++ collection of objects.  These objects
+                refer to lines of text in this output format.  This collection is generated in
+                swstructlib/src/swstruct/swscollection.cxx: swsCollection::do_expand(void); and
+                iterated by swstructlib/misc/switer.cxx:
+                         swIter::switer_get_nextline(void * this_obj, int * current_offset);
+                
+                The code in swsupplib/misc/swheader.c can operate on either the output 
+                of the `swdecode' module or a C++ collection.  If operating on C++ 
+                collection, a function from swstructlib/src/misc/switer.cxx is attached 
+                to the `swheader' object and used as an iterator with the same semantics 
+                as the non-C++ iterator.
+ 
+                 
+            3)  A package is created by writing a PSF file and invoking swpackage.
+                Try:
+                         swsupplib/progs/lxpsf <any_rpm.rpm | cpio -itv
+
+                If this archive were installed in the file system, any swpackage(1)
+                would be able to produce a valid package.  This implementation may create
+                a extra-standard capability (invoked by use of a special option) to use 
+                this archive stream as source in a (apparent) serial fashion via a pipe.
+
+            4)  The installed_catalog_database is outside the scope of IEEE-1387.2.  Each
+                utility may have their own way of doing this.  This issue (as on June 1999) has
+                not been addressed.
+ 
+ C++ Class Diagrams For POSIX Utilities:  (see CLASSES.fig,  this file may be out of date.)
+ -------------------------------------
+end of file

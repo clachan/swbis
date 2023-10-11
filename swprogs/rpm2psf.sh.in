@@ -1,0 +1,42 @@
+#!/bin/sh
+
+help() {
+		echo  -e -n "\
+	Usage: rpm2psf [rpmfile]\n\
+	\n\
+	Read an rpm package file and write the PSF file on stdout\n\
+	Identification: rpm2psf  -- Date: 2003-05-20\n\
+	rpm2psf is part of the swbis project and depends on the lxpsf\n\
+	libexec program usually found in /usr/libexec/swbis/.\n\
+	" | sed -e 's/^[[:space:]]//'
+}
+SWBISLIBEXECDIR="/@SWBISLIBEXECDIR@/"
+
+
+#LXPSF=`PATH=/bin:/usr/bin:/usr/libexec/swbis:/usr/local/libexec/swbis; which lxpsf`
+LXPSF="${SWBISLIBEXECDIR}/swbis/lxpsf"
+
+if [ -z "$LXPSF" ]; then
+	echo "$0: Missing lxpsf" 1>&2
+	exit 2
+fi
+
+TEMP=`getopt -o HV --long help,version \
+     -n 'rpm2psf' -- "$@"`
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
+
+while true ; do
+	case "$1" in
+		-V|--version) echo "rpm2psf version 0.1"; exit 0; shift ;;
+		-H|--help) help; exit 0; shift ;;
+		--) shift ; break ;;
+		*) echo "Internal error!" ; exit 1 ;;
+	esac
+done
+
+"$LXPSF" -p "$@"
+exit $?

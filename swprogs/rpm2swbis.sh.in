@@ -1,0 +1,119 @@
+#!/bin/sh
+# rpm2swbis  -- Run swpackage with special options to convert an RPM.
+# Copyright (C) 2003  Jim Lowe
+#
+# COPYING TERMS AND CONDITIONS:
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+cmdusage() {
+	echo "Usage : rpm2swbis [options] [rpmfile|-]"
+}
+
+usage() {
+	echo "Convert an RPM to IEEE 1387.2 layout version 1.0 in tar format."
+	echo "Usage : rpm2swbis [options] [rpmfile|-]"
+	echo "     --help show this help to stdout."
+	echo "	Options correspond to the Extension options of swpackage." 
+	echo "	--files" 
+	echo "	--list-psf"
+	echo "	--archive-digests"
+	echo "	--with-checksig  (Not implemented.)"
+	echo "	--digests"
+	echo "	--sign"
+	echo "	--homedir=home"
+	echo "	--local-user=name"
+	echo "	--dir=dir"
+	echo "Date: 2003-03-14.  Copying Terms: GNU GPL."
+	echo "Identification: rpm2swbis: An extension program of swbis."
+}
+
+
+# ++++++++++++ Main starts here ++++++++++++++
+#
+# ++++++++++++++++++++++++++++++++++++++++++++
+SWBISLIBEXECDIR="/@SWBISLIBEXECDIR@/"
+
+#ARF2ARF=`PATH=/bin:/usr/bin:/usr/libexec/swbis:/usr/local/libexec/swbis; which arf2arf`
+ARF2ARF="${SWBISLIBEXECDIR}/swbis/arf2arf"
+SWPACKAGE=`which swpackage`
+
+if [ -z "$SWPACKAGE" -o -z "$ARF2ARF" ]; then
+	echo "Missing utilities arf2arf or swpackage" 1>&2
+	echo "swpackage = [$SWPACKAGE]" 1>&2
+	echo "arf2arf = [$ARF2ARF]" 1>&2
+	exit 2
+fi
+
+
+opt_files="-Wnoop"
+opt_digests="-Wnoop"
+opt_sign="-Wnoop"
+opt_archive_digests="-Wnoop"
+opt_files="-Wnoop"
+opt_local_user="-Wnoop"
+opt_homedir="-Wnoop"
+opt_list_psf="-Wnoop"
+opt_dir="-Wnoop"
+
+getopt -T 1>/dev/null
+case "$?" in
+	4)
+		;;
+	*)
+		echo "This script requires enhanced getopt." 1>&2
+		exit 1
+		;;
+esac
+
+TEMP=`getopt -o ABCD:EFG:L:P:H --long files,list-psf,archive-digests,with-checksig:,digests,sign,homedir:,local-user:,dir:,help \
+     -n 'rpm2swbis' -- "$@"`
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
+
+while true ; do
+	case "$1" in
+		-A|--files) opt_files="-Wfiles" shift ;;
+		-B|--list-psf)  opt_list_psf="-Wlist-psf" shift ;;
+		-C|--archive-digests)  opt_archive_digests="-Warchive-digests" shift ;;
+		-D|--with-checksig) opt_checksig="x"; shift ; opt_checksig_file="$1"; shift;;
+		-E|--digests)  opt_digests="-Wdigests" shift ;;
+		-F|--sign)  opt_sign="-Wsign" shift ;;
+		-G|--homedir)  shift ; opt_homedir="-Whomedir=$1"; shift;;
+		-L|--local-user)  shift ; opt_local_user="-Wlocal-user=$1"; shift;;
+		-P|--dir)  shift ; opt_dir="-Wdir=$1"; shift;;
+		-H|--help) usage; exit 0; shift ;;
+		--) shift ; break ;;
+		*) echo "Internal error!" ; exit 1 ;;
+	esac
+done
+
+(
+if [ $# -ge 1 ]; then
+	cat "$1"
+else
+	cat
+fi
+) | "$SWPACKAGE" -W2posixformat \
+			"$opt_files" \
+			"$opt_digests" \
+			"$opt_sign" \
+			"$opt_archive_digests" \
+			"$opt_files" \
+			"$opt_local_user" \
+			"$opt_homedir" \
+			"$opt_list_psf" \
+			"$opt_dir"
+exit $?

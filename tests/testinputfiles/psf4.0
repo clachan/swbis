@@ -1,0 +1,84 @@
+ host
+  hostname localhost
+  os_name linux
+  distribution
+   vendor
+    tag FineSoft
+    title Fine Software Corporation
+    description " Fine Software Corporation
+1233 Technology way
+Sunset Bay, Ca. 90456
+1-800-555-1212"
+   bundle
+    tag POSIX-SM
+    revision 1.0
+    vendor_tag FineSoft
+    title POSIX 1387 System Management
+    contents POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+    contents POSIX-User,r=1.0
+   product
+    tag POSIX-Software
+    revision 2.0
+    vendor_tag FineSoft
+    number J2326AA
+    description </build/data/description
+    title POSIX 1387.2 Software Administration
+    copyright </build/data/copyright
+    machine_type 9000/[78]*
+    os_name HP-UX
+    os_release ?.09.*
+    os_version ?
+    directory /
+    subproduct
+     tag Manager
+     title management Utilities
+     contents commands agent man
+    subproduct
+     tag Agent
+     title target daemon and agent
+     contents agent man
+    fileset
+     tag commands
+     title Commands (management utilities)
+     prerequisites POSIX-Software.agent
+     configure scripts/configure.data
+     directory /build/usr/sbin /usr/bin
+     file
+      path /is/a/path
+      source /is/the/source/path
+     file swinstall
+     file swconfig
+     file swcopy
+     file
+      path /this/is/a/path
+      source /this/is/the/source/path
+     file swremove
+     file swverify
+     file
+      path /11this/is/a/path1
+      source /11this/is/the/source/path
+     file swpackage
+    fileset
+     tag agent
+     title Agent
+     configure /build/system/SD-AGENT/customize
+     unconfigure /build/system/SD-AGENT/decustomize
+     file /build/usr/sbin/swagentd /usr/sbin/swagentd
+     file /build/usr/lbin/swagent /usr/lbin/swagent
+    fileset
+     tag man
+     title Manual (man pages)
+     directory /build/usr/man/man8 /usr/man/man8
+     file swinstall.8
+     file swcopy.8
+     file swremove.8
+     file swlist.8
+     file swverify.8
+     file swlist.8
+     file swverify.8
+     file swconfig.8
+     file swpackage.8
+     file swagent.8
+     file swagentd.8
+     directory /build/usr/man/man4 /usr/man/man4
+     file swpackage.4

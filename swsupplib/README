@@ -1,0 +1,101 @@
+
+DIRECTORY CONTENTS:
+-------------------
+
+./dd :  (Not used)
+
+./ls_list: (in use)
+	Tar listing code taken from pax-3.0, only
+	used in swinstall preview mode.
+
+./cplob :  (In use)
+	(char*) pointer list object.
+
+./rpmbis : (not complete, though compiled)
+	A from-scratch implementation of RPM file writing.
+
+./uinfile :  (In use)
+	Opens, uncompresses and does initial ID and decode of serial archive packages.
+
+./strob :  (In use)
+	Memory controlled string object.
+
+./sw_parse :  (In use)
+	The parser for INFO PSF and INDEX and option files.
+
+./taru :  (In use)
+	tar, cpio reading/writing libraries.
+
+./uxfio :  (In use)
+	A buffered "Unix-API-Like" I/O object for read, write, lseek,
+	open, close, etc.
+
+./compression (In use)
+	contains the minilzo compression library which is used to
+	embed the ./shell_lib/shell_lib.sh file into a C file.
+
+./shell_lib (In use)
+	This contains a POSIX shell routine library and methods to
+	embbed and retrieve individual functions.
+
+./swi  (In use)
+	POSIX package decoding. Reads a posix package and
+	makes a collection of objects that represent the exported
+	catalog of the distribution.  Used by swinstall.
+
+./misc  (In use)
+	Most everything else, and some POSIX specific stuff.
+
+	misc/fnmatch_u.h
+	misc/md5.h
+	misc/misc-fnmatch.h
+	misc/misc-glob.h
+
+	misc/rpmfd.h		- RPM Compatibility interfaces.
+	misc/rpmar_rpmfile.h
+	misc/rpmfd_rh61.h
+	misc/rpmfd_rh62.h
+	misc/rpmfd_rh72.h
+	misc/rpmfd_rh80.h
+	misc/rpmpsf_rpmi2.5.5.h
+	misc/rpmpsf_rpmi4.0.2.h
+	misc/rpmpsf_rpmi4.0.3.h
+	misc/rpmpsf_rpmi4.1.h
+
+	These Files are completely general purpose
+
+	misc/shcmd.h		- Execute command pipelines without using system(1) (In use)
+	misc/strar.h		- String array object. (In use).
+	misc/swlib.c		- Misc. stuff. (In use).
+	misc/swgp.c		- More general purpose stuff including a 2-way async. byte pump.
+
+	These Files are releted to RPM-to-POSIX translation
+
+	misc/topsf.c		- More package-to-PSF helper objects.
+	misc/rpmpsf.h		- Convert RPM to a PSF. (In use)
+	misc/swacfl.h		- package-to-PSF conversion helper object. (In use).
+	
+	These Files have some specific ISO/IEC 15068-2 stuff.
+
+	misc/swattributes.h	- RPMTAG swbis attribute mappings. (not used).
+	misc/swheader.c		- PSF/INFO/INDEX Iteration and scanning interface. (In use).
+	misc/swheaderline.c	- Basic PSF/INFO/INDEX reading and writing routines. (In use).
+	misc/swheaderline1.c    - Obscure and debugging routines for accessing the parsed output
+	misc/swintl.c
+	misc/swpath.c		- Decode IEEE package pathname. (In use)
+	misc/swsdflt.c		- IEEE Keyword enumeration with their defaults (In use).
+	misc/swvarfs.c		- Open/search/read a serial archive or File system file. (In use).
+	misc/swverid.c		- IEEE version ID implementation. 
+	misc/swssh.c		- Routine to form and run a multi-hop ssh command.
+	misc/swdef.c            - Routines for writing attributes in INDEX/INFO form, and routines
+				  for scanning their parsed images (e.g. swbisparse --psf -n <PSF)
+	misc/swicat.c		- Write and read installed software catalog.
+	misc/swicol.c		- Shell script execution protocol, Monitors exit status, BEGIN, and END, etc.
+	misc/swutilname.c       - stores and sets the utility name.
+	misc/swsdflt.c          - Big array of POSIX attributes, their types and default settings
+	misc/swevents.c         - POSIX events
+	misc/swfdio.c           - static access object for fd's of STDOUT_FILENO, STDERR_FILENO STDIN_FILENO
+	misc/swutillib.c        - misc routines for sw<utilities>
+	misc/swextopt.c         - Parse options files, swdefaults and swbisdefaults
+
+-  Jim Lowe <jhlowe@acm.org>

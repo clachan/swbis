@@ -1,0 +1,13 @@
+#!/bin/sh
+
+	case $# in
+		0)
+			xx=test1
+			;;
+		*)
+			xx="$1"
+			;;
+	esac
+
+	# rm -f ./$xx ./$xx.o  && gcc -g -Wall  -c -I. -I.. -I../../include  $xx.c && gcc -g -Wall -o $xx  $xx.o  uxfio.o uxfioextra.o ../swsupplib.a -ldl
+	rm -f ./$xx ./$xx.o  && gcc -g -Wall  -c -I. -I.. -I../../include  $xx.c && gcc -g -Wall -o $xx  $xx.o  uxfio.o  ../swsupplib.a -ldl -lnsl -lz -ldb -lrt -lutil  

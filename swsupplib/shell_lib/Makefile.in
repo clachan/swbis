@@ -1,0 +1,107 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+# To turn compression on set to 1 or 0 for no compression
+COMPRESSION_VALUE=1
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+LIBOBJECTS = shlib.o
+LIB = shell_lib.a
+DO_DEBUG = @DO_DEBUG@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS =
+endif
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET) test_write
+
+everything: $(LIB)
+
+$(LIB): $(LIBOBJECTS) 
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS)
+
+test_write.o: test_write.c
+	$(CC) $(CFLAGS) -I../../include -c -o $*.o  $<
+
+gencfile.o: gencfile.c
+	$(CC) $(CFLAGS) -I../../include -c -o $*.o  $<
+	
+gencfile: gencfile.o
+	$(CC) $(LDFLAGS) $< ../strob/strob.o ../cplob/cplob.o ../compression/minilzo.o -o $@
+
+test_write: test_write.o $(LIB)
+	$(CC) $(LDFLAGS) $< ../strob/strob.o ../cplob/cplob.o ./shell_lib.a ../compression/minilzo.o -o $@
+
+shell_lib.c: gencfile shell_lib.sh
+	./gencfile --compression=$(COMPRESSION_VALUE) <shell_lib.sh >shell_lib.c
+
+shlib.o: shell_lib.c
+
+check: test_write $(LIB)
+	./test_write | diff - shell_lib.sh | egrep -v -e "^> $$" | egrep -v -e "^> #" | egrep -v -e "^0" | while read line; do exit 1; done
+	( MAKE=$(MAKE) sh ./test_isc_01.sh 1>/dev/null )
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+clean:
+	rm -f *.S *.a *.o *~ shell_lib.c gencfile test_write $(PROGS)
+	rm -f test_script.out test_script.error
+
+distclean: clean
+	rm -f .depend Makefile
+
+depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.c > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

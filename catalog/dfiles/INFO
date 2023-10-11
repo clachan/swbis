@@ -1,0 +1,72 @@
+control_file
+path INFO
+tag INFO
+size      954
+mtime 1688294248
+mode 644
+control_file
+path AUTHORS
+tag AUTHORS
+size     2044
+mtime 1245608313
+mode 644
+control_file
+path COPYING
+tag COPYING
+size    35068
+mtime 1205979184
+mode 644
+control_file
+path checkdigest
+tag checkdigest
+size    30327
+mtime 1541202775
+mode 755
+control_file
+path md5sum
+tag md5sum
+size       33
+mtime 1688294248
+mode 644
+control_file
+path sha1sum
+tag sha1sum
+size       41
+mtime 1688294248
+mode 644
+control_file
+path sha512sum
+tag sha512sum
+size      129
+mtime 1688294248
+mode 644
+control_file
+path adjunct_md5sum
+tag adjunct_md5sum
+size       33
+mtime 1688294248
+mode 644
+control_file
+path size
+tag size
+size        9
+mtime 1688294248
+mode 644
+control_file
+path files
+tag files
+size    54453
+mtime 1688294248
+mode 644
+control_file
+path sig_header
+tag sig_header
+size      512
+mtime 1688294248
+mode 644
+control_file
+path signature
+tag signature
+size     1024
+mtime 1688294248
+mode 644

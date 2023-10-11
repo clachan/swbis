@@ -1,0 +1,22 @@
+# Generated automatically from Makefile.inc.in by configure.
+topdir=/home/project/swsupplib/swsupplib-0.79
+CPP = gcc -E
+prefix= /usr
+exec_prefix = ${prefix}
+libdir= $(prefix)/lib
+
+AR = ar
+RANLIB = ranlib
+OPTS =  
+LIBRPMRC_FILENAME=
+LIBRPMALIAS_FILENAME=
+RPMNLSDIR=
+RPMNLSPACKAGE=
+CFLAGS = -g -O2  -I/usr/local/include $(WARNINGS) $(OPTS) -I$(topdir) \
+	-I$(topdir)/uxfio -I$(topdir)/tarb -I$(topdir)/taru -I$(topdir)/strob -I$(topdir)/misc -Wall -Wstrict-prototypes \
+	-DVERSION=\"$(VERSION)\"
+LDFLAGS =  -L$(topdir)/lib \
+		-L$(topdir)/tarb -L$(topdir)/misc -L$(topdir)/taru -L$(topdir)/uxfio -L$(topdir)/strob
+VERSION = 0.79
+CC = gcc
+

@@ -1,0 +1,590 @@
+SWBIS(7)	       Miscellaneous Information Manual		      SWBIS(7)
+
+
+
+NAME
+       swbis — Distributed Software Administration
+
+
+SYNOPSIS
+       swbis <sw_utility> [options] [software_selections] [@targets]
+       <sw_utility> [options] [software_selections] [@targets]
+
+DESCRIPTION
+       swbis is a network transparent software administration system for
+       GNU/Linux systems and systems that are UNIX system-like. It implements
+       the Open Group's CAE Spec C701 (XDSA) Distributed Software
+       Administration.	This spec closely follows ISO/IEC 15068-2:1999 (now
+       withdrawn) which was identical to IEEE 1387.2:1995.  The implementation
+       relies on POSIX functionality as provided by a typical GNU system.  It
+       has security enhancement extensions that use GNU Privacy Guard.
+       Although swpackage is a self-contained tar writing utility and
+       swinstall will use generic tar for file loading, several features are
+       based on bit-for-bit sameness with the GNU tar POSIX tar interchange
+       format, hence, GNU tar is a special tool requirement for swbis
+       (although for most uses of the system tar utility, only generic options
+       are specified).
+
+OPTIONS
+       The  selection@target syntax supports multiple selections and targets.
+       The same selection spec applies to all the targets.  A single
+       'Commercial at' '@' separates the two lists.  Software selections apply
+       within a single distribution tarball or within a single directory
+       representing installed  software.  Software selections don't specify a
+       source file.  The source file is specified by a separate option for
+       utilites that use the  target as a destination, and by the target if
+       the source is the destination.
+
+   Software Selections
+       Software Selections specify, by a software_spec, objects which to
+       operate.	 A software_spec consists of a period '.' delimited list of
+       tags followed by a comma and a comma delimited list of version
+       identifiers for revision, qualifier, vendor_tag, architecture,
+       location, denoted by the letters r,q,v,a,l.
+
+       The important tags of familiar repute are product.tag and
+       product.revision along with an optional product.vendor_tag.  These
+       correspond to RPMTAG_NAME, RPMTAG_VERSION, and RPMTAG_RELEASE
+       attributes.  These are specified in a software_selection by example
+       thusly:
+
+	  # Note: Quotes are needed to prevent command-line interpretation
+	  "*"			     # all packages
+	  r==3.1		     # Any package with revision 3.1
+	  somepackage		     # all packages named 'somepackage'
+	  somepackage,r">"2	     # and revision greater than 2
+	  somepackage,r">"2,r"<"3    # and revision greater than 2 and less than 3
+	  somepackage,r">"2,v=hal    # and by vendor 'hal'
+
+	Logical alternation or 'OR' is supported by using a second
+       software_spec on the command line. software_specs are separated by
+       whitespace.
+
+   Targets
+       Targets are hosts or files on a host.  The syntax follows the familiar
+       host:file convention but differs in that an unadorned name is a host
+       not a file.  To impose interpretation as a file prefix with a colon ':'
+       or use an absolute path (i.e. prefix with '/').
+
+       Source and Target Specification and Logic
+
+	    Synopsis:
+		 Posix:
+		      host[:path]
+		      host
+		      host:
+		      /path  # Absolute path
+
+		 Swbis Extension:
+		      [user@]host[:path]
+		      [user@]host_port[:path]
+		      :path
+
+		 Swbis Multi-hop Target Extension:
+		      # ':' is the target delimiter
+		   # '_' delimits a port number in the host field
+
+		      [user@]host[@@[user@]host[@@...]][:file]
+		      [user@]host_port[@@[user@]host[@@...]][:file]
+
+		      # Using ':', a trailing colon is used to
+		      # disambiguate between a host and file.
+		   # For Example,
+		      :file
+		      host:
+		      host
+		      host:file
+		      host:host:
+		      host_port:host_port:
+		      host:host:file
+		      user@host:user@host:
+		      user@host:user@host:host:
+		      user@host:user@host:file
+
+	    A more formal description:
+
+	    target : HOST_CHARACTER_STRING ':' PATHNAME_CHARACTER_STRING
+		   | HOST_CHARACTER_STRING ':'
+		   | HOST_CHARACTER_STRING
+		   | PATHNAME_CHARACTER_STRING
+		   | ':' PATHNAME_CHARACTER_STRING   # Impl extension
+		   ;
+
+	      PATHNAME_CHARACTER_STRING must be an absolute path unless
+			      a HOST_CHARACTER_STRING is given.	 Allowing
+			      a relative path is a feature of the swbis
+			      implementation.
+
+		       NOTE: A '.' as a target is an implementation
+			     extension and means extract in current
+			     directory.
+
+		       NOTE: A '-' indicating stdout/stdin is an
+			     implementation extension.
+
+		       NOTE: A ':' in the first character indicates a filename.
+			     This is an implementation extension.
+
+	      HOST_CHARACTER_STRING is an IP or hostname.
+
+	   Examples:
+	      Copy the	distribution /var/tmp/foo.tar.gz at 192.168.1.10
+		     swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+
+
+       Implementation Extension Syntax (multi ssh-hop) :
+	   Syntax:
+	   %start   wtarget    # the Implementation Extension Target
+			       # Note: a trailing ':' forces interpretation
+			       # as a host, not a file.
+	   wtarget   : wtarget DELIM sshtarget
+		     | sshtarget
+		     | sshtarget DELIM
+		     ;
+	   sshtarget : user '@' target # Note: only the last target
+		     | target	       # may have a PATHNAME, and only a host
+		     ;		       * may have a user
+	   target   : HOST_CHARACTER_STRING
+		    | PATHNAME_CHARACTER_STRING
+		    ;
+	   user	    : PORTABLE_CHARACTER_STRING	 # The user name
+
+	   DELIM    : ':'   # The multi-hop delimiter.
+		    ;
+
+EXAMPLES
+       Unpack a tarball on host1 and host2:
+
+	  swcopy -s :somepackage-1.0.tar.gz --extract @ host1 host2
+
+       List installed entries matching the software selections:
+
+	  swlist somepackage,"r>2" @ host1:/ host2:/
+	  swlist "kde*" @ 192.168.2.2
+
+       List the architectures of the specified hosts:
+
+	  swlist -x verbose=3 -a architecture @ localhost 192.168.2.2 host1 host2
+
+       Install a package from stdin to a location, l=/unionfs/foo-1.0, and a
+       "exp" qualification:
+
+	   swinstall q=exp,l=/unionfs/foo-1.0 @ 192.168.2.2
+
+       Remove a package named somepackage
+
+	   swremove somepackage @ 192.168.2.2:/
+
+       Make a tarball according to the recipe file myPSF:
+
+	   swpackage -s myPSF @- | tar tvf -
+
+COMMANDS OVERVIEW
+   POSIX Commands
+       Utilities specified by C701 and ISO/IEC 15068-2:1999 include the
+       following:
+
+	  ·  swpackage(8)
+
+		 Create a tarball according to a recipe file.
+
+	  ·  swcopy(8)
+
+		 Copy a distribution from host to host.
+
+	  ·  swverify(8)
+
+		 Verify a software distribution signature.
+
+	  ·  swinstall(8)
+
+		 Install a software distribution.
+
+	  ·  swlist(8)
+
+		 List software information.
+
+	  ·  swremove(8)
+
+		 Remove packages
+
+   Swbis Specific Commands
+       Utilities unique to swbis.
+
+	  ·  swign(1)
+
+		 Create the signed meta-data directory, catalog/, of the
+		 contents of the current directory and optionally write the
+		 entire directory, including the signed catalog as a tar
+		 archive.
+
+	  ·  <libexecdir>/swbis/swbistar
+
+		 Archive writing (creation) utility, useful for testing.
+
+	  ·  <libexecdir>/swbis/swbisparse
+
+		 Stand-alone parser of POSIX Metadata files, useful for
+		 testing.
+
+	  ·  <libexecdir>/swbis/arf2arf
+
+		 Archive decoder/checker, Used by swverify.
+
+	  ·  <libexecdir>/swbis/lxpsf
+
+		 Archive translator, used by swpackage to translate RPM
+		 packages.
+
+RUNTIME CONFIGURATION
+   Configuration Files
+       All of the utilities share the same configuration files: swdefaults and
+       swbisdefaults.  The files are sourced on the local management host and
+       ignored (if present) on the remote target host. Below are commands that
+       give information about them.  All the utilities support these options
+       and the defaults are separate for each utility, swcopy is shown as an
+       example.
+
+	swcopy --show-options-files  # Show locations of existing files to stdout
+	swcopy --show-options	  # Show options with a shell assignment syntax
+	swcopy --no-defaults --show-options  # Show builtin defaults
+
+       The syntax is:
+
+	# Comment
+	# Here optionName applies to all utilities
+	# the whitespace around the '=' is optional
+	optionName = value # Comment
+
+	# In addition a option can be applied to a specific utility
+	# overriding the general one and the built-in default
+	swutilityName.optionName = value
+
+   Strategy for Compatibility with Existing Hosts
+       The most important utiltities on which swbis relies is a POSIX shell,
+       the system /bin/sh, and the system tar utility, usually /bin/tar.  The
+       POSIX shell need not be /bin/sh.
+
+       The POSIX shell must have specific compliance to POSIX described the
+       POSIX sh(1) manual page (IEEE Std 1003.1, 2004 Edition, Section STDIN)
+       regarding its use of stdin when it invokes a command that also uses
+       stdin.  GNU Bash, public-domain ksh (pdksh), OpenSolaris
+       /usr/xpg4/bin/sh,  ATT ksh (latest version such as 93t+ 2010-03-05)
+       have this feature.  Other shells including ash, dash, and /bin/sh on
+       BSD, UNIX(tm), BusyBox systems do not.
+
+       Therefore, the most reliable and least intrusive strategy is use the
+       auto-detection option.  If a host does not contain bash or a suitable
+       ksh or sh the distributed utility will fail.
+
+       swbis_no_getconf		      = true # true or false, false=use getconf
+       swbis_shell_command	      = detect # {detect|sh|bash|posix|ksh}
+
+	Alternatively, simply make /bin/bash a requirement on all hosts and
+       set
+
+       swbis_no_getconf		      = true # true or false, false=use getconf
+       swbis_shell_command	      = bash # {detect|sh|bash|posix|ksh}
+
+       NOTE: The shell requirement does not apply to the user's account shell
+       (specified in /etc/passwd), although there are reasons this shell
+       should be a Bourne compatible shell.  See Acount Login Shell below
+
+       Regarding tar, it is used for file loading (installation) and also
+       during verfication of installed software (as a means to copy and
+       inspect the installed files state).  For installation, any tar will
+       work as no non-traditional options are specified.
+
+       The configuration options, in swbisdefaults allow some flexibilty here
+
+       swbis_local_pax_write_command  = tar  # {pax|tar|star|gtar}
+       swbis_remote_pax_write_command = tar  # {pax|tar|star|gtar}
+       swbis_local_pax_read_command   = tar  # {pax|tar|star|gtar}
+       swbis_remote_pax_read_command  = tar  # {pax|tar|star|gtar}
+
+       swverify.swbis_local_pax_write_command	= detect # {pax|tar|star|gtar}
+       swverify.swbis_remote_pax_write_command	= detect # {pax|tar|star|gtar}
+       swlist.swbis_local_pax_write_command   =	  detect  # {pax|tar|star|gtar}
+       swlist.swbis_remote_pax_write_command  =	  detect  # {pax|tar|star|gtar}
+
+       This allows keeping and using the system '/bin/tar', and only using GNU
+       tar or pax for verification and listing.
+
+       Other important options are:
+
+       swcopy.swbis_allow_rpm	    = true  # Enable automatic translation
+       swinstall.swbis_allow_rpm    = true  # Enable automatic translation
+       swcopy.swbis_no_audit	    = true  # Copy as arbitrary data, true or false
+       swbis_remote_shell_client    = ssh   # {ssh|rsh}
+       swbis_forward_agent	    = true  # Set ssh -A for multi-hop (>1) jumps
+
+
+
+	Here is a incomplete explanation of each option
+
+	  ·  Extended Option: swbis_local_pax_read_command
+	     Extended Option: swbis_remote_pax_read_command
+
+		 If installing on a system, any tar will work.	GNU tar is
+		 required when using swign to create a signed archive or
+		 directory.  If pax is selected as the archive read command
+		 (for installing), errors will be returned if the installation
+		 is not by a root user (or if not root, if the package
+		 contained files with different ownerships than the current
+		 user).
+
+       swbis_local_pax_read_command = tar #{pax|tar|gtar}
+       swbis_remote_pax_read_command= tar #{pax|tar|gtar}
+
+	  ·  Extended Option: swbis_local_pax_write_command
+	     Extended Option: swbis_remote_pax_write_command
+
+		 swcopy and swinstall may use the system tar (which may not be
+		 GNU tar or pax).  swpackage is self-contained and does not
+		 use any file system tar-like utility.	swign does not read
+		 the options files and assumes and requires that tar is GNU
+		 tar.  swlist and swverify requires either GNU tar or pax and
+		 can be set to detect a suitable tar or pax.
+
+       swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+       swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+       swverify.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+       swverify.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+       swbis_local_pax_write_command = tar #{pax|tar|gtar}
+       swbis_remote_pax_write_command= tar #{pax|tar|gtar}
+
+	  ·  Extended Option: swbis_shell_command
+
+		 This may be one of detect, bash, ksh, sh, or posix.  detect
+		 is the best choice.  ksh must be public domain ksh or ATT
+		 ksh93 (version 2009-05-05 or newer). Older versions of ksh93
+		 do not have the required POSIX feature.
+
+	  ·  Account Login Shell
+
+		 The login shell may be any shell, however, if a host will
+		 ever be a intermediate host in a multi-hop target, then it
+		 should be a Bourne compatible or POSIX conforming shell.
+		 This requirement is due to the escapement and processing of
+		 shell special characters which are performed by the login
+		 shell of the intermediate host account.
+
+	  ·  Extended Option: swbis_forward_agent
+
+		 The default value is True.  This sets the -A in the ssh
+		 client for multi-hop targets.	There are security
+		 considerations when forwarding the authentication agent.
+
+HOST REQUIREMENTS
+       The swbis distributed utilties have no special requirements and will
+       operate on any full-size OpenSolaris, BSD or GNU/Linux host.  You may
+       immediately and remotely distribute and manage packages on these hosts
+       with nothing more than a login account and a ssh connection.  Below are
+       the technical details.  The configuration file options to allow this
+       are the built-in defaults,  certain values in historic versions of the
+       defaults file, swbisdefaults, may break this functionality.
+
+       The swbis distributed utilities require bash, public domain ksh, or
+       Sun's /usr/xpg4/bin/sh to be present on the target host.	 If the
+       swbis_shell_command extended option is set to 'detect' you don't have
+       to know which one is present, otherwise you may specify one explicitly.
+
+       swbis_shell_command=detect #{posix|sh|bash|ksh|detect}
+
+       Tar or pax is used for file loading (installation) and internally for
+       data transfer.  You may specify which one.  swlist and swverify require
+       either GNU tar or pax be present on a host.  You may set auto detection
+       for this requirement.  As of release 1.12 (c.August 2014), all
+       invocations of the system tar utility for archive creation use the
+       '--format=pax' option of GNU tar.  A test is made for GNU tar and
+       generic options are used if no suitable version of GNU tar is present
+       allowing generic tar to work.
+
+
+       swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+       swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+       swverify.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+       swverify.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+       swinstall.swbis_local_pax_write_command = tar #{pax|tar|gtar}
+       swinstall.swbis_remote_pax_write_command= tar #{pax|tar|gtar}
+       swinstall.swbis_local_pax_read_command  = tar #{pax|tar|gtar}
+       swinstall.swbis_remote_pax_read_command = tar #{pax|tar|gtar}
+
+       A POSIX awk is required, and with the ability to specify several
+       thousand bytes of program text as a command argument.  GNU awk  works,
+       as does the ATT Awk book awk, and the awk on BSD systems.  See the
+       INSTALL file for further details regarding a small issue with the
+       OpenSolaris (c.2006) awk.
+
+       GNU Privacy Guard, gpg is required for verification and	signing.  Use
+       of the passphrase agent gpg-agent is supported so as to avoid telling
+       swpackage your passphrase.  When swverify uses gpg, a FIFO  is
+       constructed and deleted.	 /dev/null and /dev/zero are required.
+       Verification takes place on the management host. It would not be used
+       on the (remote) target host.
+
+       For verifying package tarballs, only swverify and gpg is required.  For
+       verifying the unpacked tarball (i.e. as a signed directory) GNU	tar,
+       awk,  sha1sum,  md5sum  (or  openssl)  and  various other utilities are
+       required.
+
+       When a host is participating in remote connections via ssh/rsh, either
+       as the terminal target host or intermediate host, the login shell for
+       the user must be a Bourne compatible shell, for example /bin/sh.	 Most
+       traditional Bourne shell's are acceptable as /bin/sh, one notable
+       exception is /bin/ash when operating on the terminal host (due to its
+       read block size).  However, /bin/dash, BSD /bin/sh, and Sun's /bin/sh
+       are all acceptable.  Note that /bin/sh need not be the system POSIX
+       shell.
+
+       As stated above, a POSIX shell is required and the only suitable
+       implementations (as of Sep 2010) are /bin/bash, /bin/ksh (Public Domain
+       or ksh93 v.2009-05-05 or newer), Sun's /usr/xpg4/bin/sh, and MirBSD
+       Korn Shell (/bin/mksh) all assumed to be in these locations.
+
+DISCUSSION
+   Background
+       The spec describes a format for storing package meta-data in a software
+       distribution and a set of utilities.  The meta-data is stored in-band
+       for format level compatibility.	The meta-data is separated by
+       placement in a specially named directory, catalog/.  The spec goes
+       further and describes how multiple products, for example a distribution
+       archive containing products for multiple architectures, can be placed
+       in a separate control directories within the distribution archive.
+       This is supported along with an extension to allow these directories to
+       be nil collapsing the layout into the familiar form of a free software
+       tarball or run-time distribution directly installable by tar.  When the
+       collapsed form is used, the in-band catalog/ directory is next to (in
+       the same directory as) the payload files hence "catalog" becomes a
+       reserved word for package files.
+
+       While the swbis system has features comparable with package managers,
+       it has features that are of general purpose usefulness to system
+       administrators and developers.  These include host-to-host copying of
+       file system directories, advanced tarball creation methods, backward
+       compatibility with uses of plain tarballs, and the capability to act as
+       a directory content integrity checker, and the ability to translate and
+       install RPM format packages.
+
+   Distributed Software Administration
+       The XDSA spec describes a syntax for distributed operations, but does
+       not specify any implementation approach to the problem of remote
+       command invocation.  The approach taken by swbis is to require nothing
+       that is not already present on all POSIX systems. To that end, swbis
+       uses rsh (or ssh) for remote connections and uses bash (A POSIX shell)
+       for command processing specifically using the 'bash -s' invocation for
+       all operations.	Using bash in this manner casts all swbis utilties as
+       programs that dynamically write and deliver shell program code to the
+       remote 'bash -s' through its standard input, which can be a secure ssh
+       channel.	 This eliminates the requirement that swbis be installed on
+       the remote target host.
+
+   A Directory Content Checker
+       The swign program creates the catalog/ directory which is, in effect, a
+       GPG signed manifest of the directory.  GNU tar is then used to recreate
+       the signed and digest  byte  streams  from the directory contents which
+       are never removed nor altered (except for the creation of catalog/). It
+       is able to do so because swpackage, which generated the original byte
+       streams,	 matches GNU tar's output bit-for-bit. For example:
+
+	  swign	 -D /usr/local/bin/checkdigest.sh  -o "" -g ""	-u  "Test User" @.
+	  swverify --order-catalog -d @.
+		 # If your file system is Ext2, then --order-catalog
+		 # is not required.
+
+       The  checkdigest.sh is a distributor specific shell script that is run
+       by swverify if it is present and part of the signed  stream.
+       checkdigest.sh then checks the archive MD5 and SHA1.  If this fails, it
+       checks the individual files'  MD5 and SHA1 digests.  [In current
+       versions of checkdigest,	 the ownerships and permissions are not
+       checked individually, as swign was originally intended as a source
+       directory/archive signer tool.]
+
+       Use as a SCM (e.g. CVS, svn. etc) security tool easily follows by
+       making catalog/ a tracked directory in the SCM.	The catalog directory
+       is updated using the swign command.
+
+	    export SWPACKAGEPASSFD
+	    SWPACKAGEPASSFD=agent
+	    export GNUPGNAME
+	    GNUPGNAME="Your Name"
+	    swign --name-version=somepackage-1.1 -s PSF.in --no-remove @.
+
+	See the swign manual page for an example PSF.in file.
+
+   Package Security
+       As implementation extensions, swbis supports creation and verification
+       of tar archives with embedded digital signatures, and cryptographic
+       digests of the archive (payload) and individual files.  The design
+       supports multiple signatures (each signing an identical byte stream)
+       and offers full package life-cycle relevance, that is, the signature
+       and the signed bytes are transferred into the installed catalog.
+
+   Extensibility
+       The distribution form is extensible at the format and layout levels.
+       Additional distributor specific attributes (i.e. keywords) are allowed
+       in the meta-data files, and distributor specific control files are
+       allowed in the meta-data directory file layout.	The security files are
+       implemented as control files.  This allows adding new stronger
+       cryptograpic digests in the file layout while preserving back
+       compatibility.  The format, POSIX tar, is extensible by adoption of the
+       Extended Header Format specified in later POSIX revisions.
+
+   Support for Unprivileged Users
+       Support for unprivileged users is treated as a requirement.  swpackage
+       does not use a central repository and makes no copies of the source
+       files.  The utilities support alternate target paths and all activity
+       is confined within the target path.  swinstall supports the location
+       attribute which locates the installed files in target path but uses the
+       installed software catalog at the un-located target path.  Access to
+       the installed software catalog can be controlled via the catalog
+       directory sticky bit per local administrative policy.
+
+COPYING
+       Swbis is a copyrighted work.  Non-copyright holders may use and make
+       copies under the terms of the GNU GPL
+
+PRONUNCIATION
+       Swbis is a concatenation of the command name prefix 'sw' with the
+       Italian suffix 'bis' meaning again, or one more time.
+
+	   Pronunciation: /es dub-u bis/
+			 sw - bis
+	    POSIX packaging - Play it again, One more time
+
+APPLICABLE STANDARDS
+       IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999),
+       Open Group CAE C701,
+       http://www.opengroup.org/publications/catalog/c701.htm
+
+SEE ALSO
+	info swbis
+	sw(5), swpackage(8), swbisparse(1), swign(1), swverify(8), swcopy(8)
+	swbis(1), swconfig(8), swlist(8), swremove(8)
+	.../libexec/swbis/lxpsf
+	.../libexec/swbis/arf2arf
+	.../libexec/swbis/swbisparse
+	.../libexec/swbis/swbistar
+       http://www.gnu.org/software/swbis/sourcesign-1.2/gendocs/manual/index.html
+
+
+
+FILES
+       /var/lib/swbis/catalog/	# The installed software catalog
+       catalog/	 # The package meta-data directory
+       swdefaults     # Options configuration file
+       swbisdefaults  # Options configuration file
+
+IDENTIFICATION
+	swbis(7)
+	Author: Jim Lowe   Email: jhlowe at acm.org
+	Version: 1.13.1
+	Last Updated: 2008-04-18
+	Copying: GNU Free Documentation License
+
+BUGS
+       Not everything is implemented yet.
+
+
+
+								      SWBIS(7)

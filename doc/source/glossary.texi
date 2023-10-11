@@ -1,0 +1,49 @@
+@c Copyright (C) 2004, 2006 Jim Lowe
+@c This is part of the swbis manual.
+@c For copying conditions, see the file gcc.texi.
+
+@node Glossary
+@unnumbered Glossary
+
+(This section is currently under construction).
+
+@table @asis
+
+@item Distribution
+This refers to the package in either a directory form (unpacked) or
+a serial archive form (e.g. a compressed tarball).  A distribution
+is always in the form of the POSIX software packaging layout.
+
+@item Exported Catalog Structure
+This refers to the first portion of the distribution, the portion
+of the distribution that is contained in the @file{catalog} directory.
+
+@item File Storage Structure
+This refers to the second portion of the distribution, the portion
+that is not the catalog portion but follows it.  The control directory
+names for products and filesets are repeated from the Exported Catalog Structure
+and serve to segregate and annotate the files that make up the fileset.
+
+@item Installed Software
+This refers abstractly to installed software files and installed software catalog.
+
+@item Installed Software Catalog
+This refers to the catalog of installed software.  The form
+of this catalog is not specified by the standard.
+
+@item software_spec
+A software_spec follows a specific syntax of dot separated tags
+optionally followed by a comma (,) and then a comma separated list of
+version identifiers.
+
+@item Software Selection
+A software selection has the form of a software_spec.
+A Software Selection appears before the '@@' and the targets
+on the command lines.
+
+@item Target
+A target specifies a host and file name on the host.  The GNU implementation
+also supports a syntax to specify a user name on the host.  A list of one or more
+targets is given after a single '@@' and are the the last arguments on the command line.
+
+@end table

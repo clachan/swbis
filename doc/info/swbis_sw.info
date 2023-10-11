@@ -1,0 +1,1809 @@
+This is info/swbis_sw.info, produced by makeinfo version 4.13 from
+stdin.
+
+\.  \\!%PB \\!/showpage{}def \\!/tempdict 200 dict def tempdict begin
+\\!end % tempdict % \\!PE \\!.  '	br \} '	br \} '	br \} '	br \}
+
+
+File: swbis_sw.info,  Node: Top,  Next: NAME,  Up: (dir)
+
+1 sw" "5
+********
+
+* Menu:
+
+* NAME::
+* SYNOPSIS::
+* SOFTWARE PACKAGING LAYOUT::
+* SOFTWARE DEFINITIONS::
+* SOFTWARE SELECTIONS::
+* DEPENDENCY SPECS::
+* EXTENDED DEFINITIONS::
+* DISTRIBUTOR KEYWORDS::
+* PACKAGE SECURITY::
+* SOFTWARE DEFINITION FILES::
+* EXAMPLE PACKAGE::
+* SWBIS PSF CONVENTIONS::
+* APPLICABLE STANDARDS::
+* SEE ALSO::
+* IDENTIFICATION::
+* BUGS::
+
+
+File: swbis_sw.info,  Node: NAME,  Next: SYNOPSIS,  Prev: Top,  Up: Top
+
+1.1 NAME
+========
+
+sw -- POSIX Software Packaging
+
+
+File: swbis_sw.info,  Node: SYNOPSIS,  Next: SOFTWARE PACKAGING LAYOUT,  Prev: NAME,  Up: Top
+
+1.2 SYNOPSIS
+============
+
+     Software Packaging Layout
+     Software Definitions
+     Software Selections
+     Extended Definitions
+     Distributor Keywords
+     Package Security
+     Software Definition Files: INFO, INDEX, PSF
+     Example Package
+
+
+File: swbis_sw.info,  Node: SOFTWARE PACKAGING LAYOUT,  Next: SOFTWARE DEFINITIONS,  Prev: SYNOPSIS,  Up: Top
+
+1.3 SOFTWARE PACKAGING LAYOUT
+=============================
+
+A package may exist in two forms: as a directory in a file system, or a
+serial access tar or cpio archive file.  A package consists of two main
+sections: 1) the exported catalog structure, and, 2) the software file
+storage structure.  Each section may contain path name components which
+serve to segregate distribution, product and fileset objects.
+
+Shown below is an example with one (1) product and one (1) fileset.
+
+
+      <path>/
+      <path>/catalog/
+      <path>/catalog/INDEX
+      <path>/catalog/<dfiles>
+      <path>/catalog/<dfiles>/...
+      <path>/catalog/<prod_dir>/
+      <path>/catalog/<prod_dir>/<pfiles>/INFO
+      <path>/catalog/<prod_dir>/<pfiles>/...
+      <path>/catalog/<prod_dir>/<fileset_dir>/
+      <path>/catalog/<prod_dir>/<fileset_dir>/INFO
+      <path>/catalog/<prod_dir>/<fileset_dir>/...
+      <path>/catalog/<prod_dir>/<fileset_dir>/<script>
+      <path>/<prod_dir>/
+      <path>/<prod_dir>/<fileset_dir>/
+      <path>/<prod_dir>/<fileset_dir>/<distribution_files>
+      <path>/<prod_dir>/<fileset_dir>/<distribution_files>/...
+
+The exported catalog structure consists of the files with pathnames
+
+that begin <path>/catalog.  Note that catalog is not a legal prod_dir
+name. Also, "dfiles", and "pfiles" should not be used as control
+directory names, they are the default names for the Distribution and
+Product files directories.  The dfiles and pfiles defaults are commonly
+accepted.
+
+The order of files in a serial access archive is specified and shown
+above.  The order of products and filesets within a product is not
+specified, although they must be grouped together.  Notably, the INDEX
+file is the first regular file in the package, followed by the <dfiles>
+directory.  For each product, the <prod_dir> is followed immediately by
+the <prod_dir>/<pfiles> directory.
+
+* Menu:
+
+* Minimal Package Layout::
+* Distribution Files::
+* Product Files::
+* Fileset Files::
+* Control Directory Names::
+* File Storage::
+
+
+File: swbis_sw.info,  Node: Minimal Package Layout,  Next: Distribution Files,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.1 Minimal Package Layout
+----------------------------
+
+To support extant usage of tar archives, this implementation supports a
+minimal package layout.  The layout is non-intrusive to the current
+practice of extracting a 'binary' package in the '/' directory where
+<path>/ is nil and, likewise to 'source' packages where <path> is
+typically the package name and version.  The use of nil control
+directories is not attested to in the POSIX standard.
+
+
+      <path>/
+      <path>/catalog/
+      <path>/catalog/INDEX
+      <path>/catalog/dfiles/
+      <path>/catalog/dfiles/INFO
+      <path>/catalog/dfiles/...
+      <path>/catalog/pfiles/INFO
+      <path>/catalog/pfiles/...
+      <path>/catalog/INFO
+      <path>/<distribution_files>/...
+
+In this layout a single product and fileset have control_directory
+attributes specified as an empty string.
+
+
+File: swbis_sw.info,  Node: Distribution Files,  Next: Product Files,  Prev: Minimal Package Layout,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.2 Distribution Files
+------------------------
+
+     catalog/<dfiles>/...
+
+<dfiles> is the value of the dfiles attribute and the default value is
+"dfiles".  This directory can store an INDEX file or INFO file
+pertaining to the distribution.  It can also store an attribute of the
+distribution as a separate file where file name is the name of the
+attribute and the file contents the value.
+
+
+File: swbis_sw.info,  Node: Product Files,  Next: Fileset Files,  Prev: Distribution Files,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.3 Product Files
+-------------------
+
+     catalog/<prod_dir>/<pfiles>/...
+
+<pfiles> is the value of the pfiles attribute and the default value is
+"pfiles".  This directory can store an INFO file pertaining to the
+product control_files,  control scripts defined in the INFO file, and
+all other distributor-defined control_files.  It can also store an
+attribute of the product as a separate file.
+
+
+File: swbis_sw.info,  Node: Fileset Files,  Next: Control Directory Names,  Prev: Product Files,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.4 Fileset Files
+-------------------
+
+     catalog/<prod_dir>/<fileset_dir>/...
+
+This directory contains information in the same form as does the
+Product Files although pertaining to the fileset.
+
+
+File: swbis_sw.info,  Node: Control Directory Names,  Next: File Storage,  Prev: Fileset Files,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.5 Control Directory Names
+-----------------------------
+
+The <prod_dir>/<fileset_dir> names are the values of the
+control_directory attribute for the product and fileset respectively.
+The default value is the value of the tag attribute.  <prod_dir> must
+be unique within a distribution and <fileset_dir> must be unique within
+a product.
+
+
+File: swbis_sw.info,  Node: File Storage,  Prev: Control Directory Names,  Up: SOFTWARE PACKAGING LAYOUT
+
+1.3.6 File Storage
+------------------
+
+     <prod_dir>/<fileset_dir>/<distribution_files>/...
+
+The listing of control directories in the exported catalog structure is
+repeated and files of the distribution appear under these directories
+in a location determined by the metadata.
+
+The standard does not require that files that are not regular files
+appear in the storage section.
+
+
+File: swbis_sw.info,  Node: SOFTWARE DEFINITIONS,  Next: SOFTWARE SELECTIONS,  Prev: SOFTWARE PACKAGING LAYOUT,  Up: Top
+
+1.4 SOFTWARE DEFINITIONS
+========================
+
+The Software Definitions are metadata representations of the objects
+and attributes recognized by the standard.  The right hand column in
+each definition shows the default attribute value.  The defining
+standard for each attribute is indicated as a comment (leading '#'
+sign) if it is not IEEE-1387.2,  other defining standards are XDSA C701
+(C701), and, this implementation (impl.).
+
+* Menu:
+
+* Host Definition::
+* Distribution Definition::
+* Installed_software Definition::
+* Media Definition::
+* Vendor Definition::
+* Bundle Definition::
+* Product Definition::
+* Category Definition::
+* Subroduct Definition::
+* Fileset Definition::
+* File Definition::
+* Control File Definition::
+
+
+File: swbis_sw.info,  Node: Host Definition,  Next: Distribution Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.1 Host Definition
+---------------------
+
+      host
+        hostname     hostname       None
+        os_name      os_name        None
+        os_release   os_release     None
+        os_version   os_version     None
+        machine_type machine_type   None
+
+The host definition was attested to only in the informative annex of
+the standard.  An implementation may chose to define this class.
+
+A host object can contain a distribution, or installed_software object.
+
+
+File: swbis_sw.info,  Node: Distribution Definition,  Next: Installed_software Definition,  Prev: Host Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.2 Distribution Definition
+-----------------------------
+
+      distribution
+        layout_version layout_version  1.0
+        path           path            Implementation Defined
+        dfiles         dfiles          dfiles
+        pfiles         pfiles          pfiles
+        uuid           uuid            Empty string
+
+The path attribute is not in a PSF nor INDEX files.  A PSF does not
+contain a uuid attribute.  An INDEX file will contain a layout_version
+attribute as the first attribute.
+
+A distribution object can contain bundles, products, and, media in the
+form of software definitions.
+
+The following attributes are recognized as valuable by the Informative
+Annex of POSIX.7.2.
+
+        tag                tag                Empty string
+        title              title              Empty string
+        description        description        Empty string
+        revision           revision           Empty string
+        media_type         media_type         Empty string
+        copyright          copyright          Empty string
+        create_time        create_time        Empty string
+        number             number             Empty string
+        architecture       architecture       Empty string
+
+The following attributes are recognized by this implementation.
+
+
+
+        signature          < pathname  None   # impl.
+        sig_header   < pathname  None   # impl.
+        sha1sum            < pathname  None   # impl.
+        sha512sum           < pathname  None   # impl.
+        md5sum             < pathname  None   # impl.
+        adjunct_md5sum     < pathname  None   # impl.
+        files              < pathname    None  # impl.
+        control_directory  control_directory      Empty string   # impl.
+        owner              name                           root   # impl.
+        group              name                           root   # impl.
+        mode               mode                           0755    # impl.
+        signer_pgm         utility_name                   GPG    # impl.
+        signer_pgm_version version                        1    # impl.
+        tar_format_emulation_options program_options          # impl.
+        tar_format_emulation_utility software spec            # impl.
+
+The url attribute is the universal record locator of the packager
+qualified vendor.  The control_directory attribute in the distribution
+object appears as the <path> leading directory path in the a serial
+archive package.  The owner, group, and mode attributes control the
+file attributes of the single path name prefix.  The signature,
+sig_header, md5sum, and adjunct_md5sum attributes are described below
+and are stored as separate files in the dfiles directory. The
+tar_format_emulation_* options define the GNU tar version and format
+options that the archive file mimics, these attributes are used by the
+'checkdigest' script.
+
+
+File: swbis_sw.info,  Node: Installed_software Definition,  Next: Media Definition,  Prev: Distribution Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.3 Installed_software Definition
+-----------------------------------
+
+      installed_software
+        layout_version layout_version  1.0
+        path           path            Implementation Defined
+        dfiles         dfiles          dfiles
+        pfiles         pfiles          dfiles
+        catalog        catalog         Undefined
+        install_time   install_time    Undefined       # impl.
+
+A software object can be listed (written to stdout) in the form of an
+INDEX file by the swlist utility.
+
+
+File: swbis_sw.info,  Node: Media Definition,  Next: Vendor Definition,  Prev: Installed_software Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.4 Media Definition
+----------------------
+
+      media
+
+
+        sequence_number sequence_number  1
+
+An INDEX file must contain the sequence_number attribute if the
+distribution spans multiple media.
+
+
+File: swbis_sw.info,  Node: Vendor Definition,  Next: Bundle Definition,  Prev: Media Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.5 Vendor Definition
+-----------------------
+
+      vendor
+        the_term_vendor_is_misleading  true                  True or False  #impl
+        tag         tag           Empty string
+        title       title         Empty string
+        description description   Empty string
+        qualifier   qualifier     Empty string  # impl.
+        url         url           Empty string  # impl.
+        vendor_tag  tag           Empty string  # impl.
+
+The tag attribute is required.  The the_term_vendor_is_misleading is
+required in a PSF file to avert a (harmless) warning, please use it.
+It exists to allow persons, for example, who are distributors (of
+existing free software) to qualify themselves away from the connotations
+of a "vendor" which has specific meaning not applicable to a free
+software distributor.  A INDEX and PSF files can contain vendor
+definitions.  The vendor_tag attribute contains the vendor.tag of the
+upstream distributor.  The qualifier attribute value may be one of:
+seller, author, packager, maintainer.  A distribution may have more
+than one vendor definition.  They may form a chain of references from
+the product.vendor_tag to the last vendor referred to by the
+vendor.vendor_tag attributes.
+
+
+File: swbis_sw.info,  Node: Bundle Definition,  Next: Product Definition,  Prev: Vendor Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.6 Bundle Definition
+-----------------------
+
+      bundle
+        tag          tag    architecture architecture    Empty string
+        location     location        <bundle.directory>
+        qualifier    qualifier       Empty string
+        revision     revision        Empty string
+        vendor_tag   vendor_tag      Empty string
+        create_time  create_time     None
+        description  description     Empty string
+        contents     contents        Empty string
+        copyright    copyright       Empty string
+        directory    directory       Empty string
+        instance_id  instance_id     1
+        is_locatable is_locatable    true
+        layout_version layoyt_version  1.0
+        machine_type machine_type    Empty string
+        mod_time     mod_time        Empty string
+        number       number          Empty string
+        os_name      os_name         Empty string
+        os_release   os_release      Empty string
+        os_version   os_version      Empty string
+        size         size            Empty string
+        title        title           Empty string
+        category_tag category_tag    Empty list or patch  # C701
+        is_patch     is_patch        false                # C701
+
+The tag and contents attributes are required in INDEX and PSF files.
+The size attribute is not allowed in either file. The value of size is
+generated dynamically.  An INDEX file will contain a instance_id
+attribute.  Bundle definitions for distributions will not contain
+either the location or qualifier, installed_software objects may
+contain these attributes.
+
+
+File: swbis_sw.info,  Node: Product Definition,  Next: Category Definition,  Prev: Bundle Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.7 Product Definition
+------------------------
+
+      product
+        tag               tag               None
+        architecture      architecture      Empty string
+        location          location          <product.directory>
+        qualifier         qualifier         Empty string
+        revision          revision          Empty string
+        vendor_tag        vendor_tag        Empty string
+        all_filesets      all_filesets      Empty list
+        control_directory control_directory <product.tag>
+        copyright         copyright         Empty string
+        create_time       create_time       None
+        directory         directory         /
+        description       description       Empty string
+        instance_id       instance_id       1
+        is_locatable      is_locatable      true
+        postkernel        postkernel        Implemen. defined
+        layout_version    layout_version    1.0
+        machine_type      machine_type      Empty string
+        number            number            Empty string
+        os_name           os_name           Empty string
+        os_release        os_release        Empty string
+        os_version        os_version        Empty string
+        mod_time          mod_time          None
+        size              size              None
+        title             title             title
+        category_tag      category_tag      Empty list # C701
+        is_patch          is_patch          false      # C701
+        copyrighters      copyrighters      None       # impl.
+        build_root        build_root        None       # impl.
+        build_host        build_host        None       # impl.
+        source_package    source_package    None       # impl.
+        source_rpm        source_rpm        None       # impl.
+        all_patches       all_patches       None       # impl.
+        url               url               None       # impl.
+        rpm_provides      rpm_provides      None       # impl.
+        change_log        change_log        None       # impl.
+
+The tag and control_directory attributes are required.  The size
+attribute is not allowed in either file. The value of size is generated
+dynamically.  An INDEX file will contain a instance_id attribute.  A
+product object can contain control_files, files, and, subproducts in
+the form of software definitions.
+
+The product.vendor_tag refers to the downstream distributor.  This
+value is be the analogous to the RPMTAG_RELEASE or debian_release
+attributes.  The original upstream author's package, for example, would
+not use this attribute because that package would not have a release
+part in its name, but could (or should) provide a vendor object in the
+PSF.
+
+The architecture attribute contains an implementation defined name
+describing the architecture.  This attribute may be a pattern.  The
+swbis implementation uses the output of GNU config.guess
+(timestamp=2007-01-15) as the string to be matched by this pattern.
+
+
+File: swbis_sw.info,  Node: Category Definition,  Next: Subroduct Definition,  Prev: Product Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.8 Category Definition
+-------------------------
+
+      category
+        tag           tag            None             # C701
+        title         title          Empty string     # C701
+        description   description    Empty string     # C701
+        revision      revision       Empty string     # C701
+
+The Category definition describes attributes of products and bundles
+related
+
+to its category. If is_patch is "true" then category.tag must equal
+"patch".
+
+
+File: swbis_sw.info,  Node: Subroduct Definition,  Next: Fileset Definition,  Prev: Category Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.9 Subroduct Definition
+--------------------------
+
+      subproduct
+        tag           tag            None
+        create_time   create_time    None
+        description   description    Empty string
+        mod_time      mod_time       None
+        size          size           None
+        title         title          Empty string
+        contents      contents       Empty list
+        category_tag  category_tag   Empty list   # C701
+        is_patch      is_patch       false        # C701
+
+The tag and contents attributes are required.
+
+
+File: swbis_sw.info,  Node: Fileset Definition,  Next: File Definition,  Prev: Subroduct Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.10 Fileset Definition
+-------------------------
+
+      fileset
+        tag               tag               None
+        create_time       create_time       None
+        mod_time          mod_time          None
+        control_directory control_directory <fileset.tag>
+        corequisites      corequisites      Empty list
+        description       description       Empty string
+        exrequisites      exrequisites      Empty list
+        is_kernel         is_kernel         false
+        is_locatable      is_locatable      true
+        is_reboot         is_reboot         false
+        location          location          <product.directory>
+        media_sequence_number media_sequence_number 1
+        prerequisites     prerequisites     Empty list
+        revision          revision          None
+        size              size              None
+        state             state             None
+        title             title             Empty string
+        is_sparse         is_sparse        "false"        # C701
+        is_patch          is_patch         "false"        # C701
+        category_tag      category_tag      empty list    # C701
+        ancestor          ancestor          <product.tag>,ver_id # C701
+        applied_patches   applied_patches   empty list    # C701
+        patch_state       patch_state       applied or,   # C701
+                                                committed or,
+                                                  superseded, (no default).
+        saved_files_directory  saved_files_directory None # C701
+        supersedes       supersedes          None         # C701
+        superseded_by    superseded_by       None         # C701
+
+The tag and control_directory attributes are required.  A PSF should
+not contain the location, media_sequence_number, size, or state
+attributes.  A fileset object can contain control_files, files, in the
+form of software definitions.
+
+
+File: swbis_sw.info,  Node: File Definition,  Next: Control File Definition,  Prev: Fileset Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.11 File Definition
+----------------------
+
+      file
+        path               path               None
+        cksum             cksum             None
+        compressed_cksum  compressed_cksum  None
+        compressed_size    compressed_size    None
+        compression_state  compression_state  uncompressed
+        compression_type   compression_type   Empty string
+        revision           revision           Empty string
+        size               size               None
+        source             source             None
+        gid                gid                Undefined
+        group              group              Empty string
+        is_volatile        is_volatile        false
+        link_source        link_source        None
+        major              major              None
+        minor              minor              None
+        mode               mode               None
+        mtime              mtime              None
+        owner              owner              Empty string
+        type               type               f
+        uid                uid                undefined
+        archive_path    archive_path    empty string    # C701
+        md5sum          md5sum      empty string    # impl.
+        sha1sum         sha1sum      empty string    # impl.
+        sha512sum       sha512sum      empty string    # impl.
+        rdev            rdev            empty string    # impl.
+        rpm_fileflags   rpm_fileflags   empty string    # impl.
+
+A PSF must contain source attribute.  A source  attribute in an INFO
+will be ignored.  A PSF should not contain the cksum, compressed_cksum,
+compressed_size, compression_state, compression_type, or size
+attributes.
+
+
+File: swbis_sw.info,  Node: Control File Definition,  Prev: File Definition,  Up: SOFTWARE DEFINITIONS
+
+1.4.12 Control File Definition
+------------------------------
+
+      control_file
+        tag                tag                None
+        cksum             cksum             None
+        compressed_cksum  compressed_cksum  None
+        compressed_size    compressed_size    None
+        compression_state  compression_state  uncompressed
+        compression_type   compression_type   Empty string
+        revision           revision           Empty string
+        size               size               None
+        source             source             None
+        path               path               None
+        interpreter        interpreter        sh
+        result             result             none
+
+A control_file defines a control script such as those listed below (see
+Extended Control File Definitions) or an attribute stored as a file.
+
+
+File: swbis_sw.info,  Node: SOFTWARE SELECTIONS,  Next: DEPENDENCY SPECS,  Prev: SOFTWARE DEFINITIONS,  Up: Top
+
+1.5 SOFTWARE SELECTIONS
+=======================
+
+The Software Selections provide a means to specify and select (possibly
+with a shell matching pattern) specific Software objects.  A selection
+is made
+
+using a software spec.  A software spec may not contain white space (a
+list of multiple selections is white space delimited).  A software spec
+consists of tag values and  version_ids.  Multiple tags are '.' (dot)
+delimited with the leftmost specifying the broadest (most general)
+software object such as a bundle or product and the rightmost being
+most specific (The swbis implementation does not support fileset tags
+in a software spec). The tags may be followed by nothing, or a comma
+and one or more Version Identifiers which are ',' comma delimited.
+
+Dependency Specs are software specs.
+
+* Menu:
+
+* Version Identifiers::
+* Example Software Specs::
+
+
+File: swbis_sw.info,  Node: Version Identifiers,  Next: Example Software Specs,  Up: SOFTWARE SELECTIONS
+
+1.5.1 Version Identifiers
+-------------------------
+
+Version Identifiers specify specific attributes of a software object.
+There are five (5) specified. They are signified by a single letter:
+r,a,v,l,q.  An implementation may support additional ones and may
+support qualification to a specific object type by prefixing a 'p' or
+'b' or 'f' for bundle, product, or fileset respectively.  The value of
+the attribute follows an equals sign '=', or in the case of a revision
+id, a relational operator.
+
+      Letter     Attribute
+        r    revision   r\<relop\>revsion
+                                  # A relop may be ==,\<,\>,\<=,\>=
+        v    vendor_tag    v=vendor_tag
+        q    qualifier     q=qualifier
+        l    location      l=location
+        a    architecture  a=arch
+
+Implementation Extension Version Ids are the following:
+
+      Letter     Attribute
+
+
+        i    catalog_instance_id   i=number
+
+The catalog instance_id is a directory in the installed software
+catalog that distinguishes installed instances of packages with the same
+name and revision but at different locations.
+
+
+File: swbis_sw.info,  Node: Example Software Specs,  Prev: Version Identifiers,  Up: SOFTWARE SELECTIONS
+
+1.5.2 Example Software Specs
+----------------------------
+
+         emacs,r==21.2
+         kde.kdegames # This assumes that 'kde' was specified as the bundle
+                      # in the kdegames package
+         foobar,r\>1.0,v=tycoon003
+         somepackage,r\>1.0,r\<=1.3  # revision is the product revision by default
+         somepackage,pr\>1.0,pr\<=1.3  # explicitly specify revision is the product revision
+
+
+File: swbis_sw.info,  Node: DEPENDENCY SPECS,  Next: EXTENDED DEFINITIONS,  Prev: SOFTWARE SELECTIONS,  Up: Top
+
+1.6 DEPENDENCY SPECS
+====================
+
+A dependency spec is a software spec.  There are three types:
+prerequisites, exrequisites, corequisites.  These attributes apply to
+the fileset and are placed in the fileset object in a PSF file.  A
+prerequisites is something that must be installed, and a exrequisites
+is something that must not be installed.  A corequisites is something
+that must be installed with, corequisites are not supported at this
+time.  prerequisites map to RPMTAG_REQUIRENAME, RPMTAG_REQUIREVERSION,
+and RPMTAG_REQUIREFLAGS attributes.
+
+* Menu:
+
+* Dependency Spec Examples::
+
+
+File: swbis_sw.info,  Node: Dependency Spec Examples,  Up: DEPENDENCY SPECS
+
+1.6.1 Dependency Spec Examples
+------------------------------
+
+        # Alternation  Require a package named foo1 or foo2
+        prerequisite   foo1|foo2
+
+        # Require a package named foo1 and foo2
+        prerequisite   foo1 foo2
+
+        # multiple prerequisite keywords can be used
+        prerequisite  foo1
+        prerequisite  foo2
+
+        # Require a revision range and a certain vendor_tag
+        prerequisite  foo1,r>2,r<3,v=mydist*
+
+
+File: swbis_sw.info,  Node: EXTENDED DEFINITIONS,  Next: DISTRIBUTOR KEYWORDS,  Prev: DEPENDENCY SPECS,  Up: Top
+
+1.7 EXTENDED DEFINITIONS
+========================
+
+A Product Specification File (PSF) can contain Extended Definitions in
+the
+
+fileset, product or bundle software definitions.  They would have the
+same level or containment relationship as a file or control_file
+definition in the same contaning object.
+
+Extended Definitions represent a minimal, expressive form for
+specifying files and file attributes.  Their use in a PSF is optional
+in that an equivalent PSF can be constructed without using them,
+however, their use is encouraged for the sake of brevity and
+orthogonality.
+
+The swbis implementation requires that no [ordinary] attributes appear
+after Extended Definitions in the containing object, and, requires that
+Extended Definitions appear before logically contained objects.  That
+is, the parser uses the next object keyword to syntacticly and
+logically terminate the current object even if the current object has
+logically contained objects.
+
+* Menu:
+
+* o Extended Control File Definitions::
+* o Directory Mapping::
+* o Recursive File Definition::
+* o Explicit File Definition::
+* o Default Permission Definition::
+* o Excluding Files::
+* o Including Files::
+
+
+File: swbis_sw.info,  Node: o Extended Control File Definitions,  Next: o Directory Mapping,  Up: EXTENDED DEFINITIONS
+
+1.7.1 o  Extended Control File Definitions
+------------------------------------------
+
+
+          checkinstall  source  [path]
+          preinstall    source  [path]
+          postinstall   source  [path]
+          verify        source  [path]
+          fix           source  [path]
+          checkremove   source  [path]
+          preremove     source  [path]
+          postremove    source  [path]
+          configure     source  [path]
+          unconfigure   source  [path]
+          request       source  [path]
+          unpreinstall  source  [path]
+          unpostinstall source  [path]
+          space         source  [path]
+          control_file  source  [path]
+
+The source attribute defines the location in distributors's development
+system where the swpackage utility will find the script.  The keyword
+is the value of the tag attribute and tells the utilities when to
+execute the script.  The path attribute is optional and specifies the
+file name in the packages distribution relative to the
+control_directory for software containing the script. If not given the
+tag value is used as the filename.
+
+
+File: swbis_sw.info,  Node: o Directory Mapping,  Next: o Recursive File Definition,  Prev: o Extended Control File Definitions,  Up: EXTENDED DEFINITIONS
+
+1.7.2 o  Directory Mapping
+--------------------------
+
+
+        directory  source  [destination]
+
+Applies the source attribute as the directory under which the
+subsequently listed files are located.  If destination is defined it
+will be used as a prefix to the path (implied) file definition.  source
+is typically a temporary or build location and dest is its unrealized
+absolute pathname destination.
+
+
+File: swbis_sw.info,  Node: o Recursive File Definition,  Next: o Explicit File Definition,  Prev: o Directory Mapping,  Up: EXTENDED DEFINITIONS
+
+1.7.3 o  Recursive File Definition
+----------------------------------
+
+
+       file *
+
+Specifies every file in current source directory.
+
+The directory extended definition must be used before the recursive
+specification.
+
+
+File: swbis_sw.info,  Node: o Explicit File Definition,  Next: o Default Permission Definition,  Prev: o Recursive File Definition,  Up: EXTENDED DEFINITIONS
+
+1.7.4 o  Explicit File Definition
+---------------------------------
+
+
+       file [-t type] [-m mode] [-o owner[,uid]] [-g group[,gid]] [-n] [-v] source [path]
+
+source
+
+     source defines the pathname of the file to be used as the source
+     of file data and/or attributes.  If it is a relative path, then
+     swpackage searches for this file relative to the the source
+     argument of the directory keyword, if set.  If directory keyword
+     is not set then the search is relative to the current working
+     directory of the swpackage utility's invocation.
+
+     All attributes for the destination file are taken from the source
+     file, unless a file_permissions keyword is active, or the -m, -o,
+     or -g options are also included in the file specification.
+
+
+path
+
+     path defines the destination path where the file will be created
+     or installed.  If it is a relative path, then the destination path
+     of the of the directory keyword must be active and will be used as
+     the path prefix.  If path is not specified then source is used as
+     the value of path and directory mapping applied (if active).
+
+
+-t type
+
+     type may one of 'd' (directory), or  'h' (hard link), or 's'
+     (symbolic link).
+
+     -t d  Create a directory.  If path is not specified source is used
+     as the path attribute.
+
+     -t h  Create a hard link.  path and source are specified.  source
+     is used as the value of the link_source attribute, and path is the
+     value of the path attribute.
+
+     -t s  Create a symbolic link.  path and source are specified.
+     source is used as the value of the link_source attribute, and path
+     is the value of the path attribute.
+
+
+-m mode
+
+     mode defines the octal mode for the file.
+
+
+
+File: swbis_sw.info,  Node: o Default Permission Definition,  Next: o Excluding Files,  Prev: o Explicit File Definition,  Up: EXTENDED DEFINITIONS
+
+1.7.5 o  Default Permission Definition
+--------------------------------------
+
+
+       file_permissions [-m mode] [-u umask] [-o [owner[,]][uid]] [-g [group[,]][gid]]
+
+Applies to subsequently listed file definitions in a fileset.  These
+attributes will apply where the file attributes were not specified
+explicitly in a file definition.
+
+Subsequent file_permissions definitions simply replace previous
+definitions (resetting all the options).
+
+To reset the file_permission state (i.e. turn it off) use one of the
+following:     file_permissions "" 	or the preferred way is
+file_permissions -u 000
+
+
+File: swbis_sw.info,  Node: o Excluding Files,  Next: o Including Files,  Prev: o Default Permission Definition,  Up: EXTENDED DEFINITIONS
+
+1.7.6 o  Excluding Files
+------------------------
+
+
+        exclude source
+
+Excludes a previously included file or an entire directory.
+
+
+File: swbis_sw.info,  Node: o Including Files,  Prev: o Excluding Files,  Up: EXTENDED DEFINITIONS
+
+1.7.7 o  Including Files
+------------------------
+
+
+
+
+        include <filename
+
+The contents of filename may be more definitions for files.  The syntax
+of the included file is PSF syntax.
+
+
+File: swbis_sw.info,  Node: DISTRIBUTOR KEYWORDS,  Next: PACKAGE SECURITY,  Prev: EXTENDED DEFINITIONS,  Up: Top
+
+1.8 DISTRIBUTOR KEYWORDS
+========================
+
+A software definition file (INFO, INDEX or psf) may contain keywords
+not recognized by the standard.  Such keywords will be parsed as an
+attribute keyword, that is as an attribute of the containing object
+(keyword) software definition.
+
+
+File: swbis_sw.info,  Node: PACKAGE SECURITY,  Next: SOFTWARE DEFINITION FILES,  Prev: DISTRIBUTOR KEYWORDS,  Up: Top
+
+1.9 PACKAGE SECURITY
+====================
+
+The Package Security Attributes are distribution attributes stored as
+separate files.  They are implementation extensions.  They consist of
+archive digests, catalog signature, catalog signature header, and
+individual file md5, sha1, and sha512 digests.
+
+* Menu:
+
+* Archive Digests::
+* Adjunct Md5 Digest::
+* Catalog Signature Header::
+* Catalog Signature::
+* File Digests::
+
+
+File: swbis_sw.info,  Node: Archive Digests,  Next: Adjunct Md5 Digest,  Up: PACKAGE SECURITY
+
+1.9.1 Archive Digests
+---------------------
+
+md5sum, sha1sum, and sha512sum are the md5 and sha1 and sha512 digests
+(ascii representations) of the leading package directories that do not
+have the catalog pathname component followed by the software file
+storage structure portion of the uncompressed serial access package
+file including all archive format trailer blocks.
+
+            <path>/catalog/<dfiles>/md5sum
+            <path>/catalog/<dfiles>/sha1sum
+            <path>/catalog/<dfiles>/sha512sum
+
+
+File: swbis_sw.info,  Node: Adjunct Md5 Digest,  Next: Catalog Signature Header,  Prev: Archive Digests,  Up: PACKAGE SECURITY
+
+1.9.2 Adjunct Md5 Digest
+------------------------
+
+adjunct_md5sum is the same as the md5sum excluding symbolic links.  If
+a package does not contain symbolic links the md5sum and adjunct_md5sum
+will be identical.
+
+            <path>/catalog/<dfiles>/adjunct_md5sum
+
+Explanation: This attribute is called 'adjunct' because it is a digest
+of a subset of the files in the package.  It exists to facilitate
+verifying file integrity of the directory form of a package in an
+environment where the modification time of symbolic link files are not
+preserved from the serial archive by the tar utility or operating
+system.
+
+The ability to verify even the adjunct_md5sum from the directory form
+of the package is dependent on the tar creating utility and other
+attributes of a POSIX.2 environment.
+
+
+File: swbis_sw.info,  Node: Catalog Signature Header,  Next: Catalog Signature,  Prev: Adjunct Md5 Digest,  Up: PACKAGE SECURITY
+
+1.9.3 Catalog Signature Header
+------------------------------
+
+The sig_header file is a ustar header that is identical bit-for-bit to
+the ustar header of the signature file.  It always precedes the
+signature file archive members.
+
+            <path>/catalog/<dfiles>/sig_header
+
+The sig_header protects the tar header of the signature files from
+tampering.  This is required because neither the signature file bytes
+nor the signature tar header are included in the signed data.
+
+
+File: swbis_sw.info,  Node: Catalog Signature,  Next: File Digests,  Prev: Catalog Signature Header,  Up: PACKAGE SECURITY
+
+1.9.4 Catalog Signature
+-----------------------
+
+The signature protects the metadata section of the archive.  The
+contents of payload section are only included in the form of a
+crytographic digest.  The sha1 digest is preferred over the md5 digest
+for technical reasons.  If the metadata section does not contain the
+payload section digests then there is no way to verify the payload from
+the signature.
+
+            <path>/catalog/<dfiles>/signature
+
+The signed data is the exported catalog structure of the uncompressed
+serial archive package file up to but not including the first byte of
+the software file storage structure followed by two (2) 512 byte null
+blocks if tar format, and no trailer bytes if not tar format.  The
+signature file archive member itself is not included in the signed
+stream, it is intended that the <path>/catalog/<dfiles>/md5sum file is
+included in the signed stream.
+
+The signature file is ASCII armored.  The last printable character of
+the signature is followed by one or more newline characters (0x0A).
+The total length of the file must match the file size specified in the
+size field of the sig_header file.  The ustar header of every signature
+archive member shall be identical to the sig_header file.  The padded
+size is predetermined [by swpackage] and currently set to be 1024
+octets.  This means the armored sig file has a length limitation of
+1023 octets.
+
+If multiple signature archive members exist they must follow one
+another in the archive with no other intervening files; and, the same
+sig_header file is the ustar header for all the signature archive
+members.  A signature archive member, whether alone or one of many, is
+never part of the signed data stream.
+
+
+File: swbis_sw.info,  Node: File Digests,  Prev: Catalog Signature,  Up: PACKAGE SECURITY
+
+1.9.5 File Digests
+------------------
+
+File digests are attributes of the file software definition. They
+appear in the INFO file.         file.cksum        file.md5sum
+file.sha1sum        file.sha512sum
+
+Each file can have none or all of these digests.
+
+
+File: swbis_sw.info,  Node: SOFTWARE DEFINITION FILES,  Next: EXAMPLE PACKAGE,  Prev: PACKAGE SECURITY,  Up: Top
+
+1.10 SOFTWARE DEFINITION FILES
+==============================
+
+The metadata files, INDEX, INFO and PSF, contain information about the
+software in the form of software definitions.  The INDEX and INFO files
+appear in a package directory structure.  They are automatically
+generated by the 'swpackage' command.  The location in the directory
+structure indicates the higher level object to which their data
+pertains.  The PSF file does not appear in the package.  It is created
+by a person or program and it directs the action of the swpackage
+utility.  It is internal data unless released by the distributor.
+
+The files contain keywords (and values) to represent the attributes
+defined in the standard.  There are three (3) different keyword types:
+object, attribute, and, extended. The object keyword type has no value
+and there are eleven (11) of these corresponding to the Software
+Definitions defined above: installed_software, distribution, media,
+bundle, vendor, category, product, subproduct, fileset, control_file,
+file.
+
+Each object keyword is followed by and newline and attributes in the
+form of keyword/value pairs.  Whitespace separates the keyword and
+value.  Whitespace outside of a quoted value is not significant.  A
+quoted value can span multiple lines.  An object keyword with its list
+of attribute keywords (and values) forms a Software Definition.  A
+Software Definition is terminated by the start of the next Software
+Definition.  Extended keywords (meaning Extended Definitions) only
+appear in a PSF file.
+
+The order  of objects (i.e Software Definitions) is significant and a
+containment  hierarchy is determined according to parser's grammar.
+
+* Menu:
+
+* Additional Syntax Rules::
+* Software Definition File Grammar::
+
+
+File: swbis_sw.info,  Node: Additional Syntax Rules,  Next: Software Definition File Grammar,  Up: SOFTWARE DEFINITION FILES
+
+1.10.1 Additional Syntax Rules
+------------------------------
+
+A '#' (pound) character designates a comment.  A comment may begin a
+line or appear at the end of a single line containing the keyword/value
+pair.
+
+A value may be quoted by the '"' (double quote) character; and,
+multi-line values must be quoted.  Trailing white space from an
+unquoted value will be removed.
+
+The order of attributes is not significant although the INDEX file
+grammar requires the layout_version attribute appear first in
+distribution or installed software object.
+
+The ", #, and, \ characters must be escaped with a backslash (\\) in a
+quoted value.
+
+If a value begins with a < (less than), the value is interpreted as a
+filename whose contents will be treated as a quoted value although the
+storage of the attribute will be in the form of a control file (i.e. a
+separate file in the control directory).  For INDEX files, the filename
+is relative to the control directory in which this attribute is
+contained.  For PSF files, the filename is a path on the host.
+
+
+File: swbis_sw.info,  Node: Software Definition File Grammar,  Prev: Additional Syntax Rules,  Up: SOFTWARE DEFINITION FILES
+
+1.10.2 Software Definition File Grammar
+---------------------------------------
+
+A PSF may contain all Software Definitions.  An INDEX file does not
+contain control_file, or file definitions. An INFO file contains only
+control_file, and file definitions.
+
+
+          software_definition_file : INDEX
+                                   | INFO
+                                   | PSF
+                                   ;
+
+          PSF :  distribution_definition
+                 swo_contents
+                 ;
+
+          INDEX : swo_definition
+                  swo_contents
+                 ;
+
+          INFO : fileset_contents
+                 ;
+
+          swo_definition : distribution_definition
+                         | installed_software
+                         ;
+
+          distribution_definition : distribution
+                                              media
+                                  ;
+
+          swo_contents : vendor(s)
+                        | category(s)
+                        | products
+                        | bundles
+                        ;
+
+          products : product
+                     product_contents
+                     ;
+
+          bundles : bundle
+                     ;
+
+          product_contents :  control_files
+            /* control_files not valid in INDEX file */
+                          | subproducts
+                          |  filesets
+     		     ;
+
+          filesets : fileset
+           /* fileset_contents not valid in INDEX file */
+                     fileset_contents
+                     ;
+
+          fileset_contents :  control_files
+                           | files
+                           ;
+
+
+File: swbis_sw.info,  Node: EXAMPLE PACKAGE,  Next: SWBIS PSF CONVENTIONS,  Prev: SOFTWARE DEFINITION FILES,  Up: Top
+
+1.11 EXAMPLE PACKAGE
+====================
+
+* Menu:
+
+* Layout::
+* Hypothetical PSF file::
+* INDEX File swm-1 0/catalog/INDEX::
+* INFO File swm-1 0/catalog/dfiles/INFO::
+* INFO File swm-1 0/catalog/gsoft_swm/bin/INFO::
+
+
+File: swbis_sw.info,  Node: Layout,  Next: Hypothetical PSF file,  Up: EXAMPLE PACKAGE
+
+1.11.1 Layout
+-------------
+
+      swm-1.0/catalog
+      swm-1.0/catalog/INDEX
+      swm-1.0/catalog/dfiles
+      swm-1.0/catalog/dfiles/INFO
+      swm-1.0/catalog/dfiles/md5sum
+      swm-1.0/catalog/dfiles/sha1sum
+      swm-1.0/catalog/dfiles/adjunct_md5sum
+      swm-1.0/catalog/dfiles/sig_header
+      swm-1.0/catalog/dfiles/signature
+      swm-1.0/catalog/gsoft_swm
+      swm-1.0/catalog/gsoft_swm/pfiles
+      swm-1.0/catalog/gsoft_swm/pfiles/INFO
+      swm-1.0/catalog/gsoft_swm/pfiles/remove
+      swm-1.0/catalog/gsoft_swm/pfiles/configure
+      swm-1.0/catalog/gsoft_swm/bin
+      swm-1.0/catalog/gsoft_swm/bin/INFO
+      swm-1.0/catalog/gsoft_swm/bin/postinstall
+      swm-1.0/catalog/gsoft_swm/bin/configure
+      swm-1.0/catalog/gsoft_swm/doc
+      swm-1.0/catalog/gsoft_swm/doc/INFO
+      swm-1.0/catalog/gsoft_swm/doc/postinstall
+      swm-1.0/gsoft_swm
+      swm-1.0/gsoft_swm/bin
+      swm-1.0/gsoft_swm/bin/usr/bin/swpackage
+      swm-1.0/gsoft_swm/bin/usr/bin/sw_build
+      swm-1.0/gsoft_swm/doc
+      swm-1.0/gsoft_swm/doc/usr/man/man1/swpackage.1
+
+
+      swm-1.0/gsoft_swm/doc/usr/man/man1/sw_build.1
+
+
+File: swbis_sw.info,  Node: Hypothetical PSF file,  Next: INDEX File swm-1 0/catalog/INDEX,  Prev: Layout,  Up: EXAMPLE PACKAGE
+
+1.11.2 Hypothetical PSF file
+----------------------------
+
+
+
+      distribution
+        control_directory swm-1.0  #Implementation Extension.
+        vendor
+          the_term_vendor_is_misleading  false # True or False
+          tag greatsoft
+          title Greatersoft Corporation
+          description "Greatersoft Corporation, Inc."
+        product
+          tag swm
+          title POSIX 1387 package builder
+          revision 1.0
+          control_directory gsoft_swm
+          vendor_tag greatsoft
+          description A package building Utility.
+          machine_type i386
+          control_file
+          	path remove
+             source /var/tmp/sw/remove.source
+          configure /var/tmp/sw/configure.source
+          fileset
+             tag bin
+             control_directory bin
+             title Executable Files
+             state available
+          	postinstall /var/tmp/sw/bin/postinstall
+             configure /var/tmp/sw/bin/configure
+             file -m 0755 -o root -g root /var/tmp/sw/build/bin/swpackage  \\
+                          /usr/bin/swpackage
+             file -m 0755 -o root -g root /var/tmp/sw/build/bin/sw_build  \\
+                          /usr/bin/sw_build
+        fileset
+           tag doc
+           control_directory doc
+           title Manual Pages
+           state available
+           postinstall /var/tmp/sw/bin/postinstall
+           file -m 0644 -o root -g root /var/tmp/sw/build/man/swpackage.1 \\
+                     /usr/man/man1/swpackage.1
+           file
+              mode 0644
+              owner root
+              group  root
+              source /var/tmp/sw/build/man/sw_build.1
+              path /usr/man/man1/sw_build.1
+
+
+File: swbis_sw.info,  Node: INDEX File swm-1 0/catalog/INDEX,  Next: INFO File swm-1 0/catalog/dfiles/INFO,  Prev: Hypothetical PSF file,  Up: EXAMPLE PACKAGE
+
+1.11.3 INDEX File swm-1.0/catalog/INDEX
+---------------------------------------
+
+
+
+      distribution
+        layout_version 1.0
+        tag swm-1.0
+        uuid 880ccf8b-de2c-4422-bff0-fd686279da73
+        md5sum < md5sum
+        adjunct_md5sum < adjunct_md5sum
+        sig_header < sig_header
+        signature < signature
+        media
+          sequence_number 1
+        vendor
+          the_term_vendor_is_misleading  false # True or False
+          tag greatsoft
+          title Greatersoft Corporation
+          description "Greatersoft Corporation, Inc."
+        product
+          tag swm
+          title POSIX 1387 package builder
+          revision 1.0
+          instance_id 1
+          control_directory gsoft_swm
+          vendor_tag greatsoft
+          description A package building Utility.
+          machine_type i386
+          fileset
+             tag bin
+             control_directory bin
+             size 196643
+             title Executable Files
+             state available
+          fileset
+             tag doc
+             control_directory doc
+             size 19643
+             title Manual Pages
+
+
+             state available
+
+
+File: swbis_sw.info,  Node: INFO File swm-1 0/catalog/dfiles/INFO,  Next: INFO File swm-1 0/catalog/gsoft_swm/bin/INFO,  Prev: INDEX File swm-1 0/catalog/INDEX,  Up: EXAMPLE PACKAGE
+
+1.11.4 INFO File swm-1.0/catalog/dfiles/INFO
+--------------------------------------------
+
+
+      control_file
+        path INFO
+        tag INFO
+        size 92
+      control_file
+        path md5sum
+        tag md5sum
+        size 36
+      control_file
+        path adjunct_md5sum
+        tag adjunct_md5sum
+        size 36
+      control_file
+        path sig_header
+        tag sig_header
+        size 512
+      control_file
+        path signature
+        tag signature
+        size 512
+
+
+File: swbis_sw.info,  Node: INFO File swm-1 0/catalog/gsoft_swm/bin/INFO,  Prev: INFO File swm-1 0/catalog/dfiles/INFO,  Up: EXAMPLE PACKAGE
+
+1.11.5 INFO File swm-1.0/catalog/gsoft_swm/bin/INFO
+---------------------------------------------------
+
+
+      control_file
+        path INFO
+        tag INFO
+        size 337
+
+      control_file
+        path postinstall
+        type f
+        size 803
+        cksum 3928827394
+        mode 550
+        uid 0
+        gid 0
+        owner root
+        group root
+        mtime 739080341
+
+      control_file
+        path configure
+        type f
+        size 432
+        cksum 3934546394
+        mode 550
+        uid 0
+        gid 0
+        owner root
+        group root
+        mtime 739340771
+
+      file
+        path /usr/bin/swpackage
+        type f
+        size 80860
+        cksum 3929827394
+        mode 755
+        uid 0
+        gid 0
+        owner root
+        group root
+        mtime 739080771
+
+      file
+        path /usr/bin/sw_build
+        type f
+        size 120860
+        cksum 9894925524
+        mode 755
+        uid 0
+        gid 0
+        owner root
+        group root
+
+
+        mtime 7393808731
+
+
+File: swbis_sw.info,  Node: SWBIS PSF CONVENTIONS,  Next: APPLICABLE STANDARDS,  Prev: EXAMPLE PACKAGE,  Up: Top
+
+1.12 SWBIS PSF CONVENTIONS
+==========================
+
+This section describes attribute usage and conventions imposed by the
+swbis implementation.  Not all attributes are listed here.  Those that
+are have important effects or particular interest.
+
+* Menu:
+
+* o Distribution Attributes::
+* o Bundle Attributes::
+* o Product Attributes::
+* o Fileset Attributes::
+* o Example Source Package PSF::
+* o Example Runtime (Binary) Package PSF::
+
+
+File: swbis_sw.info,  Node: o Distribution Attributes,  Next: o Bundle Attributes,  Up: SWBIS PSF CONVENTIONS
+
+1.12.1 o Distribution Attributes
+--------------------------------
+
+The standard defines a limited set of attributes for the distribution
+object.  An expanded set is suggested by the informative annex however
+a conforming implementation is not required act on them.  The reason
+for this is a distribution may be acted upon by a conforming utility in
+such a way that attributes of the distribution become invalid.  For
+this reason, some attributes that refer to an entire "package" [in
+other package managers] are referred from the product object and attain
+their broadened scope by the distributor's convention that their
+distribution contains just one product.
+
+For example, the package NAME and VERSION are referred from the product
+tag and revision, not the distribution's.  This convention supports
+multiple products in a distribution and is consistent with the standard.
+
+tag
+
+     tag is the short, file system friendly, name of the distribution.
+     Providing a distribution tag is optional.  The swbis
+     implementation will use this as the [single] path name prefix if
+     there is no distribution.control_directory attribute.  A
+     distribution tag attribute and swpackage's response to it is an
+     implementation extension.  The leading package path can also be
+     controlled with the "-W dir" option.
+
+
+control_directory
+
+     control_directory, in a distribution object, is the constant
+     leading package path.  Providing this attribute is optional.  A
+     distribution control_directory attribute and swpackage's response
+     to it is an implementation extension.  The leading package path
+     can also be controlled with the "-W dir" option.  This attribute
+     will be generated by swpackage if not set in a PSF.
+
+
+
+File: swbis_sw.info,  Node: o Bundle Attributes,  Next: o Product Attributes,  Prev: o Distribution Attributes,  Up: SWBIS PSF CONVENTIONS
+
+1.12.2 o Bundle Attributes
+--------------------------
+
+A bundle defines a collection of products whether or not the
+distribution has all the products present.
+
+tag
+
+     tag is the short, file system friendly, name of the bundle.  This
+     value is used by the swbis implementation as a path name component
+     in the installed software catalog.  If it is not present the
+     product tag is used.
+
+
+
+File: swbis_sw.info,  Node: o Product Attributes,  Next: o Fileset Attributes,  Prev: o Bundle Attributes,  Up: SWBIS PSF CONVENTIONS
+
+1.12.3 o Product Attributes
+---------------------------
+
+A product defines the software product.
+
+tag
+
+     tag is the short, file system friendly, name of the product.  This
+     value is used by the swbis implementation as a path name component
+     in the installed software catalog.  It is required.  The swbis
+     implementation uses it in a way that is analogous to the
+     RPMTAG_NAME attribute, namely as the public recognizable name of
+     the package.
+
+
+control_directory
+
+     Is the directory name in the distribution under which the product
+     contents are located.  This value has no affect on the installed
+     software catalog.  If it is not given in a PSF then the tag is
+     used.
+
+
+revision
+
+     Is the product revision.  It should not contain a "RELEASE"
+     attribute part or other version suffix modifiers.  This value is
+     used by the swbis implementation as a path name component in the
+     installed software catalog.  It is required by swinstall.
+
+
+vendor_tag
+
+     This is a short identifying name of the distributor that supplied
+     the product and may associate (refer to) a vendor object from the
+     INDEX file that has a matching tag attribute.  This attribute is
+     optional.  This attribute value should strive to be unique among
+     all distributors. The swbis implementation modifies the intended
+     usage slightly as a string that strives to be globally unique for
+     a given product.tag and product.revision.  In this capacity it
+     serves to distinguish products with the same revision and tag from
+     the same or different distributor.  It most closely maps to the
+     RPMTAG_RELEASE or "debian_revision" attributes.  It is one of the
+     version distinguishing attributes of a product specified by the
+     standard.  It is transfered into the installed_software catalog
+     (not as a path name component) by swinstall.  If this attribute
+     exists there should also be a vendor object in the PSF in the
+     distribution object that has this tag.  This attribute is assigned
+     the value of RPMTAG_RELEASE by swpackage when translating an RPM.
+
+
+architecture
+
+     This string is one of the version attributes.  It is used to
+     disambiguate products that have the same tag, revision and
+     vendor_tag.  It is not used for determining a products
+     compatibility with a host.  The form is implementation defined.
+     swbis uses the output of GNU config.guess as the value of this
+     string.  A wildcard pattern should not be used.  The canonical
+     swbis architecture string can be listed with swlist. For example
+
+          swlist -a architecture @ localhost
+
+     Here are some example outputs from real systems.
+
+              System      `uname -srm`              architecture
+          Red Hat 8.0:  Linux 2.4.18 i686        i686-pc-linux-gnu
+          OpenSolaris:  SunOS 5.11 i86pc         i386-pc-solaris2.11
+          NetBSD 3.1:   NetBSD 3.1 i386          i386-unknown-netbsdelf3.1
+          Red Hat 4.1:  Linux 2.0.36 i586        i586-pc-linux-gnulibc1
+
+
+          Debian 3.1:   Linux 2.6.8-2-386 i686   i686-pc-linux-gnu
+
+
+os_name os_release os_version machine_type
+
+     These attributes are used to determine compatibility with a host.
+     They correspond to the uname attributes defined by POSIX.1.  If an
+     value is nil or non-existent it is assumed to match the host.  All
+     attributes must match for there to be compatibility.  Distributors
+     may wish to make these values a shell pattern in their PSF's so to
+     match the intended collection of hosts.  swbis uses fnmatch (with
+     FLAGS=0) to determine a match.
+
+
+
+File: swbis_sw.info,  Node: o Fileset Attributes,  Next: o Example Source Package PSF,  Prev: o Product Attributes,  Up: SWBIS PSF CONVENTIONS
+
+1.12.4 o Fileset Attributes
+---------------------------
+
+A fileset defines the fileset.
+
+tag
+
+     tag is the short, file system friendly, name of the fileset.  It
+     is required although selection of filesets is  not yet supported
+     therefore the end user will have little to do with the fileset tag.
+
+
+control_directory
+
+     Is the directory name in the product under which the fileset
+     contents are located.  This value has no affect on the installed
+     software catalog.  If it is not given in a PSF then the tag is
+     used.
+
+
+
+File: swbis_sw.info,  Node: o Example Source Package PSF,  Next: o Example Runtime (Binary) Package PSF,  Prev: o Fileset Attributes,  Up: SWBIS PSF CONVENTIONS
+
+1.12.5 o Example Source Package PSF
+-----------------------------------
+
+This PSF packages every file is current directory. It uses nil control
+directories so the package structure does not change relative to a
+vanilla tarball.
+
+
+      distribution
+        description "fooit - a program from fooware
+     that does everything."
+        title "fooit - a really cool program"
+        COPYING < /usr/local/fooware/legalstuff/COPYING
+      vendor
+        the_term_vendor_is_misleading false
+        tag fooware
+        title fooware Consultancy Services, Inc.
+        description ""
+      vendor
+        the_term_vendor_is_misleading true
+        tag myfixes1
+        title Bug fixes, Set 1
+        description "a place for more detailed description"
+      product
+        tag fooit
+        control_directory ""
+        revision 1.0
+        vendor_tag myfixes1  # Matches the vendor object above
+      fileset
+         tag fooit-SOURCE
+         control_directory ""
+         directory .
+         file *
+         exclude catalog
+
+
+File: swbis_sw.info,  Node: o Example Runtime (Binary) Package PSF,  Prev: o Example Source Package PSF,  Up: SWBIS PSF CONVENTIONS
+
+1.12.6 o Example Runtime (Binary) Package PSF
+---------------------------------------------
+
+This is a sample PSF for a runtime package.  It implies multiple
+products (e.g. sub-packages) using the bundle.contents attribute.
+Since the bundle and product tags exist in a un-regulated namespace and
+are seen by end users they should be carefully chosen.   Note that the
+bundle and product have the same tag which may force downstream users
+to disambiguate using software selection syntax such as fooit,bv=* or
+fooit,pv=* .
+
+
+      distribution
+        description "fooit - a program from fooware
+     that does everything."
+        title "fooit - a really cool program"
+        COPYING < /usr/local/fooware/legalstuff/COPYING
+
+          vendor
+             the_term_vendor_is_misleading false
+             tag fooware
+             title fooware Consultancy Services, Inc.
+             description "Provider of the programs
+      that do everything"
+
+          vendor
+             the_term_vendor_is_misleading true
+              tag fw0
+              title fooware fixes
+              description "More fixes from the fooware users"
+
+     #  Bundle definition:  Use a bundle
+          bundle
+              tag fooit
+              vendor_tag fooware
+              contents fooit,v=fw0 fooit-devel fooit-doc
+
+     #  Product definition:
+          product
+              tag fooit   # This is the package name
+              revision 1.0 # This is the package version
+              vendor_tag fw0 # This is a release name e.g. RPMTAG_RELEASE
+              postinstall scripts/postinstall
+          fileset
+               tag fooit-RUN
+               file doc/man/man1/fooit.1 /usr/man/man1/fooit.1
+
+
+               file src/fooit /usr/bin/fooit
+
+
+File: swbis_sw.info,  Node: APPLICABLE STANDARDS,  Next: SEE ALSO,  Prev: SWBIS PSF CONVENTIONS,  Up: Top
+
+1.13 APPLICABLE STANDARDS
+=========================
+
+IEEE Std 1387.2-1995 (Identical to ISO 15068-2:1999), Open Group CAE
+C701
+
+
+File: swbis_sw.info,  Node: SEE ALSO,  Next: IDENTIFICATION,  Prev: APPLICABLE STANDARDS,  Up: Top
+
+1.14 SEE ALSO
+=============
+
+XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm
+swbisparse(1) - An implementation extension parser utility.   swcopy(8)
+swinstall(8)  swbis(7)  swbis(1)  swpackage(5)  swpackage(8)
+swverify(8)
+
+
+File: swbis_sw.info,  Node: IDENTIFICATION,  Next: BUGS,  Prev: SEE ALSO,  Up: Top
+
+1.15 IDENTIFICATION
+===================
+
+Copyright (C) 2005 Jim Lowe  Version: 1.13.1  Last Updated: 2006-01
+Copying Terms: GNU Free Documentation License
+
+
+File: swbis_sw.info,  Node: BUGS,  Prev: IDENTIFICATION,  Up: Top
+
+1.16 BUGS
+=========
+
+None
+
+
+
+Tag Table:
+Node: Top210
+Node: NAME634
+Node: SYNOPSIS760
+Node: SOFTWARE PACKAGING LAYOUT1111
+Node: Minimal Package Layout3230
+Node: Distribution Files4193
+Node: Product Files4722
+Node: Fileset Files5248
+Node: Control Directory Names5579
+Node: File Storage6051
+Node: SOFTWARE DEFINITIONS6539
+Node: Host Definition7399
+Node: Distribution Definition7975
+Node: Installed_software Definition11000
+Node: Media Definition11658
+Node: Vendor Definition12002
+Node: Bundle Definition13358
+Node: Product Definition15085
+Node: Category Definition18196
+Node: Subroduct Definition18799
+Node: Fileset Definition19483
+Node: File Definition21544
+Node: Control File Definition23391
+Node: SOFTWARE SELECTIONS24352
+Node: Version Identifiers25322
+Node: Example Software Specs26533
+Node: DEPENDENCY SPECS27059
+Node: Dependency Spec Examples27771
+Node: EXTENDED DEFINITIONS28303
+Node: o Extended Control File Definitions29590
+Node: o Directory Mapping30826
+Node: o Recursive File Definition31387
+Node: o Explicit File Definition31758
+Node: o Default Permission Definition33668
+Node: o Excluding Files34417
+Node: o Including Files34696
+Node: DISTRIBUTOR KEYWORDS34988
+Node: PACKAGE SECURITY35392
+Node: Archive Digests35931
+Node: Adjunct Md5 Digest36534
+Node: Catalog Signature Header37453
+Node: Catalog Signature38064
+Node: File Digests39899
+Node: SOFTWARE DEFINITION FILES40246
+Node: Additional Syntax Rules42104
+Node: Software Definition File Grammar43275
+Node: EXAMPLE PACKAGE45078
+Node: Layout45417
+Node: Hypothetical PSF file46630
+Node: INDEX File swm-1 0/catalog/INDEX48460
+Node: INFO File swm-1 0/catalog/dfiles/INFO49782
+Node: INFO File swm-1 0/catalog/gsoft_swm/bin/INFO50458
+Node: SWBIS PSF CONVENTIONS51619
+Node: o Distribution Attributes52173
+Node: o Bundle Attributes54033
+Node: o Product Attributes54577
+Node: o Fileset Attributes58348
+Node: o Example Source Package PSF59039
+Node: o Example Runtime (Binary) Package PSF60229
+Node: APPLICABLE STANDARDS62102
+Node: SEE ALSO62339
+Node: IDENTIFICATION62681
+Node: BUGS62923
+
+End Tag Table

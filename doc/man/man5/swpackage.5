@@ -1,0 +1,623 @@
+...\" $Header: /usr/src/docbook-to-man/cmd/RCS/docbook-to-man.sh,v 1.3 1996/06/17 03:36:49 fld Exp $
+...\"
+...\"	transcript compatibility for postscript use.
+...\"
+...\"	synopsis:  .P! <file.ps>
+...\"
+.de P!
+\\&.
+.fl			\" force out current output buffer
+\\!%PB
+\\!/showpage{}def
+...\" the following is from Ken Flowers -- it prevents dictionary overflows
+\\!/tempdict 200 dict def tempdict begin
+.fl			\" prolog
+.sy cat \\$1\" bring in postscript file
+...\" the following line matches the tempdict above
+\\!end % tempdict %
+\\!PE
+\\!.
+.sp \\$2u	\" move below the image
+..
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n 
+.TH "swpackage" "5"
+ 
+.hy 0 
+.if n .na
+.SH "NAME"
+swpackage \(em file formats
+.SH "SYNOPSIS"
+.PP
+.nf
+Output format - Data Interchange Formats
+Input format - Product Specification File (PSF)
+.fi
+.SH "SWPACKAGE OUTPUT FORMAT"
+ 
+.PP
+.br
+The output format is either one of two formats specified in POSIX\&.1 (ISO/IEC 9945-1)
+which are tar (header magic=ustar) or cpio (header magic=070707)\&.  
+The default format of the swbis implementation is "ustar"\&.
+The POSIX spec under specifies definitions for some of the ustar header fields\&.
+The personality of the default swbis ustar format mimics GNU tar 1\&.15\&.1 and is designed
+to be compliant to POSIX\&.1\&.
+The personality of the "ustar0" format mimics, for pathnames less than
+99 octets,  GNU tar 1\&.13\&.25 using the "-b1 --posix" options\&.
+This bit-for-bit sameness does not exist for pathnames greater than 99 chars as swbis
+follows the POSIX spec and GNU tar 1\&.13\&.25 does not\&.  The "ustar0" ustar personality is
+deprecated\&.  It is only slightly different from \&'ustar\&' in how device number fields are
+filled (with spaces, zeros or NULs) for non-device files\&.
+.PP
+.br
+In addition the swbis implementation
+supports several other tar variants including bit-for-bit mimicry of GNU tar (1\&.13\&.25) default
+format which uses a non-standard name split and file type (type \&'L\&')\&.  This format is known as \&'--format=oldgnu\&'\&.
+Also supported is the gnu format of GNU tar 1\&.15\&.1 specified by \&'--format=gnu\&'
+.PP
+.br
+The defacto cpio formats are also supported\&.
+"new ASCII" (sometimes called SVR4 cpio) and "crc" cpio formats with header magic "070701" and "070702"
+respectively\&.
+.PP
+.br
+Support for "pax Interchange Format" (Extended header tar) described in IEEE 1003\&.1-2001
+under the "pax" manual page has been implemented for POSIX file attributes as of release 1\&.12 (c Aug2014)\&.
+The \&'swpackage\&' utility will generate extended headers on an as needed basis when the --format=pax is used\&.
+Support for POSIX ACL and SELinux attributes is planned\&.
+.PP
+.br
+The entirety of the output byte stream is a single valid file of one the formats mentioned above\&.
+.PP
+.br
+The swbis implementation writes its output to stdout\&.  The default output block size is 10240 bytes\&.
+The last block is not padded and therefore the last write(2) may be a short write\&.
+The selected block size does not affect the output file contents\&.
+.PP
+.br
+The swbis implementation is biased, in terms of capability and default settings, to the tar format\&.
+Package signing is only supported in tar format\&. 
+.SH "SWPACKAGE INPUT FILE FORMAT"
+ 
+.PP
+The input file is called a product specification file or PSF\&.  It contains information to
+direct swpackage and information that is package meta-data [that is merely transferred unchanged
+into the global INDEX file]\&. 
+.PP
+A PSF may contain object keywords, attributes (keyword/value pairs) and Extended Definitions (described below)\&.
+An object keyword connotes a logical object (i\&.e\&. software structure) supported by the standard\&.  An object keyword
+does not have a value field after it, as it contains Attributes and Extended Definitions\&.
+An attribute keyword conotes an attribute which is always in the form of a keyword/value pair\&.
+.PP
+Attribute keywords not recognized by the standard are allowed and are transferred into the INDEX file\&.
+Object keywords not recognized by the standard are not allowed and will generate an error\&.
+Extended Definitions may only appear in a PSF (never in a INDEX or INFO created by swpackage)\&.
+Extended Definitions are translated [by swpackage] into object keywords (objects) and 
+attributes recognized by the standard\&.
+.PP
+Comments in a PSF are not transferred into the INDEX file by the swbis implementation of swpackage\&.
+.PP
+The file syntax is the same as a \fBINDEX\fP, or \fBINFO\fP file\&.
+A PSF may contain all objects defined by the standard as well as extended definitions\&.
+.br
+ 
+For additional information see
+.br
+XDSA C701 http://www\&.opengroup\&.org/publications/catalog/c701\&.htm, or
+.br
+sw manual page\&. 
+.SS "EXTENDED DEFINITIONS"
+ 
+.PP
+A Product Specification File (PSF) can contain Extended Definitions in the
+\fBfileset\fP, \fBproduct\fP or \fBbundle\fP software definitions\&.  They would have the same level or containment
+relationship as a
+\fBfile\fP or
+\fBcontrol_file\fP definition in the same contaning object\&.
+.PP
+Extended Definitions represent a minimal, expressive form for specifying files and file attributes\&.
+Their use in a PSF is optional in that an equivalent PSF can be constructed without using them,
+however, their use is encouraged for the sake of brevity and orthogonality\&.
+.PP
+The swbis implementation requires that no [ordinary] attributes appear after Extended Definitions
+in the containing object, and, requires that Extended Definitions appear before logically contained objects\&.
+That is, the parser uses the next object keyword to syntacticly and logically terminate the
+current object even if the current object has logically contained objects\&.
+.SS "o  Extended Control File Definitions"
+.PP
+.nf
+\f(CW
+.br
+     checkinstall  \fIsource\fP  [\fIpath\fP]
+     preinstall    \fIsource\fP  [\fIpath\fP]
+     postinstall   \fIsource\fP  [\fIpath\fP]
+     verify        \fIsource\fP  [\fIpath\fP]
+     fix           \fIsource\fP  [\fIpath\fP]
+     checkremove   \fIsource\fP  [\fIpath\fP]
+     preremove     \fIsource\fP  [\fIpath\fP]
+     postremove    \fIsource\fP  [\fIpath\fP]
+     configure     \fIsource\fP  [\fIpath\fP]
+     unconfigure   \fIsource\fP  [\fIpath\fP]
+     request       \fIsource\fP  [\fIpath\fP]
+     unpreinstall  \fIsource\fP  [\fIpath\fP]
+     unpostinstall \fIsource\fP  [\fIpath\fP]
+     space         \fIsource\fP  [\fIpath\fP]
+     control_file  \fIsource\fP  [\fIpath\fP]\fR
+.fi
+.PP
+.PP
+The \fIsource\fP attribute defines the location in distributors\&'s development system
+where the swpackage utility will find the script\&.  The keyword is the value of the 
+\fItag\fP attribute
+and tells the utilities when to execute the script\&.
+The \fIpath\fP attribute is optional and specifies the file name in the packages distribution
+relative to the control_directory for software containing the script\&. If not given the 
+\fItag\fP value is used as the filename\&.
+.SS "o  Directory Mapping"
+.PP
+.nf
+\f(CW
+.br
+   directory  \fIsource\fP  [\fIdestination\fP]
+.br
+\fR
+.fi
+.PP
+.PP
+Applies the \fIsource\fP attribute as the directory under which
+the subsequently listed files are located\&.  If 
+\fIdestination\fP is defined it will be used as a prefix to the 
+\fIpath\fP (implied) file definition\&.  
+\fIsource\fP is typically a temporary or build
+location and 
+\fIdest\fP is its unrealized absolute pathname destination\&.
+.SS "o  Recursive File Definition"
+.PP
+.nf
+\f(CW
+.br
+  file *
+.br
+\fR
+.fi
+.PP
+.PP
+Specifies every file in current source directory\&.
+The \fIdirectory\fP extended definition must be used before the recursive specification\&.
+.SS "o  Explicit File Definition"
+.PP
+.nf
+\f(CW
+.br
+  file [-t \fItype\fP] [-m \fImode\fP] [-o \fIowner\fP[,\fIuid\fP]] [-g \fIgroup\fP[,\fIgid\fP]] [-n] [-v] source [\fIpath\fP]
+.br
+\fR
+.fi
+.PP
+.PP
+\fBsource\fP 
+.RS
+ 
+.PP
+\fIsource\fP defines the pathname of the file to be used as the source of file data
+and/or attributes\&.
+If it is a relative path, then swpackage searches for this file relative to the
+the source argument of the \fBdirectory\fP keyword, if set\&.
+If \fBdirectory\fP keyword is not set then the search is relative to the
+current working directory of the swpackage utility\&'s invocation\&.
+.PP
+All attributes for the destination file are taken from the source file, unless a
+\fBfile_permissions\fP keyword is active, or the -m, -o, or -g options are also
+included in the file specification\&.
+.RE
+.PP
+\fBpath\fP 
+.RS
+ 
+\fIpath\fP defines the destination path where the file will be created or installed\&.
+If it is a relative path, then the destination path of the of the
+\fBdirectory\fP keyword must be active and will be used as the path prefix\&.
+If path is not specified then 
+\fIsource\fP is used as the value of path and directory mapping applied (if active)\&.
+.RE
+.PP
+\fB-t type\fP 
+.RS
+ 
+\fItype\fP may one of \&'d\&' (directory), or  \&'h\&' (hard link), or \&'s\&' (symbolic link)\&.
+.PP
+-t d  Create a directory\&.
+.br
+If \fIpath\fP is not specified
+\fIsource\fP is used as the path attribute\&.
+.PP
+-t h  Create a hard link\&.
+.br
+\fIpath\fP and \fIsource\fP are specified\&.
+\fIsource\fP is used as the value of the 
+\fIlink_source\fP attribute, and
+\fIpath\fP is the value of the path attribute\&.
+.PP
+-t s  Create a symbolic link\&.
+.br
+\fIpath\fP and \fIsource\fP are specified\&.
+\fIsource\fP is used as the value of the 
+\fIlink_source\fP attribute, and
+\fIpath\fP is the value of the path attribute\&.
+.RE
+.PP
+\fB-m mode\fP 
+.RS
+ 
+\fImode\fP defines the octal mode for the file\&.
+.RE
+.SS "o  Default Permission Definition"
+.PP
+.nf
+\f(CW
+.br
+  file_permissions [-m \fImode\fP] [-u \fIumask\fP] [-o [\fIowner\fP[,]][\fIuid\fP]] [-g [\fIgroup\fP[,]][\fIgid\fP]]
+.br
+\fR
+.fi
+.PP
+.PP
+Applies to subsequently listed file definitions in a fileset\&.  
+These attributes will apply where the file attributes were not specified explicitly in a 
+file definition\&.
+Subsequent \fBfile_permissions\fP definitions
+simply replace previous definitions (resetting all the options)\&.
+.PP
+To reset the file_permission state (i\&.e\&. turn it off) use one of the following:
+    file_permissions "" 
+.br
+	or the preferred way is
+.br
+    file_permissions -u 000
+.SS "o  Excluding Files"
+.PP
+.nf
+\f(CW
+.br
+   exclude source
+.br
+\fR
+.fi
+.PP
+.PP
+Excludes a previously included file or an entire directory\&.
+.br
+.SS "o  Including Files"
+.PP
+.nf
+\f(CW
+.br
+   include <\fIfilename\fP
+.br
+\fR
+.fi
+.PP
+.PP
+The contents of \fIfilename\fP may be more definitions for files\&.
+The syntax of the included file is PSF syntax\&.
+.br
+ 
+.SS "SWBIS PSF CONVENTIONS"
+ 
+.PP
+This section describes attribute usage and conventions imposed by the swbis implementation\&.
+Not all attributes are listed here\&.  Those that are have important effects or
+particular interest\&.
+.SS "o Distribution Attributes"
+.PP
+The standard defines a limited set of attributes for the distribution object\&.
+An expanded set is suggested by the informative annex however a conforming
+implementation is not required act on them\&.  The reason for this is a
+distribution may be acted upon by a conforming utility in such a way that attributes
+of the \fBdistribution\fP become invalid\&.
+For this reason, some attributes that refer to an entire "package" [in other package managers]
+are referred from the product object and attain their broadened scope by the distributor\&'s
+convention that their distribution contains just one
+\fBproduct\fP\&.
+.PP
+For example, the package NAME and VERSION are referred from the product tag and revision,
+not the distribution\&'s\&.  This convention supports multiple products in a distribution and
+is consistent with the standard\&. 
+.PP
+\fBtag\fP 
+.RS
+ 
+\fItag\fP is the short, file system friendly, name of the distribution\&.
+Providing a distribution tag is optional\&.  The swbis implementation will use this as the
+[single] path name prefix if there is no distribution\&.control_directory attribute\&.
+A distribution tag attribute and swpackage\&'s response to it is an implementation extension\&.
+The leading package path can also be controlled with the \&'\&'-W dir\&'\&' option\&. 
+.RE
+ 
+.PP
+\fBcontrol_directory\fP 
+.RS
+ 
+\fIcontrol_directory\fP, in a distribution object, is the constant leading package path\&.
+Providing this attribute is optional\&.
+A distribution control_directory attribute and swpackage\&'s response to it is an implementation extension\&.
+The leading package path can also be controlled with the \&'\&'-W dir\&'\&' option\&.  This attribute will be
+generated by swpackage if not set in a PSF\&.
+.RE
+ 
+.SS "o Bundle Attributes"
+.PP
+A \fBbundle\fP defines a collection of products whether or not
+the distribution has all the products present\&. 
+.PP
+\fBtag\fP 
+.RS
+ 
+\fItag\fP is the short, file system friendly, name of the bundle\&.
+This value is used by the swbis implementation as a path name component in the
+installed software catalog\&.  If it is not present the product tag is used\&.
+.RE
+ 
+.SS "o Product Attributes"
+.PP
+A \fBproduct\fP defines the software product\&.
+.br
+.PP
+\fBtag\fP 
+.RS
+ 
+\fItag\fP is the short, file system friendly, name of the product\&.
+This value is used by the swbis implementation as a path name component in the
+installed software catalog\&.  It is required\&.  The swbis implementation uses it in a way 
+that is analogous to the RPMTAG_NAME attribute, namely as the public recognizable name of
+the package\&.
+.RE
+ 
+.PP
+\fBcontrol_directory\fP 
+.RS
+ 
+Is the directory name in the distribution under which the product contents are located\&.
+This value has no affect on the installed software catalog\&.  If it is not given in a PSF
+then the
+\fItag\fP is used\&.
+.RE
+ 
+.PP
+\fBrevision\fP 
+.RS
+ 
+Is the product revision\&.  It should not contain a "RELEASE" attribute part or other
+version suffix modifiers\&.
+This value is used by the swbis implementation as a path name component in the
+installed software catalog\&.  It is required by swinstall\&.
+.RE
+ 
+.PP
+\fBvendor_tag\fP 
+.RS
+ 
+This is a short identifying name of the distributor that supplied the product and
+may associate (refer to) a \fBvendor\fP object from the INDEX file that
+has a matching tag attribute\&.
+This attribute is optional\&.
+This attribute value should strive to be unique among all distributors\&. The swbis implementation
+modifies the intended usage slightly as a string that strives to be globally unique for a given
+product\&.\fBtag\fP and product\&.\fBrevision\fP\&.
+In this capacity it serves to distinguish products with the same revision and tag from the same or
+different distributor\&.  It most closely maps to the RPMTAG_RELEASE or "debian_revision" attributes\&.
+It is one of the version distinguishing attributes of a product specified by the standard\&. 
+It is transfered into the installed_software catalog (not as a path name component) by swinstall\&.
+If this attribute exists there should also be a
+\fBvendor\fP object in the PSF in the distribution object that has this tag\&.
+This attribute is assigned the value of RPMTAG_RELEASE by
+swpackage when translating an RPM\&.
+.RE
+ 
+.PP
+\fBarchitecture\fP 
+.RS
+ 
+This string is one of the version attributes\&.  It is used to disambiguate
+products that have the same \fBtag\fP, \fBrevision\fP and \fBvendor_tag\fP\&.  It is not used for determining a products
+compatibility with a host\&.
+The form is implementation defined\&.
+swbis uses the output of GNU \fBconfig\&.guess\fP as the value of
+this string\&.  A wildcard pattern should not be used\&.
+The canonical swbis architecture string can be
+listed with \fBswlist\fP\&. For example
+.PP
+.nf
+\f(CWswlist -a architecture @ localhost\fR
+.fi
+.PP
+ Here are some example outputs from real systems\&.
+.PP
+.nf
+\f(CW    System      `uname -srm`              architecture  
+Red Hat 8\&.0:  Linux 2\&.4\&.18 i686        i686-pc-linux-gnu
+OpenSolaris:  SunOS 5\&.11 i86pc         i386-pc-solaris2\&.11
+NetBSD 3\&.1:   NetBSD 3\&.1 i386          i386-unknown-netbsdelf3\&.1
+Red Hat 4\&.1:  Linux 2\&.0\&.36 i586        i586-pc-linux-gnulibc1
+Debian 3\&.1:   Linux 2\&.6\&.8-2-386 i686   i686-pc-linux-gnu\fR
+.fi
+.PP
+.RE
+ 
+.PP
+\fBos_name\fP 
+\fBos_release\fP 
+\fBos_version\fP 
+\fBmachine_type\fP 
+.RS
+ 
+These attributes are used to determine compatibility with a host\&.
+They correspond to the \fBuname\fP attributes defined by POSIX\&.1\&.
+If an value is nil or non-existent it is assumed to match the host\&.
+All attributes must match for there to be compatibility\&.  Distributors may
+wish to make these values a shell pattern in their PSF\&'s so to match
+the intended collection of hosts\&.
+swbis uses \fBfnmatch\fP (with FLAGS=0) to determine a match\&.
+.RE
+ 
+.SS "o Fileset Attributes"
+.PP
+A \fBfileset\fP defines the fileset\&.
+.br
+.PP
+\fBtag\fP 
+.RS
+ 
+\fItag\fP is the short, file system friendly, name of the fileset\&.
+It is required although selection of filesets is  not yet supported therefore the end user
+will have little to do with the fileset tag\&.
+.RE
+.PP
+\fBcontrol_directory\fP 
+.RS
+ 
+Is the directory name in the product under which the fileset contents are located\&.
+This value has no affect on the installed software catalog\&.  If it is not given in a PSF
+then the
+\fItag\fP is used\&.
+.RE
+.SS "o Example Source Package PSF"
+.PP
+This PSF packages every file is current directory\&. It uses nil control directories
+so the package structure does not change relative to a vanilla tarball\&.
+.PP
+.nf
+\f(CW
+.br
+ distribution
+   description "fooit - a program from fooware
+that does everything\&."
+   title "fooit - a really cool program"
+   COPYING < /usr/local/fooware/legalstuff/COPYING
+ vendor
+   the_term_vendor_is_misleading false
+   tag fooware
+   title fooware Consultancy Services, Inc\&.
+   description ""
+ vendor
+   the_term_vendor_is_misleading true
+   tag myfixes1
+   title Bug fixes, Set 1
+   description "a place for more detailed description"
+ product
+   tag fooit
+   control_directory "" 
+   revision 1\&.0
+   vendor_tag myfixes1  # Matches the vendor object above
+ fileset
+    tag fooit-SOURCE
+    control_directory ""
+    directory \&.
+    file *
+    exclude catalog\fR
+.fi
+.PP
+ 
+.SS "o Example Runtime (Binary) Package PSF"
+.PP
+This is a sample PSF for a runtime package\&.  It implies multiple products (e\&.g\&. sub-packages)
+using the bundle\&.contents attribute\&.  Since the bundle and product tags exist in a un-regulated
+namespace and are seen by end users they should be carefully chosen\&.   Note that the bundle
+and product have the same tag which may force downstream users to disambiguate using software
+selection syntax such as fooit,bv=* or fooit,pv=* \&.
+.PP
+.nf
+\f(CW
+.br
+ distribution
+   description "fooit - a program from fooware
+that does everything\&."
+   title "fooit - a really cool program"
+   COPYING < /usr/local/fooware/legalstuff/COPYING
+
+     vendor
+        the_term_vendor_is_misleading false
+        tag fooware
+        title fooware Consultancy Services, Inc\&.
+        description "Provider of the programs
+ that do everything"
+
+     vendor
+        the_term_vendor_is_misleading true
+         tag fw0
+         title fooware fixes 
+         description "More fixes from the fooware users"
+
+#  Bundle definition:  Use a bundle
+     bundle
+         tag fooit
+         vendor_tag fooware
+         contents fooit,v=fw0 fooit-devel fooit-doc  
+
+#  Product definition:
+     product
+         tag fooit   # This is the package name
+         revision 1\&.0 # This is the package version
+         vendor_tag fw0 # This is a release name e\&.g\&. RPMTAG_RELEASE
+         postinstall scripts/postinstall
+     fileset
+          tag fooit-RUN
+          file doc/man/man1/fooit\&.1 /usr/man/man1/fooit\&.1 
+          file src/fooit /usr/bin/fooit\fR
+.fi
+.PP
+ 
+.SH "APPLICABLE STANDARDS"
+.PP
+POSIX\&.1, IEEE Std 1387\&.2-1995 (Identical to ISO 15068-2:1999),
+Open Group CAE C701\&.
+.SH "SEE ALSO"
+ XDSA C701 http://www\&.opengroup\&.org/publications/catalog/c701\&.htm
+.br
+ info swbis
+.br
+ sw(5)
+.br
+ swpackage(8)
+ swbisparse(1) -- An implementation extension parser utility\&.
+.br
+.SH "IDENTIFICATION"
+ Copyright (C) 2004,2005 Jim Lowe
+ Version: 1\&.13\&.1
+ Last Updated: 2006-07-01
+ Copying Terms: GNU Free Documentation License
+.SH "BUGS"
+.PP
+None
+.\" created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39

@@ -1,0 +1,20 @@
+  distribution
+   layout_version 1.0
+   product
+    tag bc
+    
+    control_file
+     tag postinstall
+     interpreter /bin/sh
+     source bc-1.04-2/postinstall
+    control_file
+     tag unpreinstall
+     interpreter /bin/sh
+     source bc-1.04-2/unpreinstall
+    fileset
+     tag d_files
+	directory  /etc /usr/tmp
+	file_permissions -m 0600 -o jhl -g other
+	file passwd aa/bb
+	file -m 666 -o ftp group
+

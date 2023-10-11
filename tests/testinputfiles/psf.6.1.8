@@ -1,0 +1,49 @@
+  distribution
+   layout_version 1.0
+
+   product
+    tag bc1
+    fileset
+       tag etc
+      directory  /etc /usr/tmp/aa
+       file passwd 
+   
+   product
+    tag bc2
+    fileset
+      tag etc
+      control_file
+       tag postinstall
+        source bc-1.04-2/postinstall
+       file
+          path aa1
+       file
+          path aa2
+
+
+   product
+    tag bc3
+    control_file
+     tag postinstall
+    control_file
+     tag preinstall
+    fileset
+     	tag etc
+        directory  /etc /usr/tmp/aa
+       control_file
+        tag postinstall
+        interpreter /bin/sh
+        source bc-1.04-2/postinstall
+       control_file
+        tag postinstall
+        interpreter /bin/sh
+        source bc-1.04-2/postinstall
+       file
+           path aa
+           source bb
+       file
+           path aa1
+           source bb1
+
+
+

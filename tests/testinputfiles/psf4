@@ -1,0 +1,52 @@
+
+distribution
+	layout_version 1.0
+	dfiles dfiles
+	dfiles aaaaaaaa
+	vendor
+		vendor_tag tagv
+	bundle
+		tag bundletag
+	
+	product
+		tag aa
+		fileset
+			tag tagaa1
+			file
+				path /usr/tmp/aa1.1
+			file
+				path /usr/tmp/aa1.2
+			file
+				path /usr/tmp/aa1.3
+			file
+				path /usr/tmp/aa1.4
+
+		fileset
+			tag tagaa2
+			file
+				path /usr/tmp/aa2.1
+			file    
+				path /usr/tmp
+	product
+		tag bb
+		fileset
+			tag tagbb1
+			file
+				path /usr/tmp/bb1.1
+			file
+				path /usr/tmp/bb1.2
+			file
+				path /usr/tmp/bb1.3
+
+		fileset
+			tag tagbb2.1
+			tag tagbb2.2
+			tag tagbb2.3
+			tag tagbb2.4
+			tag tagbb2.5
+			file
+				path /usr/tmp/bb2.1
+
+		file
+				path /usr/tmp/bb2.2
+

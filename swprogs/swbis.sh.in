@@ -1,0 +1,78 @@
+#!@POSIXSHELL@
+# swbis - sw<utility> execution wrapper
+
+# Copyright (C) 2003  Jim Lowe
+#
+# COPYING TERMS AND CONDITIONS:
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+SWBISLIBEXECDIR="@SWBISLIBEXECDIR@"
+SWBISLIBDIR="@SWBISLIBDIR@"
+SWBIS_RELEASE=@SWBIS_RELEASE@
+SWBIS_BINDIR="@SWBIS_BINDIR@"
+		
+help() {
+	echo "Usage: swbis <sw_utility> [options] [selections] [@targets[ targetN]]"
+	echo
+	echo "swbis commands available in $SWBIS_BINDIR":
+	echo "  swpackage swinstall swcopy swverify swlist swremove swconfig swign"
+	echo 
+	echo "swbis libexec programs available in $SWBISLIBEXECDIR"/swbis:
+	echo "  lxpsf arf2arf swbisparse getconf mtimetouch"
+	echo
+	echo "swbis defaults files available in $SWBISLIBDIR"/swbis:
+	echo "  swbisdefaults swdefaults"
+	echo
+	echo "Available documentation:"
+	echo
+	echo "  Manual Pages:"
+	echo "     swbis(1) swbis(7) sw(5) swinstall(8) swcopy(8) swpackage(8)"
+	echo "     swlist(8) swign(1) swconfig(8) swremove(8)"
+	echo
+	echo "  Info entry:"
+	echo "     swbis"
+	echo
+	echo "Report bugs to <bug-swbis@gnu.org>"
+}
+
+version() {
+	echo "swbis version ${SWBIS_RELEASE}"
+	echo ""
+	echo "Copyright (C) 2010 Jim Lowe"
+	echo "This software is distributed under the terms of the GNU General Public License"
+	echo "and comes with NO WARRANTY to the extent permitted by law."
+	echo "See the file named COPYING for details."
+	exit 0;
+}
+while true ; do
+	case "$1" in
+		-V|--version) version; exit 0 ;;
+		-\?|--help) help; exit 0 ;;
+		sw*) break ;;
+		-?) shift; break ;;
+		--) shift; break ;;
+		"") break ;;
+	esac
+done
+
+case "$#" in
+	0)
+		help; version
+		exit 1
+		;;
+esac
+
+cmd=$1
+shift
+exec "$SWBIS_BINDIR"/"$cmd" "$@"
+exit 1

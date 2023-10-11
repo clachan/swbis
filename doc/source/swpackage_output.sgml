@@ -1,0 +1,62 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+
+Copyright (C) 2004 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+-- >
+<TITLE>
+SWPACKAGE OUTPUT FORMAT
+</TITLE>
+<PARA>
+<SBR>
+The output format is either one of two formats specified in POSIX.1 (ISO/IEC 9945-1)
+which are tar (header magic=ustar) or cpio (header magic=070707).  
+The default format of the swbis implementation is "ustar".
+The POSIX spec under specifies definitions for some of the ustar header fields.
+The personality of the default swbis ustar format mimics GNU tar 1.15.1 and is designed
+to be compliant to POSIX.1.
+The personality of the "ustar0" format mimics, for pathnames less than
+99 octets,  GNU tar 1.13.25 using the "-b1 --posix" options.
+This bit-for-bit sameness does not exist for pathnames greater than 99 chars as swbis
+follows the POSIX spec and GNU tar 1.13.25 does not.  The "ustar0" ustar personality is
+deprecated.  It is only slightly different from 'ustar' in how device number fields are
+filled (with spaces, zeros or NULs) for non-device files.
+</PARA>
+<PARA>
+<SBR>
+In addition the swbis implementation
+supports several other tar variants including bit-for-bit mimicry of GNU tar (1.13.25) default
+format which uses a non-standard name split and file type (type 'L').  This format is known as '--format=oldgnu'.
+Also supported is the gnu format of GNU tar 1.15.1 specified by '--format=gnu'
+</PARA>
+<PARA>
+<SBR>
+The defacto cpio formats are also supported.
+"new ASCII" (sometimes called SVR4 cpio) and "crc" cpio formats with header magic "070701" and "070702"
+respectively.
+</PARA>
+<PARA>
+<SBR>
+Support for "pax Interchange Format" (Extended header tar) described in IEEE 1003.1-2001
+under the "pax" manual page has been implemented for POSIX file attributes as of release 1.12 (c Aug2014).
+The 'swpackage' utility will generate extended headers on an as needed basis when the --format=pax is used.
+Support for POSIX ACL and SELinux attributes is planned.
+</PARA>
+<PARA>
+<SBR>
+The entirety of the output byte stream is a single valid file of one the formats mentioned above.
+</PARA>
+<PARA>
+<SBR>
+The swbis implementation writes its output to stdout.  The default output block size is 10240 bytes.
+The last block is not padded and therefore the last write(2) may be a short write.
+The selected block size does not affect the output file contents.
+</PARA>
+<PARA>
+<SBR>
+The swbis implementation is biased, in terms of capability and default settings, to the tar format.
+Package signing is only supported in tar format.
+</PARA>

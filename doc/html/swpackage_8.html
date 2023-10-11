@@ -1,0 +1,1106 @@
+<HTML>
+<HEAD>
+<TITLE>swpackage(8)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>swpackage(8)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<li><a href="#OPTIONS">OPTIONS</a>
+<li><a href="#EXTENDED OPTIONS">EXTENDED OPTIONS</a>
+<ul><li><a href="#Posix"><font size=-1>Posix</font></a>
+<li><a href="#Swbis Implementation"><font size=-1>Swbis Implementation</font></a>
+</ul><li><a href="#USAGE EXAMPLES">USAGE EXAMPLES</a>
+<ul><li><a href="#Options and Option Files"><font size=-1>Options and Option Files</font></a>
+<li><a href="#Preview the output"><font size=-1>Preview the output</font></a>
+<li><a href="#Create a signed package"><font size=-1>Create a signed package</font></a>
+<li><a href="#Resign a package"><font size=-1>Resign a package</font></a>
+<li><a href="#Idempotent Invocation"><font size=-1>Idempotent Invocation</font></a>
+<li><a href="#ALternative Format Translation"><font size=-1>ALternative Format Translation</font></a>
+</ul><li><a href="#PACKAGE SIGNING">PACKAGE SIGNING</a>
+<ul><li><a href="#Description"><font size=-1>Description</font></a>
+<li><a href="#Signature Generation"><font size=-1>Signature Generation</font></a>
+<li><a href="#Passphrase Handling"><font size=-1>Passphrase Handling</font></a>
+</ul><li><a href="#SIGNATURE VERIFICATION">SIGNATURE VERIFICATION</a>
+<ul><li><a href="#Overview"><font size=-1>Overview</font></a>
+<li><a href="#Manual Verification"><font size=-1>Manual Verification</font></a>
+<li><a href="#Manual Verification Using Standard Tools"><font size=-1>Manual Verification Using Standard Tools</font></a>
+</ul><li><a href="#SWPACKAGE OUTPUT FORMAT">SWPACKAGE OUTPUT FORMAT</a>
+<li><a href="#SWPACKAGE INPUT FILE FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+<ul><li><a href="#EXTENDED DEFINITIONS"><font size=-1>EXTENDED DEFINITIONS</font></a>
+<li><a href="#SWBIS PSF CONVENTIONS"><font size=-1>SWBIS PSF CONVENTIONS</font></a>
+</ul><li><a href="#SAMPLE PRODUCT SPEC FILES">SAMPLE PRODUCT SPEC FILES</a>
+<li><a href="#RETURN VALUE">RETURN VALUE</a>
+<li><a href="#SIDE EFFECTS">SIDE EFFECTS</a>
+<li><a href="#ENVIRONMENT">ENVIRONMENT</a>
+<ul><li><a href="#SWPACKAGEPASSPHRASE"><font size=-1>SWPACKAGEPASSPHRASE</font></a>
+<li><a href="#GNUPGHOME"><font size=-1>GNUPGHOME</font></a>
+<li><a href="#GNUPGNAME"><font size=-1>GNUPGNAME</font></a>
+</ul><li><a href="#REQUISITE UTILITIES">REQUISITE UTILITIES</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#APPLICABLE STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swpackage -- Package a software distribution.
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>swpackage</b>    # Filter: read PSF on stdin, write a tar archive to stdout
+
+       <b>swpackage -s- @-</b>  # Absolutely explicit, same as above
+
+       <b>swpackage @FILE</b>
+
+       <b>swpackage</b>  [-p]  [-s <i>psf</i><b>_</b><i>file</i>]  [-f <i>file</i>] [-x <i>option=value</i>] \
+       [-X <i>options</i><b>_</b><i>file</i>] [-W <i>option</i>] [software_selections] [@targets]
+
+       <b>swpackage --help</b> # more authoritative documentation
+
+       <b>swpackage</b>  [options] --to-swbis [-s package_file]   # format translator
+
+       <b>swpackage</b>  [options] --resign [-s package_file]   # modify signatures
+       <b>swpackage</b>  [options] --remove-signature=N [-s package_file]
+       <b>swpackage</b>  [options] --replace-signature=N [-s package_file]
+
+
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>swpackage</b> reads a Product Specification File (PSF) and writes a
+       distribution to the specified target.  If no options are given a PSF is
+       read on stdin and a distribution is written to the default target
+       either a directory, device, or standard output.  To specify standard
+       output use a dash '-' as the target.
+</pre><h3><a name="OPTIONS"><b>OPTIONS</b></a></h3><pre>       <b>software_selections</b>
+              Refer to the software objects (products, filesets) on which to
+              be operated. (Not yet implemented)
+
+       <b>targets</b>
+              Refers to the software_collection where the software selections
+              are to be applied.  To specify standard output use a  dash '-',
+              this overrides media_type setting to 'serial'.  Target may be a
+              file, or device file or '-'
+
+       <b>-f FILE</b>
+              Reads software_selections from FILE. (Not implemented).
+
+       <b>-p</b>
+              Preview the package.  Perform all the packaging operations
+              except writing the target.  In verbose level 1, nothing is
+              written.  Higher verbose levels write information on stdout.
+              Error and warning messages are written to stderr for verbose
+              levels 1 and higher.
+
+
+       <b>-s PSF</b>
+              Specify the PSF file, &quot;-&quot; is standard input.
+
+       <b>-x option=value</b>
+              Specify the extended option overriding the defaults file value.
+
+       <b>-X FILE</b>
+              Specify the extended options filename, FILE,  overriding the
+              default filenames.  This option may be given more then once. If
+              the resulting specified value is an empty string then reading of
+              any options file is disabled.
+
+       <b>-v</b>
+              (Implementation extension.) Given one time it is identical to -x
+              verbose=2.  This option can be given multiple times with
+              increasing effect.
+                   level 0: silent on stdout and stderr (not implemented).
+                   level 1: fatal and warning messages.
+              -v   level 2: level 1 plus file list and trailer message.
+              -vv  level 3: level 2 verbose tar-like listing.
+              -vvv level 4: level 3 extra verbose tar listing.
+
+       <b>-b BYTES</b>
+              Set blocksize to BYTES number of bytes (octets).  The default is
+              10240.  (implementation extension)
+
+       <b>--version, -V</b>
+              <b>Alternate Mode</b>: Show version. (Implementation extension)
+
+       <b>--help</b>
+              <b>Alternate Mode</b>: Show help (Implementation extension)
+
+       <b>-W option[,option,...]</b>
+              Specify the implementation extension option.
+              Syntax: -W option[=option_argument[,option...]
+              Options may be separated by a comma.  The implementation
+              extension options may also be given individually using the
+              '--long-option[=option_arg]' syntax.
+
+       <b>-W cksum</b>
+              Compute POSIX cksum of the individual files.
+
+       <b>-W file-digests -W digests</b>
+              Compute md5 digests of the individual files.  (-W digests is
+              deprecated, use -W file-digests).
+
+       <b>-W files</b>
+              Store the distribution file list in .../dfiles/files.
+
+       <b>-W dir=NAME</b>
+              Use NAME as the path name prefix of a distribution and also as
+              the value of the distribution.control_directory and
+              distribution.tag attribute (if not set).  May be set to an empty
+              string to eliminate stray leading &quot;./&quot;.
+
+       <b>-W sign</b>
+              Compute the md5sum, sha1sum and adjunct_md5sum digests and sign
+              the package.
+
+       <b>-W dummy-sign</b>
+              Same as -W sign except use a dummy signature.  The signer
+              program is not run and no password is required.
+
+       <b>-W signer-pgm=SIGNER</b>
+              Recognized SIGNERs are GPG, PGP2.6, and PGP5.  swverify only
+              supports GPG, however, other types can be verified manually
+              using the options of swverify and command line utilities.
+
+       <b>-W archive-digests</b>
+              Compute the md5sum, sha1sum and adjunct_md5sum digests.  See
+              <a href=sw_5.html>sw(5)</a> for info on the digest and signed data input files.  The
+              sha1sum and md5sum attributes have identical input streams.
+
+       <b>-W no-sha1</b>
+              Do not compute the sha1 digest even if directed to by other
+              options.  (Deprecated: There is limited reason to use this
+              option).
+
+       <b>-W signed-file</b>
+              Write only the signed data to the specified target but do not
+              sign.  (Deprecated: There is limited reason to use this option).
+
+       <b>-W gpg-name=NAME</b>
+              Use NAME as the user ID to sign.  NAME becomes the option arg of
+              the gpg --local-user option.
+
+       <b>-W gpg-path=PATH</b>
+              Use PATH as the gpg homedir.
+
+       <b>-W gzip</b>
+              compress output with file system gzip utilty
+
+       <b>-W bzip2</b>
+              compress output with file system bzip2 utility
+       <b>-W lzma</b>
+              compress output with file system lzma utility
+
+       <b>-W symmetric</b>
+              encrypt output with file system gpg utility
+
+       <b>-W encrypt-for-recipient=NAME</b>
+              encrypt with NAME's public key using file system gpg utility
+
+
+       <b>-W source=FILE</b>
+              Use serial archive located at FILE as the source instead of the
+              file system.  The files referred by the PSF are taken from the
+              serial archive and not the file system.
+
+       <b>-W numeric-owner</b>
+              Same as GNU tar option.  Emitted archive has only uid and gids.
+
+       <b>-W absolute-names</b>
+              Same as GNU tar option.  Leading slash '/' are always stripped
+              unless this option is given.
+
+       <b>-W format=FORMAT</b>
+              The default format is 'pax'.  The pax format will only generate
+              extended headers if needed.  FORMAT is one of:
+
+               ustar   is the POSIX.1 tar format capable of storing
+                       pathnames up to 255 characters in length.
+                       Identical to GNU tar 1.15.1 --format=ustar
+               ustar0  is a different POSIX.1 tar personality.
+                       Identical to GNU tar 1.13.25 --posix -b1 for 99 char pathnames
+                       Has different rendering of device numbers for non-device files,
+                       but otherwise identical to 'ustar'
+               gnu     Identical to GNU tar version 1.15.1 --format=gnu
+               oldgnu  Identical to GNU tar version 1.13 and later with
+                           block size set to 1. i.e. with option -b1.
+                       Also identical to GNU tar 1.15.1 --format=oldgnu
+               gnutar  same as oldgnu, oldgnu preferred.
+               pax     Extended header tar (Default)
+               odc     Posix.1 cpio (magic 070707).
+               newc    cpio format (magic 070701).
+               crc     cpio format (magic 070702).
+               bsdpax3 Identical to pax v3.0, ustar format with option -b 512.
+
+       <b>-W pax-header-pid=NUMBER</b>
+              Sets the number used in any pax header naming scheme to NUMBER.
+              You must use this option to make archive identical in subsequent
+              (back-to-back) invocations.
+
+       <b>-W uuid=STRING</b>
+              Sets the uuid string to STRING instead of calling <a href=uuid_1.html>uuid(1)</a> You
+              must use this option to make the catalog directory identical in
+              subsequent (back-to-back) invocations.
+
+       <b>-W create-time=TIME</b>
+              Applies to catalog files and the create_time attribute.  TIME is
+              the seconds since the Unix Epoch.  You must use this option to
+              make the catalog directory identical in subsequent (back-to-
+              back) invocations.
+
+       <b>-W list-psf</b>
+              Write the PSF to stdout after having processed the extended
+              definitions.
+
+       <b>-W to-swbis</b>
+              <b>Alternate Mode</b>: Read a package on standard input and write a
+              POSIX package on standard output.  Requires the
+              .../libexec/swbis/lxpsf program.  Supported formats are any
+              supported format of lxpsf.  Identical to:
+              /swbis/lxpsf --psf-form3 -H ustar | swpackage -Wsource=- -s@PSF
+
+       <b>-W passphrase-fd=N</b>
+              Read the passphrase on file descriptor N.
+
+       <b>-W passfile=FILE</b>
+              Read the passphrase from FILE in the file system.  Setting FILE
+              to /dev/tty resets (i.e unsets) all passphrase directives, thus
+              establishing the default action, reading from the terminal.
+
+       <b>-W dir-owner=OWNER</b>
+              Set the owner of the leading directory archive member to OWNER.
+              If the option arg is &quot;&quot;, then the owner is the owner of the
+              current directory.
+
+       <b>-W dir-group=OWNER</b>
+              Set the group of the leading directory archive member to OWNER.
+              If the option arg is &quot;&quot;, then the owner is the owner of the
+              current directory.
+
+       <b>-W dir-modep=MODE</b>
+              Set the file permissions mode of the leading directory archive
+              member to MODE.
+
+       <b>-W catalog-owner=OWNER</b>
+              Set the owner of the catalog section to OWNER.
+
+       <b>-W catalog-group=GROUP</b>
+              Set the group of the catalog section to GROUP.
+
+       <b>-W files-from=NAME</b>
+              Read a list of files from file NAME.  Directories are not
+              descended recursively.
+
+       <b>-W show-options-files</b>
+              <b>Alternate Mode</b>: Show the complete list of options files and if
+              they are found.
+
+       <b>-W show-options</b>
+              <b>Alternate Mode</b>: Show the options after reading the files and
+              parsing the command line options.
+
+       <b>-W no-catalog</b>
+              Do not write the catalog section.
+
+       <b>-W no-front-dir</b>
+              Do not write the directory archive members that preceed the
+              catalog section.
+
+       Signature Modification Options.  The source file via '-s' option is a
+       previously signed archive file.
+
+       <b>--addsign</b>
+              <b>Alternate Mode</b>: Same as --add-signature-first
+
+       <b>--delsign</b>
+              <b>Alternate Mode</b>: Opposite of --addsign,  Same as --remove-
+              signature=1
+
+       <b>--add-signature-first</b>
+              <b>Alternate Mode</b>: Add signature first in the list of package
+              signatures.  The last signature, by convention, is the primary
+              signature.
+
+       <b>--add-signature-last</b>
+              <b>Alternate Mode</b>: Add signature last in the list of package
+              signatures.  The last signature, by convention, is the primary
+              signature.
+       <b>--replace-signature=N</b>
+              <b>Alternate Mode</b>: Replace Nth signature, 0 means last signature.
+       <b>--remove-signature=N</b>
+              <b>Alternate Mode</b>: Remove Nth signature, 0 means last signature.
+       <b>--resign</b>
+              <b>Alternate Mode</b>: Same as --replace-signature=0
+       <b>--resign-test, --zfilter</b>
+              <b>Alternate Mode</b>: Copy from source to target without altering.
+              Does not generate a signature.  The output should be identical
+              to the input.   Also has unintended use of accessing the
+              compression pipeline function of swpackage.
+
+       <b>--recompress</b>
+              <b>Modifier to alternate Mode</b>: Applies when modifying signature.
+              The compression methods of the input file are detected and the
+              output is compressed to match.
+
+       <b>--overwrite</b>
+              <b>Modifier to alternate Mode</b>: Overwrites file specified as the
+              source name (by the -s FILE option).  Will likely do so safely.
+</pre><h3><a name="EXTENDED OPTIONS"><b>EXTENDED OPTIONS</b></a></h3><pre>       These extended options can be specified on the command line using the
+       -x option or from the defaults file, swdefaults.
+
+   <a name="Posix"><b>Posix</b></a>
+       Shown below is an actual portion of a defaults file which show default
+       values.  These options are set in the /usr/lib/swbis/swdefaults or the
+       ~/.swdefaults file.
+
+       swpackage.distribution_target_directory  = /var/spool/sw   # Not used
+       swpackage.distribution_target_serial     = -        # Not used
+       swpackage.enforce_dsa                    = false    # Not used
+       swpackage.follow_symlinks                = false    # Not used
+       swpackage.logfile          = /var/lib/swbis/swpackage.log   # Not used
+       swpackage.loglevel                       = 1         # Not used
+       swpackage.media_capacity                 = 0         # Not used
+       swpackage.media_type                     = serial    # Not used
+       swpackage.psf_source_file                = -         # Not used
+       swpackage.software                       =           # Not used
+       swpackage.verbose                        = 1         # May be 1 2 or 3
+
+   <a name="Swbis Implementation"><b>Swbis Implementation</b></a>
+       These extended options can be specified on the command line using
+       -Woption=optionarg or --option=optionarg syntax.
+
+       These options are set in the /usr/lib/swbis/swbisdefaults or the
+       ~/.swbis/swbisdefaults file.
+
+       swpackage.swbis_cksum                    = &quot;false&quot;   # true or false
+       swpackage.swbis_file_digests             = &quot;false&quot;   # true or false
+       swpackage.swbis_file_digests_sha2        = &quot;false&quot;   # true or false
+       swpackage.swbis_files                    = &quot;false&quot;   # true or false
+       swpackage.swbis_sign                     = &quot;false&quot;   # true or false
+       swpackage.swbis_archive_digests          = &quot;false&quot;   # true or false
+       swpackage.swbis_archive_digests_sha2     = &quot;false&quot;   # true or false
+       swpackage.swbis_gpg_name                 = &quot;&quot;
+       swpackage.swbis_gpg_path                 = &quot;~/.gnupg&quot;
+       swpackage.swbis_gzip                     = &quot;false&quot;   # true or false
+       swpackage.swbis_bzip2                    = &quot;false&quot;   # true or false
+       swpackage.swbis_numeric_owner            = &quot;false&quot;   # true or false
+       swpackage.swbis_absolute_names           = &quot;false&quot;   # true or false
+       swpackage.swbis_format                   = &quot;ustar&quot;  # gnutar or ustar
+       swpackage.swbis_signer_pgm               = &quot;GPG&quot; # GPG or PGP5 or PGP2.6
+</pre><h3><a name="USAGE EXAMPLES"><b>USAGE EXAMPLES</b></a></h3><pre>       Here are some commonly used options.
+
+   <a name="Options and Option Files"><b>Options and Option Files</b></a>
+       Show the option file options and the option files that determine the
+       default values.
+
+            swpackage --show-options
+                 # and
+            swpackage --show-options-files
+
+   <a name="Preview the output"><b>Preview the output</b></a>
+       Show a verbose tar-like file listing on stdout
+
+            swpackage -pv
+                  # or
+            swpackage -pvv
+
+   <a name="Create a signed package"><b>Create a signed package</b></a>
+       Read the PSF on standard input, sign using 'admin' key using the gpg-
+       agent.  Include sha2 digests for the files and archive. Include the
+       file list, compress the output using xz writing to standard output.
+
+            swpackage -s - --sign --use-agent --gpg-name=admin --files \
+                 --sha1 --sha2 --xz @-
+
+   <a name="Resign a package"><b>Resign a package</b></a>
+       Resign a previously signed package, overwriting the original file
+
+            swpackage --resign -s foo.tar.gz --overwrite --recompress
+
+   <a name="Idempotent Invocation"><b>Idempotent Invocation</b></a>
+       Use special options to obtain an identical package two or more times
+
+            swpackage --create-time=1406254892 \
+                 --uuid=ed3b9432-3ba1-4c01-a125-e22fb94588e2 \
+                 --pax-header-pid=1001
+
+   <a name="ALternative Format Translation"><b>ALternative Format Translation</b></a>
+       Execute the internally generated pipeline for format translation
+       manually
+
+            # the following is equivalent to  'swpackage --to-swbis'
+
+                 /usr/local/libexec/swbis/lxpsf --psf-form3 \
+                        -H ustar | swpackage -Wsource=- -s@PSF
+</pre><h3><a name="PACKAGE SIGNING"><b>PACKAGE SIGNING</b></a></h3><pre>       Support for embedded cryptographic signature
+
+   <a name="Description"><b>Description</b></a>
+       Package signing is accomplished by including, as a package attribute, a
+       detached signature in the package metadata (the catalog section of the
+       package).  The signed data is the catalog section of the package (see
+       <a href=sw_5.html>sw(5)</a> for a description) excluding the signature files archive header
+       and data.  The package leading directory that does not contain the
+       /catalog/ directory in its name is not included in the signed stream.
+       The signed stream is terminated by <a href=two _2.html>two (2)</a> null tar blocks (which are
+       not in the actual package file).  The storage section (or payload) of
+       the package is included in the signed data by computing its md5 and
+       sha1 message digests and storing these as attributes in the catalog
+       section.
+
+   <a name="Signature Generation"><b>Signature Generation</b></a>
+       The signature is generated by the file system signing utility.
+       Currently, swpackage supports GPG PGP-2.6 and PGP-5.  The default is
+       GPG but can be selected using the <b>-Wsigner-pgm</b> command line option and
+       the <b>swpackage.swbis_signer_pgm</b> defaults file option.  The options and
+       program can the displayed with the <b>-Wshow-signer-pgm</b> option.  The
+       options in each case produce a detached ascii-armored signature.  The
+       maximum length for the ascii armored file is 1023 bytes.
+
+   <a name="Passphrase Handling"><b>Passphrase Handling</b></a>
+       The passphrase can be read from the tty, a file descriptor, and
+       environment variable or the GNUpg passphrase agent.  These are
+       controlled by the options or the environment variables SWPACKAGEPASSFD
+       and SWPACKAGEPASSPHRASE.  Placing your passphrase in an environment
+       variable is insecure but may be usefull to sign packages with a test
+       key and later replace it [when on a different host for example].
+</pre><h3><a name="SIGNATURE VERIFICATION"><b>SIGNATURE VERIFICATION</b></a></h3><pre>       swpackage does not perform verification of the embedded cryptographic
+       signature, although, a description is included here for completness.
+
+   <a name="Overview"><b>Overview</b></a>
+       Verification requires verifying the payload section md5 and sha1
+       message digests and then verifying the signature.  Naturally, it is
+       required that the signed data include the payload messages digests.
+       See swverify.
+
+   <a name="Manual Verification"><b>Manual Verification</b></a>
+       Verification requires re-creating the signed and digested byte streams
+       from the archive file.  This is not possible using any known extant tar
+       reading utility because of a lack of ability to write selected archive
+       members to stdout instead of installing in the file system; however,
+       the swverify utility can be used to write these bytes streams to stdout
+       allowing manual inspection and verification.  See swverify.
+
+   <a name="Manual Verification Using Standard Tools"><b>Manual Verification Using Standard Tools</b></a>
+       Verification using standard GNU/Linux tools is possible if the archive
+       is installed in the file system.  Success depends on the following
+       factors:
+
+       1) The tar utility preserves modification times
+          (e.g. not GNU tar 1.3.19).
+       2) The archive does not contain Symbolic Links
+          (see <a href=sw_5.html>sw(5)</a> for explanation).
+       3) The file system is a Unix file system (e.g. ext2).
+       4) The package was created using -Wformat=gnutar or, -Wformat=ustar
+          with no file name longer than 99 octets.
+
+        Recreating the signed and digested byte streams is then accomplished
+       using GNU tar and the file list stored in the
+       &lt;<i>path</i>&gt;/catalog/dfiles/files attribute file as follows:
+
+       In this example, the package has a single path name prefix called,
+       <b>namedir</b> and the file owner/group are root.  These restrictions are
+       suited to source packages.
+       Verify the signature:
+
+         #!/bin/sh
+         tar cf - -b1 --owner=root --group=root \
+         --exclude=namedir/catalog/dfiles/signature  \
+         namedir/catalog | gpg --verify namedir/catalog/dfiles/signature -
+
+        If this fails try using GNU tar option --posix.  If this fails then
+       you are out of luck as nothing in the catalog section can be trusted.
+
+       Verify the payload digests:
+
+         #!/bin/sh
+         grep -v namedir/catalog  namedir/catalog/dfiles/files | \
+         tar cf - -b1 --owner=root --group=root \
+         --no-recursion --files-from=- | md5sum
+         cat namedir/catalog/dfiles/md5sum
+
+        Likewise for the sha1 digest.
+
+       If the package has symbolic links, Verify the adjunct_md5sum:
+
+         #!/bin/sh
+         grep -v namedir/catalog  namedir/catalog/dfiles/files | \
+         ( while read file; do if [ ! -h $file ]; then echo $file; fi done; )|\
+         tar cf - -b1 --owner=root --group=root \
+         --no-recursion --files-from=- | md5sum
+         cat namedir/catalog/dfiles/adjunct_md5sum
+
+        The symbolic link files must be verified manually by comparing to the
+       INFO file information.
+</pre><h3><a name="SWPACKAGE OUTPUT FORMAT"><b>SWPACKAGE OUTPUT FORMAT</b></a></h3><pre>       The output format is either one of two formats specified in POSIX.1
+       (ISO/IEC 9945-1) which are tar (header magic=ustar) or cpio (header
+       magic=070707).  The default format of the swbis implementation is
+       &quot;ustar&quot;.  The POSIX spec under specifies definitions for some of the
+       ustar header fields.  The personality of the default swbis ustar format
+       mimics GNU tar 1.15.1 and is designed to be compliant to POSIX.1.  The
+       personality of the &quot;ustar0&quot; format mimics, for pathnames less than 99
+       octets,  GNU tar 1.13.25 using the &quot;-b1 --posix&quot; options.  This bit-
+       for-bit sameness does not exist for pathnames greater than 99 chars as
+       swbis follows the POSIX spec and GNU tar 1.13.25 does not.  The
+       &quot;ustar0&quot; ustar personality is deprecated.  It is only slightly
+       different from 'ustar' in how device number fields are filled (with
+       spaces, zeros or NULs) for non-device files.
+
+       In addition the swbis implementation supports several other tar
+       variants including bit-for-bit mimicry of GNU tar (1.13.25) default
+       format which uses a non-standard name split and file type (type 'L').
+       This format is known as '--format=oldgnu'.  Also supported is the gnu
+       format of GNU tar 1.15.1 specified by '--format=gnu'
+
+       The defacto cpio formats are also supported.  &quot;new ASCII&quot; (sometimes
+       called SVR4 cpio) and &quot;crc&quot; cpio formats with header magic &quot;070701&quot; and
+       &quot;070702&quot; respectively.
+
+       Support for &quot;pax Interchange Format&quot; (Extended header tar) described in
+       IEEE 1003.1-2001 under the &quot;pax&quot; manual page has been implemented for
+       POSIX file attributes as of release 1.12 (c Aug2014).  The 'swpackage'
+       utility will generate extended headers on an as needed basis when the
+       --format=pax is used.  Support for POSIX ACL and SELinux attributes is
+       planned.
+
+       The entirety of the output byte stream is a single valid file of one
+       the formats mentioned above.
+
+       The swbis implementation writes its output to stdout.  The default
+       output block size is 10240 bytes.  The last block is not padded and
+       therefore the last <a href=write_2.html>write(2)</a> may be a short write.  The selected block
+       size does not affect the output file contents.
+
+       The swbis implementation is biased, in terms of capability and default
+       settings, to the tar format.  Package signing is only supported in tar
+       format.
+</pre><h3><a name="SWPACKAGE INPUT FILE FORMAT"><b>SWPACKAGE INPUT FILE FORMAT</b></a></h3><pre>       The input file is called a product specification file or PSF.  It
+       contains information to direct swpackage and information that is
+       package meta-data [that is merely transferred unchanged into the global
+       INDEX file].
+
+       A PSF may contain object keywords, attributes (keyword/value pairs) and
+       Extended Definitions (described below).  An object keyword connotes a
+       logical object (i.e. software structure) supported by the standard.  An
+       object keyword does not have a value field after it, as it contains
+       Attributes and Extended Definitions.  An attribute keyword conotes an
+       attribute which is always in the form of a keyword/value pair.
+
+       Attribute keywords not recognized by the standard are allowed and are
+       transferred into the INDEX file.  Object keywords not recognized by the
+       standard are not allowed and will generate an error.  Extended
+       Definitions may only appear in a PSF (never in a INDEX or INFO created
+       by swpackage).  Extended Definitions are translated [by swpackage] into
+       object keywords (objects) and attributes recognized by the standard.
+
+       Comments in a PSF are not transferred into the INDEX file by the swbis
+       implementation of swpackage.
+
+       The file syntax is the same as a <b>INDEX</b>, or <b>INFO</b> file.  A PSF may
+       contain all objects defined by the standard as well as extended
+       definitions.
+
+       For additional information see
+       XDSA C701 <a href="http://www.opengroup.org/publications/catalog/c701.htm">http://www.opengroup.org/publications/catalog/c701.htm</a>, or
+       sw manual page.
+
+   <a name="EXTENDED DEFINITIONS"><b>EXTENDED DEFINITIONS</b></a>
+       A Product Specification File (PSF) can contain Extended Definitions in
+       the <b>fileset</b>, <b>product</b> or <b>bundle</b> software definitions.  They would have
+       the same level or containment relationship as a <b>file</b> or <b>control_file</b>
+       definition in the same contaning object.
+
+       Extended Definitions represent a minimal, expressive form for
+       specifying files and file attributes.  Their use in a PSF is optional
+       in that an equivalent PSF can be constructed without using them,
+       however, their use is encouraged for the sake of brevity and
+       orthogonality.
+
+       The swbis implementation requires that no [ordinary] attributes appear
+       after Extended Definitions in the containing object, and, requires that
+       Extended Definitions appear before logically contained objects.  That
+       is, the parser uses the next object keyword to syntacticly and
+       logically terminate the current object even if the current object has
+       logically contained objects.
+
+   <b>o</b>  <b>Extended Control File Definitions</b>
+            checkinstall  <i>source</i>  [<i>path</i>]
+            preinstall    <i>source</i>  [<i>path</i>]
+            postinstall   <i>source</i>  [<i>path</i>]
+            verify        <i>source</i>  [<i>path</i>]
+            fix           <i>source</i>  [<i>path</i>]
+            checkremove   <i>source</i>  [<i>path</i>]
+            preremove     <i>source</i>  [<i>path</i>]
+            postremove    <i>source</i>  [<i>path</i>]
+            configure     <i>source</i>  [<i>path</i>]
+            unconfigure   <i>source</i>  [<i>path</i>]
+            request       <i>source</i>  [<i>path</i>]
+            unpreinstall  <i>source</i>  [<i>path</i>]
+            unpostinstall <i>source</i>  [<i>path</i>]
+            space         <i>source</i>  [<i>path</i>]
+            control_file  <i>source</i>  [<i>path</i>]
+
+       The <i>source</i> attribute defines the location in distributors's development
+       system where the swpackage utility will find the script.  The keyword
+       is the value of the <i>tag</i> attribute and tells the utilities when to
+       execute the script.  The <i>path</i> attribute is optional and specifies the
+       file name in the packages distribution relative to the
+       control_directory for software containing the script. If not given the
+       <i>tag</i> value is used as the filename.
+
+   <b>o</b>  <b>Directory Mapping</b>
+          directory  <i>source</i>  [<i>destination</i>]
+
+       Applies the <i>source</i> attribute as the directory under which the
+       subsequently listed files are located.  If <i>destination</i> is defined it
+       will be used as a prefix to the <i>path</i> (implied) file definition.  <i>source</i>
+       is typically a temporary or build location and <i>dest</i> is its unrealized
+       absolute pathname destination.
+
+   <b>o</b>  <b>Recursive File Definition</b>
+         file *
+
+       Specifies every file in current source directory.  The <i>directory</i>
+       extended definition must be used before the recursive specification.
+
+   <b>o</b>  <b>Explicit File Definition</b>
+         file [-t <i>type</i>] [-m <i>mode</i>] [-o <i>owner</i>[,<i>uid</i>]] [-g <i>group</i>[,<i>gid</i>]] [-n] [-v] source [<i>path</i>]
+
+       <b>source</b>
+
+
+              <i>source</i> defines the pathname of the file to be used as the source
+              of file data and/or attributes.  If it is a relative path, then
+              swpackage searches for this file relative to the the source
+              argument of the <b>directory</b> keyword, if set.  If <b>directory</b> keyword
+              is not set then the search is relative to the current working
+              directory of the swpackage utility's invocation.
+
+              All attributes for the destination file are taken from the
+              source file, unless a <b>file_permissions</b> keyword is active, or the
+              -m, -o, or -g options are also included in the file
+              specification.
+
+       <b>path</b>
+
+              <i>path</i> defines the destination path where the file will be created
+              or installed.  If it is a relative path, then the destination
+              path of the of the <b>directory</b> keyword must be active and will be
+              used as the path prefix.  If path is not specified then <i>source</i>
+              is used as the value of path and directory mapping applied (if
+              active).
+
+       <b>-t type</b>
+
+              <i>type</i> may one of 'd' (directory), or  'h' (hard link), or 's'
+              (symbolic link).
+
+              -t d  Create a directory.
+              If <i>path</i> is not specified <i>source</i> is used as the path attribute.
+
+              -t h  Create a hard link.
+              <i>path</i> and <i>source</i> are specified.  <i>source</i> is used as the value of
+              the <i>link</i><b>_</b><i>source</i> attribute, and <i>path</i> is the value of the path
+              attribute.
+
+              -t s  Create a symbolic link.
+              <i>path</i> and <i>source</i> are specified.  <i>source</i> is used as the value of
+              the <i>link</i><b>_</b><i>source</i> attribute, and <i>path</i> is the value of the path
+              attribute.
+
+       <b>-m mode</b>
+
+              <i>mode</i> defines the octal mode for the file.
+
+   <b>o</b>  <b>Default Permission Definition</b>
+         file_permissions [-m <i>mode</i>] [-u <i>umask</i>] [-o [<i>owner</i>[,]][<i>uid</i>]] [-g [<i>group</i>[,]][<i>gid</i>]]
+
+       Applies to subsequently listed file definitions in a fileset.  These
+       attributes will apply where the file attributes were not specified
+       explicitly in a file definition.  Subsequent <b>file_permissions</b>
+       definitions simply replace previous definitions (resetting all the
+       options).
+
+       To reset the file_permission state (i.e. turn it off) use one of the
+       following:
+           file_permissions &quot;&quot;
+            or the preferred way is
+           file_permissions -u 000
+
+   <b>o</b>  <b>Excluding Files</b>
+          exclude source
+
+       Excludes a previously included file or an entire directory.
+
+   <b>o</b>  <b>Including Files</b>
+          include &lt;<i>filename</i>
+
+       The contents of <i>filename</i> may be more definitions for files.  The syntax
+       of the included file is PSF syntax.
+
+
+   <a name="SWBIS PSF CONVENTIONS"><b>SWBIS PSF CONVENTIONS</b></a>
+       This section describes attribute usage and conventions imposed by the
+       swbis implementation.  Not all attributes are listed here.  Those that
+       are have important effects or particular interest.
+
+   <b>o Distribution Attributes</b>
+       The standard defines a limited set of attributes for the distribution
+       object.  An expanded set is suggested by the informative annex however
+       a conforming implementation is not required act on them.  The reason
+       for this is a distribution may be acted upon by a conforming utility in
+       such a way that attributes of the <b>distribution</b> become invalid.  For
+       this reason, some attributes that refer to an entire &quot;package&quot; [in
+       other package managers] are referred from the product object and attain
+       their broadened scope by the distributor's convention that their
+       distribution contains just one <b>product</b>.
+
+       For example, the package NAME and VERSION are referred from the product
+       tag and revision, not the distribution's.  This convention supports
+       multiple products in a distribution and is consistent with the
+       standard.
+
+       <b>tag</b>
+
+              <i>tag</i> is the short, file system friendly, name of the
+              distribution.  Providing a distribution tag is optional.  The
+              swbis implementation will use this as the [single] path name
+              prefix if there is no distribution.control_directory attribute.
+              A distribution tag attribute and swpackage's response to it is
+              an implementation extension.  The leading package path can also
+              be controlled with the ''-W dir'' option.
+
+
+       <b>control_directory</b>
+
+              <i>control</i><b>_</b><i>directory</i>, in a distribution object, is the constant
+              leading package path.  Providing this attribute is optional.  A
+              distribution control_directory attribute and swpackage's
+              response to it is an implementation extension.  The leading
+              package path can also be controlled with the ''-W dir'' option.
+              This attribute will be generated by swpackage if not set in a
+              PSF.
+
+
+   <b>o Bundle Attributes</b>
+       A <b>bundle</b> defines a collection of products whether or not the
+       distribution has all the products present.
+
+       <b>tag</b>
+
+              <i>tag</i> is the short, file system friendly, name of the bundle.
+              This value is used by the swbis implementation as a path name
+              component in the installed software catalog.  If it is not
+              present the product tag is used.
+
+
+   <b>o Product Attributes</b>
+       A <b>product</b> defines the software product.
+
+       <b>tag</b>
+
+              <i>tag</i> is the short, file system friendly, name of the product.
+              This value is used by the swbis implementation as a path name
+              component in the installed software catalog.  It is required.
+              The swbis implementation uses it in a way that is analogous to
+              the RPMTAG_NAME attribute, namely as the public recognizable
+              name of the package.
+
+
+       <b>control_directory</b>
+
+              Is the directory name in the distribution under which the
+              product contents are located.  This value has no affect on the
+              installed software catalog.  If it is not given in a PSF then
+              the <i>tag</i> is used.
+
+
+       <b>revision</b>
+
+              Is the product revision.  It should not contain a &quot;RELEASE&quot;
+              attribute part or other version suffix modifiers.  This value is
+              used by the swbis implementation as a path name component in the
+              installed software catalog.  It is required by swinstall.
+
+
+       <b>vendor_tag</b>
+
+              This is a short identifying name of the distributor that
+              supplied the product and may associate (refer to) a <b>vendor</b>
+              object from the INDEX file that has a matching tag attribute.
+              This attribute is optional.  This attribute value should strive
+              to be unique among all distributors. The swbis implementation
+              modifies the intended usage slightly as a string that strives to
+              be globally unique for a given product.<b>tag</b> and product.<b>revision</b>.
+              In this capacity it serves to distinguish products with the same
+              revision and tag from the same or different distributor.  It
+              most closely maps to the RPMTAG_RELEASE or &quot;debian_revision&quot;
+              attributes.  It is one of the version distinguishing attributes
+              of a product specified by the standard.  It is transfered into
+              the installed_software catalog (not as a path name component) by
+              swinstall.  If this attribute exists there should also be a
+              <b>vendor</b> object in the PSF in the distribution object that has
+              this tag.  This attribute is assigned the value of
+              RPMTAG_RELEASE by swpackage when translating an RPM.
+
+
+       <b>architecture</b>
+
+              This string is one of the version attributes.  It is used to
+              disambiguate products that have the same <b>tag</b>, <b>revision</b> and
+              <b>vendor_tag</b>.  It is not used for determining a products
+              compatibility with a host.  The form is implementation defined.
+              swbis uses the output of GNU <b>config.guess</b> as the value of this
+              string.  A wildcard pattern should not be used.  The canonical
+              swbis architecture string can be listed with <b>swlist</b>. For example
+
+              swlist -a architecture @ localhost
+
+               Here are some example outputs from real systems.
+
+                  System      `uname -srm`              architecture
+              Red Hat 8.0:  Linux 2.4.18 i686        i686-pc-linux-gnu
+              OpenSolaris:  SunOS 5.11 i86pc         i386-pc-solaris2.11
+              NetBSD 3.1:   NetBSD 3.1 i386          i386-unknown-netbsdelf3.1
+              Red Hat 4.1:  Linux 2.0.36 i586        i586-pc-linux-gnulibc1
+              Debian 3.1:   Linux 2.6.8-2-386 i686   i686-pc-linux-gnu
+
+       <b>os_name os_release os_version machine_type</b>
+
+              These attributes are used to determine compatibility with a
+              host.  They correspond to the <b>uname</b> attributes defined by
+              POSIX.1.  If an value is nil or non-existent it is assumed to
+              match the host.  All attributes must match for there to be
+              compatibility.  Distributors may wish to make these values a
+              shell pattern in their PSF's so to match the intended collection
+              of hosts.  swbis uses <b>fnmatch</b> (with FLAGS=0) to determine a
+              match.
+
+
+   <b>o Fileset Attributes</b>
+       A <b>fileset</b> defines the fileset.
+
+       <b>tag</b>
+
+              <i>tag</i> is the short, file system friendly, name of the fileset.  It
+              is required although selection of filesets is  not yet supported
+              therefore the end user will have little to do with the fileset
+              tag.
+
+       <b>control_directory</b>
+
+              Is the directory name in the product under which the fileset
+              contents are located.  This value has no affect on the installed
+              software catalog.  If it is not given in a PSF then the <i>tag</i> is
+              used.
+
+   <b>o Example Source Package PSF</b>
+       This PSF packages every file is current directory. It uses nil control
+       directories so the package structure does not change relative to a
+       vanilla tarball.
+
+        distribution
+          description &quot;fooit - a program from fooware
+       that does everything.&quot;
+          title &quot;fooit - a really cool program&quot;
+          COPYING &lt; /usr/local/fooware/legalstuff/COPYING
+        vendor
+          the_term_vendor_is_misleading false
+          tag fooware
+          title fooware Consultancy Services, Inc.
+          description &quot;&quot;
+        vendor
+          the_term_vendor_is_misleading true
+          tag myfixes1
+          title Bug fixes, Set 1
+          description &quot;a place for more detailed description&quot;
+        product
+          tag fooit
+          control_directory &quot;&quot;
+          revision 1.0
+          vendor_tag myfixes1  # Matches the vendor object above
+        fileset
+           tag fooit-SOURCE
+           control_directory &quot;&quot;
+           directory .
+           file *
+           exclude catalog
+
+   <b>o Example Runtime (Binary) Package PSF</b>
+       This is a sample PSF for a runtime package.  It implies multiple
+       products (e.g. sub-packages) using the bundle.contents attribute.
+       Since the bundle and product tags exist in a un-regulated namespace and
+       are seen by end users they should be carefully chosen.   Note that the
+       bundle and product have the same tag which may force downstream users
+       to disambiguate using software selection syntax such as fooit,bv=* or
+       fooit,pv=* .
+
+        distribution
+          description &quot;fooit - a program from fooware
+       that does everything.&quot;
+          title &quot;fooit - a really cool program&quot;
+          COPYING &lt; /usr/local/fooware/legalstuff/COPYING
+
+            vendor
+               the_term_vendor_is_misleading false
+               tag fooware
+               title fooware Consultancy Services, Inc.
+               description &quot;Provider of the programs
+        that do everything&quot;
+
+            vendor
+               the_term_vendor_is_misleading true
+                tag fw0
+                title fooware fixes
+                description &quot;More fixes from the fooware users&quot;
+
+       #  Bundle definition:  Use a bundle
+            bundle
+                tag fooit
+                vendor_tag fooware
+                contents fooit,v=fw0 fooit-devel fooit-doc
+
+       #  Product definition:
+            product
+                tag fooit   # This is the package name
+                revision 1.0 # This is the package version
+                vendor_tag fw0 # This is a release name e.g. RPMTAG_RELEASE
+                postinstall scripts/postinstall
+            fileset
+                 tag fooit-RUN
+                 file doc/man/man1/fooit.1 /usr/man/man1/fooit.1
+                 file src/fooit /usr/bin/fooit
+</pre><h3><a name="SAMPLE PRODUCT SPEC FILES"><b>SAMPLE PRODUCT SPEC FILES</b></a></h3><pre>       This section shows several example PSF files.
+
+   <b>o</b>   <b>A minimal PSF to package all files in current directory.</b>
+        distribution
+        product
+          tag prod
+          control_directory &quot;&quot;
+          revision 1.0
+        fileset
+           tag files
+           control_directory &quot;&quot;
+           directory .
+           file *
+
+   <b>o</b>   <b>A PSF that uses directory mapping.</b>
+       This PSF creates a package with live system paths from source that is
+       installed in non-live temporary locations. It is modeled on the swbis
+       source package.
+
+        distribution
+        product
+          tag somepackage  # this is the package name
+          control_directory &quot;&quot;
+          revision 1.0  # this is the package revision
+        fileset
+           tag files
+           control_directory &quot;&quot;
+
+           file_permissions -o root -g root
+           directory swprogs /usr/bin
+           file swpackage
+           file swinstall
+           file swverify
+
+           file -m 755 -o root -g root / /usr/libexec/swbis
+
+           directory swprogs /usr/libexec/swbis
+           file swbisparse
+
+           directory swsupplib/progs /usr/libexec/swbis
+           file swbistar
+
+           file -m 755 -o root -g root / /usr/share/doc/swbis
+           directory . /usr/share/doc/swbis
+           file -m 444 ./README
+           file -m 444 CHANGES
+
+       When this PSF is processed by the command:
+
+                   swpackage -Wsign -s - @- | tar tvf -
+
+       It produces the following:
+
+        drwxr-x--- root/root      0 2003-06-03 ... catalog/
+        -rw-r----- root/root    307 2003-06-03 ... catalog/INDEX
+        drwxr-x--- root/root      0 2003-06-03 ... catalog/dfiles/
+        -rw-r----- root/root     65 2003-06-03 ... catalog/dfiles/INFO
+        -rw-r----- root/root     33 2003-06-03 ... catalog/dfiles/md5sum
+        -rw-r----- root/root     41 2003-06-03 ... catalog/dfiles/sha1sum
+        -rw-r----- root/root     33 2003-06-03 ... catalog/dfiles/adjunct_md5sum
+        -rw-r----- root/root    512 2003-06-03 ... catalog/dfiles/sig_header
+        -rw-r----- root/root   1024 2003-06-03 ... catalog/dfiles/signature
+        drwxr-x--- root/root      0 2003-06-03 ... catalog/pfiles/
+        -rw-r----- root/root     65 2003-06-03 ... catalog/pfiles/INFO
+        -rw-r----- root/root   1503 2003-06-03 ... catalog/INFO
+        -rwxr-xr-x root/root 510787 2003-06-03 ... usr/bin/swpackage
+        -rwxr-xr-x root/root 301255 2003-06-03 ... usr/bin/swinstall
+        -rwxr-xr-x root/root   4105 2003-06-03 ... usr/bin/swverify
+        drwxr-xr-x root/root      0 2003-06-03 ... usr/libexec/swbis/
+        -rwxr-xr-x root/root 365105 2003-06-03 ... usr/libexec/swbis/swbisparse
+        -rwxr-xr-x root/root 243190 2003-06-03 ... usr/libexec/swbis/swbistar
+        drwxr-xr-x root/root      0 2003-06-03 ... usr/share/doc/swbis/
+        -r--r--r-- root/root   8654 2003-05-27 ... usr/share/doc/swbis/README
+        -r--r--r-- root/root  10952 2003-06-03 ... usr/share/doc/swbis/CHANGES
+
+   <b>o</b>   <b>Create a PSF from a list of files.</b>
+                  find . -print |  swpackage -Wfiles-from=- -Wlist-psf
+</pre><h3><a name="RETURN VALUE"><b>RETURN VALUE</b></a></h3><pre>       0 on success, 1 on error and target medium not modified, 2 on error if
+       target medium modified.
+</pre><h3><a name="SIDE EFFECTS"><b>SIDE EFFECTS</b></a></h3><pre>        No temporary files are used in the package generation process.  When
+       using the default target of stdout (directed to /dev/null), there are
+       no file system side effects from swpackage.  GNU Privacy Guard (gpg)
+       may alter its keys when invoked for package signing.
+</pre><h3><a name="ENVIRONMENT"><b>ENVIRONMENT</b></a></h3><pre>       <b>SWPACKAGEPASSFD</b>
+              Sets the <i>--passphrase-fd</i> option.  Set the option arg to a
+              integer value of the file descriptor, or to &quot;env&quot; to read the
+              passphrase from the environment variable SWPACKAGEPASSPHRASE, or
+              to &quot;agent&quot; to cause gpg to use gpg-agent, or to &quot;tty&quot; to restore
+              default behavoir to reading passphrase from the terminal.
+
+
+       <a name="SWPACKAGEPASSPHRASE"><b>SWPACKAGEPASSPHRASE</b></a>
+              Use the value as the passphrase if <i>--passphrase-fd</i> is set to
+              &quot;env&quot;
+
+
+       <a name="GNUPGHOME"><b>GNUPGHOME</b></a>
+              Sets the --gpg-home option.
+
+
+       <a name="GNUPGNAME"><b>GNUPGNAME</b></a>
+              Sets the --gpg-name option, which is turn set the --local-user
+              option of gpg.
+
+</pre><h3><a name="REQUISITE UTILITIES"><b>REQUISITE UTILITIES</b></a></h3><pre>       Swpackage does not use any archive writing utilities, it has its own
+       code to generate archives.
+       Package signing uses one of the following:
+        /usr/bin/gpg
+        /usr/bin/pgp   (PGP 2.6.x)
+        /usr/bin/pgps  (PGP 5)
+
+       Swpackage will use /usr/bin/uuidgen if present to create the uuid.
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre>       libdir/swbis/swdefaults
+       libbir/swbis/swbisdefaults
+       $HOME/.swbis/swdefaults
+       $HOME/.swbis/swbisdefaults
+</pre><h3><a name="APPLICABLE STANDARDS"><b>APPLICABLE STANDARDS</b></a></h3><pre>       ISO/IEC 15068-2:1999, Open Group CAE C701.
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       info swbis
+
+       <a href=sw_5.html>sw(5)</a>, <a href=swbis_1.html>swbis(1)</a>, <a href=swpackage_5.html>swpackage(5)</a>, <a href=swbisparse_1.html>swbisparse(1)</a>, <a href=swign_1.html>swign(1)</a>, <a href=swverify_8.html>swverify(8)</a>
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        <a href=swpackage_8.html>swpackage(8)</a>: The packaging utility of the swbis project.
+        Author: Jim Lowe   Email: jhlowe at acm.org
+        Version: 1.13.1
+        Last Updated: 2014-07-15
+        Copying: GNU Free Documentation License
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       A comment after an object keyword is wrongly not allowed by this PSF
+       parser.  The --dir=&quot;&quot; does not do what one would expect sometimes.  The
+       output stream content is unaffected by the blocksize, that is the last
+       write may be short write.  Signing is broken for cpio format archives.
+
+
+
+                                                                  <a href=swpackage_8.html>swpackage(8)</a>
+</pre><hr></body></html>

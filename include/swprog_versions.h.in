@@ -1,0 +1,15 @@
+#ifndef SWPROG_VERSIONS_H
+#define SWPROG_VERSIONS_H
+
+#define SWBIS_RELEASE		"__VERSION__"
+#define SWBIS_DATE		"2007-06-17"    /* Last Updated */
+
+#define SWPACKAGE_VERSION	"__VERSION__"
+#define SWINSTALL_VERSION	"__VERSION__"
+#define SWCOPY_VERSION		"__VERSION__"
+#define SWLIST_VERSION		"__VERSION__"
+#define SWREMOVE_VERSION	"__VERSION__"
+#define SWVERIFY_VERSION	"__VERSION__"
+#define SWCONFIG_VERSION	"__VERSION__"
+
+#endif

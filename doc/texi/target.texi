@@ -1,0 +1,87 @@
+
+Source and Target Specification and Logic
+     
+     Synopsis:
+          Posix:
+               host[:path]
+               host
+               host:
+               /path  # Absolute path
+
+          Swbis Extension:
+               [user@]host[:path]
+               [user@]host_port[:path]
+               :path
+
+          Swbis Multi-hop Target Extension:
+               # ':' is the target delimiter
+	       # '_' delimits a port number in the host field
+
+               [user@]host[@@[user@]host[@@...]][:file] 
+               [user@]host_port[@@[user@]host[@@...]][:file] 
+              
+               # Using ':', a trailing colon is used to
+               # disambiguate between a host and file.
+	       # For Example,
+               :file
+               host:
+               host
+               host:file
+               host:host:
+               host_port:host_port:
+               host:host:file
+               user@host:user@host:
+               user@host:user@host:host:
+               user@host:user@host:file
+ 
+     A more formal description:
+
+     target : HOST_CHARACTER_STRING ':' PATHNAME_CHARACTER_STRING
+            | HOST_CHARACTER_STRING ':'
+            | HOST_CHARACTER_STRING 
+            | PATHNAME_CHARACTER_STRING 
+            | ':' PATHNAME_CHARACTER_STRING   # Impl extension
+            ; 
+
+       PATHNAME_CHARACTER_STRING must be an absolute path unless
+                       a HOST_CHARACTER_STRING is given.  Allowing
+                       a relative path is a feature of the swbis
+                       implementation.
+
+                NOTE: A '.' as a target is an implementation
+                      extension and means extract in current
+                      directory.
+ 
+                NOTE: A '-' indicating stdout/stdin is an 
+                      implementation extension.
+
+                NOTE: A ':' in the first character indicates a filename.
+                      This is an implementation extension.
+
+       HOST_CHARACTER_STRING is an IP or hostname.
+
+    Examples:
+       Copy the  distribution /var/tmp/foo.tar.gz at 192.168.1.10
+              swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+
+
+Implementation Extension Syntax (multi ssh-hop) :
+    Syntax:
+    %start   wtarget    # the Implementation Extension Target
+                        # Note: a trailing ':' forces interpretation
+                        # as a host, not a file.
+    wtarget   : wtarget DELIM sshtarget
+              | sshtarget
+              | sshtarget DELIM
+              ; 
+    sshtarget : user '@' target # Note: only the last target
+              | target          # may have a PATHNAME, and only a host
+              ;                 * may have a user
+    target   : HOST_CHARACTER_STRING
+             | PATHNAME_CHARACTER_STRING
+             ;
+    user     : PORTABLE_CHARACTER_STRING  # The user name
+
+    DELIM    : ':'   # The multi-hop delimiter.
+             ;  
+

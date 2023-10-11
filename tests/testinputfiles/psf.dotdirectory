@@ -1,0 +1,11 @@
+distribution
+        product
+                tag product
+                control_directory ""
+        fileset
+                tag fileset
+                control_directory ""
+        file
+                path .
+                source .
+

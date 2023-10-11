@@ -1,0 +1,1137 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (c) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document 
+under the terms of the GNU Free Documentation License, Version 1.1 or any 
+later version published by the Free Software Foundation; with no Invariant 
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man swpackage_8.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<!DOCTYPE form
+[
+<!ENTITY swexout SYSTEM "swpackage_output.sgml">
+<!ENTITY swexin SYSTEM "swpackage_input.sgml">
+<!ENTITY swextdef SYSTEM "swpackage_extdef.sgml">
+<!ENTITY swpsfexamples SYSTEM "swpackage_examples.sgml">
+<!ENTITY swconventions SYSTEM "swpackage_conventions.sgml">
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY>
+
+<REFMETA>
+<REFENTRYTITLE>
+swpackage
+</REFENTRYTITLE>
+<MANVOLNUM>8</MANVOLNUM> 
+<REFMISCINFO>
+swpacakge - Software Administration
+</REFMISCINFO>
+</REFMETA>
+
+<REFNAMEDIV>
+<REFNAME>
+swpackage
+</REFNAME>
+<REFPURPOSE>
+Package a software distribution.
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>swpackage</FUNCTION>    # Filter: read PSF on stdin, write a tar archive to stdout
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage -s- @-</FUNCTION>  # Absolutely explicit, same as above
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage @FILE </FUNCTION>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage</FUNCTION>  <OPTIONAL>-p</OPTIONAL>  <OPTIONAL>-s <REPLACEABLE>psf_file</REPLACEABLE></OPTIONAL>  <OPTIONAL>-f <REPLACEABLE>file</REPLACEABLE></OPTIONAL> <OPTIONAL>-x <REPLACEABLE>option=value</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>-X <REPLACEABLE>options_file</REPLACEABLE></OPTIONAL> <OPTIONAL>-W <REPLACEABLE>option</REPLACEABLE></OPTIONAL> <OPTIONAL>software_selections</OPTIONAL> <OPTIONAL>@targets</OPTIONAL> 
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage --help</FUNCTION> # more authoritative documentation
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage</FUNCTION>  <OPTIONAL>options</OPTIONAL> --to-swbis <OPTIONAL>-s package_file</OPTIONAL>   # format translator
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swpackage</FUNCTION>  <OPTIONAL>options</OPTIONAL> --resign <OPTIONAL>-s package_file</OPTIONAL>   # modify signatures
+<FUNCTION>swpackage</FUNCTION>  <OPTIONAL>options</OPTIONAL> --remove-signature=N <OPTIONAL>-s package_file</OPTIONAL>  
+<FUNCTION>swpackage</FUNCTION>  <OPTIONAL>options</OPTIONAL> --replace-signature=N <OPTIONAL>-s package_file</OPTIONAL>
+</SYNOPSIS>
+
+</REFSYNOPSISDIV>
+
+
+<REFSECT1 ID="R1 swpackage">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>swpackage</FUNCTION>
+reads a Product Specification File (PSF) and writes a distribution
+to the specified target.  If no options are given a PSF is read on stdin
+and a distribution is written to the default target either a directory, device,
+or standard output.  To specify standard output use a dash '-' as the target.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA>
+<OPTION>software_selections</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Refer to the software objects (products, filesets)
+on which to be operated. (Not yet implemented)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>targets</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Refers to the software_collection where the software
+selections are to be applied.  To specify standard output
+use a  dash '-', this overrides media_type setting to 'serial'.
+Target may be a file, or device file or '-'
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-f FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Reads software_selections from FILE. (Not implemented).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-p</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Preview the package.  Perform all the packaging operations except
+writing the target.  In verbose level 1, nothing is written.  Higher
+verbose levels write information on stdout.  Error and warning messages
+are written to stderr for verbose levels 1 and higher.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>-s PSF</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify the PSF file, "-" is standard input.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-x option=value</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify the extended option overriding the defaults file value.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-X FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify the extended options filename, FILE,  overriding the default filenames.
+This option may be given more then once. If the resulting specified value is an empty string
+then reading of any options file is disabled.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-v</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+(Implementation extension.) Given one time it is identical to -x verbose=2.
+This option can be given multiple times with increasing effect.
+<VERB><SBR>
+     level 0: silent on stdout and stderr (not implemented).<SBR>
+     level 1: fatal and warning messages.<SBR>
+-v   level 2: level 1 plus file list and trailer message.<SBR>
+-vv  level 3: level 2 verbose tar-like listing.<SBR>
+-vvv level 4: level 3 extra verbose tar listing.<SBR>
+</VERB>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-b BYTES</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set blocksize to BYTES number of bytes (octets).  The default is 10240.
+(implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-version, -V</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Show version. (Implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-help</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Show help (Implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W option[,option,...]</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify the implementation extension option.<SBR>
+Syntax: -W option[=option_argument[,option...]<SBR>
+Options may be separated by a comma.  The implementation extension
+options may also be given individually using the '--long-option[=option_arg]' syntax.
+</GLOSSLIST>
+</GLOSSLIST>
+<PARA>
+<OPTION>-W cksum</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Compute POSIX cksum of the individual files.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W file-digests</OPTION> 
+<OPTION>-W digests</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Compute md5 digests of the individual files.
+(-W digests is deprecated, use -W file-digests).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W files</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Store the distribution file list in .../dfiles/files.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W dir=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use NAME as the path name prefix of a distribution and also
+as the value of the &lt;distribution&gt;.control_directory and
+&lt;distribution&gt;.tag attribute (if not set).  May be set to an
+empty string to eliminate stray leading "./".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W sign</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Compute the 
+md5sum, sha1sum and adjunct_md5sum digests
+and sign the package.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W dummy-sign</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Same as -W sign except use a dummy signature.
+The signer program is not run and no password is required.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W signer-pgm=SIGNER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Recognized SIGNERs are GPG, PGP2.6, and PGP5.
+swverify only supports GPG, however, other types can
+be verified manually using the options of swverify and
+command line utilities.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W archive-digests</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Compute the md5sum, sha1sum and adjunct_md5sum digests.
+See sw(5) for info on the digest and signed data input files.
+The sha1sum and md5sum attributes have identical input streams.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-sha1</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not compute the sha1 digest even if directed to by other options.
+(Deprecated: There is limited reason to use this option).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W signed-file</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write only the signed data to the specified target but do not sign.
+(Deprecated: There is limited reason to use this option).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W gpg-name=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use NAME as the user ID to sign.  NAME becomes the option arg of the gpg \-\-local-user option.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W gpg-path=PATH</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use PATH as the gpg homedir.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W gzip</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+compress output with file system gzip utilty
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W bzip2</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+compress output with file system bzip2 utility
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<OPTION>-W lzma</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+compress output with file system lzma utility
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+</PARA>
+<OPTION>-W symmetric</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+encrypt output with file system gpg utility
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<OPTION>-W encrypt-for-recipient=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+encrypt with NAME's public key using file system gpg utility 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W source=FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use serial archive located at FILE as the source instead of the
+file system.  The files referred by the PSF are taken from the serial 
+archive and not the file system.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W numeric-owner</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Same as GNU tar option.  Emitted archive has only uid and gids.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W absolute-names</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Same as GNU tar option.  Leading slash '/' are always stripped unless
+this option is given.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W format=FORMAT</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+The default format is 'pax'.  The pax format will only generate extended headers if needed.
+FORMAT is one of:
+<VERB><SBR>
+<PROGRAMLISTING>
+ ustar   is the POSIX.1 tar format capable of storing
+         pathnames up to 255 characters in length.
+         Identical to GNU tar 1.15.1 --format=ustar
+ ustar0  is a different POSIX.1 tar personality.
+         Identical to GNU tar 1.13.25 --posix -b1 for 99 char pathnames
+         Has different rendering of device numbers for non-device files,
+         but otherwise identical to 'ustar'
+ gnu     Identical to GNU tar version 1.15.1 --format=gnu
+ oldgnu  Identical to GNU tar version 1.13 and later with
+             block size set to 1. i.e. with option -b1.
+         Also identical to GNU tar 1.15.1 --format=oldgnu
+ gnutar  same as oldgnu, oldgnu preferred.
+ pax     Extended header tar (Default)
+ odc     Posix.1 cpio (magic 070707).
+ newc    cpio format (magic 070701).
+ crc     cpio format (magic 070702). 
+ bsdpax3 Identical to pax v3.0, ustar format with option -b 512.
+</PROGRAMLISTING>
+</VERB>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-header-pid=NUMBER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the number used in any pax header naming scheme to NUMBER.
+You must use this option to make archive identical 
+in subsequent (back-to-back) invocations.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W uuid=STRING</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the uuid string to STRING instead of calling uuid(1)
+You must use this option to make the catalog directory identical 
+in subsequent (back-to-back) invocations.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W create-time=TIME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Applies to catalog files and the create_time attribute.
+TIME is the seconds since the Unix Epoch.
+You must use this option to make the catalog directory identical 
+in subsequent (back-to-back) invocations.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W list-psf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the PSF to stdout after having processed the extended
+definitions.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W to-swbis</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Read a package on standard input and write a POSIX
+package on standard output.  Requires the
+.../libexec/swbis/lxpsf program.
+Supported formats are any supported format of lxpsf.
+Identical to:
+<VERB><SBR>
+<LIBEXECDIR>/swbis/lxpsf --psf-form3 -H ustar | swpackage -Wsource=- -s@PSF
+</VERB>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W passphrase-fd=N</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Read the passphrase on file descriptor N.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W passfile=FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Read the passphrase from FILE in the file system.  Setting FILE to
+/dev/tty resets (i.e unsets) all passphrase directives, thus establishing
+the default action, reading from the terminal.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W dir-owner=OWNER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the owner of the leading directory archive member to OWNER.
+If the option arg is "", then the owner is the owner of the current directory. 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W dir-group=OWNER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the group of the leading directory archive member to OWNER.
+If the option arg is "", then the owner is the owner of the current directory. 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W dir-modep=MODE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the file permissions mode of the leading directory archive member to MODE.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W catalog-owner=OWNER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the owner of the catalog section to OWNER.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W catalog-group=GROUP</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the group of the catalog section to GROUP.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W files-from=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Read a list of files from file NAME.  Directories are not descended recursively.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options-files</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Show the complete list of options files and if they are found.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Show the options after reading the files and parsing the command line options.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-catalog</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not write the catalog section.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-front-dir</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not write the directory archive members that preceed the catalog section.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+Signature Modification Options.  The source file via '-s' option
+is a previously signed archive file. 
+
+<OPTION>--addsign</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Same as --add-signature-first
+</GLOSSLIST>
+</GLOSSLIST>
+
+<OPTION>--delsign</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Opposite of --addsign,  Same as --remove-signature=1
+</GLOSSLIST>
+</GLOSSLIST>
+
+<OPTION>--add-signature-first</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Add signature first in the list of package signatures.
+The last signature, by convention, is the primary signature.
+</GLOSSLIST>
+</GLOSSLIST>
+
+<OPTION>--add-signature-last</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Add signature last in the list of package signatures.
+The last signature, by convention, is the primary signature.
+</GLOSSLIST>
+</GLOSSLIST>
+<OPTION>--replace-signature=N</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Replace Nth signature, 0 means last signature.
+</GLOSSLIST>
+</GLOSSLIST>
+<OPTION>--remove-signature=N</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Remove Nth signature, 0 means last signature.
+</GLOSSLIST>
+</GLOSSLIST>
+<OPTION>--resign</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Same as --replace-signature=0
+</GLOSSLIST>
+</GLOSSLIST>
+<OPTION>--resign-test, --zfilter</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Alternate Mode</FUNCTION>:
+Copy from source to target without altering. Does not generate a signature.
+The output should be identical to the input.   Also has unintended use
+of accessing the compression pipeline function of swpackage.
+</GLOSSLIST>
+</GLOSSLIST>
+
+<OPTION>--recompress</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Modifier to alternate Mode</FUNCTION>:
+Applies when modifying signature.  The compression methods of the input file are
+detected and the output is compressed to match.
+</GLOSSLIST>
+</GLOSSLIST>
+
+<OPTION>--overwrite</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+<FUNCTION>Modifier to alternate Mode</FUNCTION>:
+Overwrites file specified as the source name (by the -s FILE option).
+Will likely do so safely.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+EXTENDED OPTIONS
+</TITLE>
+<PARA>
+These extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults.
+</PARA>
+<REFSECT2>
+<TITLE>
+Posix
+</TITLE>
+<PARA>
+Shown below is an actual portion of a defaults file which show default values.
+These options are set in the /usr/lib/swbis/swdefaults or the ~/.swdefaults
+file. 
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+swpackage.distribution_target_directory  = /var/spool/sw   # Not used
+swpackage.distribution_target_serial     = -        # Not used
+swpackage.enforce_dsa                    = false    # Not used
+swpackage.follow_symlinks                = false    # Not used
+swpackage.logfile          = /var/lib/swbis/swpackage.log   # Not used
+swpackage.loglevel                       = 1         # Not used
+swpackage.media_capacity                 = 0         # Not used
+swpackage.media_type                     = serial    # Not used
+swpackage.psf_source_file                = -         # Not used
+swpackage.software                       =           # Not used
+swpackage.verbose                        = 1         # May be 1 2 or 3
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Swbis Implementation
+</TITLE>
+<PARA>
+These extended options can be specified on the command line using -Woption=optionarg
+or --option=optionarg syntax.
+</PARA>
+<PARA>
+These options are set in the /usr/lib/swbis/swbisdefaults or the ~/.swbis/swbisdefaults
+file. 
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+swpackage.swbis_cksum                    = "false"   # true or false
+swpackage.swbis_file_digests             = "false"   # true or false
+swpackage.swbis_file_digests_sha2        = "false"   # true or false
+swpackage.swbis_files                    = "false"   # true or false
+swpackage.swbis_sign                     = "false"   # true or false
+swpackage.swbis_archive_digests          = "false"   # true or false
+swpackage.swbis_archive_digests_sha2     = "false"   # true or false
+swpackage.swbis_gpg_name                 = ""
+swpackage.swbis_gpg_path                 = "~/.gnupg"
+swpackage.swbis_gzip                     = "false"   # true or false
+swpackage.swbis_bzip2                    = "false"   # true or false
+swpackage.swbis_numeric_owner            = "false"   # true or false
+swpackage.swbis_absolute_names           = "false"   # true or false
+swpackage.swbis_format                   = "ustar"  # gnutar or ustar
+swpackage.swbis_signer_pgm               = "GPG" # GPG or PGP5 or PGP2.6
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+USAGE EXAMPLES
+</TITLE>
+<PARA>
+Here are some commonly used options.
+</PARA>
+<REFSECT2>
+<TITLE>
+Options and Option Files
+</TITLE>
+<PARA>
+Show the option file options and the option files that determine the default
+values.
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	swpackage --show-options
+		# and
+	swpackage --show-options-files
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Preview the output
+</TITLE>
+<PARA>
+Show a verbose tar-like file listing on stdout
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	swpackage -pv 
+           # or
+	swpackage -pvv 
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Create a signed package
+</TITLE>
+<PARA>
+Read the PSF on standard input, sign using 'admin' key using the gpg-agent.
+Include sha2 digests for the files and archive. Include the file list,
+compress the output using xz writing to standard output.
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	swpackage -s - --sign --use-agent --gpg-name=admin --files \\
+		--sha1 --sha2 --xz @-
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Resign a package
+</TITLE>
+<PARA>
+Resign a previously signed package, overwriting the original file
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	swpackage --resign -s foo.tar.gz --overwrite --recompress
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Idempotent Invocation
+</TITLE>
+<PARA>
+Use special options to obtain an identical package two or more times
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	swpackage --create-time=1406254892 \\
+		--uuid=ed3b9432-3ba1-4c01-a125-e22fb94588e2 \\
+		--pax-header-pid=1001
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT2>
+<TITLE>
+ALternative Format Translation
+</TITLE>
+<PARA>
+Execute the internally generated pipeline for format translation manually
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+	# the following is equivalent to  'swpackage --to-swbis'
+
+          /usr/local/libexec/swbis/lxpsf --psf-form3 \\
+                 -H ustar | swpackage -Wsource=- -s@PSF
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+PACKAGE SIGNING
+</TITLE>
+<PARA>
+Support for embedded cryptographic signature
+</PARA>
+<REFSECT2>
+<TITLE>
+Description
+</TITLE>
+<PARA>
+Package signing is accomplished by including, as a package attribute, a detached signature
+in the package metadata (the catalog section of the package).
+The signed data is the catalog section of the package (see sw(5) for a description) excluding the
+signature files archive header and data.  The package leading directory that does not contain
+the /catalog/ directory in its name is not included in the signed stream.
+The signed stream is terminated by two (2) null tar blocks (which are not in the
+actual package file).
+The storage section (or payload) of the package is included in the signed data by 
+computing its md5 and sha1 message digests and storing these as attributes in the catalog section.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Signature Generation
+</TITLE>
+<PARA>
+The signature is generated by the file system signing utility.  Currently, swpackage supports
+GPG PGP-2.6 and PGP-5.  The default is GPG but can be selected using the 
+<OPTION>-Wsigner-pgm</OPTION>
+command line option and the 
+<OPTION>swpackage.swbis_signer_pgm</OPTION>
+defaults file option.  The options and program can the displayed with the
+<OPTION>-Wshow-signer-pgm</OPTION>
+option.
+The options in each case produce a detached ascii-armored signature.  The maximum
+length for the ascii armored file is 1023 bytes.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Passphrase Handling
+</TITLE>
+<PARA>
+The passphrase can be read from the tty, a file descriptor, and environment variable or
+the GNUpg passphrase agent.  These are controlled by the options or the environment
+variables SWPACKAGEPASSFD and SWPACKAGEPASSPHRASE.  Placing your passphrase in an
+environment variable is insecure but may be usefull to sign packages with a test key
+and later replace it [when on a different host for example].
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SIGNATURE VERIFICATION
+</TITLE>
+<PARA>
+swpackage does not perform verification of the embedded
+cryptographic signature, although, a description is included here
+for completness.
+</PARA>
+<REFSECT2>
+<TITLE>
+Overview
+</TITLE>
+<PARA>
+Verification requires verifying the payload section md5 and sha1 message digests and then verifying the
+signature.  Naturally, it is required that the signed data include the payload messages digests.
+See
+<PROGRAMNAME>swverify</PROGRAMNAME>. 
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Manual Verification
+</TITLE>
+<PARA>
+Verification requires re-creating the signed and digested byte streams from the archive file.
+This is not possible using any known extant tar reading utility because of a lack of ability to
+write selected archive members to stdout instead of installing in the file system; however, the
+<PROGRAMNAME>swverify</PROGRAMNAME> utility can be used to write these bytes streams to stdout
+allowing manual inspection and verification.
+See
+<PROGRAMNAME>swverify</PROGRAMNAME>. 
+</PARA>
+<REFSECT3>
+<TITLE>
+Manual Verification Using Standard Tools
+</TITLE>
+<PARA>
+Verification using standard GNU/Linux tools is possible if the archive is installed in the file system.
+Success depends on the following factors:<SBR>
+<PROGRAMLISTING>
+1) The tar utility preserves modification times 
+   (e.g. not GNU tar 1.3.19).
+2) The archive does not contain Symbolic Links 
+   (see sw(5) for explanation).
+3) The file system is a Unix file system (e.g. ext2).
+4) The package was created using -Wformat=gnutar or, -Wformat=ustar 
+   with no file name longer than 99 octets.
+</PROGRAMLISTING>
+Recreating the signed and digested byte streams is then accomplished using GNU tar and the file list stored in
+the \<<REPLACEABLE>path</REPLACEABLE>\>/catalog/dfiles/files attribute file as follows:
+</PARA>
+<PARA>
+In this example, the package has a single path name prefix called, <FILENAME>namedir</FILENAME> and
+the file owner/group are root.  These restrictions are suited to source packages.<SBR>
+Verify the signature:
+<PROGRAMLISTING>
+  #!/bin/sh
+  tar cf - -b1 --owner=root --group=root \\
+  --exclude=namedir/catalog/dfiles/signature  \\
+  namedir/catalog | gpg --verify namedir/catalog/dfiles/signature -
+</PROGRAMLISTING>
+If this fails try using GNU tar option --posix.
+If this fails then you are out of luck as nothing in the catalog section can be trusted.
+</PARA>
+<PARA>
+Verify the payload digests:
+<PROGRAMLISTING>
+  #!/bin/sh
+  grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+  tar cf - -b1 --owner=root --group=root \\
+  --no-recursion --files-from=- | md5sum
+  cat namedir/catalog/dfiles/md5sum
+</PROGRAMLISTING>
+Likewise for the sha1 digest.
+</PARA>
+
+<PARA>
+If the package has symbolic links, Verify the adjunct_md5sum:
+<PROGRAMLISTING>
+  #!/bin/sh
+  grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+  ( while read file; do if [ ! -h $file ]; then echo $file; fi done; )|\\
+  tar cf - -b1 --owner=root --group=root \\
+  --no-recursion --files-from=- | md5sum
+  cat namedir/catalog/dfiles/adjunct_md5sum
+</PROGRAMLISTING>
+The symbolic link files must be verified manually by comparing to the INFO file 
+information.
+</PARA>
+</REFSECT3>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<!-- External Entity  --> &swexout; 
+</REFSECT1>
+<REFSECT1>
+<!-- External Entity  --> &swexin; 
+<REFSECT2>
+<!-- External Entity  --> &swextdef; 
+</REFSECT2>
+<REFSECT2>
+<!-- External Entity  --> &swconventions; 
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<!-- External Entity  -->  &swpsfexamples; 
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+0 on success, 1 on error and target medium not modified, 2 on error if
+target medium modified.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SIDE EFFECTS
+</TITLE>
+No temporary files are used in the package generation process.
+When using the default target of stdout (directed to /dev/null), there
+are no file system side effects from swpackage.  GNU Privacy Guard (gpg)
+may alter its keys when invoked for package signing.
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+ENVIRONMENT
+</TITLE>
+<PARA>
+<OPTION>SWPACKAGEPASSFD</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the <REPLACEABLE>--passphrase-fd</REPLACEABLE> option.  Set the option arg
+to a integer value of the file descriptor, or to "env" to read the passphrase from
+the environment variable SWPACKAGEPASSPHRASE, or to "agent" to cause gpg to use
+gpg-agent, or to "tty" to restore default behavoir to reading passphrase from the terminal.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>SWPACKAGEPASSPHRASE</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Use the value as the passphrase if <REPLACEABLE>--passphrase-fd</REPLACEABLE> is
+set to "env"
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>GNUPGHOME</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the --gpg-home option.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>GNUPGNAME</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the --gpg-name option, which is turn set the --local-user option of gpg.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+REQUISITE UTILITIES
+</TITLE>
+<PARA>
+Swpackage does not use any archive writing utilities, it has its own code to 
+generate archives.<SBR>
+Package signing uses one of the following:
+<VERB>
+ /usr/bin/gpg
+ /usr/bin/pgp   (PGP 2.6.x)
+ /usr/bin/pgps  (PGP 5)
+</VERB>
+</PARA>
+<PARA>
+Swpackage will use /usr/bin/uuidgen if present to create the uuid.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+libdir/swbis/swdefaults
+libbir/swbis/swbisdefaults
+$HOME/.swbis/swdefaults
+$HOME/.swbis/swbisdefaults
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+ISO/IEC 15068-2:1999, Open Group CAE C701.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+info swbis
+</PARA>
+<PARA>
+sw(5), swbis(1), swpackage(5), swbisparse(1), swign(1), swverify(8) 
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<VERB>
+ swpackage(8): The packaging utility of the swbis project.
+ Author: Jim Lowe   Email: jhlowe at acm.org
+<!-- External Entity  --> &version;
+Last Updated: 2014-07-15
+ Copying: GNU Free Documentation License
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+A comment after an object keyword is wrongly not allowed by this PSF parser.
+The --dir="" does not do what one would expect sometimes.
+The output stream content is unaffected by the blocksize, that is the last write
+may be short write.
+Signing is broken for cpio format archives.
+</PARA>
+</REFSECT1>
+</REFENTRY>

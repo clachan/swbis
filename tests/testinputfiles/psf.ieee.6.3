@@ -1,0 +1,69 @@
+#host
+#   hostname localhost
+#   os_name linux
+
+distribution
+	# Vendor definition
+	#dfiles dfiles
+	vendor
+		tag 		FineSoft
+		title		Fine Software Corporation
+		description	" Fine Software Corporation
+1233 Technology way
+Sunset Bay, Ca. 90456
+1-800-555-1212"
+
+     #Bundle Definition
+bundle
+	tag 		POSIX-SM
+	revision	1.0
+	vendor_tag	FineSoft
+	title		POSIX 1387 System Management
+	contents	POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+	contents	POSIX-User,r=1.0
+
+
+	#Product Definition
+product
+	tag 		POSIX-Software
+	revision	2.0
+	vendor_tag	FineSoft
+	number		J2326AA
+	description	< /build/data/description
+	title		POSIX 1387.2 Software Administration
+	copyright	< /build/data/copyright
+	machine_type	9000/[78]*
+	os_name		HP-UX
+	os_release	?.09.*
+	os_version	?
+	#directory	/
+
+
+fileset
+	tag		commands
+	title		Commands (management utilities)
+	prerequisites	POSIX-Software.agent
+	#configure	scripts/configure.data
+	#directory	/build/usr/sbin /usr/bin
+	file		
+		path /usr/bin/swinstall
+
+fileset
+	tag		agent
+	title		Agent
+	#configure	/build/system/SD-AGENT/customize
+	#unconfigure	/build/system/SD-AGENT/decustomize
+	file		
+		source //tmp/xx
+		path /build/usr/sbin/swagentd 
+
+fileset
+	tag		man
+	title		Manual (man pages)
+	#directory	/build/usr/man/man8 /usr/man/man8
+	file		
+		source //tmp/xx
+		path /usr/local/man/man8/swinstall.8
+	file		
+		source //tmp/xx
+		path /usr/local/man/man4/swpackage.4

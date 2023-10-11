@@ -1,0 +1,11 @@
+
+distribution
+	layout_version 1.0
+	dfiles dfiles
+	product
+#		tag aa
+		fileset
+#			tag tagaa1
+			file
+#			path /usr/tmp/aa1.1
+

@@ -1,0 +1,105 @@
+# File: swbisdefaults
+## Uncomment options as needed.
+
+# Suggested Defaults
+
+#swbis_no_getconf		= true # true or false, Deprecated.
+#swbis_shell_command		= detect # {sh|detect|bash|posix|ksh}
+#swbis_no_remote_kill		= true  # true or false
+#swbis_quiet_progress_bar	= true  # true or false
+#swlist.swbis_local_pax_write_command    = detect 
+#swlist.swbis_remote_pax_write_command   = detect 
+#swverify.swbis_local_pax_write_command  = detect 
+#swverify.swbis_remote_pax_write_command = detect 
+#swbis_local_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swbis_remote_pax_write_command  = tar  # {pax|tar|star|gtar|swbistar}
+#swbis_local_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swbis_remote_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swbis_remote_shell_client	= ssh
+#swbis_allow_rpm		= true
+#swbis_forward_agent		= false # Forward ssh agent. true=yes false=no 
+
+#swcopy.swbis_no_getconf			= false # true or false, Deprecated.
+#swcopy.swbis_shell_command			= detect # {sh|bash|posix|ksh|detect}
+#swcopy.swbis_no_remote_kill			= false # true or false
+#swcopy.swbis_quiet_progress_bar		= true  # true or false
+#swcopy.swbis_no_audit				= true # true or false
+#swcopy.swbis_local_pax_write_command 		= pax  # {pax|tar|star|gtar|swbistar}
+#swcopy.swbis_remote_pax_write_command 		= pax  # {pax|tar|star|gtar|swbistar}
+#swcopy.swbis_local_pax_read_command 		= pax  # {pax|tar|star|gtar}
+#swcopy.swbis_remote_pax_read_command 		= pax  # {pax|tar|star|gtar}
+#swcopy.swbis_remote_shell_client		= ssh
+#swcopy.swbis_forward_agent			= true
+
+#swinstall.swbis_no_getconf			= false # true or false, Deprecated.
+#swinstall.swbis_shell_command			= detect # {sh|bash|posix|ksh|detect}
+#swinstall.swbis_no_remote_kill			= false # true or false
+#swinstall.swbis_quiet_progress_bar		= true  # true or false
+#swinstall.swbis_local_pax_write_command 	= pax  # {pax|tar|star|gtar|swbistar}
+#swinstall.swbis_remote_pax_write_command 	= pax  # {pax|tar|star|gtar|swbistar}
+#swinstall.swbis_local_pax_read_command 	= pax  # {pax|tar|star|gtar}
+#swinstall.swbis_remote_pax_read_command 	= pax  # {pax|tar|star|gtar}
+#swinstall.swbis_sig_level			= 0    # number of signatures to require
+#swinstall.swbis_enforce_file_md5		= false
+#swinstall.swbis_allow_rpm			= false
+#swinstall.swbis_remote_shell_client		= ssh
+#swinstall.swbis_install_volatile		= true
+#swinstall.swbis_volatile_newname		= ""     # e.g. ".rpmnew"
+#swinstall.swbis_forward_agent			= true
+#swinstall.swbis_ignore_scripts			= false
+
+#swpackage.swbis_cksum				= "false"   # true or false
+#swpackage.swbis_file_digests			= "true"   # true or false
+#swpackage.swbis_files				= "false"   # true or false
+#swpackage.swbis_sign				= "false"   # true or false
+#swpackage.swbis_archive_digests		= "false"   # true or false
+#swpackage.swbis_gpg_name			= ""
+#swpackage.swbis_gpg_path			= "~/.gnupg"
+#swpackage.swbis_gzip				= "false"   # true or false
+#swpackage.swbis_bzip2				= "false"   # true or false
+#swpackage.swbis_numeric_owner			= "false"   # true or false
+#swpackage.swbis_absolute_names			= "false"   # true or false
+#swpackage.swbis_format				= "ustar"
+#swpackage.swbis_signer_pgm			= "GPG"
+#swpackage.swbis_check_duplicates		= "true"
+
+#swlist.swbis_no_getconf			= false # true or false, Deprecated.
+#swlist.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swlist.swbis_no_remote_kill			= false # true or false
+#swlist.swbis_local_pax_write_command 		= detect # {pax|tar|star|gtar|swbistar|detect}
+#swlist.swbis_remote_pax_write_command 		= detect # {pax|tar|star|gtar|swbistar|detect}
+#swlist.swbis_local_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swlist.swbis_remote_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swlist.swbis_remote_shell_client		= ssh
+#swlist.swbis_any_format			= false # true or false
+#swlist.swbis_forward_agent			= true
+#swlist.swbis_sig_level				= 0 # Number of required valid signatures
+#swlist.swbis_enforce_all_signatures		= false 
+
+#swremove.swbis_no_getconf			= false # true or false, Deprecated.
+#swremove.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swremove.swbis_no_remote_kill			= false # true or false
+#swremove.swbis_local_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swremove.swbis_remote_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swremove.swbis_local_pax_read_command 		= tar  # {pax|tar|star|gtar}
+#swremove.swbis_remote_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swremove.swbis_local_pax_remove_command 	= tar  # {tar|gtar}  Must have the --remove-files option
+#swremove.swbis_remote_pax_remove_command 	= tar  # {tar|gtar}  Must have the --remove-files option
+#swremove.swbis_remote_shell_client		= ssh
+#swremove.swbis_forward_agent			= false
+#swremove.swbis_sig_level			= 0 # Number of required valid signatures
+#swremove.swbis_enforce_all_signatures		= false 
+
+#swverify.swbis_no_getconf			= false # true or false, Deprecated.
+#swverify.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swverify.swbis_no_remote_kill			= false # true or false
+#swverify.swbis_local_pax_write_command 	= detect # {pax|tar|star|gtar|swbistar|detect}
+#swverify.swbis_remote_pax_write_command 	= detect # {pax|tar|star|gtar|swbistar|detect}
+#swverify.swbis_local_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swverify.swbis_remote_pax_read_command 	= detect # {pax|tar|star|gtar|detect}
+#swverify.swbis_remote_shell_client		= ssh
+#swverify.swbis_forward_agent			= false
+#swverify.swbis_sig_level			= 0 # Number of required valid signatures
+#swverify.swbis_enforce_all_signatures		= false 
+
+# end of swbisdefaults file

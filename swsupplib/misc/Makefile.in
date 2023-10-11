@@ -1,0 +1,97 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+RPMLIBOBJECTS=debpsf.o topsf.o rpmpsf.o rpmfd.o
+@RPMLIBOBJECTS_@
+DO_DEBUG = @DO_DEBUG@
+
+ifeq ($(DO_DEBUG),)
+DEBUGLIBOBJECTS = 
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<;
+else
+# DEBUGLIBOBJECTS = strar_debug.o swpath_debug.o swvarfs_debug.o
+DEBUGLIBOBJECTS = swpath_debug.o swvarfs_debug.o
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+endif
+
+LIBOBJECTS = swlib.o fnmatch.o md5.o md5sum.o cksum.o  swdef.o swheader.o umaxtostr.o strtoumax.o strtoimax.o imaxtostr.o \
+		swheaderline.o swheaderline1.o swsdflt.o swpath.o swverid.o swintl.o \
+		swacfl.o shcmd.o swvarfs.o usrstat.o strar.o vercmp.o swuts.o swgpg.o \
+		swheader_d.o malloc_fprintf.o ugetopt_help.o sha512.o sha.o swfork.o ttymodes.o strlcpy.o \
+		vrealpath.o arfcopy.o swssh.o swgp.o swicol.o swutilname.o swattributes.o swfdio.o qsort.o fmgetpass.o \
+		swevents.o swutillib.o swextopt.o swicat.o swicat_e.o swicat_s.o glbindex.o strar_debug.o $(DEBUGLIBOBJECTS) $(RPMLIBOBJECTS)
+
+LIBTAR = swcpkg.a
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: $(LIBTAR)
+
+$(LIBTAR): $(LIBOBJECTS) gettextstub.o
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS)
+
+gettextstub.o:	gettextstub.c
+	$(CC) -c gettextstub.c -o gettextstub.o
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+clean:
+	rm -f *.S *.a *.o *~ $(PROGS) a.out core
+
+distclean: clean
+	rm -f .depend Makefile
+
+.depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.c > .depend; exit 0)
+
+depend: .depend
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

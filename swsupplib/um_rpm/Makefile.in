@@ -1,0 +1,96 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+DO_DEBUG = @DO_DEBUG@
+DO_UM_RPM = @DO_UM_RPM@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS =
+endif
+
+LIBOBJECTS = 
+LIBOBJECTS = 
+#LIBTAR = um_librpm.a
+
+ifeq (rpm-3.0.5/.depend,$(wildcard rpm-3.0.5/.depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything:
+	(cd rpm-3.0.5 && rm -f um_config.h; ln -s config.h um_config.h)
+	(cd $(topdir) && cd .. && cd include && rm um_config.h; ln -s ../swsupplib/um_rpm/rpm-3.0.5/config.h um_config.h)
+	(cd rpm-3.0.5 && $(MAKE))
+	cp -p rpm-3.0.5/um_librpm.a .
+
+$(PROGS): $(LIBOBJECTS)
+
+clean:
+	/bin/rm -f *.S *.a *.o *~ $(PROGS) test?.o test? sample.o sample
+	(cd rpm-3.0.5 && $(MAKE) clean; exit 0)
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+distclean: clean
+	(cd rpm-3.0.5 && $(MAKE) distclean; exit 0)
+	(cd rpm-3.0.5 && rm -f stamp-h1; exit 0)
+	(cd rpm-3.0.5 && rm -f libtool; exit 0)
+	if [ "$(DO_UM_RPM)" ]; then \
+		sh make_links.sh remove; \
+	fi
+	rm -f .depend Makefile rpm-3.0.5/Makefile rpm-3.0.5/lib/Makefile
+	(find . -type l -exec rm -f {} \;)
+
+depend:
+	if [ "$(DO_UM_RPM)" ]; then \
+		sh make_links.sh; \
+		(cd rpm-3.0.5 && $(MAKE) depend; exit 0); \
+	else \
+		sh make_links.sh; \
+	fi
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

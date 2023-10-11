@@ -1,0 +1,70 @@
+F00 PSF:stdin
+O01 distribution
+O02  vendor
+A03   tag FineSoft
+A03   title Fine Software Corporation
+A03   description  Fine Software Corporation\n1233 Technology way\nSunset Bay, Ca. 90456\n1-800-555-1212
+O02  bundle
+A03   tag POSIX-SM
+A03   revision 1.0
+A03   vendor_tag FineSoft
+A03   title POSIX 1387 System Management
+A03   contents POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+A03   contents POSIX-User,r=1.0
+O02  product
+A03   tag POSIX-Software
+A03   revision 2.0
+A03   vendor_tag FineSoft
+A03   number J2326AA
+A03   description  </build/data/description
+A03   title POSIX 1387.2 Software Administration
+A03   copyright  </build/data/copyright
+A03   machine_type 9000/[78]*
+A03   os_name HP-UX
+A03   os_release ?.09.*
+A03   os_version ?
+A03   directory /
+O03   subproduct
+A04    tag Manager
+A04    title management Utilities
+A04    contents commands agent man
+O03   subproduct
+A04    tag Agent
+A04    title target daemon and agent
+A04    contents agent man
+O03   fileset
+A04    tag commands
+A04    title Commands (management utilities)
+A04    prerequisites POSIX-Software.agent
+E04    configure scripts/configure.data
+E04    directory /build/usr/sbin /usr/bin
+E04    file swinstall
+E04    file swconfig
+E04    file swcopy
+E04    file swremove
+E04    file swverify
+E04    file swpackage
+O03   fileset
+A04    tag agent
+A04    title Agent
+E04    configure /build/system/SD-AGENT/customize
+E04    unconfigure /build/system/SD-AGENT/decustomize
+E04    file /build/usr/sbin/swagentd /usr/sbin/swagentd
+E04    file /build/usr/lbin/swagent /usr/lbin/swagent
+O03   fileset
+A04    tag man
+A04    title Manual (man pages)
+E04    directory /build/usr/man/man8 /usr/man/man8
+E04    file swinstall.8
+E04    file swcopy.8
+E04    file swremove.8
+E04    file swlist.8
+E04    file swverify.8
+E04    file swlist.8
+E04    file swverify.8
+E04    file swconfig.8
+E04    file swpackage.8
+E04    file swagent.8
+E04    file swagentd.8
+E04    directory /build/usr/man/man4 /usr/man/man4
+E04    file swpackage.4

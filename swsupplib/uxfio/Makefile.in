@@ -1,0 +1,91 @@
+srcdir = @srcdir@
+
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+DO_DEBUG = @DO_DEBUG@
+
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = uxfioextra.o
+endif
+
+LIBOBJECTS = uxfio.o  safe-read.o full-write.o $(DEBUGLIBOBJECTS)
+LIBOBJECTS = uxfio.o  $(DEBUGLIBOBJECTS)
+LIBTAR = uxfio.a
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: $(LIBTAR)
+
+$(LIBTAR): $(LIBOBJECTS) 
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS)
+
+tests: test4 test3
+
+test4: test4.o $(LIBOBJECTS) 
+	$(CC)  $(LIBOBJECTS) $(LDFLAGS) ${@}.o  ../swsupplib.a -lutil -o $@
+
+test3: test3.o $(LIBOBJECTS) 
+	$(CC)  $(LIBOBJECTS) $(LDFLAGS) ${@}.o  ../swsupplib.a -lutil -o $@
+
+clean:
+	/bin/rm -f *.S *.a *.o *~ $(PROGS) test?.o test? sample.o sample
+	/bin/rm -f testuxfio.o testuxfio testdebug*
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+distclean: clean
+	rm -f .depend Makefile
+
+depend:
+	( >.depend )
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

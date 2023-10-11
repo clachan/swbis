@@ -1,0 +1,1072 @@
+#!@POSIXSHELL@
+#
+# Make an signed tar archive of the current directory.
+
+# Copyright (C) 2003,2004,2005,2006 Jim Lowe
+#
+# COPYING TERMS AND CONDITIONS:
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
+
+OLDPATH="$PATH"
+PATH=`getconf PATH`:"$PATH"
+trap '/bin/rm -fr /var/tmp/swign.$$; exit 1' 1 2 15
+
+SHELL="@POSIXSHELL@"
+SWBISLIBEXECDIR="@SWBISLIBEXECDIR@"
+SWBIS_RELEASE=@SWBIS_RELEASE@
+export GTAR="@SWBISGTAR@"
+
+version() {
+	echo "swign (swbis) version ${SWBIS_RELEASE}"
+	echo "Copyright (C) 2003,2004,2005,2006 Jim Lowe"
+	echo "This software is distributed under the terms of the GNU General Public License"
+	echo "and comes with NO WARRANTY to the extent permitted by law."
+	echo "See the file named COPYING for details."
+	exit 0;
+}
+
+cmdusage() {
+	echo "Usage : swign [options] @-"
+	echo "        swign [options] @."
+	echo "        swign -S [options]"
+	echo "        swign --help"
+}
+
+look_for_file_permissions() {
+	# grep -v '[ \t]*#' | $SED -e 's/  */ /g' |
+	$GREP -v '^[ \t]*#' |
+	$SED -e 's/  */ /g' -e 's/#.*//' |
+	$GREP file_permissions |
+	tail -1 |
+	$SED -e 's/file_permissions//' -e 's/-u 000/-Z 000/'
+	#
+	# Above translate the -u 000  to  -Z 000  in order avoid the
+	# collision with the use of -u
+	#
+}
+
+missing_which() {
+	pgm="$1"
+	xxname=`which $pgm 2>/dev/null`
+	test -f "$xxname" -o -h "$xxname"
+	case "$?" in
+		0)
+			echo "$xxname"
+			return 0
+			;;
+		*)
+			echo "Missing $pgm" 1>&2
+			echo "/"
+			return 1
+			;;
+	esac
+}
+
+usage() {
+	echo "Usage: swign [options] @-    # Write the archive to stdout"
+	echo "  or:  swign [options] @.    # Just load ./catalog, write nothing"
+	echo "  or:  swign [options] -S    # same as @."
+	echo "Example:   swign  -s myPSF -u \"MyGPG Name\" @-"
+	echo "Load a signed metadata catalog file into the current directory and then"
+	echo "using GNU tar and the distribution file list write the archive to stdout."
+	echo "This script will remove and replace a file in \".\" named ./catalog/."
+	echo "This script assumes GNU tar is installed."
+	echo "The PSF is read from standard input by default."
+	echo ""
+	echo " --help show this help to stdout."
+	echo " --show-options"
+	echo " --show-psf Write the internal PSF to stdout and exit."
+	echo "     --psf"
+	echo " -E, --emit-only  Write the directory, as is, to stdout."
+	echo " -S, --sign-only  Write ./catalog/ into '.' as a signature of '.' and exit,"
+	echo "                  writing nothing to stdout."
+	echo "                  Same as using the @. target syntax."
+	echo " -s, --source=PSF  specify a psf file."
+	echo "                   '-' is stdin, '.' is an internally generated PSF."
+	echo " -N, --nosign  create the catalog but without a signature"
+	echo " -T, --show-names-only   Just shows some info, writes nothing and exit."
+	echo " -t, --run-sanity-test   Writes archive to ../<name>.swigntest.tar.gz instead of"
+	echo "                        stdout and runs some sanity tests."
+	echo " -D, --with-checkdigest FILE  Include checksig script sourced at FILE"
+	echo " -P, --name-version=PREFIX  Use PREFIX as the path prefix for every file."
+	echo "                   The default is the current directory name. The form of PREFIX"
+	echo "                   should be \${NAME}-\${REVISON}"
+	echo " -o, --owner OWNER."
+	echo " -g, --group GROUP."
+	echo " -u, --local-user name    gpg local user name."
+	echo " -h, --homedir DIR        gpg home directory."
+	echo " -x format    where format is ustar|gnu|gnutar|oldgnu"
+	echo "                    ustar is the default"
+	echo "                    gnutar is same as oldgnu, oldgnu is preferred"
+	echo "                    gnu is only supported for GNU tar 1.16 (or 1.15.x,1.14)"
+	echo "                    oldgnu is only supported for GNU tar 1.13.25"
+	echo "  --name-version=NAME-VERSION   Override the current directory name"
+	echo "  --no-psf-detect   Do not attempt to make the ownership options"
+	echo "                    consistent with the supplied PSF."
+	echo "  --no-remove     Do not remove ./catalog/ before overwriting"
+	echo "  --file-ownerships   Use ownerships of source files"
+	echo "Environment:"
+	echo "     SWPACKAGEPASSFD"
+	echo "     SWPACKAGEPASSPHRASE"
+	echo "     GNUPGHOME"
+	echo "     GNUPGNAME"
+	echo "Date: 2006-02-08.  Copying Terms: GNU GPL."
+	echo "Identification: swign: Implementation extension administration program of swbis."
+	echo 
+	echo "Report bugs to <bug-swbis@gnu.org>"
+}
+
+get_package_dirname() {
+	
+	base1="$1"
+	case "$base1" in
+		"")
+			base1=`pwd`
+			;;
+		*)
+			;;
+	esac
+
+	package_dir=`basename "$base1"`
+	PACKAGEDIRNAME=`echo "$package_dir" | $SED -e 's@-.*@@'`	
+	PACKAGEDIRNAME_PAT="${PACKAGEDIRNAME}[^/]*"
+	
+	package_path=`echo "$base1" |
+		$SED -e s@'\(.*'"${PACKAGEDIRNAME_PAT}"'\).*@\1@'` 
+
+	package_dir=`echo "$base1" |
+		$SED -e s@'.*/\('"${PACKAGEDIRNAME_PAT}"'\)@\1@' |
+		$SED -e s@'\('"${PACKAGEDIRNAME_PAT}"'\).*@\1@'`
+
+
+	echo "$package_dir" | $GREP / 1>/dev/null
+	case $? in
+		0)
+		echo "${premg}Try running from within the package directory." 1>&2
+		echo "${premg}script failed loc = 1" 1>&2
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		exit 1
+		;;
+	esac
+
+	echo "$package_dir" | $GREP . 1>/dev/null
+	case $? in
+		1)
+		echo "${premg}Try running from within the package directory." 1>&2
+		echo "${premg}script failed loc = 2" 1>&2
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		exit 1
+		;;
+	esac
+	echo "$package_dir"
+}
+
+replace_keywords() {
+	package="$1"
+	name=$(get_name "$package")
+	ver=$(get_version "$package")
+	rel=$(get_release "$package")
+	$SED \
+		-e 's/%__tag/'"$name"/ \
+		-e 's/%__revision/'"$ver"/
+}
+
+thisPSF() {
+	checksigname="$1"
+	package="$2"
+	do_include_checksig="$1"
+
+	#name="${package%-*}"
+	#ver="${package##*-}"
+
+	name=$(get_name "$package")
+	ver=$(get_version "$package")
+	release=$(get_release "$package")
+
+	checksigkeyword="checkdigest <"
+
+	if [ "$do_include_checksig" = "" ]; then
+		CHECKSIGNAME=""
+		checksigkeyword=""
+	else
+		CHECKSIGNAME="$checksigname"
+	fi
+
+	if [ -z "$no_file_permissions" -a "$opt_owner" ]; then
+		D_OWNER="owner $opt_owner"
+	else
+		D_OWNER=""
+	fi
+	
+	if [ -z "$no_file_permissions" -a "$opt_group" ]; then
+		D_GROUP="group $opt_group"
+	else
+		D_GROUP=""
+	fi
+
+	if [ -z "$no_file_permissions" -a "$opt_owner" -a "$opt_group" ]; then
+		FILEPERMS="file_permissions -o $opt_owner  -g $opt_group"
+	else
+		FILEPERMS=""
+	fi
+
+	cat  <<-//EOF
+	distribution
+	dfiles dfiles
+	//EOF
+
+	echo "$D_OWNER"
+	echo "$D_GROUP"
+	
+	if [ "$do_include_checksig" ]; then
+		echo "${checksigkeyword}$CHECKSIGNAME"
+	fi
+
+	case "$release" in
+		*.*)
+			#
+			# '.' not allowed in a tag
+			#
+			release=$(echo $release | sed -e 's/\./_/g')
+			;;
+	esac
+
+	if [ "$release" ]; then
+		echo "vendor"
+		echo "the_term_vendor_is_misleading  true"
+		echo "tag $release"
+		echo "title unknown"
+		echo "description unknown"
+		echo "qualifier unknown"
+	fi
+
+	cat  <<-//EOF
+	product
+		title $name version $ver
+		description Source package for $name version $ver
+		tag ${name}
+		revision ${ver}
+		control_directory ""
+	//EOF
+
+	if [ "$release" ]; then
+		echo "vendor_tag $release"
+	fi
+
+	cat  <<-//EOF
+	fileset
+		tag ${name}-sources
+		control_directory ""
+		$FILEPERMS
+		directory .
+		file *
+		exclude ./catalog
+		# exclude ./catalog/*
+	//EOF
+}
+
+process_psf() {
+	opt_source="$1"
+	package_dir="$2"
+	opt_checksig_file="$3"
+
+	case "$opt_source" in
+		".")
+			thisPSF "$opt_checksig_file" "$package_dir" |
+			replace_keywords "$package_dir"  >$TMPSOURCEFILE
+			opt_source=$TMPSOURCEFILE
+			;;
+		-|"")
+			cat | replace_keywords "$package_dir" >$TMPSOURCEFILE
+			opt_source=$TMPSOURCEFILE
+			;;
+		"$TMPSOURCEFILE")
+			#
+			# this case happen when using the internal PSF
+			# Inorder to prevent reading and redirecting to the same
+			# file, copy to a tmp location.
+			#
+			if [ -f "$opt_source" ]; then
+				cp "$opt_source" "$opt_source".0
+				cat "$opt_source".0 | replace_keywords "$package_dir" >$TMPSOURCEFILE
+				opt_source=$TMPSOURCEFILE
+			else
+				echo "swign: no such file: $opt_source" 1>&2
+				exit 1;
+			fi
+			;;
+		*)
+			if [ -f "$opt_source" ]; then
+				cat "$opt_source" | replace_keywords "$package_dir" >$TMPSOURCEFILE
+				opt_source=$TMPSOURCEFILE
+			else
+				echo "swign: no such file: $opt_source" 1>&2
+				exit 1;
+			fi
+			;;
+	esac
+}
+
+make_archive_stream() {
+	(
+	cd .. 
+	if [ "$opt_owner" -a "$opt_group" ]; then
+		# TAROWNEROPT="--owner=\"$opt_owner\" --group=\"$opt_group\""
+		TAROWNEROPT="--owner=$opt_owner --group=$opt_group"
+	else
+		TAROWNEROPT=""
+	fi
+	case "$opt_format" in
+		ustar|ustar0)
+			${TAR} cvf - ${GNUTAR_FORMAT_OPTIONS} ${GNUTAR_POSIX_OPTION} ${GNUTAR_NUMERIC_OPTION} -b1 \
+			--no-recursion --files-from=- $TAROWNEROPT 2>$TMPLIST
+			;;
+		gnutar|oldgnu|gnu)
+			${TAR} cvf - ${GNUTAR_FORMAT_OPTIONS} ${GNUTAR_POSIX_OPTION} ${GNUTAR_NUMERIC_OPTION} -b1 \
+			--no-recursion --files-from=- $TAROWNEROPT 2>$TMPLIST
+			;;
+		bsdpax3)
+			if [ ! -f "$PAX" ]; then
+				echo "swign: pax is missing." 1>&2
+				echo;
+			else
+				${PAX} -w -v -d -b 512 2>$TMPLIST
+			fi
+			;;
+		*)
+			>$TMPLIST
+			echo "swign: invalid format spec" 1>&2
+			exit 1
+			;;
+	esac
+	)
+}
+
+check_for_gnu_tar()
+{
+	gnu_tar_version="`$TAR --version 2>&1 | $GREP GNU | $HEAD -1 | $AWK '{print $NF}'`"
+	case "$gnu_tar_version" in 
+		2.[0-9].*)
+			echo 1>/dev/null
+		;;
+		1.14|1.14.*|1.15*|1.13.17|1.13.25|1.1[6-9]*|1.[2-9][0-9]*|1.[2-9][0-9]|2*|2.[0-9]*)
+			echo 1>/dev/null
+		;;
+		*)
+		echo "GNU tar version 1.13.17,25 or 1.15.x is required" 1>&2
+		echo "You have tar version $gnu_tar_version" 1>&2
+		return 1
+		;;
+	esac
+	return 0
+}
+
+make_format_option()
+{
+	case "$gnu_tar_version" in 
+		1.14|1.14.*|1.15*|1.13.17|1.13.25|1.1[6-9]*|1.[2-9]?.*|1.[2-9]?|2*|2.*)
+			case "$opt_format" in
+				gnu)
+					GNUTAR_FORMAT_OPTIONS="--format=gnu"
+					SWPACKAGE_FORMAT_OPTIONS="--format=gnu"
+					;;
+				gnutar|oldgnu)
+					echo "swign: oldgnu format not supported by swign for GNU tar $gnu_tar_version" 1>&2 
+					return 1
+					GNUTAR_FORMAT_OPTIONS="--format=oldgnu"
+					SWPACKAGE_FORMAT_OPTIONS="--format=oldgnu"
+					;;
+				ustar)
+					GNUTAR_FORMAT_OPTIONS="--format=ustar"
+					SWPACKAGE_FORMAT_OPTIONS="--format=ustar"
+					;;
+ 				ustar0)
+ 					echo "swign: ustar0 format not supported by swign for GNU tar $gnu_tar_version" 1>&2 
+ 					return 1
+ 					;;
+			esac
+		;;
+		1.13.*)
+			case "$opt_format" in
+				gnu)
+					echo "swign: gnu format not supported by swign for GNU tar $gnu_tar_version" 1>&2 
+					return 1
+					;;
+				gnutar|oldgnu)
+					GNUTAR_FORMAT_OPTIONS=""
+					SWPACKAGE_FORMAT_OPTIONS="--format=oldgnu"
+					;;
+				ustar|ustar0)
+					GNUTAR_FORMAT_OPTIONS="--posix"
+					SWPACKAGE_FORMAT_OPTIONS="--format=ustar0"
+					;;
+			esac
+		;;
+		*)
+			GNUTAR_FORMAT_OPTIONS=""
+			echo "swign: internal error in make_format_options" 1>&2
+			return 1
+		;;
+	esac
+	return 0
+}
+
+get_name()
+{
+	AAget_name="${1%-*}"
+	case "${AAget_name}" in
+		*-[0-9]*) 
+			AAget_name="${AAget_name%-*}"
+			echo "$AAget_name"
+			;;
+		*)
+			echo "$AAget_name"
+			;;
+	esac
+}
+
+get_version()
+{
+	case "$opt_revision" in
+		"")
+			;;
+		*)
+			echo "$opt_revision"
+			return
+			;;
+	esac
+	AAget_version_name=`get_name "$1"`
+	AAget_version="${1#"$AAget_version_name"-}"
+	case "${AAget_version}" in
+		*-*) 
+			AAget_version="${AAget_version%-*}"
+			echo "$AAget_version"
+			;;
+		[0-9]*)
+			echo "$AAget_version"
+			;;
+		*)
+			# echo "version field not detected in name [$1]" 1>&2
+			echo "0.0"
+			;;
+	esac
+}
+
+get_release()
+{
+	AAget_release_name=`get_name "$1"`
+	AAget_release_version=`get_version "$1"`
+	AAget_release="${1#"$AAget_release_name"-}"
+	AAget_release="${AAget_release#"$AAget_release_version"}"
+	#echo "$AAget_release"
+	case "${AAget_release}" in
+		-*)
+			AAget_release="${AAget_release#-}"
+			echo "$AAget_release"
+			;;
+		*)
+			echo "$AAget_release"
+			;;
+	esac
+}
+
+check_package_dir_name() {
+	package_dir="$1"
+	case "$package_dir" in
+	.|..|?|??)
+		echo "swign: package directory name not valid: $package_dir" 1>&2
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		return 1
+		;;
+	"")
+		echo "swign: package directory name not valid: $package_dir" 1>&2
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		return 1
+		;;
+	*-*)
+		# Good
+		;;
+	*-*-*)
+		# Ok
+		;;
+	*)
+		echo "swign: Warning: directory does not have a revision part" 1>&2
+		echo "swign: Continuing but some PSF attributes may have bad values" 1>&2
+		;;
+	esac
+	return  0
+}
+
+#
+#  Main starts here 
+#
+
+if [ "$1" = "--help" ]; then
+	usage; exit 0;
+fi
+
+
+MD5SUM=`which md5sum 2>/dev/null`
+DIFF=`which diff` || exit 1
+TEE=`missing_which tee` || exit 1
+GZIP=`missing_which gzip` || exit 1
+SED=`missing_which sed` || exit 1
+SORT=`missing_which sort` || exit 1
+RM=`missing_which rm` || exit 1
+CAT=`missing_which cat` || exit 1
+GREP=`missing_which grep` || exit 1
+FIND=`missing_which find` || exit 1
+MKDIR=`missing_which mkdir` || exit 1
+AWK=`missing_which awk` || exit 1
+ID=`missing_which id` || exit 1
+PAX=`missing_which pax 2>/dev/null`
+HEAD=`missing_which head` || exit 1
+OPATH="$PATH"
+PATH="${SWBISLIBEXECDIR}/swbis:$OPATH"
+MTIMETOUCH=`missing_which mtimetouch` || exit 1
+EPOCHTIME=`missing_which epochtime` || exit 1
+GETOPT=`missing_which getopt` || exit 1
+PATH="$OPATH"
+OPENSSL=`which openssl 2>/dev/null`
+
+if [ ! -f "$MD5SUM" ]; then
+	if [ -f "$OPENSSL" ]; then
+		MD5SUM="openssl md5"	
+	else
+		echo "swign: missing md5sum and openssl, no way to run this program: $0." 1>&2
+		echo "$0 exiting with status 1" 1>&2
+		exit 1
+	fi
+fi
+
+GNUTAR_NUMERIC_OPTION=""
+opt_name=""
+opt_revision=""
+opt_source=""
+opt_testmode=""
+opt_showmode=""
+opt_signthis=""
+opt_emitthis=""
+opt_checksig=""
+opt_localuser=""
+opt_homedir=""
+opt_psf=""
+opt_nosign="-Wnoop"
+opt_format="ustar"
+copt_owner_set=""
+copt_group_set=""
+opt_no_remove=""
+no_file_permissions=""
+
+o_opt_owner=`${ID} | ${AWK} 'BEGIN { FS=" " } { gsub(/^.*\(/, "",  $1); gsub(/\).*/, "",  $1); print $1}'`
+o_opt_group=`${ID} | ${AWK} 'BEGIN { FS=" " } { gsub(/^.*\(/, "",  $2); gsub(/\).*/, "",  $2); print $2}'`
+o_opt_owner=${o_opt_owner##*=}
+o_opt_group=${o_opt_group##*=}
+
+odir_opt_owner=`ls -ld . | ${AWK} 'BEGIN { FS=" " } { print $3}'`
+odir_opt_group=`ls -ld . | ${AWK} 'BEGIN { FS=" " } { print $4}'`
+
+opt_owner="$o_opt_owner"
+opt_group="$o_opt_group"
+c_opt_owner="$o_opt_owner"
+c_opt_group="$o_opt_group"
+
+${GETOPT} -T 1>/dev/null
+case "$?" in
+	4)
+		;;
+	*)
+		echo "swign: This script requires enhanced getopt." 1>&2
+		exit 1
+		;;
+esac
+
+SWPACKAGE=`PATH="$OLDPATH" missing_which swpackage` || exit 1
+
+TEMP=`${GETOPT} -o VCHtTSEXD:D:YYP:u:u:h:x:o:g:NROs:QQZ:r: \
+--long version,show-options,help,run-sanity-test,show-names-only,sign-only,emit-only,sign-this,checkdigest-file:,with-checkdigest:,psf,show-psf,name-version:,local-user:,gpg-name:,homedir:,format:,owner:,group:,nosign,no-remove,file-ownerships,source:,no-psf-detect,no-psf,reset-permissions:,revision: \
+     -n 'swign' -- "$@"`
+# echo "$TEMP" 1>&2 
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
+
+TMPDIR=/var/tmp/swign.$$
+TMPSOURCEFILE=/var/tmp/swign.$$/PSF
+(umask 077; ${MKDIR} "$TMPDIR" 2>/dev/null)
+
+#
+# Determine package name which is determined from the
+# current directory.
+#
+package_dir=`get_package_dirname "${opt_name}"`
+REALPACKAGEDIR="$package_dir"
+
+did_file_permissions_rescan=""
+while true ; do
+	case "$1" in
+		-t|--run-sanity-test) opt_testmode="x"; shift ;;
+		-C|--show-options)  shift; echo "## $SWPACKAGE --show-options"; $SWPACKAGE --show-options; exit $? ;;
+		-T|--show-names-only) opt_showmode="x"; shift ;;
+		-E|--emit-only) opt_emitthis="x"; shift ;;
+		-X|--sign-this) opt_signthis="x"; shift ;;  # Deprecated
+		-S|--sign-only) opt_signthis="x"; shift ;;
+		-Q|--no-psf-detect|--no-psf) did_file_permissions_rescan=x; shift ;;
+		-Y|--psf|--show-psf) opt_psf="x"; shift ;;
+		-P|--name-version) shift; opt_name="$1"; shift ;;
+		-u|--local-user|--gpg-name)  shift ; opt_localuser="$1"; shift;;
+		-N|--nosign)  opt_nosign="-Wnosign"; shift;;
+		-O|--file-ownerships)	copt_owner_set=x; opt_owner=""; c_opt_owner="$opt_owner";
+					copt_group_set=x; opt_group=""; c_opt_group="$opt_group";
+					shift;;
+		-R|--no-remove) opt_no_remove="x"; shift;;
+		-o|--owner)  shift ; copt_owner_set=x; opt_owner="$1"; c_opt_owner="$opt_owner"; shift;;
+		-Z|--reset-permissions)  shift; copt_owner_set=""; copt_group_set=""; shift;;
+		-g|--group)  shift ; copt_group_set=x; opt_group="$1"; c_opt_group="$opt_group"; shift;;
+		-s|--source)  shift ; opt_source="$1"; shift;;
+		-x|--format)  shift ; opt_format="$1"; shift;;
+		-h|--homedir)  shift ; opt_homedir="$1"; shift;;
+		-r|--revision)  shift ; opt_revision="$1"; shift;;
+		-D|--with-checkdigest|--checkdigest-file) opt_checksig="x"; shift ; opt_checksig_file="$1"; shift;;
+		-H|--help) usage; exit 0; shift ;;
+		-V|--version) version; exit 0 ;;
+		--) shift ;
+			#
+			# Read the PSF to determine the ownerships policy
+			# in order to eliminate the requirement the user
+			# correctly specify it on the command line.
+			#
+			package_dir=`get_package_dirname "${opt_name}"`
+			check_package_dir_name "$package_dir" || exit 1
+			if [ "$did_file_permissions_rescan" ]; then
+				break
+			fi
+			if [ "$copt_owner_set" -o "$copt_group_set" ]; then
+				#
+				# If the -o or -g option was given then dont do this scan of the
+				# PSF file.
+				#
+				break
+			fi
+			did_file_permissions_rescan="x"
+
+			#
+			# The PSF file name is in "$opt_source"
+			#
+			case "$opt_emitthis" in
+			"")
+				process_psf "$opt_source" "$package_dir" "$opt_checksig_file"
+				file_perms_from_psf=`cat "$opt_source" | look_for_file_permissions`
+			;;
+			esac
+
+			TEMP=`${GETOPT} -o o:g:Z: --long owner:,group:,reset-permissions: -n 'swign' -- $file_perms_from_psf "$@"`
+			if [ $? != 0 ] ; then
+				echo "Terminating..." >&2;
+				echo "Perhaps, try the option ''--no-psf-detect''" 1>&2
+				exit 1
+			fi
+			eval set -- "$TEMP"
+			;;
+		*) echo "$0 invalid option" ; exit 1 ;;
+	esac
+done
+
+case "$did_file_permissions_rescan" in
+	"")
+		check_package_dir_name "$package_dir" || exit 1
+		;;
+esac
+
+# Finished processing options
+
+c_opt_owner=${opt_owner:-$o_opt_owner}
+c_opt_group=${opt_group:-$o_opt_group}
+
+if [ "$copt_owner_set" -a  -z "$opt_owner" ]; then
+	no_file_permissions="true"
+	# opt_owner="$odir_opt_owner"
+	c_opt_owner="$odir_opt_owner"
+fi
+
+if [ "$copt_group_set" -a  -z "$opt_group" ]; then
+	no_file_permissions="true"
+	# opt_group="$odir_opt_group"
+	c_opt_group="$odir_opt_group"
+fi
+
+if [ "$no_file_permissions" ]; then
+	c_opt_owner=""
+	c_opt_group=""
+fi
+
+case "$opt_psf" in
+	"")
+	case "$GTAR" in "") GTAR=tar; ;; esac
+	TAR=`missing_which $GTAR` || exit 1
+	check_for_gnu_tar
+	case $? in
+		0)
+			;;
+		*)
+			echo "swign: suitable GNU tar not found" 1>&2
+			echo "swign: Try looking for gtar" 1>&2
+			TAR=`missing_which gtar` || exit 1
+			check_for_gnu_tar || exit 1
+			;;	
+	esac
+	;;
+	*)
+	#
+	# Show the PSF to stdout and exit
+	#
+	case "$opt_source" in
+	".")
+		thisPSF "$opt_checksig_file" "$package_dir" 
+		;;
+	-|"")
+		cat | process_psf "$opt_source" "$package_dir" "$opt_checksig_file"
+		;;
+	*)
+		if [ -f "$opt_source" ]; then
+			cat "$opt_source" | process_psf "$opt_source" "$package_dir" "$opt_checksig_file"
+		else
+			echo "swign: no such file: $opt_source" 1>&2
+			cat /dev/null
+			exit 1;
+		fi
+		;;
+	esac
+	cat "$TMPSOURCEFILE" 2>/dev/null
+	${RM} -fr "$TMPDIR" 2>/dev/null
+	exit 0
+	;;
+esac
+
+echo "$opt_owner" | egrep -v -e '^[0-9][0-9]*$' 1>/dev/null
+owner_is_numeric=$?
+echo "$opt_group" | egrep -v -e '^[0-9][0-9]*$' 1>/dev/null
+group_is_numeric=$?
+
+if [ $owner_is_numeric -eq 1 -o $group_is_numeric -eq 1 ]; then
+	GNUTAR_NUMERIC_OPTION="--numeric-owner"
+fi
+
+# Use OLDPATH to avoid breaking the regression tests run by ``make installcheck''
+SWPACKAGE=`PATH="$OLDPATH" missing_which swpackage` || exit 1
+SWVERIFY=`PATH="$OLDPATH" missing_which swverify` || exit 1
+
+if [ -z "$SWPACKAGE" -o -z "$SWVERIFY" ]; then
+	echo "Missing utilities swverify or swpackage" 1>&2
+	echo "swpackage = [$SWPACKAGE]" 1>&2
+	echo "swverify = [$SWVERIFY]" 1>&2
+	exit 1
+fi
+
+if [ $# -lt 1 -a "$opt_signthis" = "" -a "$opt_testmode" = "" -a "$opt_showmode" = "" -a "$opt_emitthis" = "" ]; then
+	cmdusage 1>&2
+	exit 1
+fi
+
+if [ $# -ge 1 -a "$opt_signthis" ]; then
+	cmdusage 1>&2
+	exit 1
+fi
+
+if [ $# -ge 1 -a "$opt_signthis" = "" ]; then
+	case "$1" in
+		@.)
+			opt_signthis=x
+			;;
+		@-)
+			;;
+		@*)
+			cmdusage 1>&2
+			exit 1
+			;;
+		*)
+			cmdusage 1>&2
+			exit 1
+			;;		
+	esac
+fi
+
+if [ "$opt_localuser" ]; then
+	AUTHOR="$opt_localuser"
+	w_opt_author="-Wgpg-name=${AUTHOR}"
+else
+	if [ -n "$GNUPGNAME" ]; then
+		w_opt_author="-Wgpg-name=$GNUPGNAME"
+	else
+		w_opt_author="--noop"
+	fi
+fi
+
+if [ "$opt_homedir" ]; then
+	gpg_homedir="$opt_homedir"
+else
+	if [ -n "$GNUPGHOME" ]; then
+		gpg_homedir="$GNUPGHOME"
+	else
+		gpg_homedir="~/.gnupg"
+	fi
+fi
+
+DFILES=dfiles
+TMPLIST=/var/tmp/swign.$$/tarlist.eraseme
+TMPLIST2=/var/tmp/swign.$$/listcheck.eraseme.sorted
+TMPTIME=/var/tmp/swign.$$/timeref
+#TMPSOURCEFILE=/var/tmp/swign.$$/PSF
+
+if [ -z "$opt_testmode" ]; then
+	TMPLIST=/dev/null
+fi
+
+#
+# These variables have to be consistent.
+SWPACKAGE_FORMAT_OPTIONS="--format=$opt_format"
+GNUTAR_POSIX_OPTION=""
+
+caltime=`$EPOCHTIME`
+
+PACKAGEDIR="$package_dir"
+cd ..
+if [ ! -d "${REALPACKAGEDIR}" ]; then
+	echo "script failed : dir ${REALPACKAGEDIR} not found." 1>&2
+	${RM} -fr "$TMPDIR" 2>/dev/null
+	exit 1
+fi
+
+if [ -h "${REALPACKAGEDIR}" ]; then
+	echo "script failed : ${REALPACKAGEDIR} is a symlink." 1>&2
+	echo "this script does not support this." 1>&2
+	${RM} -fr "$TMPDIR" 2>/dev/null
+	exit 1
+fi
+	
+cd "${REALPACKAGEDIR}"
+case $? in
+	0)
+		;;
+	*)
+		echo "script error" 1>&2
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		exit 3
+		;;
+esac
+
+if [ "$opt_showmode" ]; then
+	echo "Identity: $AUTHOR"
+	echo "GPG homedir : $gpg_homedir"
+	echo "Package dir : ${PACKAGEDIR}"
+	echo "nothing done. exiting with status 0"
+	exit 0
+fi
+
+#
+# remove the old catalog.
+#
+case "$opt_no_remove" in
+	"")
+		case "$opt_emitthis" in
+		"")
+			${RM} -fr catalog
+			;;
+		esac
+		;;
+esac
+
+#
+# Here, in this usage just install the catalog section, then use swpackage to generate
+# the file list and use as input into GNU tar.
+#
+
+SUFF=".swigntest"
+serial_archive="../${PACKAGEDIR}${SUFF}.tar.gz"
+
+case "$opt_emitthis" in
+	"")
+	echo "swign: Generating the catalog and installing with tar...   " 1>&2
+	;;
+esac
+
+if [ -z "$no_file_permissions" -a  "$opt_owner" -a "$opt_group" ]; then
+	OWNEROPT="-W dir-owner=$opt_owner -W dir-group=$opt_group"
+elif [ "$no_file_permissions" ]; then
+	OWNEROPT="-W dir-owner= -W dir-group="
+else
+	OWNEROPT=""
+fi
+
+if [ "$c_opt_owner" -a "$c_opt_group" ]; then
+	CATALOG_OWNEROPT="-W catalog-owner=$c_opt_owner -W catalog-group=$c_opt_group"
+else
+	CATALOG_OWNEROPT=""
+fi
+
+## echo "OWNEROPT=$OWNEROPT" 1>&2
+
+case "$opt_emitthis" in
+	"")
+		process_psf "$opt_source" "$package_dir" "$opt_checksig_file"
+		;;
+esac
+
+#
+# Set the format options for swpackage and GNU tar
+#
+
+make_format_option
+case $? in 
+	0)
+		;;
+	*)
+		${RM} -fr "$TMPDIR" 2>/dev/null
+		exit 1
+		;;
+esac
+	
+if [ "$opt_emitthis" = "" ]; then
+	${SWPACKAGE} -s "$opt_source" \
+		--swbis-numeric-owner=False \
+		--swbis-absolute-names=False \
+		-W sign \
+		"$opt_nosign" \
+		$OWNEROPT \
+		$GNUTAR_NUMERIC_OPTION \
+		-W dir-mode=. \
+		$CATALOG_OWNEROPT \
+		--catalog-only \
+		-W digests \
+		${SWPACKAGE_FORMAT_OPTIONS} \
+		--check-duplicates=false \
+		-W files \
+		-W create-time="${caltime}" \
+		-W dir="${REALPACKAGEDIR}" \
+		"${w_opt_author}" \
+		-W swbis-gzip=no \
+		-W swbis-bzip2=no \
+		-W gpg-path="${gpg_homedir}" \
+		@- \
+	| (cd ..; ${TAR} xpf - "${REALPACKAGEDIR}"/catalog) 1>&2
+
+	case $? in
+		0)
+			;;
+		*)
+			echo "tar failed." 1>&2
+			${RM} -fr "$TMPDIR" 2>/dev/null
+			exit 1
+			;;
+	esac
+
+	#
+	# And here's the trick to make the signature work:
+	# 	touch -t "$create_date" .
+	#
+	# But since GNU and BSD folks haven't yet agreed on option letters
+	# for touch(1), a special program is needed to emulate
+	# the command: touch -t "$create_date" . that works for either.
+	#
+	${MTIMETOUCH} "$caltime" .
+	ret=$?
+else
+	ret=0
+fi
+
+if [ "$opt_signthis" ]; then
+	case "$ret" in
+		0)
+			${RM} -fr "$TMPDIR" 2>/dev/null
+			exit 0
+			;;
+	esac
+	exit 1
+fi
+
+if [ "$opt_testmode" ]; then
+	echo "Generating ${serial_archive} using tar ...     " 1>&2
+fi
+
+cat catalog/dfiles/files | make_archive_stream |
+(
+if [ "$opt_testmode" ]; then
+	${GZIP} -n >"${serial_archive}"
+	echo "${serial_archive} Written" 1>&2
+else 
+	dd bs=512 2>/dev/null
+fi
+)	
+
+if [ -z "$opt_testmode" ]; then
+	#
+	# Normal Usage, Exit here.
+	#
+	TMPDIR=/var/tmp/swign.$$
+	${RM} -fr "$TMPDIR" 2>/dev/null
+	exit 0
+fi
+
+# End.  for default usage.
+##############################################################################
+# Here if --run-sanity-test 
+#
+# Done.
+# Now do some sanity checks.
+#
+# Now check that the catalog/<dfiles>/files is correct and agrees with the current directory contents as
+# determined by the $FIND command.
+#
+
+	printf "swign: Checking file list generated by swpackage ... " 1>&2
+	(cd ..;  ${CAT} "${PACKAGEDIR}"/catalog/${DFILES}/files) | ${SED} -e 's@/$@@' | ${SORT} >$TMPLIST2
+	(cd ..; ${FIND} "${PACKAGEDIR}") | ${SED} -e 's@/$@@' | ${SORT} | ${DIFF} -u - $TMPLIST2
+	case $? in
+		0)
+			echo "  OK" 1>&2
+			;;
+		*)
+			${RM} -fr "$TMPDIR" 2>/dev/null
+			echo " FAILED." 1>&2
+			exit 1
+			;;
+	esac
+
+	#
+	# Now check that the tar stderr file output has all the files in it.
+	#
+	printf "swign: Checking tar list against current directory content ... " 1>&2
+	(cd ..; ${CAT} <$TMPLIST | ${GREP} -v -e '^pax: .*vol ' | ${SED} -e 's@/$@@') | ${SORT} >${TMPLIST}.sorted
+	(cd ..; ${FIND} "${PACKAGEDIR}") | ${SORT} |  diff -u - ${TMPLIST}.sorted
+	case $? in
+		0)
+			echo " OK" 1>&2
+			;;
+		*)
+			${RM} -fr "$TMPDIR" 2>/dev/null
+			echo " FAILED" 1>&2
+			exit 1
+			;;
+	esac
+	
+	echo "swign: Now running swverify" 1>&2
+
+TMPDIR=/var/tmp/swign.$$
+${RM} -fr "$TMPDIR" 2>/dev/null
+
+${SWVERIFY} --checksig ${serial_archive}
+ret=$?
+echo "The test archive currently resides at: ${serial_archive}" 1>&2
+exit $ret

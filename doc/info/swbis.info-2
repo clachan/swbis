@@ -1,0 +1,841 @@
+This is ../info/swbis.info, produced by makeinfo version 4.13 from
+swbis.texi.
+
+This manual is for swbis (version 1.13.1, 24 Jul 2014), which is an
+implementation of the POSIX System Administration Standard - Part 2:
+Software Administration IEEE Std 1387.2-1995 (ISO/IEC 15068-2) (both
+now withdrawn) and the Open Group Specification CAE C701.  Currently,
+most of the the standard is implemented.  Most notably the
+implementation lacks the ability to operate on packages with multiple
+fileset or products.  There are extensions for package authentication
+using GNU Privacy Guard.  Extensions to the standard are indicated as
+such in this document.
+
+   Copyright (C) 2008,2014 Jim Lowe
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover Texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Swbis: (swbis).               POSIX software packaging utilities.
+END-INFO-DIR-ENTRY
+
+
+File: swbis.info,  Node: swdefaults configuration file,  Next: swbisdefaults configuration file,  Up: Configuring swbis
+
+swdefaults
+==========
+
+# File: sw defaults
+## uncomment options as needed.
+
+installed_software_catalog	= var/lib/swbis/catalog
+
+#swinstall.allow_downdate			= false
+#swinstall.allow_incompatible			= false
+#swinstall.ask					= false
+#swinstall.autoreboot				= false
+#swinstall.autoselect_dependencies		= false
+#swinstall.defer_configure			= false
+#swinstall.distribution_source_directory	= -
+#swinstall.enforce_dependencies			= false
+#swinstall.enforce_dsa				= false
+#swinstall.enforce_locatable			= false
+#swinstall.enforce_scripts			= false
+#swinstall.installed_software_catalog		= var/lib/swbis/catalog
+#swinstall.logfile				= /var/log/swinstall.log
+#swinstall.loglevel				= 1
+#swinstall.reinstall				= false
+#swinstall.select_local				=
+#swinstall.software				=
+#swinstall.targets				=
+#swinstall.verbose				= 1
+
+#swcopy.autoselect_dependencies			= false		# Support not implemented.
+#swcopy.compress_files				= false 	# Support not implemented.
+#swcopy.compression_type			= none  	# Support not implemented.
+#swcopy.distribution_source_directory		= -	# Standard input
+#swcopy.distribution_target_directory		= -	# Standard output
+#swcopy.enforce_dependencies			= false		# Support not implemented.
+#swcopy.enforce_dsa				= false		# Support not implemented.
+#swcopy.logfile					= /var/log/swcopy.log
+#swcopy.loglevel				= 0		# Support not implemented.
+#swcopy.recopy					= false		# Support not implemented.
+#swcopy.select_local				= false		# Support not implemented.
+#swcopy.software				=
+#swcopy.targets					=
+#swcopy.uncompress_files			= false		# Support not implemented.
+#swcopy.verbose					= 1
+
+#swremove.autoselect_dependencies		= true
+#swremove.distribution_target_directory		= /var/spool/sw
+#swremove.enforce_dependencies			= true
+#swremove.enforce_scripts			= true
+#swremove.enforce_dsa				= true
+#swremove.installed_software_catalog		= var/lib/swbis/catalog
+#swremove.logfile				= /var/log/swremove.log
+#swremove.loglevel				= 1
+#swremove.select_local				= true
+#swremove.software				=
+#swremove.targets				=
+#swremove.verbose				= 1
+
+#swconfig.allow_incompatible			= false
+#swconfig.allow_multiple_versions		= false
+#swconfig.ask					= false
+#swconfig.autoselect_dependencies		= true
+#swconfig.autoselect_dependents			= false
+#swconfig.enforce_dependencies			= true
+#swconfig.installed_software_catalog		= var/lib/swbis/catalog
+#swconfig.logfile				= /var/log/swconfig.log
+#swconfig.loglevel				= 1
+#swconfig.reconfigure				= false
+#swconfig.select_local				= true
+#swconfig.software				=
+#swconfig.targets				=
+#swconfig.verbose				= 1
+
+#swask.autoselect_dependencies			= true
+#swask.distribution_source_directory		= /var/spool/sw
+#swask.distribution_source_serial		= -
+#swask.logfile					= /var/log/swask.log
+#swask.loglevel					= 1
+#swask.select_local				= true
+#swask.software					=
+#swask.targets					=
+#swask.verbose					= 1
+
+#swmodify.distribution_target_directory		= /var/spool/sw
+#swmodify.installed_software_catalog		= var/lib/swbis/catalog
+#swmodify.files					=
+#swmodify.logfile				= /var/log/swmodify.log
+#swmodify.loglevel				= 1
+#swmodify.select_local				= true
+#swmodify.software				=
+#swmodify.targets				=
+#swmodify.verbose				= 1
+
+#swverify.allow_incompatible			= false
+#swverify.autoselect_dependencies		= true
+#swverify.check_contents			= true
+#swverify.check_permissions			= true
+#swverify.check_requisites			= true
+#swverify.check_scripts				= true
+#swverify.check_volatile			= false
+#swverify.distribution_target_directory		= /var/spool/sw
+#swverify.enforce_dependencies			= true
+#swverify.enforce_locatable			= true
+#swverify.installed_software_catalog		= var/lib/swbis/catalog
+#swverify.logfile				= /var/log/swverify.log
+#swverify.loglevel				= 1
+#swverify.select_local				=
+#swverify.software				=
+#swverify.targets				=
+#swverify.verbose				= 1
+
+#swlist.distribution_target_directory		= /
+#swlist.installed_software_catalog		= var/lib/swbis/catalog
+#swlist.one_liner				= products # {products|files|dir}
+#swlist.select_local				= true
+#swlist.software				=
+#swlist.targets					=
+#swlist.verbose					= 1
+
+#swpackage.distribution_target_directory	= /var/spool/sw
+#swpackage.distribution_target_serial		= -
+#swpackage.enforce_dsa				= false
+#swpackage.follow_symlinks			= false
+#swpackage.logfile				= /var/log/swpackage.log
+#swpackage.loglevel				= 1
+#swpackage.media_capacity			= 0
+#swpackage.media_type				= serial
+#swpackage.psf_source_file			= -
+#swpackage.software				=
+#swpackage.verbose				= 1
+
+# end of swdefaults file
+
+
+File: swbis.info,  Node: swbisdefaults configuration file,  Next: Archive Reading/Writing Utility Selection,  Prev: swdefaults configuration file,  Up: Configuring swbis
+
+swbisdefaults
+=============
+
+# File: swbisdefaults
+## Uncomment options as needed.
+
+# Suggested Defaults
+
+#swbis_no_getconf		= true # true or false, Deprecated.
+#swbis_shell_command		= detect # {sh|detect|bash|posix|ksh}
+#swbis_no_remote_kill		= true  # true or false
+#swbis_quiet_progress_bar	= true  # true or false
+#swlist.swbis_local_pax_write_command    = detect
+#swlist.swbis_remote_pax_write_command   = detect
+#swverify.swbis_local_pax_write_command  = detect
+#swverify.swbis_remote_pax_write_command = detect
+#swbis_local_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swbis_remote_pax_write_command  = tar  # {pax|tar|star|gtar|swbistar}
+#swbis_local_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swbis_remote_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swbis_remote_shell_client	= ssh
+#swbis_allow_rpm		= true
+#swbis_forward_agent		= false # Forward ssh agent. true=yes false=no
+
+#swcopy.swbis_no_getconf			= false # true or false, Deprecated.
+#swcopy.swbis_shell_command			= detect # {sh|bash|posix|ksh|detect}
+#swcopy.swbis_no_remote_kill			= false # true or false
+#swcopy.swbis_quiet_progress_bar		= true  # true or false
+#swcopy.swbis_no_audit				= true # true or false
+#swcopy.swbis_local_pax_write_command 		= pax  # {pax|tar|star|gtar|swbistar}
+#swcopy.swbis_remote_pax_write_command 		= pax  # {pax|tar|star|gtar|swbistar}
+#swcopy.swbis_local_pax_read_command 		= pax  # {pax|tar|star|gtar}
+#swcopy.swbis_remote_pax_read_command 		= pax  # {pax|tar|star|gtar}
+#swcopy.swbis_remote_shell_client		= ssh
+#swcopy.swbis_forward_agent			= true
+
+#swinstall.swbis_no_getconf			= false # true or false, Deprecated.
+#swinstall.swbis_shell_command			= detect # {sh|bash|posix|ksh|detect}
+#swinstall.swbis_no_remote_kill			= false # true or false
+#swinstall.swbis_quiet_progress_bar		= true  # true or false
+#swinstall.swbis_local_pax_write_command 	= pax  # {pax|tar|star|gtar|swbistar}
+#swinstall.swbis_remote_pax_write_command 	= pax  # {pax|tar|star|gtar|swbistar}
+#swinstall.swbis_local_pax_read_command 	= pax  # {pax|tar|star|gtar}
+#swinstall.swbis_remote_pax_read_command 	= pax  # {pax|tar|star|gtar}
+#swinstall.swbis_sig_level			= 0    # number of signatures to require
+#swinstall.swbis_enforce_file_md5		= false
+#swinstall.swbis_allow_rpm			= false
+#swinstall.swbis_remote_shell_client		= ssh
+#swinstall.swbis_install_volatile		= true
+#swinstall.swbis_volatile_newname		= ""     # e.g. ".rpmnew"
+#swinstall.swbis_forward_agent			= true
+#swinstall.swbis_ignore_scripts			= false
+
+#swpackage.swbis_cksum				= "false"   # true or false
+#swpackage.swbis_file_digests			= "true"   # true or false
+#swpackage.swbis_files				= "false"   # true or false
+#swpackage.swbis_sign				= "false"   # true or false
+#swpackage.swbis_archive_digests		= "false"   # true or false
+#swpackage.swbis_gpg_name			= ""
+#swpackage.swbis_gpg_path			= "~/.gnupg"
+#swpackage.swbis_gzip				= "false"   # true or false
+#swpackage.swbis_bzip2				= "false"   # true or false
+#swpackage.swbis_numeric_owner			= "false"   # true or false
+#swpackage.swbis_absolute_names			= "false"   # true or false
+#swpackage.swbis_format				= "ustar"
+#swpackage.swbis_signer_pgm			= "GPG"
+#swpackage.swbis_check_duplicates		= "true"
+
+#swlist.swbis_no_getconf			= false # true or false, Deprecated.
+#swlist.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swlist.swbis_no_remote_kill			= false # true or false
+#swlist.swbis_local_pax_write_command 		= detect # {pax|tar|star|gtar|swbistar|detect}
+#swlist.swbis_remote_pax_write_command 		= detect # {pax|tar|star|gtar|swbistar|detect}
+#swlist.swbis_local_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swlist.swbis_remote_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swlist.swbis_remote_shell_client		= ssh
+#swlist.swbis_any_format			= false # true or false
+#swlist.swbis_forward_agent			= true
+#swlist.swbis_sig_level				= 0 # Number of required valid signatures
+#swlist.swbis_enforce_all_signatures		= false
+
+#swremove.swbis_no_getconf			= false # true or false, Deprecated.
+#swremove.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swremove.swbis_no_remote_kill			= false # true or false
+#swremove.swbis_local_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swremove.swbis_remote_pax_write_command 	= tar  # {pax|tar|star|gtar|swbistar}
+#swremove.swbis_local_pax_read_command 		= tar  # {pax|tar|star|gtar}
+#swremove.swbis_remote_pax_read_command 	= tar  # {pax|tar|star|gtar}
+#swremove.swbis_local_pax_remove_command 	= tar  # {tar|gtar}  Must have the --remove-files option
+#swremove.swbis_remote_pax_remove_command 	= tar  # {tar|gtar}  Must have the --remove-files option
+#swremove.swbis_remote_shell_client		= ssh
+#swremove.swbis_forward_agent			= false
+#swremove.swbis_sig_level			= 0 # Number of required valid signatures
+#swremove.swbis_enforce_all_signatures		= false
+
+#swverify.swbis_no_getconf			= false # true or false, Deprecated.
+#swverify.swbis_shell_command			= detect # {sh|bash|posix|ksh}
+#swverify.swbis_no_remote_kill			= false # true or false
+#swverify.swbis_local_pax_write_command 	= detect # {pax|tar|star|gtar|swbistar|detect}
+#swverify.swbis_remote_pax_write_command 	= detect # {pax|tar|star|gtar|swbistar|detect}
+#swverify.swbis_local_pax_read_command 		= detect # {pax|tar|star|gtar|detect}
+#swverify.swbis_remote_pax_read_command 	= detect # {pax|tar|star|gtar|detect}
+#swverify.swbis_remote_shell_client		= ssh
+#swverify.swbis_forward_agent			= false
+#swverify.swbis_sig_level			= 0 # Number of required valid signatures
+#swverify.swbis_enforce_all_signatures		= false
+
+# end of swbisdefaults file
+
+
+File: swbis.info,  Node: Archive Reading/Writing Utility Selection,  Next: Shell Selection,  Prev: swbisdefaults configuration file,  Up: Configuring swbis
+
+Archive Reading/Writing Utility Selection
+=========================================
+
+swbis_local_pax_write_command  = tar  # {pax|tar|star|gtar|swbistar}
+swbis_remote_pax_write_command = tar  # {pax|tar|star|gtar|swbistar}
+swbis_local_pax_read_command   = tar  # {pax|tar|star|gtar}
+swbis_remote_pax_read_command  = tar  # {pax|tar|star|gtar}
+swlist.swbis_local_pax_write_command   = detect  # {detect|pax|tar|gtar}
+swlist.swbis_remote_pax_write_command  = detect  # {detect|pax|tar|gtar}
+swverify.swbis_local_pax_write_command   = detect  # {detect|pax|tar|gtar}
+swverify.swbis_remote_pax_write_command  = detect  # {detect|pax|tar|gtar}
+
+
+File: swbis.info,  Node: Shell Selection,  Next: (swbis_swbis)RUNTIME CONFIGURATION,  Prev: Archive Reading/Writing Utility Selection,  Up: Configuring swbis
+
+Shell Selection
+===============
+
+Setting swbis_shell_command to 'detect' is the best choice here.  The
+swbis_no_getconf option is headed for legacy status, disable it by
+setting this to 'true'.
+
+swbis_no_getconf               = true # true or false
+swbis_shell_command            = detect # {detect|sh|bash|posix||ksh}
+
+
+File: swbis.info,  Node: Introduction,  Next: Glossary,  Prev: About This Manual,  Up: Top
+
+Introduction
+************
+
+3 Introduction
+**************
+
+You are reading about GNU Swbis, the GNU implementation of the POSIX
+Software Administration Standard ISO/IEC 15068-2:1999 (formerly IEEE
+Std 1387.2-1995).  This spec describes a interchange format, package
+file layout, meta-data file format and utilities for package creation,
+installation, query, listing, and verification.
+
+   The GNU implementation adds capabilities for package authentication
+using strong cryptographic digests and GPG signatures that are embedded
+in the package as an ordinary control files as allowed by the standard.
+
+   The GNU implementation is compatible with traditional free software
+distribution package file layouts by supporting empty names for control
+directories in the POSIX layout.  This makes a swbis package no
+different from current packages except for the addition of the
+meta-data directory.
+
+   Other features of the GNU implementation are direct use of GNU
+Privacy Guard for signature creation and verification, direct use of
+the Ssh client for remote host operations, GNU tar format
+compatibility, no new utility or program requirements for remote
+installation beyond POSIX compatible GNU utilities that are probably
+already present on all GNU and GNU/Linux hosts.
+
+   GNU Swbis also can translate and install packages in RPM format.
+
+* Menu:
+
+* Description: (swbis_swbis)DESCRIPTION
+* Options: (swbis_swbis)OPTIONS
+* Examples: (swbis_swbis)EXAMPLES
+* Commands Overview: (swbis_swbis)COMMANDS OVERVIEW
+* Runtime Configuration: (swbis_swbis)RUNTIME CONFIGURATION
+* Discussion: (swbis_swbis)DISCUSSION
+
+
+File: swbis.info,  Node: About This Manual,  Next: Introduction,  Prev: Copying This Manual,  Up: Top
+
+About This Manual
+*****************
+
+This manual contains information not found in the Unix-style Manual
+Pages such as a user guides, Tutorials, and Internal design features,
+however, the Manual Pages and this manual share common source and many
+sections transparently reference a different rendering of the Manual
+Page source documents.
+
+
+File: swbis.info,  Node: Other Resources,  Next: Host Requirements,  Prev: Applicable Standards,  Up: Top
+
+Other Resources
+***************
+
+Other sources of documentation include ISO/IEC or IEEE printed standard,
+the online version of the Open Group Specification CAE C701.
+
+   The swbis man pages are maintained and may be considered
+authoritative.  See also swbis(1) and swbis(7) (via man 7 swbis  or,
+man 1 swbis)
+
+   Documentation from other implementations based on the Standard likely
+describe features that are a superset of the POSIX spec, whereas, the
+swbis implementation currently is a subset, hence, may not now or ever
+apply to swbis.
+
+
+File: swbis.info,  Node: Making PSFs for Package Creation,  Next: Creating Signed Distributions,  Prev: Command Reference,  Up: Top
+
+Making PSFs for Package Creation
+********************************
+
+The input file to `swpackage'is a called a Product Specification File
+or PSF.  It contains information to direct `swpackage' and information
+that is package meta-data [that is merely transferred unchanged into
+the global INDEX file].
+
+   A PSF may contain object keywords, attributes (keyword/value pairs)
+and Extended Definitions (*Note (swbis_sw)EXTENDED DEFINITIONS::.)  An
+object keyword connotes a logical object or software structure
+supported by the standard.  An object keyword does not have a value
+field after it, as it contains attributes and Extended Definitions.  An
+attribute keyword conotes an attribute (i.e. keyword/value pair) and
+always has a value.
+
+   Attribute keywords not recognized by the standard are allowed and
+are transferred into the INDEX file.  Object keywords not recognized by
+the standard are not allowed and will generate an error.  Extended
+Definitions may only appear in a PSF (never in a INDEX or INFO created
+by swpackage).  Extended Definitions are translated [by swpackage] into
+object keywords (objects) and attributes recognized by the standard.
+
+   Comments in a PSF are not transferred into the INDEX file by the
+swbis implementation of `swpackage'.
+
+   The file syntax is the same as a INDEX, or INFO file.  *Note
+(swbis_sw)SOFTWARE DEFINITION FILES::.
+
+   A PSF may contain all objects defined by the standard as well as
+extended definitions.
+
+   Currently, `swpackage' does not enforce requirements for revision
+and name meta-data that other the 'swinstall' might need.  Therefore
+you should perform a test install of your package. The preview '-p'
+option of `swinstall' internally simulates most of the install operation
+but does not alter the file system.  The example below previews the
+package on standard input.
+             swinstall -p -x verbose=6 -s - < your_package
+
+   Other restrictions of the swbis implementation are the default
+values for the 'dfiles' and 'pfiles' attributes (which are 'dfiles' and
+'pfiles') must be used for minimal layout packages, i.e. packages that
+have the product and fileset control directories specified as empty
+strings (i.e have a minimal package layout).
+
+* Menu:
+
+* PSF Description: (swbis_swpackage)SWPACKAGE INPUT FILE FORMAT
+* PSF Examples: (swbis_swpackage)SAMPLE PRODUCT SPEC FILES
+* Swbis Packaging Conventions: (swbis_sw)SWBIS PSF CONVENTIONS
+* Extended Definitions: (swbis_sw)EXTENDED DEFINITIONS
+* A Minimal PSF::
+* A PSF for Source Packages::
+
+
+File: swbis.info,  Node: A Minimal PSF,  Next: A PSF for Source Packages,  Prev: (swbis_sw)EXTENDED DEFINITIONS,  Up: Making PSFs for Package Creation
+
+PSF.minimal
+===========
+
+# This PSF packaged all files in the current
+# directory.
+distribution
+dfiles dfiles
+product
+title somepackage version 0.1
+description Source package for somepackage version 0.1
+tag somepackage      # < Change this to your package name
+revision 0.1         # < Change this to your package version
+control_directory ""
+fileset
+tag somepackage-sources   # Not used by swbis currently
+control_directory ""
+file_permissions -o 0  -g 0
+directory .
+file *
+exclude catalog
+
+
+File: swbis.info,  Node: A PSF for Source Packages,  Prev: A Minimal PSF,  Up: Making PSFs for Package Creation
+
+A PSF for Source Packages
+=========================
+
+This PSF packages all the files in the directory where `swpackage' is
+invoked.  It uses NUL control directory names which maintain the
+package directory structure.
+
+# File: Example PSF for source packages
+#  This file may be copied without restriction.
+
+# The distribution object is required, thought it need not
+# have any attributes.
+
+distribution
+
+# Attributes in the distribution are mostly ignored by the utilities
+# although distributor control files that pertain to the
+# distribution as a whole are properly placed here.  Two examples
+# of files that are useful here are:
+
+AUTHORS < AUTHORS   # This places the file in ./catalog/dfiles
+COPYING < COPYING   # This places the file in ./catalog/dfiles
+
+# This places the checkdigest script in ./catalog/dfiles/checkdigest
+# For a description of the checkdigest script see info 'swbis'
+
+  checkdigest  < bin/checkdigest.sh
+
+# The vendor object provides attributes to describe
+# the distributor.  At this time, how these attributes
+# are used is not addressed.
+
+# The vendor object is optional
+
+vendor
+   the_term_vendor_is_misleading True  # One of: True, False
+   tag shortName # Or use a short name of your organization of your
+                       # or your initials, etc.
+   title Your Name
+   qualifier author
+   description "Maintainer of somepackage"
+
+# The bundle object is optional
+# Most packages do not need a bundle.  At this point in swbis'
+# development 'bundles' are mostly ignored.  Bundles are meta
+# packages, it is an object that contains other bundles and
+# products whether included in this distribution tarball or not.
+# The tag is the name of the meta-package.
+
+bundle
+   tag somepackage
+
+# The product object contains the attributes of common
+# interest such as the description, version and name.
+
+# The product object is required.
+# The product object contains the package info
+
+product
+   description "This is the
+description of your
+package"
+   title "Short one line description"
+   tag somepackage                      # This is the package name
+   revision 1.99                        # This is the package version
+   vendor_tag shortName
+   control_directory ""   # Empty string, Important
+
+# The fileset object contains the files.
+# The fileset.tag and revision are ignored by swbis at
+# this time.
+
+# Only a fileset object contains files, hence it is required.
+fileset
+    tag somepackage-sources              # Not used currently
+    control_directory ""                 # Empty string, Important
+    title somepackage source code
+    description "The source distribution of somepackage"
+
+# file_permissions:
+#
+# NOTE:  Using "file_permissions -o 0 -g 0" is preferred if
+# you want the package users to more easily verify the
+# directory (unpacked) form of the package using standard
+# non-swbis tools.  This is accomplished by using GNU tar
+# with correct options to create a byte stream that hashes
+# to match the GPG signature and payload digests.
+
+#   file_permissions -u 000  # To use ownerships of source files
+    file_permissions -o 0 -g 0 # --numeric --owner=root --group=root
+
+# The following two (2) lines mean include every file in the current
+# directory.
+
+    directory .
+    file *
+
+# You want to exclude the files in ./catalog because it
+# should not be part of the payload section.
+
+    exclude catalog   # Important
+
+# You may also want other excludes such as:
+
+    exclude CVS
+    exclude */CVS
+    # exclude .svn
+    # exclude */.svn
+
+# End of PSF
+
+
+File: swbis.info,  Node: Installing POSIX Distributions,  Next: Translating and Installing Other Formats,  Prev: (swbis_swverify)VERIFYING SIGNATURES,  Up: Top
+
+Installing POSIX Distributions
+******************************
+
+This is as simple as:
+     swinstall <your-package
+        # or
+     swinstall -s :foo-1.1.tar.gz  @ 192.168.3.2 <your-package
+        # or
+     swinstall -x reinstall=y <your-package
+        # or
+     swinstall --no-scripts -x reinstall=y <your-package
+        # or
+     swinstall --no-scripts -x reinstall=y @ /tmp/test  <your-package
+ The default target directory is always '/'.  *Note Command Reference::.
+
+
+File: swbis.info,  Node: Host Requirements,  Next: Configuring swbis,  Prev: Other Resources,  Up: Top
+
+Host Requirements
+*****************
+
+'swbis' is designed to be as non-intrusive as possible and this applies
+to host requirements which are minimal.
+
+   For package creation you need `uuidgen' and if creating signed
+distributions you need `gpg'.
+
+   For package installation you need `sh', `bash', `dd', `tar',
+`hostname', `mkdir', `expr', `echo', `test', `sleep'.
+
+   Installation of packages on remote hosts (i.e. using swinstall with
+a remote host target) does not require swbis to be installed there.
+
+   The `swverify' and `swign' commands are shell scripts which may have
+additional requirements.
+
+   Here are the technical details about requirements for `swinstall',
+the same apply to `swcopy':
+
+   `swinstall' requires a POSIX shell accessible by the remote shell
+command.  This is the remote command run by ssh (or rsh)  for  all
+operations.  This command can be controlled by the -shell-command
+option or the swbis_shell_command defaults file  option.  The
+recommended value is 'detect' which performs auto-detection of a
+sutable shell.
+
+   Other utilities required to be in $PATH on the remote host are: dd,
+pax (or GNU tar), hostname, mkdir, expr, echo, test, sleep, read (if
+not builtin).
+
+* Menu:
+
+* More on Host Requirments: (swbis_swbis)HOST REQUIREMENTS
+
+
+File: swbis.info,  Node: Signing File System Directories,  Next: Creating a Catalog of Installed Packages,  Prev: Creating Signed Distributions,  Up: Top
+
+Signing File System Directories
+*******************************
+
+To swbis, a signed directory is any directory that contains the GPG
+signed distribution catalog directory `./catalog/'.  The signature
+protects the signed bytes which is a tar archive representation of
+`./catalog/'.  The contents of directory `./catalog/' contain meta data
+about the contents of the current directory `./'.
+
+   Used is this way, the distribution catalog directory, `./catalog/',
+is a GPG signed directory manifest.
+
+   The `./catalog/' directory is created by `swpackage'.  A separate
+ad-hoc utility, `swign' makes signing a directory much easier.
+
+* Menu:
+
+* Creating a signed directory using `swign'::
+
+
+File: swbis.info,  Node: Creating a Catalog of Installed Packages,  Next: (swbis_swverify)VERIFYING SIGNATURES,  Prev: Signing File System Directories,  Up: Top
+
+Creating a Catalog of Installed Packages
+****************************************
+
+Suppose your distribution uses a packaging format that does not provide
+an installed software catalog.  Using swbis you can create your own
+provided you have the original package files.
+
+   To do this you translate the orignal package (that is already
+installed) to swbis format and install just the catalog.  Like this:
+
+      swinstall --justdb -s- @/
+
+   which writes that catalog at `/var/lib/swbis/catalog'.  You can
+control the location of the catalog via the command line option.
+
+      swinstall --justdb -x installed_software_catalog=/$HOME/my_catalog
+
+   Translation is done by the `lxpsf' utility.  It can be invoked
+transparently using `swpackage' and sent via a pipe to swinstall:
+
+        swpackage --to-swbis -s /Your/system/somepackage-1.0.type |
+        swinstall --justdb
+
+   Then the catalog can be queried and used for verification purposes.
+
+     swlist somepackage;  # list the package
+     swlist;   # list all the installed software
+     swverify --sig-level=0 -vv somepackage @ / ;  # Use sig-level=1 if you
+                                                      # signed the package
+
+   This works really well for RPM distributions.  Users of Debian and
+Slackware may want to take more detailed control to exclude extraneous
+system directories that hamper clean verification.  Like this:
+
+     lxpsf --psf-form3  --exclude-system-dirs somepackage-1.0.tar.xz |
+     swpackage -Wsource=- -s @PSF @- | # Use special options to swpackage
+     swinstall --justdb
+
+   Then verify.  Slackware users may use the specific option to ignore
+the `./install' directory and its files.
+
+     swlist;
+     swverify --ignore-slack -x check_volatile=no somepackage @ /
+
+   All of package signing and security options are available when using
+swpackage as shown above.  In fact it was assumed that they were all on
+by default.  Creating a catalog without signatures or file digests or
+file list is of little use.  Here is a last example showing some of
+these options.
+
+   The `lxpsf' is located in the LIBEXEC directory, for example
+`/usr/lib/swbis/lxpsf'.
+
+    lxpsf --psf-form3  --exclude-system-dirs somepackage-1.0.tar.xz |
+    swpackage \
+       --files \
+       --sha2  \
+       --sha1  \
+       --sign  \
+       --passphrase=fd=agent \
+       --gpg-name=NAME \
+       -Wsource=- -s @PSF @- |
+     swinstall --justdb
+
+
+File: swbis.info,  Node: Translating and Installing Other Formats,  Next: Remote Host Operations,  Prev: Installing POSIX Distributions,  Up: Top
+
+Translating and Installing Other Formats
+****************************************
+
+Translation of supported formats are done in memory. No temporary files
+are created.  Large RPMs or RPMs with many small files may take many
+seconds or several minutes to translate.
+
+   Translation is performed by the swbis library executable `lxpsf' and
+`swpackage'.  Internally, this is
+     /usr/lib/swbis/lxpsf --psf-form3 -H ustar |
+     swpackage -Wsource=- -s@PSF @-
+
+   The `lxpsf' is the only swbis program with RPM library dependencies,
+and this is the program that does the actual meta-data translation.
+
+   The easiest way to invoke translation is with the `--unrpm' of
+`swpackage' and `swcopy'.
+       swcopy --unrpm -s - @- <your-0.1.arch.rpm | tar tvf -
+           -or-
+       swpackage --unrpm @- <your-0.1.arch.rpm | tar tvf -
+           -or-
+       swpackage --to-sw <your-0.1.arch.rpm | tar tvf -
+
+   To verbosely preview the translated RPM:
+       swcopy --unrpm -s - @- | swinstall -p -x verbose=5
+
+* Menu:
+
+* More Specifics on Translating Other Formats: (swbis_user)TRANSLATING OTHER FORMATS
+
+
+File: swbis.info,  Node: Remote Host Operations,  Next: GNU Toolset Orthogonality,  Prev: Translating and Installing Other Formats,  Up: Top
+
+
+
+swbis is network transparent from the ground up.  It uses ssh (or rsh)
+to establish remote connections.  Communication then takes place on
+standard input, output and error as established by the remote shell
+client on the local host.  Operations which are entirely local are
+symmetric with remote operations in that swbis communicates via Unix
+pipes and makes no distinction based on the locality of the
+communication endpoints.
+
+   swbis uses the ssh client program 'ssh' as found by the PATH
+variable.  swbis adds the '-T' option to disable pseudo-tty allocation.
+
+   swbis supports an extension to the POSIX target syntax to support
+multiple host hops.  Use of password authentication for multi-hop
+targets requires use of the SSH_ASKPASS program and redirection of X11
+connections over the secure ssh channel.  See the 'ForwardX11' option
+in the ssh client configuration.  Use of public key authentication is
+more reliable since the authentication agent is forwarded by use of the
+'-A' ssh option.
+
+   Important Note:  When making a multi-hop connection using either
+authentication method, the authentication credentials appear on the
+intermediate hosts and are subject to hijack, hence, the intermediate
+hosts' trust requirement should be no less than the terminal host's.
+
+
+File: swbis.info,  Node: GNU Toolset Orthogonality,  Next: Package Layout and Interchange Format Mimicry,  Prev: Remote Host Operations,  Up: Top
+
+
+
+One overriding design goal of swbis is zero re-invention.  To that end,
+swbis uses '/usr/bin/gpg' for signing and authentication.  It uses
+'rsh' and 'ssh' for remote connections.  It uses 'bash' (as a POSIX
+shell) for command processing.  It uses 'pax' or 'tar' for archive
+installation.  It uses a file system directory structure as the
+database for installed software.
+
+
+File: swbis.info,  Node: Package Layout and Interchange Format Mimicry,  Next: (swbis_swpackage)SWPACKAGE OUTPUT FORMAT,  Prev: GNU Toolset Orthogonality,  Up: Top
+
+
+
+swbis is non-intrusive relative to current practice for data
+interchange and storage using tar archives.
+
+   swbis supports a 'minimal package layout' (*Note (swbis_sw)Minimal
+Package Layout::.)  This layout follows the POSIX spec but has nil
+control directories (Note: nil control directories are not attested to
+in the POSIX specification).
+
+   By specifying control directories as empty strings and specifying a
+non-empty leading directory for the archive, a swbis POSIX package may
+be used inter-changeably with free software tar archive source packages
+which commonly have a leading package directory.
+
+   Binary (run-time) packages follow the same pattern except the leading
+directory is specified as an empty string as well.  The result is a
+run-time package directly installable by `tar'.
+
+   The non-inventive nature of swbis extends into the format level as
+well.  swbis has its own archive writing utility, `swpackage', and it is
+self contained, however, it writes tar archives which are identical to
+archives produced by GNU tar.
+
+   This data format mimicry has several advantages.  It forms the basis
+for a very brittle regression test, namely bit-for-bit sameness with
+GNU tar.  This also preserves symmetry between a package archive and
+package directory in that swbis archives installed with tar can be
+repackaged with GNU tar with no bit-wise change relative to the
+original.
+
+   Together, these layers of mimicry are put to practical application
+in the `swign' program *Note (swbis_swign)::, which creates GPG signed
+POSIX packages without any data copying except by GNU tar.
+
+
+File: swbis.info,  Node: Index,  Prev: (swbis_sw)EXAMPLE PACKAGE,  Up: Top
+
+Index
+*****
+
+

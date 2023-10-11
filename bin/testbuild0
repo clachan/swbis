@@ -1,0 +1,23 @@
+#!/bin/sh
+
+
+	OPTLEVEL=-O1
+	case "$#" in
+		1)
+			OPTLEVEL="$1"
+			;;
+	esac
+
+	if [ "$MAKE" = "" ]; then
+		MAKE=make
+	fi
+
+	./configure CFLAGS=$OPTLEVEL \
+		--with-no-flex \
+		--with-no-bison \
+		--prefix=`pwd`/tmp && \
+	$MAKE && \
+	$MAKE install && \
+	$MAKE testsuite2
+
+	exit $?

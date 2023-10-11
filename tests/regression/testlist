@@ -1,0 +1,39 @@
+#!/bin/sh
+echo 002
+cat  <./examples/packages/posix-software-2.0.sw.tar.gz | gzip -c -d | cpio -it | tests/testpath
+if [ $? -ne 0 ]; then exit 1; fi
+echo 003
+cat  <./examples/packages/posix-software-2.0.sw.tar.gz | swprogs/sw_2tar | tar tvf -
+if [ $? -ne 0 ]; then exit 1; fi
+echo 004
+cat  <./examples/packages/posix-software-2.0.sw.tar.gz | gzip -c -d | swprogs/sw_2tar | tar tvf -
+if [ $? -ne 0 ]; then exit 1; fi
+echo 005
+swprogs/swlist <../testinputfiles/posix-software-2.0.sw.tar.gz
+if [ $? -ne 0 ]; then exit 1; fi
+echo 006
+swprogs/swlist <../testinputfiles/iiiic.tar
+if [ $? -ne 0 ]; then exit 1; fi
+echo 007
+swprogs/swlist <../testinputfiles/ii.tar
+if [ $? -ne 0 ]; then exit 1; fi
+echo 008
+swprogs/swlist <../testinputfiles/iii.tar
+if [ $? -ne 0 ]; then exit 1; fi
+echo 009
+swprogs/swlist <../testinputfiles/iiii.tar
+if [ $? -ne 0 ]; then exit 1; fi
+echo 010
+swprogs/swlist <../testinputfiles/ii.tar.gz
+if [ $? -ne 0 ]; then exit 1; fi
+echo 011
+swprogs/swlist <../testinputfiles/iii.tar.gz
+if [ $? -ne 0 ]; then exit 1; fi
+echo 012
+swprogs/swlist <../testinputfiles/iiii.tar.gz
+if [ $? -ne 0 ]; then exit 1; fi
+echo 013
+swprogs/swlist <../testinputfiles/iiiic.tar.gz
+if [ $? -ne 0 ]; then exit 1; fi
+echo 014
+exit 0

@@ -1,0 +1,140 @@
+
+@node Invoking swbis
+@chapter How to invoke swbis
+
+@pindex sample
+@cindex invoking @command{swbis}
+
+The utilities are invoked from the command line.
+
+The commands share a common syntax that is:
+@verbatim
+       <sw_utility> [options] [software_selections] [@Targets]
+@end verbatim
+
+The current swbis utilities are @command{swpackage},
+@command{swinstall},
+@command{swverify},
+@command{swcopy},
+@command{swign}.
+
+A central element of all the commands is the target syntax. @xref{Target Syntax}.
+
+Here are several rules worth remembering about the Target:
+@itemize
+@item
+The '@@' is required exactly once even
+when there are multiple targets.  
+@item
+Multiple targets are separated by whitespace.
+@item
+A simple name is assumed to be a host name unless it begins 
+with a '/' in which case it is assumed to be a path on the local host.
+The POSIX standard requires the target path be an absolute path.  The
+swbis implementation relaxes this somewhat for remote host operations.
+That is, when a HOSTNAME is given the path may be relative and if so
+is relative to the login directory for the user [according to how the
+remote host and ssh are configured].
+
+If the target path is not given for a remote target, the target path
+is either '.' or '/' depending on the utility and the defaults files.
+(The default target path for @command{swinstall} is always '/')
+
+@item
+The Target Syntax can be applied to the source.  The source is
+specified by the -s option.
+
+@item
+The swbis implementation supports a '-' as a target meaning stdin/stdout,
+as well as a '.' meaning the current directory.
+
+@end itemize
+
+Here are several example of Targets:
+@itemize
+@item
+remote host with a different user:
+@verbatim
+     @ root@host1
+@end verbatim
+
+@item
+Two hop target with different user on each host and
+a path specification on the terminal host:
+@verbatim
+     @ root@host1@@guest@host2:/tmp/mnt/test
+@end verbatim
+
+@item
+home directory of the user on host1
+@verbatim
+     @ user@host1:.
+@end verbatim
+
+@item
+file named file1 in current directory
+@verbatim
+     @ :file1     # Impl Extension
+@end verbatim
+
+@end itemize
+
+The command @command{swbis} can be used to invoke
+the swbis utilities.
+The @command{swbis} command is useful if the utilities are not installed in $PATH.
+Alternatively, individual utilities can be invoked by themselves.
+
+Here are some example invocations:
+
+@itemize @bullet
+@item
+@example
+swbis --version
+@end example
+
+@item
+@example
+swbis --help
+@end example
+
+@item
+Create a signed tar archive descibed by the PSF @file{/tmp/mypsf}:
+@example
+swpackage --sign --gpg-name="Your GPG Identity" --format=ustar -s /tmp/mypsf @- >/tmp/foo.tar
+@end example
+
+@item
+Verify a signed distribution:
+@example
+swverify -d @@/tmp/foo.tar
+@end example
+
+@item
+Install a package from stdin to @file{/}:
+@example
+swinstall -s -
+@end example
+
+@item
+Translate an RPM format package to POSIX format:
+@example
+swcopy -s /tmp/myrpm.rpm --audit --allow-rpm @@- | tar tvf -
+@end example
+
+@item
+Create a signed archive of @file{.}:
+@example
+swign -u "Your GPG Identity" @@- | tar tvf -
+@end example
+@end itemize
+
+@ifnottex
+@menu
+* Target Syntax::
+@c * Configuration Files::
+@end menu
+@end ifnottex
+
+@node Target Syntax
+@unnumberedsec Target Syntax
+@verbatiminclude ../texi/target.texi

@@ -1,0 +1,80 @@
+distribution
+   layout_version  1.0
+# Vendor definition:
+vendor
+  tag           HP
+  title         Hewlett-Packard Co.
+  description   <data/description.hp
+end
+# Product definition:
+product
+  tag            SD
+  title          HP OpenView Software Distributor
+  revision       2.0
+  number         J2326AA
+  category       system_management
+  category_title Systems Management Software
+  description    <data/description
+  copyright      <data/copyright
+  readme         <data/README
+  architecture   S700/S800_HPUX_9.0
+  vendor_tag     HP
+  machine_type   9000/[78]*
+  os_name        HP-UX
+  os_release     ?.09.*
+  os_version     ?
+  directory      /
+  is_locatable   false
+# Create a product script which executes during the swremove
+# analysis phase.  (This particular script returns an ERROR,
+# that prevents the removal of the product.)
+  checkremove     scripts/checkremove.sd
+ # Subproduct definitions:
+  subproduct
+    tag          Manager
+    title        Management Utilities
+    contents     commands agent data man
+  end
+  subproduct
+    tag          Agent
+    title        Agent component
+    contents     agent data man
+  end
+ # Fileset definitions:
+  fileset
+    tag          commands
+    title        Commands (management utilities)
+    revision     2.15
+    ancestor     OLDSD.MAN
+    description  <data/commands
+ # Dependencies
+    corequisites SD.data
+ # Control scripts:
+    configure    scripts/configure.commands
+ # Files:
+    directory    ./commands=/usr/sbin
+    file         swinstall
+    file         swcopy
+ 
+    directory    ./nls=/usr/lib/nls/C
+    file         swinstall.cat
+    file         swpackage.cat
+    file         swutil.cat
+    directory    ./ui=/var/adm/sw/ui
+    file         *
+ 
+ end # commands
+   # other filesets
+ 
+ fileset
+    tag          man
+    title        Manual pages for the Software Distributor
+    revision     2.05
+    directory    ./man/man8=/usr/man/man8
+    file         *
+    directory    ./man/man4=/usr/man/man4
+    file         *
+    directory    ./man/man5=/usr/man/man5
+    file         *
+  end  #end of man fileset
+end  #end of product

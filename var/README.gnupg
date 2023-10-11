@@ -1,0 +1,17 @@
+#!/bin/sh 
+
+# ./gnupg is a test GPG home directory that contains the
+# "Test User" public and private keys.  The password for
+# this key is "Iforgot".
+
+# This is how to import the swbis test keys into
+# a blank non-existent GPG homedir.
+
+ gpg --list-secret-keys
+ gpg --import gnupg/secring.gpg
+ gpg --list-secret-keys
+ gpg --list-public-keys
+ gpg --import gnupg/pubring.gpg
+ gpg --list-public-keys
+
+

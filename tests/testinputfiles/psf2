@@ -1,0 +1,60 @@
+# File: psf.posix
+# Description: this is
+host
+   hostname localhost
+   os_name linux
+
+distribution
+	# Vendor definition
+	vendor
+		tag 		FineSoft
+product
+	tag 		POSIX-Software
+#        checkinstall /usr/bin
+        control_file install /usr/bin/install
+
+fileset
+	tag		commands
+	title		Commands (management utilities)
+	configure	scripts/configure.data
+	checkinstall /usr/bin
+	directory	/build/usr/sbin /usr/bin
+        
+	
+	file
+		path /is/a/path
+		source /is/the/source/path
+	
+	
+	file		swinstall
+	file		swconfig
+	file		swcopy
+	file
+		path /this/is/a/path
+		source /this/is/the/source/path
+
+	file		swremove
+	file		swverify
+	
+	file
+		path /11this/is/a/path1
+		source /11this/is/the/source/path
+	
+	
+	file		swpackage
+fileset
+	title		Manual (man pages)
+	directory	/build/usr/man/man8 /usr/man/man8
+	file		swinstall.8
+	file		swcopy.8
+	file		swremove.8
+	file		swlist.8
+	file		swverify.8
+	file		swlist.8
+	file		swverify.8
+	file		swconfig.8
+	file		swpackage.8
+	file		swagent.8
+	file		swagentd.8
+	directory	/build/usr/man/man4 /usr/man/man4
+	file		swpackage.4

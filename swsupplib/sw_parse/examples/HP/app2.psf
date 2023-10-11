@@ -1,0 +1,69 @@
+# PSF file for /opt
+#
+# Useful commands:
+#
+# swpackage -p -vv -s /depot/psf_files/xxx.psf -d /depot/s700_opt
+# swmodify -p -d -vv -s /depot/psf_files/xxx.psf xxx @ /depot/s700_opt
+# swremove -p -v -d xxx,r=yyy @ /depot/s700_opt
+# swinstall -p -v -s /depot/s700_opt xxx
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# This section is optional -- delete it if you don't want it.
+#
+vendor
+        tag vvv
+        title "vvv"
+        description "vvv"
+end
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# Describe the product below.  Search and replace vvv, xxx, yyy. Delete what
+# you don't use.  Either define filesets by file or by whole directory.
+#
+product
+        tag xxx
+        title "xxx"
+        description "xxx"
+        revision yyy
+        #
+        architecture S700/S800_HPUX_10
+        machine_type 9000/[78]*
+        os_name HP-UX
+        os_release ?.10.*
+        os_version *
+        #
+        fileset
+                tag exec
+                title "xxx executables"
+                revision yyy
+
+                postinstall xxx.postinstall
+                postremove xxx.postremove
+
+                directory /opt/xxx/bin=/opt/xxx/bin
+                file_permissions -u 222 -g bin -o bin
+                file *
+        end
+        #
+        fileset
+                tag library
+                title "xxx library"
+                revision yyy
+
+                directory /opt/xxx/lib=/opt/xxx/lib
+                file_permissions -u 222 -g bin -o bin
+                file *
+        end
+        #
+        fileset
+                tag manpages
+                title "xxx manpages"
+                revision yyy
+
+                directory /opt/xxx/man=/opt/xxx/man
+                file_permissions -u 222 -g bin -o bin
+                file *
+        end
+end

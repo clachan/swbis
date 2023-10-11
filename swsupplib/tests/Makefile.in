@@ -1,0 +1,225 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+DO_DEBUG = @DO_DEBUG@
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+#LIBEFENCE = -lefence
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = 
+endif
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+LIBEFENCE = 
+#LIBEFENCE = -lefence
+LDFLAGS=-dynamic @LDFLAGS@
+
+################################### Leave this stuff alone
+
+### These are variables meant to be exported
+
+VPATH = $(srcdir)
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+# -----------------------------------------------------------------------
+RPMPROGS =  testswheader2 
+@RPMPROGS_@
+
+TESTPROGS = testswpath \
+	testswpath1 \
+	testswcmd \
+	testarchive \
+	testvarfs \
+	testvarfsdir \
+	testvarfsseek1 \
+	testvarfsseek2 \
+	testvarfsseek3 \
+	testuinfile \
+	testtar \
+	tarsum \
+	testgpg \
+	testgpgverify \
+	teststrar \
+	testscope \
+	testtarname \
+	testdirname \
+	teststrar1 \
+	testfnmatch $RPMPROGS
+
+@TESTPROGS_@
+PROGS=$(TESTPROGS) testdigests testtarname testdigs
+
+LIBS = @LIBS@
+RPMLIBS = @RPMLIBS@
+LIB=../swsupplib.a
+LOADLIBES = 
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+$(LIB):
+	(cd .. && $(MAKE) swsupplib.a)
+
+testswpath: $(LIB) $(OBJS) $(LOADLIBES) testswpath.o 
+	$(CC) -o testswpath $(LDFLAGS) testswpath.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testswpath1: $(LIB) $(OBJS) $(LOADLIBES) testswpath1.o 
+	$(CC) -o testswpath1 $(LDFLAGS) testswpath1.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+tarsum: $(LIB) $(OBJS) $(LOADLIBES) tarsum.o 
+	$(CC) -o tarsum $(LDFLAGS) tarsum.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testscope: $(LIB) $(OBJS) $(LOADLIBES) testscope.o 
+	$(CC) -o ${@} $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testswheader2: $(LIB) $(OBJS) $(LOADLIBES) testswheader2.o 
+	$(CC) -o testswheader2 $(LDFLAGS) testswheader2.o $(OBJS) /usr/lib/librpm.a $(LIBS) $(LIB) $(RPMLIBS) \
+		$(LIBEFENCE)
+
+testswcmd: $(LIB) $(OBJS) $(LOADLIBES) testswcmd.o 
+	$(CC) -o testswcmd $(LDFLAGS) testswcmd.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+testarchive: $(LIB) $(OBJS) $(LOADLIBES) testarchive.o 
+	$(CC) -o testarchive $(LDFLAGS) testarchive.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+testvarfs: $(LIB) $(OBJS) $(LOADLIBES) testvarfs.o 
+	$(CC) -o $@ $(LDFLAGS) testvarfs.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+testdigs: $(LIB) $(OBJS) $(LOADLIBES) testdigs.o 
+	$(CC) -o $@ $(LDFLAGS) testdigs.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testdigests: $(LIB) $(OBJS) $(LOADLIBES) testdigests.o 
+	$(CC) -o $@ $(LDFLAGS) testdigests.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testvarfsdir: $(LIB) $(OBJS) $(LOADLIBES) testvarfsdir.o 
+	$(CC) -o $@ $(LDFLAGS) testvarfsdir.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testvarfsseek1: $(LIB) $(OBJS) $(LOADLIBES) testvarfsseek1.o 
+	$(CC) -o $@ $(LDFLAGS) testvarfsseek1.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testvarfsseek2: $(LIB) $(OBJS) $(LOADLIBES) testvarfsseek2.o 
+	$(CC) -o $@ $(LDFLAGS) testvarfsseek2.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testvarfsseek3: $(LIB) $(OBJS) $(LOADLIBES) testvarfsseek3.o 
+	$(CC) -o $@ $(LDFLAGS) testvarfsseek3.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testfnmatch: $(LIB) $(OBJS) $(LOADLIBES) testfnmatch.o 
+	$(CC) -o $@ $(LDFLAGS) testfnmatch.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testuinfile: testuinfile.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testdirname: testdirname.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testtarname: testtarname.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testgpg: testgpg.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+testgpgverify: $(OBJS) $(LOADLIBES) testgpgverify.o $(LIB)
+	$(CC) -o $@ $(LDFLAGS) testgpgverify.o $(LIB) $(RPMLIBS) $(LIBS) $(LIBEFENCE) ../misc/gettextstub.o
+
+testtar: $(LIB) $(OBJS) $(LOADLIBES) testtar.o 
+	$(CC) -o $@ $(LDFLAGS) testtar.o $(OBJS) $(LIBS) $(LIB) \
+		$(LIBEFENCE)
+
+teststrar: teststrar.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+teststrar1: teststrar1.o $(LIB) $(OBJS) $(LOADLIBES)
+	$(CC) -o $@ $(LDFLAGS) ${@}.o $(OBJS) $(LIBS) $(LIB) $(LIBEFENCE)
+
+everything: $(PROGS) $(LIB) 
+
+$(PROGS): $(OBJS) 
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+.PHONY:		clean
+clean:
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared a.out
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+
+NOFILE:
+
+.PHONY:		distclean
+distclean:	clean	
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared librpmrc find-provides.sh find-requires.sh 
+	rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+
+
+.PHONY:		depend
+depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

@@ -1,0 +1,103 @@
+# File: Example PSF for source packages
+#  This file may be copied without restriction.
+
+# The distribution object is required, thought it need not
+# have any attributes.
+
+distribution
+ 
+# Attributes in the distribution are mostly ignored by the utilities
+# although distributor control files that pertain to the
+# distribution as a whole are properly placed here.  Two examples
+# of files that are useful here are:
+
+AUTHORS < AUTHORS   # This places the file in ./catalog/dfiles
+COPYING < COPYING   # This places the file in ./catalog/dfiles
+
+# This places the checkdigest script in ./catalog/dfiles/checkdigest
+# For a description of the checkdigest script see info 'swbis'
+
+  checkdigest  < bin/checkdigest.sh
+
+# The vendor object provides attributes to describe
+# the distributor.  At this time, how these attributes
+# are used is not addressed.
+
+# The vendor object is optional
+
+vendor
+   the_term_vendor_is_misleading True  # One of: True, False
+   tag shortName # Or use a short name of your organization of your
+                       # or your initials, etc.
+   title Your Name
+   qualifier author
+   description "Maintainer of somepackage"
+
+# The bundle object is optional
+# Most packages do not need a bundle.  At this point in swbis'
+# development 'bundles' are mostly ignored.  Bundles are meta
+# packages, it is an object that contains other bundles and
+# products whether included in this distribution tarball or not.
+# The tag is the name of the meta-package.
+
+bundle
+   tag somepackage  
+
+# The product object contains the attributes of common
+# interest such as the description, version and name.
+
+# The product object is required.
+# The product object contains the package info
+
+product
+   description "This is the 
+description of your
+package"
+   title "Short one line description"
+   tag somepackage                      # This is the package name
+   revision 1.99                        # This is the package version
+   vendor_tag shortName
+   control_directory ""   # Empty string, Important
+
+# The fileset object contains the files.
+# The fileset.tag and revision are ignored by swbis at
+# this time.
+
+# Only a fileset object contains files, hence it is required.
+fileset
+    tag somepackage-sources              # Not used currently
+    control_directory ""                 # Empty string, Important
+    title somepackage source code
+    description "The source distribution of somepackage"
+
+# file_permissions:
+# 
+# NOTE:  Using "file_permissions -o 0 -g 0" is preferred if
+# you want the package users to more easily verify the
+# directory (unpacked) form of the package using standard
+# non-swbis tools.  This is accomplished by using GNU tar
+# with correct options to create a byte stream that hashes
+# to match the GPG signature and payload digests.
+
+#   file_permissions -u 000  # To use ownerships of source files
+    file_permissions -o 0 -g 0 # --numeric --owner=root --group=root
+
+# The following two (2) lines mean include every file in the current
+# directory.
+
+    directory .
+    file *
+
+# You want to exclude the files in ./catalog because it
+# should not be part of the payload section.
+
+    exclude catalog   # Important
+
+# You may also want other excludes such as:
+
+    exclude CVS
+    exclude */CVS
+    # exclude .svn
+    # exclude */.svn
+
+# End of PSF

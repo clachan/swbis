@@ -1,0 +1,17 @@
+# This PSF packaged all files in the current
+# directory.
+distribution
+dfiles dfiles
+product
+title somepackage version 0.1
+description Source package for somepackage version 0.1
+tag somepackage      # < Change this to your package name
+revision 0.1         # < Change this to your package version
+control_directory ""
+fileset
+tag somepackage-sources   # Not used by swbis currently
+control_directory ""
+file_permissions -o 0  -g 0
+directory .
+file *
+exclude catalog

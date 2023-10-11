@@ -1,0 +1,169 @@
+# File: psf.posix
+# Description: this is
+
+# Meaningless example PSF file to test grammar contructs.
+
+distribution
+	# Vendor definition
+	vendor
+		tag 		FineSoft
+		title		Fine Software Corporation
+		description	" Fine Software Corporation
+1233 Technology way
+Sunset Bay, Ca. 90456
+1-800-555-1212"
+
+     #Bundle Definition
+bundle
+	tag 		POSIX-SM
+	title		POSIX 1387 System Management
+	revision	1.0
+	vendor_tag	FineSoft
+	contents	POSIX-Printer,r=4.0 POSIX-Software,r=2.0
+	contents	POSIX-User,r=1.0
+
+
+	#Product Definition
+product
+	tag 		POSIX-Software
+	title		POSIX 1387.2 Software Administration
+	os_release	?.09.*
+	os_version	?
+	directory	/
+
+
+        control_file
+		tag tag
+
+
+	#Subproduct  Definition
+
+	subproduct
+		tag		Manager
+		contents	commands agent man
+
+	subproduct
+		tag		Agent
+		contents	agent man
+
+
+fileset
+	tag		commands
+	title		Commands (management utilities)
+	prerequisites	POSIX-Software.agent
+	configure	scripts/configure.data
+	directory	/build/usr/sbin /usr/bin
+	file		swinstall
+	file		swpackage
+
+fileset
+	tag		agent
+	title		Agent
+	configure	/build/system/SD-AGENT/customize
+	unconfigure	/build/system/SD-AGENT/decustomize
+	file		/build/usr/sbin/swagentd /usr/sbin/swagentd
+	file		/build/usr/lbin/swagent /usr/lbin/swagent
+
+fileset
+	tag		man
+	title		Manual (man pages)
+	
+	directory	/build/usr/man/man8 /usr/man/man8
+	file		swinstall.8
+	file		swpackage.4
+
+product
+	tag 		MORE_POSIX-Software
+	title		MOREPOSIX 1387.2 Software Administration
+	os_release	****?.09.*
+	os_version	Linux
+	directory	/////////////////
+
+
+        control_file
+	tag tag
+
+	subproduct
+		tag		Manager
+		contents	commands agent man
+
+	subproduct
+		tag		Agent
+		contents	agent man
+
+
+fileset
+	tag		commands
+	title		Commands (management utilities)
+	prerequisites	POSIX-Software.agent
+	configure	scripts/configure.data
+	file		/build/usr/sbin/swagentd /usr/sbin/swagentd
+        exclude all
+        file_permissions 0777
+        file_permissions 0777
+        exclude all
+	file		/build/usr/sbin/swagentd /usr/sbin/swagentd
+	directory	/	
+	file		/build/usr/sbin/swagentd /usr/sbin/swagentd
+	file		/build/usr/lbin/swagent /usr/lbin/swagent
+        file_permissions 0777
+	file < /etc/passwd
+        exclude all
+
+	file
+	  path INFo
+	  size 4
+	  tag tag1
+
+        exclude all
+	
+	control_file
+	  path INFo
+	  size 4
+	  tag tag1
+
+	file		/build/usr/lbin/swagent /usr/lbin/swagent
+	
+	subproduct
+		tag		Manager
+		contents	commands agent man
+
+product
+	tag 		MORE_POSIX-Software
+	title		MOREPOSIX 1387.2 Software Administration
+	os_release	****?.09.*
+	os_version	Linux
+	directory	/////////////////
+	
+	
+	control_file
+	  tag tag
+	  path path
+
+	subproduct
+		tag		Manager
+		contents	commands agent man
+
+	subproduct
+		tag		Agent
+		contents	agent man
+
+
+# a control file here is not allowed
+#	control_file
+#  path INFo
+#	  size 4
+#	  tag tag1
+#
+
+
+fileset
+	
+	file
+	  path INFo
+	  size 4
+	  tag tag1
+
+        exclude all
+	
+

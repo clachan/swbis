@@ -1,0 +1,98 @@
+
+@node Configuring swbis
+@chapter How to configure swbis
+
+@pindex sample
+@cindex invoking @command{swbis}
+
+The configuration file is called a defaults file.  The defaults file contains
+extended options which also can be specified using the '-x' option.
+
+There are two (2) defaults files, the POSIX file named @file{swdefaults} and the
+swbis specific file named @file{swbisdefaults}.  The swbis extension options all
+begin with "swbis_".
+
+For all users the following config file values are recommended (these are
+the builtin defaults):
+ 
+@verbatim
+swbis_local_pax_write_command  = tar  # {pax|tar|star|gtar}
+swbis_remote_pax_write_command = tar  # {pax|tar|star|gtar}
+swbis_local_pax_read_command   = tar  # {pax|tar|star|gtar}
+swbis_remote_pax_read_command  = tar  # {pax|tar|star|gtar}
+swbis_no_getconf               = true # true or false
+swlist.swbis_local_pax_write_command  = detect  # {pax|tar|gtar|detect}
+swlist.swbis_remote_pax_write_command = detect  # {pax|tar|gtar|detect}
+swverify.swbis_local_pax_write_command  = detect  # {detect|pax|tar|gtar}
+swverify.swbis_remote_pax_write_command = detect  # {detect|pax|tar|gtar}
+
+swbis_shell_command            = detect # {detect|sh|bash|posix|ksh}
+swbis_allow_rpm                = true
+swcopy.swbis_no_audit          = true # true or false
+@end verbatim
+
+The files are located in two places, in the package library directory such as
+@file{/usr/lib/swbis}, and in the user's home directory in the 
+@file{.swbis} directory.
+
+To show these locations:
+@example
+         swinstall --show-options-files
+@end example
+
+To show the options:
+@example
+         swinstall --show-options
+@end example
+
+To show the compiled in defaults if no defaults files are read:
+@example
+         swinstall --no-defaults --show-options
+@end example
+
+@ifnottex
+@menu
+* swdefaults configuration file::
+* swbisdefaults configuration file::
+* Archive Reading/Writing Utility Selection::
+* Shell Selection::
+* Runtime Configuration: (swbis_swbis)RUNTIME CONFIGURATION
+@end menu
+@end ifnottex
+
+@node swdefaults configuration file
+@unnumberedsec swdefaults
+@verbatiminclude ../../etc/swdefaults
+
+@node swbisdefaults configuration file
+@unnumberedsec swbisdefaults
+@verbatiminclude ../../etc/swbisdefaults
+
+
+@node Archive Reading/Writing Utility Selection
+@unnumberedsec Archive Reading/Writing Utility Selection
+
+@verbatim
+swbis_local_pax_write_command  = tar  # {pax|tar|star|gtar|swbistar}
+swbis_remote_pax_write_command = tar  # {pax|tar|star|gtar|swbistar}
+swbis_local_pax_read_command   = tar  # {pax|tar|star|gtar}
+swbis_remote_pax_read_command  = tar  # {pax|tar|star|gtar}
+swlist.swbis_local_pax_write_command   = detect  # {detect|pax|tar|gtar}
+swlist.swbis_remote_pax_write_command  = detect  # {detect|pax|tar|gtar}
+swverify.swbis_local_pax_write_command   = detect  # {detect|pax|tar|gtar}
+swverify.swbis_remote_pax_write_command  = detect  # {detect|pax|tar|gtar}
+@end verbatim
+
+@node Shell Selection
+@unnumberedsec Shell Selection
+
+Setting swbis_shell_command to 'detect' is the best choice here.
+The swbis_no_getconf option is headed for legacy status, disable it
+by setting this to 'true'.
+
+@verbatim
+swbis_no_getconf               = true # true or false
+swbis_shell_command            = detect # {detect|sh|bash|posix||ksh}
+@end verbatim
+
+

@@ -1,0 +1,49 @@
+AUTHORS of swbis
+
+swbis was written primarily by Jim Lowe
+
+The following people wrote source files that were taken
+from other free software projects and included verbatim or
+with modifications: 
+
+Carl Harris (wrote) ./swprogs/fmgetpass.c
+Colin Plumb (wrote) ./swsupplib/misc/md5.c
+Scott G. Miller (wrote) ./swsupplib/misc/sha1.c
+David Madore (wrote) ./swsupplib/misc/sha512.c
+Frodo Looijaard (wrote) ./swsupplib/progs/getopt.c
+Michael Meskes (wrote) tests/devel/stat.c
+Nils Nordman (wrote) ./swsupplib/progressmeter/progressmeter.c
+Theo de Raadt (wrote) ./swsupplib/progressmeter/atomicio.c
+Todd C. Miller (wrote) ./swsupplib/progressmeter/strlcat.c
+Thorsten Kukuk (wrote) ./swsupplib/ls_list/gen_subs.c
+Keith Muller  (wrote)  ./swsupplib/ls_list/gen_subs.c
+Markus Franz Xaver Johannes Oberhumer (wrote) ./swsupplib/compression/minilzo.108
+Leopold Toetsch (wrote) doc/yman2html
+
+The following people wrote or contributed to source files
+that are copyrighted by the Free Software Foundation, Inc.:
+
+Q. Frank Xia (wrote) ./swsupplib/misc/cksum.c
+David MacKenzie (changed) ./swsupplib/misc/cksum.c
+unknown  (wrote) ./swsupplib/taru/idcache.c
+unknown  (wrote) ./swsupplib/taru/readinheader.c
+unknown  (wrote) ./swsupplib/taru/taru_util.c
+unknown  (wrote) ./swsupplib/taru/hashino.c
+John Gilmore (wrote) ./swsupplib/taru/to_oct.c
+unknown  (wrote) ./swsupplib/taru/copyinb.c
+unknown  (wrote) ./swsupplib/taru/copyinnew.c
+unknown  (wrote) ./swsupplib/taru/copyinold.c
+unknown  (wrote) ./swsupplib/taru/otar.c
+unknown  (wrote) ./swsupplib/taru/filemode.c
+unknown  (wrote) ./swsupplib/misc/fnmatch.c
+unknown  (wrote) ./swsupplib/um_rpm/rpm-3.0.5/lib/misc.c
+unknown  (wrote) ./swsupplib/um_rpm/rpm-3.0.5/lib/setenv.c
+unknown  (wrote) ./tests/devel/filemode.c
+Per Bothner <per@bothner.com> (wrote) config_guess.sh contained in ./swsupplib/shell_lib/shell_lib.sh
+
+swbis contains code from RPM version 3.0.5.
+RPM was written primarily by:
+Erik Troan (wrote) ./swsupplib/um_rpm/rpm-3.0.5
+Marc Ewing (wrote) ./swsupplib/um_rpm/rpm-3.0.5
+
+End of AUTHORS file.

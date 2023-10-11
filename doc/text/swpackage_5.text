@@ -1,0 +1,476 @@
+swpackage(5)		      File Formats Manual		  swpackage(5)
+
+
+
+NAME
+       swpackage — file formats
+
+SYNOPSIS
+       Output format - Data Interchange Formats
+       Input format - Product Specification File (PSF)
+
+SWPACKAGE OUTPUT FORMAT
+       The output format is either one of two formats specified in POSIX.1
+       (ISO/IEC 9945-1) which are tar (header magic=ustar) or cpio (header
+       magic=070707).  The default format of the swbis implementation is
+       "ustar".	 The POSIX spec under specifies definitions for some of the
+       ustar header fields.  The personality of the default swbis ustar format
+       mimics GNU tar 1.15.1 and is designed to be compliant to POSIX.1.  The
+       personality of the "ustar0" format mimics, for pathnames less than 99
+       octets,	GNU tar 1.13.25 using the "-b1 --posix" options.  This bit-
+       for-bit sameness does not exist for pathnames greater than 99 chars as
+       swbis follows the POSIX spec and GNU tar 1.13.25 does not.  The
+       "ustar0" ustar personality is deprecated.  It is only slightly
+       different from 'ustar' in how device number fields are filled (with
+       spaces, zeros or NULs) for non-device files.
+
+       In addition the swbis implementation supports several other tar
+       variants including bit-for-bit mimicry of GNU tar (1.13.25) default
+       format which uses a non-standard name split and file type (type 'L').
+       This format is known as '--format=oldgnu'.  Also supported is the gnu
+       format of GNU tar 1.15.1 specified by '--format=gnu'
+
+       The defacto cpio formats are also supported.  "new ASCII" (sometimes
+       called SVR4 cpio) and "crc" cpio formats with header magic "070701" and
+       "070702" respectively.
+
+       Support for "pax Interchange Format" (Extended header tar) described in
+       IEEE 1003.1-2001 under the "pax" manual page has been implemented for
+       POSIX file attributes as of release 1.12 (c Aug2014).  The 'swpackage'
+       utility will generate extended headers on an as needed basis when the
+       --format=pax is used.  Support for POSIX ACL and SELinux attributes is
+       planned.
+
+       The entirety of the output byte stream is a single valid file of one
+       the formats mentioned above.
+
+       The swbis implementation writes its output to stdout.  The default
+       output block size is 10240 bytes.  The last block is not padded and
+       therefore the last write(2) may be a short write.  The selected block
+       size does not affect the output file contents.
+
+       The swbis implementation is biased, in terms of capability and default
+       settings, to the tar format.  Package signing is only supported in tar
+       format.
+
+SWPACKAGE INPUT FILE FORMAT
+       The input file is called a product specification file or PSF.  It
+       contains information to direct swpackage and information that is
+       package meta-data [that is merely transferred unchanged into the global
+       INDEX file].
+
+       A PSF may contain object keywords, attributes (keyword/value pairs) and
+       Extended Definitions (described below).	An object keyword connotes a
+       logical object (i.e. software structure) supported by the standard.  An
+       object keyword does not have a value field after it, as it contains
+       Attributes and Extended Definitions.  An attribute keyword conotes an
+       attribute which is always in the form of a keyword/value pair.
+
+       Attribute keywords not recognized by the standard are allowed and are
+       transferred into the INDEX file.	 Object keywords not recognized by the
+       standard are not allowed and will generate an error.  Extended
+       Definitions may only appear in a PSF (never in a INDEX or INFO created
+       by swpackage).  Extended Definitions are translated [by swpackage] into
+       object keywords (objects) and attributes recognized by the standard.
+
+       Comments in a PSF are not transferred into the INDEX file by the swbis
+       implementation of swpackage.
+
+       The file syntax is the same as a INDEX, or INFO file.  A PSF may
+       contain all objects defined by the standard as well as extended
+       definitions.
+
+       For additional information see
+       XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm, or
+       sw manual page.
+
+   EXTENDED DEFINITIONS
+       A Product Specification File (PSF) can contain Extended Definitions in
+       the fileset, product or bundle software definitions.  They would have
+       the same level or containment relationship as a file or control_file
+       definition in the same contaning object.
+
+       Extended Definitions represent a minimal, expressive form for
+       specifying files and file attributes.  Their use in a PSF is optional
+       in that an equivalent PSF can be constructed without using them,
+       however, their use is encouraged for the sake of brevity and
+       orthogonality.
+
+       The swbis implementation requires that no [ordinary] attributes appear
+       after Extended Definitions in the containing object, and, requires that
+       Extended Definitions appear before logically contained objects.	That
+       is, the parser uses the next object keyword to syntacticly and
+       logically terminate the current object even if the current object has
+       logically contained objects.
+
+   o  Extended Control File Definitions
+	    checkinstall  source  [path]
+	    preinstall	  source  [path]
+	    postinstall	  source  [path]
+	    verify	  source  [path]
+	    fix		  source  [path]
+	    checkremove	  source  [path]
+	    preremove	  source  [path]
+	    postremove	  source  [path]
+	    configure	  source  [path]
+	    unconfigure	  source  [path]
+	    request	  source  [path]
+	    unpreinstall  source  [path]
+	    unpostinstall source  [path]
+	    space	  source  [path]
+	    control_file  source  [path]
+
+       The source attribute defines the location in distributors's development
+       system where the swpackage utility will find the script.	 The keyword
+       is the value of the tag attribute and tells the utilities when to
+       execute the script.  The path attribute is optional and specifies the
+       file name in the packages distribution relative to the
+       control_directory for software containing the script. If not given the
+       tag value is used as the filename.
+
+   o  Directory Mapping
+	  directory  source  [destination]
+
+       Applies the source attribute as the directory under which the
+       subsequently listed files are located.  If destination is defined it
+       will be used as a prefix to the path (implied) file definition.	source
+       is typically a temporary or build location and dest is its unrealized
+       absolute pathname destination.
+
+   o  Recursive File Definition
+	 file *
+
+       Specifies every file in current source directory.  The directory
+       extended definition must be used before the recursive specification.
+
+   o  Explicit File Definition
+	 file [-t type] [-m mode] [-o owner[,uid]] [-g group[,gid]] [-n] [-v] source [path]
+
+       source
+
+
+	      source defines the pathname of the file to be used as the source
+	      of file data and/or attributes.  If it is a relative path, then
+	      swpackage searches for this file relative to the the source
+	      argument of the directory keyword, if set.  If directory keyword
+	      is not set then the search is relative to the current working
+	      directory of the swpackage utility's invocation.
+
+	      All attributes for the destination file are taken from the
+	      source file, unless a file_permissions keyword is active, or the
+	      -m, -o, or -g options are also included in the file
+	      specification.
+
+       path
+
+	      path defines the destination path where the file will be created
+	      or installed.  If it is a relative path, then the destination
+	      path of the of the directory keyword must be active and will be
+	      used as the path prefix.	If path is not specified then source
+	      is used as the value of path and directory mapping applied (if
+	      active).
+
+       -t type
+
+	      type may one of 'd' (directory), or  'h' (hard link), or 's'
+	      (symbolic link).
+
+	      -t d  Create a directory.
+	      If path is not specified source is used as the path attribute.
+
+	      -t h  Create a hard link.
+	      path and source are specified.  source is used as the value of
+	      the link_source attribute, and path is the value of the path
+	      attribute.
+
+	      -t s  Create a symbolic link.
+	      path and source are specified.  source is used as the value of
+	      the link_source attribute, and path is the value of the path
+	      attribute.
+
+       -m mode
+
+	      mode defines the octal mode for the file.
+
+   o  Default Permission Definition
+	 file_permissions [-m mode] [-u umask] [-o [owner[,]][uid]] [-g [group[,]][gid]]
+
+       Applies to subsequently listed file definitions in a fileset.  These
+       attributes will apply where the file attributes were not specified
+       explicitly in a file definition.	 Subsequent file_permissions
+       definitions simply replace previous definitions (resetting all the
+       options).
+
+       To reset the file_permission state (i.e. turn it off) use one of the
+       following:
+	   file_permissions ""
+	    or the preferred way is
+	   file_permissions -u 000
+
+   o  Excluding Files
+	  exclude source
+
+       Excludes a previously included file or an entire directory.
+
+   o  Including Files
+	  include <filename
+
+       The contents of filename may be more definitions for files.  The syntax
+       of the included file is PSF syntax.
+
+
+   SWBIS PSF CONVENTIONS
+       This section describes attribute usage and conventions imposed by the
+       swbis implementation.  Not all attributes are listed here.  Those that
+       are have important effects or particular interest.
+
+   o Distribution Attributes
+       The standard defines a limited set of attributes for the distribution
+       object.	An expanded set is suggested by the informative annex however
+       a conforming implementation is not required act on them.	 The reason
+       for this is a distribution may be acted upon by a conforming utility in
+       such a way that attributes of the distribution become invalid.  For
+       this reason, some attributes that refer to an entire "package" [in
+       other package managers] are referred from the product object and attain
+       their broadened scope by the distributor's convention that their
+       distribution contains just one product.
+
+       For example, the package NAME and VERSION are referred from the product
+       tag and revision, not the distribution's.  This convention supports
+       multiple products in a distribution and is consistent with the
+       standard.
+
+       tag
+
+	      tag is the short, file system friendly, name of the
+	      distribution.  Providing a distribution tag is optional.	The
+	      swbis implementation will use this as the [single] path name
+	      prefix if there is no distribution.control_directory attribute.
+	      A distribution tag attribute and swpackage's response to it is
+	      an implementation extension.  The leading package path can also
+	      be controlled with the ''-W dir'' option.
+
+
+       control_directory
+
+	      control_directory, in a distribution object, is the constant
+	      leading package path.  Providing this attribute is optional.  A
+	      distribution control_directory attribute and swpackage's
+	      response to it is an implementation extension.  The leading
+	      package path can also be controlled with the ''-W dir'' option.
+	      This attribute will be generated by swpackage if not set in a
+	      PSF.
+
+
+   o Bundle Attributes
+       A bundle defines a collection of products whether or not the
+       distribution has all the products present.
+
+       tag
+
+	      tag is the short, file system friendly, name of the bundle.
+	      This value is used by the swbis implementation as a path name
+	      component in the installed software catalog.  If it is not
+	      present the product tag is used.
+
+
+   o Product Attributes
+       A product defines the software product.
+
+       tag
+
+	      tag is the short, file system friendly, name of the product.
+	      This value is used by the swbis implementation as a path name
+	      component in the installed software catalog.  It is required.
+	      The swbis implementation uses it in a way that is analogous to
+	      the RPMTAG_NAME attribute, namely as the public recognizable
+	      name of the package.
+
+
+       control_directory
+
+	      Is the directory name in the distribution under which the
+	      product contents are located.  This value has no affect on the
+	      installed software catalog.  If it is not given in a PSF then
+	      the tag is used.
+
+
+       revision
+
+	      Is the product revision.	It should not contain a "RELEASE"
+	      attribute part or other version suffix modifiers.	 This value is
+	      used by the swbis implementation as a path name component in the
+	      installed software catalog.  It is required by swinstall.
+
+
+       vendor_tag
+
+	      This is a short identifying name of the distributor that
+	      supplied the product and may associate (refer to) a vendor
+	      object from the INDEX file that has a matching tag attribute.
+	      This attribute is optional.  This attribute value should strive
+	      to be unique among all distributors. The swbis implementation
+	      modifies the intended usage slightly as a string that strives to
+	      be globally unique for a given product.tag and product.revision.
+	      In this capacity it serves to distinguish products with the same
+	      revision and tag from the same or different distributor.	It
+	      most closely maps to the RPMTAG_RELEASE or "debian_revision"
+	      attributes.  It is one of the version distinguishing attributes
+	      of a product specified by the standard.  It is transfered into
+	      the installed_software catalog (not as a path name component) by
+	      swinstall.  If this attribute exists there should also be a
+	      vendor object in the PSF in the distribution object that has
+	      this tag.	 This attribute is assigned the value of
+	      RPMTAG_RELEASE by swpackage when translating an RPM.
+
+
+       architecture
+
+	      This string is one of the version attributes.  It is used to
+	      disambiguate products that have the same tag, revision and
+	      vendor_tag.  It is not used for determining a products
+	      compatibility with a host.  The form is implementation defined.
+	      swbis uses the output of GNU config.guess as the value of this
+	      string.  A wildcard pattern should not be used.  The canonical
+	      swbis architecture string can be listed with swlist. For example
+
+	      swlist -a architecture @ localhost
+
+	       Here are some example outputs from real systems.
+
+		  System      `uname -srm`		architecture
+	      Red Hat 8.0:  Linux 2.4.18 i686	     i686-pc-linux-gnu
+	      OpenSolaris:  SunOS 5.11 i86pc	     i386-pc-solaris2.11
+	      NetBSD 3.1:   NetBSD 3.1 i386	     i386-unknown-netbsdelf3.1
+	      Red Hat 4.1:  Linux 2.0.36 i586	     i586-pc-linux-gnulibc1
+	      Debian 3.1:   Linux 2.6.8-2-386 i686   i686-pc-linux-gnu
+
+       os_name os_release os_version machine_type
+
+	      These attributes are used to determine compatibility with a
+	      host.  They correspond to the uname attributes defined by
+	      POSIX.1.	If an value is nil or non-existent it is assumed to
+	      match the host.  All attributes must match for there to be
+	      compatibility.  Distributors may wish to make these values a
+	      shell pattern in their PSF's so to match the intended collection
+	      of hosts.	 swbis uses fnmatch (with FLAGS=0) to determine a
+	      match.
+
+
+   o Fileset Attributes
+       A fileset defines the fileset.
+
+       tag
+
+	      tag is the short, file system friendly, name of the fileset.  It
+	      is required although selection of filesets is  not yet supported
+	      therefore the end user will have little to do with the fileset
+	      tag.
+
+       control_directory
+
+	      Is the directory name in the product under which the fileset
+	      contents are located.  This value has no affect on the installed
+	      software catalog.	 If it is not given in a PSF then the tag is
+	      used.
+
+   o Example Source Package PSF
+       This PSF packages every file is current directory. It uses nil control
+       directories so the package structure does not change relative to a
+       vanilla tarball.
+
+	distribution
+	  description "fooit - a program from fooware
+       that does everything."
+	  title "fooit - a really cool program"
+	  COPYING < /usr/local/fooware/legalstuff/COPYING
+	vendor
+	  the_term_vendor_is_misleading false
+	  tag fooware
+	  title fooware Consultancy Services, Inc.
+	  description ""
+	vendor
+	  the_term_vendor_is_misleading true
+	  tag myfixes1
+	  title Bug fixes, Set 1
+	  description "a place for more detailed description"
+	product
+	  tag fooit
+	  control_directory ""
+	  revision 1.0
+	  vendor_tag myfixes1  # Matches the vendor object above
+	fileset
+	   tag fooit-SOURCE
+	   control_directory ""
+	   directory .
+	   file *
+	   exclude catalog
+
+   o Example Runtime (Binary) Package PSF
+       This is a sample PSF for a runtime package.  It implies multiple
+       products (e.g. sub-packages) using the bundle.contents attribute.
+       Since the bundle and product tags exist in a un-regulated namespace and
+       are seen by end users they should be carefully chosen.	Note that the
+       bundle and product have the same tag which may force downstream users
+       to disambiguate using software selection syntax such as fooit,bv=* or
+       fooit,pv=* .
+
+	distribution
+	  description "fooit - a program from fooware
+       that does everything."
+	  title "fooit - a really cool program"
+	  COPYING < /usr/local/fooware/legalstuff/COPYING
+
+	    vendor
+	       the_term_vendor_is_misleading false
+	       tag fooware
+	       title fooware Consultancy Services, Inc.
+	       description "Provider of the programs
+	that do everything"
+
+	    vendor
+	       the_term_vendor_is_misleading true
+		tag fw0
+		title fooware fixes
+		description "More fixes from the fooware users"
+
+       #  Bundle definition:  Use a bundle
+	    bundle
+		tag fooit
+		vendor_tag fooware
+		contents fooit,v=fw0 fooit-devel fooit-doc
+
+       #  Product definition:
+	    product
+		tag fooit   # This is the package name
+		revision 1.0 # This is the package version
+		vendor_tag fw0 # This is a release name e.g. RPMTAG_RELEASE
+		postinstall scripts/postinstall
+	    fileset
+		 tag fooit-RUN
+		 file doc/man/man1/fooit.1 /usr/man/man1/fooit.1
+		 file src/fooit /usr/bin/fooit
+
+APPLICABLE STANDARDS
+       POSIX.1, IEEE Std 1387.2-1995 (Identical to ISO 15068-2:1999), Open
+       Group CAE C701.
+
+SEE ALSO
+	XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm
+	info swbis
+	sw(5)
+	swpackage(8)
+	swbisparse(1) -- An implementation extension parser utility.
+
+IDENTIFICATION
+	Copyright (C) 2004,2005 Jim Lowe
+	Version: 1.13.1
+	Last Updated: 2006-07-01
+	Copying Terms: GNU Free Documentation License
+
+BUGS
+       None
+
+
+
+								  swpackage(5)

@@ -1,0 +1,68 @@
+# File: PSF.bin.map2
+# Example of a binary package using directory mapping.
+
+distribution
+  # dfiles dfiles	# dfiles is the default value
+  # pfiles pfiles	# pfiles is the default value
+  tag swbis
+  revision 0
+  control_directory "swbis-0.0"
+  checkdigest <bin/checkdigest.sh
+  # Deprecated Name    checksig <bin/checkdigest.sh
+
+# Vendor definition
+	vendor
+   	   the_term_vendor_is_misleading True  # One of: True, False
+	   tag 		root@localhost   # Your E-mail.
+	   title  	Your Name
+	   qualifier 	"author"
+	   description	independent software tycoon
+
+product
+   tag swbis
+   revision 0.000
+   control_directory "swbis"
+   control_file
+   	source bin/postinstall.sh
+	path postinstall
+
+   checkinstall bin/postinstall.sh main.sh
+   preinstall bin/postinstall.sh main.sh
+   checkremove bin/postinstall.sh main.sh
+
+fileset
+    tag bin
+    control_directory "swbis-RUN"
+    file_permissions -o 0 -g 0
+    
+    directory swprogs /usr/bin/
+        file swverify
+        file swpackage
+        file swcopy
+        file swinstall
+        file swign
+
+    #directory . /usr/libexec
+#	file -t d -m 755 -o root -g 0 swbis 
+
+    directory swprogs/ /usr/libexec/swbis
+	file swbisparse
+    
+    directory swsupplib/progs/ /usr/libexec/swbis
+	file -o 10 -g 11 ./
+	file arf2arf
+	file swbistar
+
+    #file_permissions -m 444 -o root -g 0
+    directory . /usr/share/doc/
+    file -t d -m 755 -o 33 -g 34 swbis 
+    directory doc/ /usr/share/doc/swbis
+    file_permissions -u 077
+    file *
+    
+    directory . /usr/share/doc/
+    file -t d -m 755 -o 339 -g 349 swbis 
+
+    exclude  text
+
+# End of PSF.

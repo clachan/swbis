@@ -1,0 +1,7 @@
+
+This directory contains code to do compression/decompression
+
+Currently the minilzo is being used
+	fabc1014fb0a8d51f0536cb486d005f3  minilzo-1.08.tar.gz
+
+

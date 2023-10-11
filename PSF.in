@@ -1,0 +1,147 @@
+#  PSF.in  -- input file to swign. Output is input to swpackage
+#  for a source package PSF
+#  This file may be copied without restriction
+#
+#  This file is an input file to swign. swign is used to replace
+#  the %__revision and %__tag macros, but is otherwise identical
+#  to a PSF read by swpackage.
+#
+#  Example:
+#  swign -s PSF.in --show-psf
+#       -or-
+#  swign -s PSF.in -u "GPG Name" @- >../mysignedtarball
+#
+#  All instances of %__keyword PSF.in are replaced by the
+#  value of 'keyword' by the 'swign' program.
+#  'swign' determines these values from the name of "."
+#  The replaceable keywords are :
+#     revision
+#     tag
+#  Replacement is called for when a 'sed' filter sees the
+#  special pattern %__keyword.  The replacement string should
+#  be used in the value field.
+distribution
+ 
+# Attributes in the distribution are mostly ignored although
+# distributor control files that pertain to the distribution
+# as a whole are properly placed here.  Two examples of files
+# that are useful here are:
+
+  AUTHORS < AUTHORS   # This places the file in ./catalog/dfiles
+  COPYING < COPYING   # This places the file in ./catalog/dfiles
+
+# This places the checkdigest script in ./catalog/dfiles/checkdigest
+# For a description of the checkdigest script see the info document for
+# 'swbis', type: info swbis, and the swign and swverify man pages.
+
+  checkdigest  < bin/checkdigest.sh
+
+# The vendor object provides attributes to describe
+# the distributor.  At this time, how these attributes
+# are used is not addressed.
+
+vendor
+   the_term_vendor_is_misleading True
+   tag GNU
+   title GNU's Not Unix
+   description "The GNU Project was launched in 1984 to develop a complete UNIX-like
+operating system which is free software: free as in freedom, not price.
+See http://www.gnu.org."
+
+# Most packages do not need a bundle.  At this point in swbis'
+# development 'bundles' are mostly ignored.  Bundles are meta
+# packages, it is an object that contains other bundles and
+# products whether included in this distribution tarball or not.
+
+bundle
+   tag swbis
+
+# The product object contains the attributes of common
+# interest such as the description, version and name.
+
+product
+
+description "GNU swbis is a software administration system for
+GNU/Linux systems and systems that are UNIX system-like. It implements
+the Open Group's CAE Spec C701 (XDSA) Distributed Software Administration.
+This spec closely follows ISO/IEC 15068-2:1999 (now withdrawn) which was
+identical to IEEE 1387.2:1995.  The implementation relies on POSIX
+functionality as provided by a typical GNU system.  It has security
+enhancement extensions that use GNU Privacy Guard.  It provides
+distributed functionality by direct use of the client ssh program and
+matches the administration functionality of RPM or dpkg without any
+new utilities required on the target hosts."
+
+   tag %__tag                       # This is the package name
+   revision %__revision             # This is the package version
+   vendor_tag GNU
+   title "GNU swbis - POSIX software packaging"
+   control_directory ""   # Empty string, Important
+   is_locatable true
+
+   postinstall examples/source_build.sh
+   configure examples/source_build.sh
+
+# The fileset object contains the files.  The tag, revision,
+# and description attributes are mostly ignored.
+# At this time swbis supports only one (1) fileset.
+
+fileset
+    tag swbis-sources
+    control_directory ""   # Empty string, Important
+    title GNU swbis source code
+    is_locatable true
+    description "The source distribution of swbis"
+
+# file_permissions:
+# Here is an important policy.  This will cause 'swpackage'
+# to create the tar achive with all files owned by uid and
+# gid zero (0), the user name 'root' will not be included
+# in the uname and gname tar header fields.  This is similar
+# to the effect of GNU tar options --numeric --owner=root
+# --group=root .
+# To use the name and ids of the source files delete the line
+# or reset the file_permissions adding after or changing to:
+#    file_permissions -u 000
+# 
+# NOTE:  Using "file_permissions -o 0 -g 0"  is preferred
+# because it will allow the end user to more easily verify
+# the directory (unpacked) form of the package using standard
+# non-swbis tools. 
+
+#   file_permissions -u 000  # To use ownerships of source files
+    file_permissions -o 0 -g 0
+
+# The following two (2) lines mean include every file in the current
+# directory.
+
+    directory .
+    file *
+
+# You want to exclude the files in ./catalog because it
+# should not be part of the payload section.
+
+    exclude catalog
+    exclude catalog/*
+
+# You probably want to exclude source code management control files
+
+    exclude CVS
+    exclude */CVS
+    exclude .svn
+    exclude */.svn
+    exclude *,v
+    exclude /*,v
+    exclude .\#*
+    exclude */.\#*
+
+# Here are some stray files that are not part of the 
+# CVS repository hence we will exclude them
+ 
+exclude  swprogs/swpackage.cxx,v
+exclude  swprogs/swlist_lib.c,v
+exclude  swprogs/swlist.c,v
+exclude  swprogs/swlist-diff
+exclude  swstructlib/config.h
+
+# End of PSF

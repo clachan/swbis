@@ -1,0 +1,836 @@
+...\" $Header: /usr/src/docbook-to-man/cmd/RCS/docbook-to-man.sh,v 1.3 1996/06/17 03:36:49 fld Exp $
+...\"
+...\"	transcript compatibility for postscript use.
+...\"
+...\"	synopsis:  .P! <file.ps>
+...\"
+.de P!
+\\&.
+.fl			\" force out current output buffer
+\\!%PB
+\\!/showpage{}def
+...\" the following is from Ken Flowers -- it prevents dictionary overflows
+\\!/tempdict 200 dict def tempdict begin
+.fl			\" prolog
+.sy cat \\$1\" bring in postscript file
+...\" the following line matches the tempdict above
+\\!end % tempdict %
+\\!PE
+\\!.
+.sp \\$2u	\" move below the image
+..
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n 
+.TH "swcopy" "8"
+ 
+.hy 0 
+.if n .na 
+.SH "NAME"
+swcopy \(em Copy POSIX and RPM packages\&.
+.SH "SYNOPSIS"
+.PP
+.nf
+\fBswcopy\fP [-p] [-s \fIsource_file\fP] [-f \fIfile\fP] [-t \fItargetfile\fP] \\
+[-x \fIoption=value\fP] [-X \fIoptions_file\fP] [-W \fIoption\fP] \\
+[software_selections] [@target [target1\&.\&.\&.]] 
+.fi
+ 
+.SH "DESCRIPTION"
+.PP
+\fBswcopy\fP copies a POSIX distribution from a source archive or directory to a target
+archive directory\&.  Neither swcopy nor any component of swbis is required
+on the target host, however, the target host must look like a Unix system at
+the shell and command-line utility level\&.  Remote network connections are made
+by ssh\&.  Ssh is the default but rsh can be selected by a command line
+option\&.
+.PP
+Before and during data transfer to the target, the distribution is audited\&.
+Package auditing includes parsing the INDEX and INFO meta-data files\&. 
+The package pathnames are checked for consistency with a valid layout\&. 
+\fBswcopy\fP can be made to operate on arbitrary data or
+archives not in POSIX format by using the \-\-no-audit option\&.
+By default and with no external influences (i\&.e\&. swdefaults file) swcopy
+will read a archive on stdin and write an audited archive on stdout\&.
+The uncompressed audited output file will be identical to the uncompressed
+input file unless an error occurs\&.  Compressed archives that are audited will
+be re-compressed in the same format, however, the resulting file may
+not be identical to the input file (i\&.e\&. date, filename, and other stored data
+in the compressed format will be different)\&.
+.PP
+\fBswcopy\fP operates on serial archives (e\&.g\&. compressed tar archives) or on file system
+directories\&.  It will attempt to preserve the form (archive or directory) and
+compression state of the source object\&.  An exception is "\&." as a target
+(See Implementation Extensions below)\&.
+.SH "OPTIONS"
+.PP
+.RS
+ 
+.RE
+.PP
+\fB-f FILE\fP 
+.RS
+ 
+Reads software_selections from FILE\&. (Not implemented)\&.
+.RE
+.PP
+\fB-p\fP
+.RS
+ 
+Preview the operation\&. Information is written to stdout\&.
+The target is not written and no remote connections are established\&.
+.RE
+ 
+.PP
+\fB-s SOURCE\fP 
+.RS
+ 
+Specify the source file SOURCE, "-" is standard input\&.
+The syntax is the same as for a target\&.
+SOURCE may be a directory or archive file\&.
+.RE
+.PP
+\fB-t targetfile\fP 
+.RS
+ 
+Specify a file containing a list of targets (one per line)\&.
+.RE
+.PP
+\fB-x option=value\fP 
+.RS
+ 
+Specify the extended option overriding the defaults file value\&.
+.RE
+.PP
+\fB-X FILE\fP 
+.RS
+ 
+Specify the extended options filename, FILE,  overriding the default filenames\&.
+This option may be given more then once\&. If the resulting specified value is an empty string
+then reading of any options file is disabled\&.
+.RE
+.PP
+\fB-v\fP 
+.RS
+ 
+Given one time it is identical to -x verbose=2\&.
+This option can be given multiple times with increasing effect\&.
+(Implementation extension option)\&.
+.br
+-v  is level 2, -vv is level 3,\&.\&.\&. etc\&.
+.br
+    level 0: silent on stdout and stderr\&.
+.br
+    level 1: fatal and warning messages to stderr\&.
+.br
+-v  level 2: level 1 plus a progress bar\&.
+.br
+-vv level 3: level 2 plus script stderr\&.
+.br
+-vvv level 4: level 3 plus events\&.
+.br
+-vvvv level 5: level 4 plus events\&.
+.br
+-vvvvv level 6: level 5 plus set shell -vx option\&.
+.br
+-vvvvvv level 7 and higher: level 6 plus debugging messages\&.
+.br
+ The progress meter is suppressed if swcopy is using stdout for data\&.
+.RE
+.PP
+\fB-b SIZE\fP 
+.RS
+ 
+Set block size, same as \-\-block-size=N (Implementation extension option)\&.
+.RE
+.PP
+\fB\-\-version, -V\fP 
+.RS
+ 
+Show version (Implementation extension)
+.RE
+.PP
+\fB\-\-help\fP 
+.RS
+ 
+Show help (Implementation extension)
+.RE
+.PP
+\fB-W option[,option,\&.\&.\&.]\fP 
+.RS
+ 
+Specify the implementation extension option\&.
+.br
+Syntax: -W option[=option_argument[,option\&.\&.\&.]
+.br
+Options may be separated by a comma\&.  The implementation extension
+options may also be given individually using the \&'\-\-long-option[=option_arg]\&' syntax\&.
+.RE
+.PP
+\fB-W no-audit\fP 
+.RS
+ 
+Defaults File Option: \fBswbis_no_audit\fP
+.br
+Do not audit the transferred file\&.  This allows copying of arbitrary data\&.
+.RE
+.PP
+\fB-W audit\fP 
+.RS
+ 
+Do audit the transferred file\&.  Useful for overriding swbisdefaults file\&.
+.RE
+.PP
+\fB-W block-size=SIZE\fP 
+.RS
+ 
+SIZE is number of octets\&.
+.RE
+.PP
+\fB-W login\fP 
+.RS
+ 
+Establishes a interactive shell on the (remote) target host\&.  Intended for debugging/verifying ssh operation\&.
+.RE
+.PP
+\fB-W gzip\fP 
+.RS
+ 
+Compress output using gzip\&.
+.RE
+.PP
+\fB-W bzip\fP 
+.RS
+ 
+Compress output using bzip2\&.
+.RE
+.PP
+\fB-W extract\fP 
+.RS
+ 
+Install the source using the archive reading utility at the target\&.
+.RE
+.PP
+\fB-W create\fP 
+.RS
+ 
+Force copy as a tar archive
+.RE
+.PP
+\fB-W no-extract\fP 
+.RS
+ 
+For installation to a file, not as a tar archive to be extracted\&.
+.RE
+.PP
+\fB-W pty\fP 
+.RS
+ 
+Do use pseudo-tty\&.  The system Ptys are only used for the --login feature\&.
+A warning is emitted to stderr which says that the usage may be insecure\&.
+.RE
+.PP
+\fB-W no-pty\fP 
+.RS
+ 
+Do not use pseudo-tty\&.  The system Ptys are only used by default for the --login feature, otherwise they
+are not used and this option would have no effect\&.
+If ptys are used a warning is emitted to stderr which says that the usage may be insecure\&.
+.RE
+.PP
+\fB-W uncompress\fP 
+.RS
+ 
+Write output archive that is uncompressed\&.
+.RE
+.PP
+\fB-W remote-shell=SHELL\fP 
+.RS
+ 
+Defaults File Option: \fBswbis_remote_shell_client\fP
+.br
+Supported shells are "ssh" and "rsh", ssh is the default\&.
+.RE
+.PP
+\fB-W quiet-progress\fP
+.RS
+ 
+Defaults File Option: \fBswbis_quiet_progress_bar\fP
+.br
+Disable progress bar, which is active for verbose levels 2 and higher (i\&.e\&. -v)\&.
+.RE
+.PP
+\fB-W show-progress\fP
+.RS
+ 
+Enables progress bar\&.(i\&.e\&. -v)\&.
+.RE
+.PP
+\fB-W show-options-files\fP 
+.RS
+Show the complete list of options files and if they are found\&.
+.RE
+.PP
+\fB-W show-options\fP 
+.RS
+Show the options after reading the files and parsing the command line options\&.
+.RE
+.PP
+\fB-W pax-command={tar|pax|star|gtar}\fP
+.br
+.RS
+Set the portable archive command for all operations\&.
+The default is "pax"\&.
+.RE
+.PP
+\fB-W pax-read-command={tar|pax|star|gtar}\fP
+.RS
+Set the read command for local and remote hosts\&.
+.RE
+.PP
+\fB-W remote-pax-read-command={tar|pax|star|gtar}\fP
+.RS
+Defaults File Option: \fBswbis_remote_pax_read_command\fP
+.RE
+.RS
+Set the read command for remote hosts\&.
+This is the command that runs on the target (e\&.g\&. pax -r, tar xpf -)\&.
+The default is "pax"\&.
+.RE
+.PP
+\fB-W local-pax-read-command={tar|pax|star|gtar}\fP
+.RS
+Defaults File Option: \fBswbis_local_pax_read_command\fP
+.RE
+.RS
+Set the read command for local hosts\&.
+This is the command that runs on the target (e\&.g\&. pax -r, tar xpf -)\&.
+The default is "pax"\&.
+.RE
+.PP
+\fB-W pax-write-command={tar|pax|star|gtar|swbistar}\fP
+.br
+.RS
+Set the write command for local and remote hosts\&.
+This is the command that runs on the target (e\&.g\&. pax -w, tar cf -)\&.
+.RE
+.PP
+\fB-W remote-pax-write-command={tar|pax|star|gtar|swbistar}\fP
+.br
+.RS
+Defaults File Option: \fBswbis_remote_pax_write_command\fP
+.RE
+.RS
+Set the write command for remote hosts\&.
+.RE
+.PP
+\fB-W local-pax-write-command={tar|pax|star|gtar|swbistar}\fP
+.RS
+Defaults File Option: \fBswbis_local_pax_write_command\fP
+.RE
+.RS
+Set the portable archive write command for local host operations\&.
+This is the command that runs on the source (e\&.g\&. pax -w, tar cf -)\&.
+The default is "pax"\&.
+.RE
+.PP
+\fB-W remote-pax-write-command={tar|pax|star|gtar|swbistar}\fP
+.RS
+Defaults File Option: \fBswbis_remote_pax_write_command\fP
+.RE
+.RS
+Set the portable archive write command for remote host operations\&.
+This is the command that runs on the source (e\&.g\&. pax -w, tar cf -)\&.
+The default is "pax"\&.
+.RE
+.PP
+\fB-W no-defaults\fP 
+.RS
+Do not read any defaults files\&.
+.RE
+.PP
+\fB-W no-remote-kill\fP 
+.RS
+Defaults File Option: \fBswbis_no_remote_kill\fP
+.br
+Disables the use of a second remote connection to tear down the first in
+the event of SIGINT or SIGTERM or SIGPIPE\&.
+Only has effect if the number of ssh hops is greater than 1\&.
+A single host remote connection (ssh hop = 1) never uses a
+second remote connection\&.
+.RE
+.PP
+\fB-W no-getconf\fP 
+.RS
+Defaults File Option: \fBswbis_no_getconf\fP
+.br
+Makes the remote command be \&'/bin/sh -s\&' instead of the default
+\&'PATH=`getconf PATH` sh -s\&'\&. 
+.RE
+.PP
+\fB-W shell-command=NAME\fP 
+.RS
+Defaults File Option: \fBswbis_shell_command\fP
+.br
+NAME may be one of "detect" "bash", "sh" or "posix" and specifies the
+command run by the remote shell\&.
+The default is "detect"\&.
+.RE
+.PP
+\fB-W use-getconf\fP 
+.RS
+Opposite of \-\-no-getconf\&.
+.RE
+.PP
+\fB-W allow-rpm\fP 
+.RS
+Defaults File Option: \fBswbis_allow_rpm\fP
+.br
+Allows detection and translation of RPMs\&.  (\-\-audit must also be set\&.)
+.RE
+.PP
+\fB-W unrpm\fP 
+.RS
+Turns on options \-\-allow-rpm and \-\-audit\&.
+.RE
+.PP
+\fB-W source-script-name=NAME\fP 
+.RS
+Write the script that is written into the remote shell\&'s stdin to NAME\&.
+This is useful for debugging\&.
+.RE
+.PP
+\fB-W target-script-name=NAME\fP 
+.RS
+Write the script that is written into the remote shell\&'s stdin to NAME\&.
+This is useful for debugging\&.
+.RE
+.PP
+\fBsoftware_selections\fP
+.RS
+ 
+Refer to the software objects (products, filesets)
+on which to be operated\&. (Not implemented)\&. 
+The implementation defined behavior for no selections is to operate on
+the entire distribution\&. 
+.RE
+ 
+.PP
+\fBtarget\fP
+.RS
+ 
+Refers to the software_collection where the software
+selections are to be applied\&.  Allows specification of host and pathname where the software collection is located\&.
+A target that contains only one part is assumed to be a hostname\&.
+To force interpretation as a path, use a absolute path or prefix with \&':\&'\&.
+.RE
+ 
+.PP
+.nf
+\f(CWSource and Target Specification and Logic
+     
+     Synopsis:
+          Posix:
+               host[:path]
+               host
+               host:
+               /path  # Absolute path
+
+          Swbis Extension:
+               [user@]host[:path]
+               [user@]host_port[:path]
+               :path
+
+          Swbis Multi-hop Target Extension:
+               # \&':\&' is the target delimiter
+	       # \&'_\&' delimits a port number in the host field
+
+               [user@]host[@@[user@]host[@@\&.\&.\&.]][:file] 
+               [user@]host_port[@@[user@]host[@@\&.\&.\&.]][:file] 
+              
+               # Using \&':\&', a trailing colon is used to
+               # disambiguate between a host and file\&.
+	       # For Example,
+               :file
+               host:
+               host
+               host:file
+               host:host:
+               host_port:host_port:
+               host:host:file
+               user@host:user@host:
+               user@host:user@host:host:
+               user@host:user@host:file
+ 
+     A more formal description:
+
+     target : HOST_CHARACTER_STRING \&':\&' PATHNAME_CHARACTER_STRING
+            | HOST_CHARACTER_STRING \&':\&'
+            | HOST_CHARACTER_STRING 
+            | PATHNAME_CHARACTER_STRING 
+            | \&':\&' PATHNAME_CHARACTER_STRING   # Impl extension
+            ; 
+
+       PATHNAME_CHARACTER_STRING must be an absolute path unless
+                       a HOST_CHARACTER_STRING is given\&.  Allowing
+                       a relative path is a feature of the swbis
+                       implementation\&.
+
+                NOTE: A \&'\&.\&' as a target is an implementation
+                      extension and means extract in current
+                      directory\&.
+ 
+                NOTE: A \&'-\&' indicating stdout/stdin is an 
+                      implementation extension\&.
+
+                NOTE: A \&':\&' in the first character indicates a filename\&.
+                      This is an implementation extension\&.
+
+       HOST_CHARACTER_STRING is an IP or hostname\&.
+
+    Examples:
+       Copy the  distribution /var/tmp/foo\&.tar\&.gz at 192\&.168\&.1\&.10
+              swcopy -s /var/tmp/foo\&.tar\&.gz @192\&.168\&.1\&.10:/root
+
+
+Implementation Extension Syntax (multi ssh-hop) :
+    Syntax:
+    %start   wtarget    # the Implementation Extension Target
+                        # Note: a trailing \&':\&' forces interpretation
+                        # as a host, not a file\&.
+    wtarget   : wtarget DELIM sshtarget
+              | sshtarget
+              | sshtarget DELIM
+              ; 
+    sshtarget : user \&'@\&' target # Note: only the last target
+              | target          # may have a PATHNAME, and only a host
+              ;                 * may have a user
+    target   : HOST_CHARACTER_STRING
+             | PATHNAME_CHARACTER_STRING
+             ;
+    user     : PORTABLE_CHARACTER_STRING  # The user name
+
+    DELIM    : \&':\&'   # The multi-hop delimiter\&.
+             ;  \fR
+.fi
+.PP
+ 
+.SH "TARGET COPYING RULES"
+.SS "Rules"
+.PP
+If a target directory on the host does not exist it will be created using
+mkdir -p using the file creation mask of the originating swcopy process\&.
+A trailing slash in the target spec signifies
+that the last path component should be a directory\&.
+A source spec that is a directory will be created on the target as a
+directory with the same name in the target directory\&.
+If the source spec is stdin then the existence of directories in the
+target spec and a trailing slash in the target spec path determines
+whether the created file will be a regular file or directory,
+that is, stdin will be copied as a file unless the last target path
+component is a directory or ends in a slash \&'/\&'\&.  If the source spec is a
+regular file, the source basename will be used as the basename in the
+target if the last target path component is a directory or ends in
+a slash \&'/\&', otherwise,
+the target basename is the last path component of the target spec\&.
+The implementation option \-\-extract biases these rules to install using
+the archive reading command (e\&.g\&.  pax -r)\&.
+.SS "Examples"
+.RS
+ 
+Copy a regular file via tar archive creation and extraction\&.
+This will preserve the permissions of the file to the extent
+tar can preserve them\&.
+.PP
+.nf
+\f(CW  swcopy \-\-no-audit --create --extract -s :README @ HostA\fR
+.fi
+.PP
+ Copy a directory to another host
+.PP
+.nf
+\f(CW  swcopy \-\-no-audit  -s /usr @ HostA:/usr/local/tmp/HostA/\fR
+.fi
+.PP
+ Copy several directories to another host as a compressed archive file\&.
+.PP
+.nf
+\f(CW    swcopy \-\-no-audit --no-extract \\
+             -s /usr -s /etc @ HostA:/tmp/usr-etc\&.tar\&.bz2\fR
+.fi
+.PP
+ Install a tarball in the current directory:
+Note: Must use stdin as source and "\&." as the target\&.
+.PP
+.nf
+\f(CW     swcopy \-\-no-audit -s - @\&. < foo\&.tar\&.gz\fR
+.fi
+.PP
+ Copy thru a firewall:
+.PP
+.nf
+\f(CW            swcopy -s /var/tmp/foo\&.tar\&.gz \\
+                 @root@host1:root@host2:/var/tmp\fR
+.fi
+.PP
+ Copy Stdin to a remote host:
+.br
+.PP
+.nf
+\f(CW    Unpack the archive on stdin in the directory
+    /a/b/c if \&'c\&' is a directory, otherwise copy
+    the archive file to a file named \&'c\&' in
+    directory /a/b creating it if possible and
+    overwriting if required\&. 
+        swcopy -s - @host1:/a/b/c\fR
+.fi
+.PP
+ Copy Stdin to a remote host:
+.br
+.PP
+.nf
+\f(CW       Unpack the serial archive on stdin in the
+       directory /a/b/c if \&'c\&' is a directory,
+       otherwise make the directory \&'c\&' but fail if
+       directory \&'c\&' cannot be created\&.
+           swcopy -s - @host1:/a/b/c/
+                     # Note trailing slash\&.\fR
+.fi
+.PP
+ Copy a regular file:
+.br
+.PP
+.nf
+\f(CW   Copy file yy to directory /aa/bb/cc/ on the
+   remote host, creating it if required and possible\&.
+   If cc is a regular file then fail\&.
+      swcopy -s /xx/yy @host1:/aa/bb/cc/\fR
+.fi
+.PP
+ Copy a regular file thru intermediate host \&'fw\&':
+.br
+.PP
+.nf
+\f(CW       Copy file yy to home directory of user1 on host1
+       thru a an intermediate host fw,
+           swcopy -s /xx/yy @ fw:user1@host1:\&.\fR
+.fi
+.PP
+ Copy a directory from one host to another
+.PP
+.nf
+\f(CW       Copy directory yy into directory cc if cc exists,
+       otherwise create cc and copy yy into it\&. If cc
+       is and copy as yy\&.
+           swcopy -s /xx/yy @host1:/aa/bb/cc\fR
+.fi
+.PP
+.RE
+.SH "IMPLEMENTATION EXTENSIONS"
+.SS "Software Specification Targets"
+.PP
+A dash \&'-\&' is supported and means stdout or stdin\&.
+Operations with stdout and stdin on a remote host is not supported\&.
+.PP
+A decimal \&'\&.\&' is supported and means the current directory\&.
+This is supported for remote and non-remote targets\&.
+If the source is standard input, the distribution will be unpacked
+(e\&.g\&. pax -r) in the directory \&'\&.\&'\&.
+If the source is a regular file then a regular file in \&'\&.\&' will be created
+with the same name\&.
+.PP
+Thus,
+.PP
+.nf
+\f(CW           # swcopy -s `pwd`/myarchive\&.tgz @\&.  # Do NOT do this even 
+                                               # though in most cases 
+                                               # swcopy is a coward\&.\fR
+.fi
+.PP
+ will destroy the source file myarchive\&.tgz, whereas
+.PP
+.nf
+\f(CW           # swcopy -s - @\&. <`pwd`/myarchive\&.tgz\fR
+.fi
+.PP
+ will install it with the configured archive reading utility\&.
+ 
+
+.SS "RPM Translation"
+.PP
+RPM (RedHat Package Manager) format packages are copied by first translating to
+an equivalent ISO/IEEE file layout in POSIX tar format and then copying as
+a POSIX package\&.
+The RPM detection and translation occurs if the \&'\&'\-\-allow-rpm\&'\&' option is
+on (either by the command line args or defaults file) and the \&'\&'--audit\&'\&' option
+is on\&.  If the \&'\&'--allow-rpm\&'\&' option is not set an error occurs\&.
+If the \&'\&'--audit\&'\&' is not set, the RPM is copied as arbitrary data and translation
+does not occur\&.
+.PP
+Since translation is done on the local (management) host, RPM is not reqired on
+the remote (target) host\&.
+.PP
+The translation is (internally) equivalent to :
+.PP
+.nf
+\f(CW   cat your-poor-poor-0\&.0\&.bin\&.rpm | 
+   /usr/lib/swbis/lxpsf --psf-form2 -H ustar |
+   swpackage -Wsource=- -s@PSF\fR
+.fi
+.PP
+.SH "EXTENDED OPTIONS"
+.PP
+Extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults\&.  Shown below is an actual portion of
+a defaults file which show default values\&.
+.SS "Posix"
+.PP
+These options are set in the /usr/lib/swbis/swdefaults or the ~/\&.swdefaults
+.PP
+.PP
+.nf
+\f(CW   autoselect_dependencies     = false      # Not Implemented
+   compress_files              = false      # Not Implemented
+   compression_type            = none       # Not Implemented
+   distribution_source_directory   = -
+   distribution_target_directory   = -
+   enforce_dependencies        = false       # Not Implemented
+   enforce_dsa                 = false       # Not Implemented
+   logfile                     = /var/lib/sw/swcopy\&.log #Not Implemented
+   loglevel                    = 1          # Not Implemented
+   recopy                      = false      # Not Implemented
+   select_local         = false      # Not Implemented
+   uncompress_files             = false     # Not Implemented
+   verbose                      = 1\fR
+.fi
+.PP
+.SS "Swbis Implementation"
+.PP
+These options are set in the /usr/lib/swbis/swbisdefaults or the ~/\&.swbis/swbisdefaults
+file\&. 
+.PP
+.PP
+.nf
+\f(CW  swcopy\&.swbis_no_getconf = true # true or false
+  swcopy\&.swbis_shell_command = detect # {detect|sh|bash|posix|ksh}
+  swcopy\&.swbis_no_remote_kill = false # true or false
+  swcopy\&.swbis_no_audit = false # true or false
+  swcopy\&.swbis_quiet_progress_bar = false # true or false
+  swcopy\&.swbis_local_pax_write_command=pax #{pax|tar|star|gtar}
+  swcopy\&.swbis_remote_pax_write_command=pax #{pax|tar|star|gtar}
+  swcopy\&.swbis_local_pax_read_command=pax #{pax|tar|gtar|star}
+  swcopy\&.swbis_remote_pax_read_command=pax #{pax|tar|gtar|star}
+  swcopy\&.swbis_allow_rpm = false  # true or false
+  swcopy\&.swbis_remote_shell_client=ssh\fR
+.fi
+.PP
+.SH "RETURN VALUE"
+.PP
+0 if all targets succeeded, 1 if all targets failed, 2 if some targets failed and some succeeded\&.
+.SH "NOTES"
+ Multiple ssh-hops is an implementation extension\&.
+.br
+.SH "REQUISITE UTILITIES"
+.PP
+The swbis distributed utilities require
+\fBbash\fP, public domain \fBksh\fP, or 
+Sun\&'s /usr/xpg4/bin/sh to be present on the target host\&.  If the
+\fBswbis_shell_command\fP extended option is set to \&'detect\&'
+you don\&'t have to know which one is present, otherwise you may specify one explicitly\&.
+.PP
+A POSIX \fBawk\fP is required, and with the ability to
+specify several thousand bytes of program text as a command argument\&.
+GNU awk  works, as does the ATT Awk book awk, and the awk on BSD systems\&.
+See the INSTALL file for further details regarding a small issue with the
+OpenSolaris (c\&.2006) awk\&.
+.PP
+Tar or pax is used for archive transfer\&.  You may specify which one\&.  
+.PP
+.nf
+\f(CWswcopy\&.swbis_local_pax_write_command=tar #{pax|tar|gtar}
+swcopy\&.swbis_remote_pax_write_command=tar #{pax|tar|gtar}\fR
+.fi
+.PP
+.SH "FILES"
+.PP
+.PP
+.nf
+\f(CW/usr/lib/swbis/swdefaults
+/usr/lib/swbis/swbisdefaults
+$HOME/\&.swbis/swdefaults
+$HOME/\&.swbis/swbisdefaults\fR
+.fi
+.PP
+ 
+.SH "APPLICABLE STANDARDS"
+.PP
+ISO/IEC 15068-2:1999, Open Group CAE C701
+.SH "SEE ALSO"
+.PP
+info swbis
+.PP
+sw(5), swbis(7), swbisparse(1), swign(1), swverify(8) 
+.SH "IDENTIFICATION"
+ swcopy(8): The archive copying utility of the swbis project\&.
+ Author: Jim Lowe   Email: jhlowe at acm\&.org
+ Version: 1\&.13\&.1
+ Last Updated: 2006-07
+ Copying: GNU Free Documentation License
+.SH "BUGS"
+.PP
+Swcopy is subject to breakage if a user\&'s account on an intermediate
+(or terminal) host in a target spec is not configured to use a Bourne
+compatible shell\&. (This breakage may be eliminated by use of the 
+--no-getconf option as explained above\&.)
+.PP
+A multiple ssh hop source spec  (more than 1 remote host involved in the
+source transfer) upon a SIGINT may result in sshd and ssh processes
+being left on on the intermediate host(s), this despite, swcopy\&'s action of
+sending a SIGTERM to the remote script\&'s parent process\&.
+.PP
+Swcopy does not currently implement Software Selections nor the events of the 
+Selection and Analysis Phases nor dependency copying nor fileset state
+transitions\&.  The Execution (copying) phase is done on the entire
+distribution by the utility selected in \&.\&.\&./swbisdefaults which is pax(1) by
+default\&.  Pax is not found on all GNU/Linux systems\&.
+Also, the pax version shipped with some (older) GNU/Linux systems mangles the pathname 
+of files whose pathname is exactly 100 octets long\&.
+Despite this pax is the the builtin default\&.
+GNU tar is widely used and trusted but creates non-standard archives for long
+pathnames\&.  Perhaps the best compromise is to use star (with -H ustar header
+option)  for archive creation and (GNU) tar for archive reading\&.
+If your environment is 100% GNU/Linux using GNU tar is safe (GNU tar 1\&.13\&.25 is
+recommended)\&.
+Swcopy does not support using the cpio utility since its archive writing
+interface is unlike pax and tar, although, future support is possible for
+archive reading\&.
+.\" created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39

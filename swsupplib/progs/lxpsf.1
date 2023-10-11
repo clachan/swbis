@@ -1,0 +1,42 @@
+''' 
+'''
+'''
+.TH LXPSF 1 \" -*- nroff -*-
+.SH NAME
+lxpsf \- Translate package to ustar with PSF metadata file.
+.SH SYNOPSIS
+\fBlxpsf\fP [--psf-only|p] [-H format] [package_file]
+.SH DESCRIPTION
+.B Lxpsf
+reads the input package and writes a tar or cpio archive to stdout, depending on
+the native (or encapsulated) format of the input package.  The output archive's layout
+has a single leading directory named according to the name, version, and release 
+attributes.
+.PP
+The first regular file is ``PSF'', and is a Posix.7.2 software definition file
+containing the package metadata.
+Subsequent files are control data represented as files; and, the files of the distribution.
+The output is designed so the swpackage(8) utility is able to form a Posix.7.2 package from the 
+installed output.
+.PP
+Currently, only RPM format is supported.
+.PP
+.SS Options
+.TP
+\fB-p\fP
+Write only the psf file to stdout.
+.TP
+\fB-H \fIformat\fR
+Force the specified format.
+The choices are currently (only)
+\fIustar\fP.
+.SH FILES
+none
+.SH "RELATED STANDARDS"
+.PP
+POSIX\&.1, POSIX\&.7\&.2 (IEEE 1387.2), XDSA C701
+.SH "SEE ALSO"
+sw_parse()
+.SH BUGS
+Probably many. Transforming lspsf's output to a Posix package is untested.
+

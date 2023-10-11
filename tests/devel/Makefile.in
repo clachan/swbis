@@ -1,0 +1,378 @@
+srcdir = @srcdir@
+topdir = @topdir@
+
+include $(topdir)/Makefile.inc
+include ./Makefile.inc
+srcdir= @srcdir@
+
+DO_DEBUG = @DO_DEBUG@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+LIBEFENCE = 
+LDFLAGS=-rdynamic @LDFLAGS@
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -lefence
+
+PTYDIR=pty-0.3a
+
+ifeq ($(DO_DEBUG),)
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = 
+DO_C_ASSEM = 
+else
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = $(CXX) $(CFLAGS) -S -gstabs+ -c -o $(OUT_PATH)/$*.S $<
+DO_C_ASSEM = $(CC) $(CFLAGS) -S -gstabs+ -c -o $(OUT_PATH)/$*.S $<
+endif
+
+################################### Leave this stuff alone
+
+### These are variables meant to be exported
+
+VPATH = $(srcdir)
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+INSTSUBDIRS = lib @PO@
+OTHERSUBDIRS =
+OBJS = 
+
+DEVELTESTPROGS= filelist2tar pa2pa \
+	testpath testpathr\
+	tar2tar testswspsf testswspsf1 testswspsf2 \
+	testheader testheader3  testheader4 \
+	testswpackagefile \
+	testswpackagefile1 \
+	testswpackagefile2 \
+	testswpackagefile3 \
+	testswpackagefile4 \
+	testswpackagefile5 \
+	testswpackagefile6 \
+	testattributefile1 \
+	testattributefile2 \
+	testattributefile3 \
+	testswmetadata \
+	testswexport1 \
+	testswdefinitionfile \
+	testpsf testpsf1 testpsf2 \
+	testpsf3 testverid \
+	testpsf4 \
+	testpkgwrite1 \
+	testpkgdir \
+	testexdist \
+	testswindex \
+	testpkgwrite \
+	testxformat1 \
+	testoption1 \
+	testparser \
+	testextdef \
+	testvarfsseek3 \
+	testvarfsseek4 \
+	testswcatalogfile \
+	get_catalog_file \
+	get_storage_file \
+	dump_archive \
+	arf2arf \
+	stat
+
+@DEVELTESTPROGS_@
+PROGS=$(DEVELTESTPROGS)
+
+
+OUT_PATH = .
+LIBS = @LIBS@ 
+CLIBS = \
+            $(topdir)/swsupplib/swsupplib.a
+LOADLIBES = \
+            $(topdir)/swstructlib/swstructlib.a  \
+            $(topdir)/swsupplib/swsupplib.a
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+.SUFFIXES:
+.SUFFIXES: .c .cxx .o
+
+.cxx.o:
+	$(CXX) $(CFLAGS) -c -o $(OUT_PATH)/$*.o  $<; $(DO_CPP_ASSEM)
+
+.c.o:
+	$(CC)  $(CFLAGS) -c -o $(OUT_PATH)/$*.o  $<; $(DO_C_ASSEM)
+
+all: $(TARGET)
+
+everything: $(PROGS)
+	if [ "$(DEVELTESTPROGS)" ]; then cd $(PTYDIR); $(MAKE); fi
+
+lib: $(LIB)
+
+$(LIB): $(OBJS) sw_utility.h
+	ar rc $(LIB) $(OBJS)
+	ranlib $(LIB)
+
+
+testattrlist: testattrlist.o 
+	$(CXX)  $(LDFLAGS) testattrlist.o $(LIB) $(LIBS) $(LOADLIBES)  -o testattrlist
+
+testswstruct: testswstruct.o
+	$(CXX)  $(LDFLAGS) testswstruct.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testswstruct
+
+tar2tar: tar2tar.o
+	$(CXX)  $(LDFLAGS) tar2tar.o  $(LIB) $(LIBS)  $(LOADLIBES) -o tar2tar 
+
+testpathr: testpathr.o
+	$(CXX)  $(LDFLAGS) testpathr.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testpathr
+
+testpath: testpath.o
+	$(CXX)  $(LDFLAGS) testpath.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testpath
+
+testheader: testheader.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testpkgwrite1: testpkgwrite1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpkgdir: testpkgdir.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpsf: testpsf.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswmetadata: testswmetadata.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile: testswpackagefile.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testoption1: testoption1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o ../../swprogs/swproglib.o ../../swprogs/swcommon.o ../../swsupplib/misc/swevents.o ../../swsupplib/misc/swextopt.o  \
+				 $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile1: testswpackagefile1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile2: testswpackagefile2.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile3: testswpackagefile3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile4: testswpackagefile4.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile5: testswpackagefile5.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testswpackagefile6: testswpackagefile6.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testattributefile1: testattributefile1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testattributefile2: testattributefile2.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testattributefile3: testattributefile3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswdefinitionfile: testswdefinitionfile.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testvarfsseek3: testvarfsseek3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testvarfsseek4: testvarfsseek4.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswcatalogfile: testswcatalogfile.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswexport1: testswexport1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpsf1: testpsf1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpsf2: testpsf2.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpsf3: testpsf3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testpsf4: testpsf4.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testheader1: testheader1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) testheader1.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testheader1
+
+testheader3: testheader3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) testheader3.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testheader3 
+
+testheader4: testheader4.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) testheader4.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testheader4 
+
+testfind: testfind.o
+	$(CXX)  $(LDFLAGS) testfind.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testfind
+
+testprune: testprune.o
+	$(CXX)  $(LDFLAGS) testprune.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testprune
+
+testinfo: testinfo.o
+	$(CXX)  $(LDFLAGS) testinfo.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testinfo
+
+testswdefinitionwrite: testswdefinitionwrite.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) testswdefinitionwrite.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o testswdefinitionwrite 
+
+testswspsf: testswspsf.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswspsf1: testswspsf1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswspsf2: testswspsf2.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testexdist: testexdist.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testswspsf3: testswspsf3.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testverid: testverid.o $(LOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o  $(LIBS) $(CLIBS) -o $@ 
+
+testmaxstrconv: testmaxstrconv.o $(LOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o  $(LIBS) $(CLIBS) -o $@ 
+
+stat: stat.o
+	$(CXX)  $(LDFLAGS) ${@}.o -o $@
+
+testsize: testsize.o
+	$(CXX)  $(LDFLAGS) testsize.o  $(LIB) $(LIBS)  $(LOADLIBES) -o testsize
+
+sizes: sizes.o
+	$(CXX)  $(LDFLAGS) sizes.o  $(LIB) $(LIBS)  $(LOADLIBES) -o sizes
+
+test0: testattrlist 
+	./testattrlist <var/attrlisttest.input 2>/dev/null | diff - var/attrlisttest.output
+
+test1: testswstruct
+	./testswstruct <var/psf.ieee | swparse --psf | diff - var/psf.ieee.out1
+
+filelist2tar: filelist2tar.o
+	$(CXX)  $(LDFLAGS) filelist2tar.o  $(LIB)  $(LIBS)  $(LOADLIBES) -o filelist2tar
+
+pa2pa: pa2pa.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) pa2pa.o  $(LIB)  $(LIBS)  $(LOADLIBES) -o pa2pa 
+
+testswindex: testswindex.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testpkgwrite: testpkgwrite.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+testxformat1: testxformat1.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testparser: testparser.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+testextdef: testextdef.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+get_catalog_file: get_catalog_file.o
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+get_storage_file: get_storage_file.o
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@ 
+
+dump_archive: dump_archive.o
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+arf2arf: arf2arf.o $(LOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o  $(LIB) $(LIBS)  $(LOADLIBES)  -o $@
+
+$(topdir)/swstructlib/lib/swstruct.a:
+	( cd $(topdir)/swstructlib ; $(MAKE) )
+
+$(PROGS): $(OBJS) 
+
+install: all
+uninstall:
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+
+.PHONY:		clean
+clean:
+	rm -f *.a *.o core *~ $(PROGS) tmp/*
+	rm -f *.S
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+	cd $(PTYDIR); $(MAKE) clean
+	(cd ../examples/installed_software && make clean)
+
+.PHONY:		distclean
+distclean:	
+	rm -f *.a *.o core *~ $(PROGS) librpmrc find-provides.sh find-requires.sh tmp/*
+	rm -f *.S
+	rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+	cd $(PTYDIR); $(MAKE) clean
+
+
+.PHONY:		depend
+depend:
+	( > .depend )
+
+#	( $(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+

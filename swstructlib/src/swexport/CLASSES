@@ -1,0 +1,49 @@
+CLASS DIAGRAM:
+
+
+                swExstruct <Abstract>
+                        /\
+                        |
+                        |
+                swExStruct_i
+                        /\
+                        |
+                        |
+                swObjFiles_i
+                /\    /\  /\
+                |     |    |
+                |     |    |
+                |      \    \
+                |       \    '---------------,
+                |        \                    \
+        swObjFiles        \               swExFileSet
+        /\      /\         \ 
+        |       |           \
+   swExPfiles   swExDfiles   \  
+                              ' 
+                              | 
+                           swExCat
+                          /  ^  ^ \    
+                          |  |  |  \
+                          |  |  |   \
+                          |  |  |    \
+                          |  |  |    swExHost
+                          |  |  |
+                          |  |  |
+                         /   |   \
+                        /    |    \
+                       /     |     \
+         swExDistribution    |      \
+                             |      swIxCat
+                       swExProduct    /\
+                                       |
+                                       |
+                                       |
+                                       |
+                                       |
+                     swExVendor, swExMedia, swExBundle, swExCategory 
+                                       
+
+
+
+

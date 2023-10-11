@@ -1,0 +1,235 @@
+include Makefile.inc
+topdir=.
+topincdir=../include
+
+
+srcdir= @srcdir@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+#LIBEFENCE = -lefence
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -ldl
+LDFLAGS=-dynamic -ldl
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+sysconfdir=@sysconfdir@
+
+DO_DEBUG = @DO_DEBUG@
+
+VPATH = $(srcdir)
+WARNINGS =
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+
+SUBDIRS = @DO_UM_RPM@ sw_parse uxfio taru strob misc uinfile cplob getopt progressmeter ls_list compression swi shell_lib rpmbis
+MISCSUBDIRS = tests progs
+INSTSUBDIRS = lib @PO@
+OTHERSUBDIRS =
+OBJS =
+
+PROGS =
+
+LIBS=@LIBS@
+LIB=swsupplib.a
+LOADLIBES = \
+		./sw_parse/swparse.a \
+		./taru/taru.a \
+		./uxfio/uxfio.a \
+		./strob/strob.a \
+		./misc/swcpkg.a \
+		./uinfile/uinfile.a \
+		./cplob/cplob.a \
+		./getopt/ugetopt.a \
+		./ls_list/ls_list.a \
+		./shell_lib/shell_lib.a \
+		./compression/compression.a \
+		./swi/swi.a \
+		./rpmbis/rpmbis.a \
+		./progressmeter/progressmeter.a
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: make-subdirs $(LIB) misc-subdirs
+
+
+$(topdir)/taru/taru.a: $(wildcard  $(topdir)/taru/*.o)
+	( cd $(topdir)/taru ; $(MAKE) )
+
+$(topdir)/uxfio/uxfio.a: $(wildcard $(topdir)/uxfio/*.o)
+	( cd $(topdir)/uxfio ; $(MAKE) )
+
+$(topdir)/strob/strob.a: $(wildcard $(topdir)/strob/*.o)
+	( cd $(topdir)/strob ; $(MAKE) )
+
+$(topdir)/misc/swcpkg.a: $(wildcard $(topdir)/misc/*.o)
+	( cd $(topdir)/misc ; $(MAKE) )
+
+$(topdir)/uinfile/uinfile.a: $(wildcard $(topdir)/uinfile/*.o)
+	( cd $(topdir)/uinfile ; $(MAKE) )
+
+$(topdir)/sw_parse/swparse.a: $(wildcard $(topdir)/sw_parse/*.o)
+	( cd $(topdir)/sw_parse ; $(MAKE) )
+
+$(topdir)/cplob/cplob.a: $(wildcard $(topdir)/cplob/*.o)
+	( cd $(topdir)/cplob ; $(MAKE) )
+
+$(topdir)/getopt/ugetopt.a: $(wildcard $(topdir)/getopt/*.o)
+	( cd $(topdir)/getopt ; $(MAKE) )
+
+$(topdir)/progressmeter/progressmeter.a: $(wildcard $(topdir)/progressmeter/*.o)
+	( cd $(topdir)/progressmeter ; $(MAKE) )
+
+$(topdir)/ls_list/ls_list.a: $(wildcard $(topdir)/ls_list/*.o)
+	( cd $(topdir)/ls_list ; $(MAKE) )
+
+$(topdir)/shell_lib/shell_lib.a: $(wildcard $(topdir)/shell_lib/*.o)
+	( cd $(topdir)/shell_lib ; $(MAKE) )
+
+$(topdir)/swi/swi.a: $(wildcard $(topdir)/swi/*.o)
+	( cd $(topdir)/swi ; $(MAKE) )
+
+$(topdir)/rpmbis/rpmbis.a: $(wildcard $(topdir)/rpmbis/*.o)
+	( cd $(topdir)/rpmbis ; $(MAKE) )
+
+$(topdir)/compression/compression.a: $(wildcard $(topdir)/compression/*.o)
+	( cd $(topdir)/compression ; $(MAKE) )
+
+make-subdirs:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE)) \
+		  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac;\
+	done && test -z "$$fail"
+
+misc-subdirs:
+	for d in $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE)) \
+		  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac;\
+	done && test -z "$$fail"
+
+$(LIB): $(LOADLIBES)
+	(cd tmp && /bin/rm -f *)	
+	(cd tmp;  ar x ../taru/taru.a)
+	(cd tmp;  ar x ../uxfio/uxfio.a)
+	(cd tmp;  ar x ../misc/swcpkg.a)
+	(cd tmp;  ar x ../strob/strob.a)
+	(cd tmp;  ar x ../uinfile/uinfile.a)
+	(cd tmp;  ar x ../sw_parse/swparse.a)
+	(cd tmp;  ar x ../cplob/cplob.a)
+	(cd tmp;  ar x ../getopt/ugetopt.a)
+	(cd tmp;  ar x ../progressmeter/progressmeter.a)
+	(cd tmp;  ar x ../ls_list/ls_list.a)
+	(cd tmp;  ar x ../shell_lib/shell_lib.a)
+	(cd tmp;  ar x ../compression/compression.a)
+	(cd tmp;  ar x ../swi/swi.a)
+	(cd tmp;  ar x ../rpmbis/rpmbis.a)
+	(cd tmp;  $(AR) r ../$@ *$(LIBOBJECTS))
+	(ranlib $@)
+
+uninstall:
+	for d in progs; do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+
+install: all
+	for d in progs; do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+
+#all:
+distdir:
+#install:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+#uninstall:
+# clean:
+mostlyclean: clean
+# distclean:
+maintainer-clean: distclean
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+
+.PHONY:		clean
+clean:
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	/bin/rm -f *.S *.a *.o core *~ rpm.shared tmp/* a.out
+	find . -name "*.orig" -exec /bin/rm -f {} \;
+	find . -name core -exec /bin/rm -f {} \;
+
+NOFILE:
+
+.PHONY:		distclean
+distclean:	
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	/bin/rm -f *.S *.a *.o core *~  rpm.shared librpmrc find-provides.sh find-requires.sh tmp/*
+	/bin/rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+	/bin/rm -f um_rpm/Makefile um_rpm/.depend um_rpm/rpm-3.0.5/Makefile um_rpm/rpm-3.0.5/lib/Makefile
+	/bin/rm -f .[a-z]*
+	/bin/rm -fr autom4te.cache
+	/bin/rm -fr um_rpm/rpm-3.0.5/autom4te.cache
+	/bin/rm -f stamp-h1 stamp-h1.in
+
+.PHONY:		depend
+depend:
+	(> .depend)
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+#	($(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec /bin/rm -f {} \; 
+	/bin/rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

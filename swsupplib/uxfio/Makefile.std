@@ -1,0 +1,83 @@
+#
+#
+#
+include ../Makefile.inc
+REVISION=0.62
+SHELL=	/bin/sh
+CC=	gcc
+DEBUG=-g
+
+#CFLAGS=	 -g -Wall -I$(INC_PATH) -DLINUX_GCC -I.. -I../.. -I../../include
+CFLAGS= -I../../include -I.. -I../..
+OUT_PATH = .
+LDFLAGS=
+
+LIBS=../swsupplib.a
+BIN=$(OUT_PATH)
+LIB = uxfio.a
+
+.c.o:
+	$(CC) -c -o $(OUT_PATH)/$*.o  $(CFLAGS) $< 
+
+OBJS= uxfio.o
+
+all: $(LIB) testuxfio sample
+
+runstupidtest: tests
+	cat /etc/passwd | ./sample 2 0 | ./sample 2 0 | diff - /etc/passwd
+
+tests: testuxfio sample
+	./sample 1 1000000 </bin/bash | ./sample 2 1000000 | diff - /bin/bash
+	./sample 3 1000000 </bin/bash | ./sample 3 1000000 | diff - /bin/bash
+	./sample 2 1000000 </bin/bash | ./sample 3 1000000 | diff - /bin/bash
+	./sample 2 1000000 </bin/bash | ./sample 1 1000000 | diff - /bin/bash
+
+test1-1:
+	/bin/rm -f ./test1.o && sh -x ./maketests test1
+	cat ./uxfio.o | ./test1 1 1000 3000 | cksum
+	./test1 1 1000 3000 <./uxfio.o | cksum
+	cat ./uxfio.o | dd bs=1 count=3000 skip=1000 | cksum
+
+test1-2:
+	/bin/rm -f ./test2.o && sh -x ./maketests test1
+	cat ./uxfio.o | ./test1 2 1000 3000 | cksum
+	./test1 2 1000 3000 <./uxfio.o | cksum
+	cat ./uxfio.o | dd bs=1 count=3000 skip=1000 | cksum
+
+testuxfio: uxfio.o $(LIB) $(LIBS) testdata testuxfio.o
+	$(CC)  $(LDFLAGS) testuxfio.o $(LIB) $(LIBS) -o testuxfio -lutil
+
+testsample1: uxfio.o $(LIB) $(LIBS) testsample1.o
+	$(CC)  $(LDFLAGS) testsample1.o $(LIB) $(LIBS) -o testsample1
+
+sample: uxfio.o $(LIB) $(LIBS) testdata sample.o
+	$(CC)  $(LDFLAGS) sample.o $(LIB) $(LIBS) -o sample
+
+$(LIB): $(OBJS)
+	ar rcs $(LIB) $(OBJS)
+
+
+testdata:
+	echo "abcdefghijklmnopqrstuvwxyz0123456789" >testdata
+
+clean:
+	rm -f $(OBJS) testuxfio testuxfio.o  uxfio.a a.out core testdata sample sample.o testsample.o testsample1
+
+distclean: clean
+	true
+
+tarfile: NOFILE  distclean
+	(cd ..; tar cf - uxfio-$(REVISION) | gzip -9 >uxfio-$(REVISION).tar.gz)
+
+atarfile: NOFILE  distclean
+	(cd ..; tar cf - uxfio-$(REVISION) | gzip -9 >uxfio-$(REVISION).`date +%Y%m%d%H%M`.tar.gz)
+
+install: uxfio.a
+	cp uxfio.a /usr/local/lib
+	cp uxfio.h /usr/local/include
+	cp tread.h /usr/local/include
+	cp treadmeter.h /usr/local/include
+
+NOFILE:
+
+

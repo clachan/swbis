@@ -1,0 +1,380 @@
+# File: psf.large
+
+distribution
+
+	dfiles			dfiles
+	pfiles			pfiles
+#	layout_version		layout_version
+	uuid			uuid  # not in PSF
+	path			path  # not in either PSF not INDEX files
+	media
+		sequence_number		sequence_number
+
+	bundle 
+		tag			tag
+		architecture 		architecture
+		location		location
+		qualifier		qualifier
+		revision		revision
+		vendor_tag		vendor_tag
+		contents		contents
+		copyright		copyright
+		create_time		create_time
+		description		description
+		directory		directory
+		instance_id		instance_id
+		is_locatable		is_locatable
+		machine_type		machine_type
+		mod_time		mod_time
+		number			number
+		os_name			os_name
+		os_release		os_release
+		os_version		os_version
+		size			size
+		title			title
+	
+	vendor
+		tag		tag
+		title		title
+		description	description
+
+	
+	
+	
+	product
+		tag 			tag
+		architecture 		architecture
+		qualifier		qualifier
+		revision		revision
+		vendor_tag		vendor_tag	
+		all_filesets		all_filesets	
+		control_directory	control_directory	
+		copyright		copyright
+		create_time		create_time
+		directory		directory
+		description		description
+		instance_id		instance_id
+		is_locatable		is_locatable
+		postkernel		postkernel
+		location		location
+		machine_type		machine_type
+		mod_time		mod_time
+		number			number
+		os_name			os_name
+		os_release		os_release
+		os_version		os_version
+		size			size
+		title			title
+
+# product control file
+	control_file	control_file.sh /
+	control_file	control_file.sh /
+	control_file	
+		tag			tag
+		chksum			chksum
+		compressed_chksum	compressed_chksum
+		compressed_size		compressed_size
+		compression_state	compression_state
+		compression_type	compression_type
+		interpreter		interpreter
+		path			path
+		revision		revision
+		size			size
+		source			source
+		result			result
+	
+# extended product control files	
+	checkinstall	checkinstall /
+	preinstall	preinstall /
+	postinstall	postinstall /
+	verify		verify /
+	fix		fix /
+	checkremove	checkremove /
+	preremove	preremove /
+	postremove	postremove.sh  /
+	configure	configure.sh /
+	unconfigure	unconfigure.sh /
+	request		request.sh /
+	unpreinstall	unpreinstall.sh /
+	unpostinstall	unpostinstall.sh /
+	space		space.sh /
+	control_file	control_file.sh /
+
+	subproduct
+		tag			tag
+		contents		contents
+		create_time		create_time
+		description		description
+		mod_time		mod_time
+		size			size
+		title			title
+
+	fileset
+		tag			tag
+		control_directory	control_directory
+		corequisites		corequisites
+		create_time		create_time
+		description		description
+		exrequisites		exrequisites
+		is_reboot		is_reboot
+		is_kernel		is_kernel
+		is_locatable		is_locatable
+		location		location
+		media_sequence_number	media_sequence_number
+		mod_time		mod_time
+		prerequisites		prerequisites
+		revision		revision
+		size			size
+		state			state
+		title			title
+	
+	control_file	
+		tag			tag
+		chksum			chksum
+		compressed_chksum	compressed_chksum
+		compressed_size		compressed_size
+		compression_state	compression_state
+		compression_type	compression_type
+		interpreter		interpreter
+		path			path
+		revision		revision
+		size			size
+		source			source
+		result			result
+
+        file	-t f -m 0777 -o root,0 -g root,0 -n -v  / /
+
+	file
+			path			path
+			chksum			chksum
+			compressed_chksum	compressed_chksum
+			compressed_size		compressed_size
+			compression_state	compression_state
+			compression_type	compression_type
+			gid			gid
+			group			group
+			is_volatile		is_volatile
+			link_source		link_source
+			major			major
+			minor			minor
+			mode			mode
+			mtime			mtime
+			owner			owner
+			revision		revision
+			size			size
+			source			source
+			type			type
+			uid			uid
+
+# extended control_file definitions
+	
+	checkinstall	checkinstall /
+	preinstall	preinstall /
+	postinstall	postinstall /
+	verify		verify /
+	fix		fix /
+	checkremove	checkremove /
+	preremove	preremove /
+	postremove	postremove.sh  /
+	configure	configure.sh /
+	unconfigure	unconfigure.sh /
+	request		request.sh /
+	unpreinstall	unpreinstall.sh /
+	unpostinstall	unpostinstall.sh /
+	space		space.sh /
+	control_file	control_file.sh /
+
+# extended file definitions
+	directory 		directory 
+	file_permissions	file_permissions
+	exclude			exclude
+	file			< file
+
+
+
+	fileset
+	directory 		directory 
+	
+	
+	vendor
+		tag		tag
+		title		title
+		description	description
+	
+
+# another product
+
+
+	product
+		tag 			tag
+		architecture 		architecture
+		qualifier		qualifier
+		revision		revision
+		vendor_tag		vendor_tag	
+		all_filesets		all_filesets	
+		control_directory	control_directory	
+		copyright		copyright
+		create_time		create_time
+		directory		directory
+		description		description
+		instance_id		instance_id
+		is_locatable		is_locatable
+		postkernel		postkernel
+		location		location
+		machine_type		machine_type
+		mod_time		mod_time
+		number			number
+		os_name			os_name
+		os_release		os_release
+		os_version		os_version
+		size			size
+		title			title
+
+# product control file
+	control_file	control_file.sh /
+	control_file	control_file.sh /
+	control_file	
+		tag			tag
+		chksum			chksum
+		compressed_chksum	compressed_chksum
+		compressed_size		compressed_size
+		compression_state	compression_state
+		compression_type	compression_type
+		interpreter		interpreter
+		path			path
+		revision		revision
+		size			size
+		source			source
+		result			result
+	
+# extended product control files	
+	checkinstall	checkinstall /
+	preinstall	preinstall /
+	postinstall	postinstall /
+	verify		verify /
+	fix		fix /
+	checkremove	checkremove /
+	preremove	preremove /
+	postremove	postremove.sh  /
+	configure	configure.sh /
+	unconfigure	unconfigure.sh /
+	request		request.sh /
+	unpreinstall	unpreinstall.sh /
+	unpostinstall	unpostinstall.sh /
+	space		space.sh /
+	control_file	control_file.sh /
+
+	subproduct
+		tag			tag
+		contents		contents
+		create_time		create_time
+		description		description
+		mod_time		mod_time
+		size			size
+		title			title
+
+	fileset
+		tag			tag
+		control_directory	control_directory
+		corequisites		corequisites
+		create_time		create_time
+		description		description
+		exrequisites		exrequisites
+		is_reboot		is_reboot
+		is_kernel		is_kernel
+		is_locatable		is_locatable
+		location		location
+		media_sequence_number	media_sequence_number
+		mod_time		mod_time
+		prerequisites		prerequisites
+		revision		revision
+		size			size
+		state			state
+		title			title
+	
+	control_file	
+		tag			tag
+		chksum			chksum
+		compressed_chksum	compressed_chksum
+		compressed_size		compressed_size
+		compression_state	compression_state
+		compression_type	compression_type
+		interpreter		interpreter
+		path			path
+		revision		revision
+		size			size
+		source			source
+		result			result
+
+        file	-t f -m 0777 -o root,0 -g root,0 -n -v  / /
+
+	file
+			path			path
+			chksum			chksum
+			compressed_chksum	compressed_chksum
+			compressed_size		compressed_size
+			compression_state	compression_state
+			compression_type	compression_type
+			gid			gid
+			group			group
+			is_volatile		is_volatile
+			link_source		link_source
+			major			major
+			minor			minor
+			mode			mode
+			mtime			mtime
+			owner			owner
+			revision		revision
+			size			size
+			source			source
+			type			type
+			uid			uid
+
+# extended control_file definitions
+	
+	checkinstall	checkinstall /
+	preinstall	preinstall /
+	postinstall	postinstall /
+	verify		verify /
+	fix		fix /
+	checkremove	checkremove /
+	preremove	preremove /
+	postremove	postremove.sh  /
+	configure	configure.sh /
+	unconfigure	unconfigure.sh /
+	request		request.sh /
+	unpreinstall	unpreinstall.sh /
+	unpostinstall	unpostinstall.sh /
+	space		space.sh /
+	control_file	control_file.sh /
+
+# extended file definitions
+	directory 		directory 
+	file_permissions	file_permissions
+	exclude			exclude
+	file			< file
+
+
+
+	fileset
+		tag			tag
+		control_directory	control_directory
+		corequisites		corequisites
+		create_time		create_time
+		description		description
+		exrequisites		exrequisites
+		is_reboot		is_reboot
+		is_kernel		is_kernel
+		is_locatable		is_locatable
+		location		location
+		media_sequence_number	media_sequence_number
+		mod_time		mod_time
+		prerequisites		prerequisites
+	
+	directory 		directory 
+	
+	configure	configure.sh /
+	unconfigure	unconfigure.sh /
+	request		request.sh /
+	unpreinstall	unpreinstall.sh /
+	

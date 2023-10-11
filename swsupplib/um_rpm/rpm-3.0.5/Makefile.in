@@ -1,0 +1,150 @@
+include Makefile.inc
+
+srcdir= @srcdir@
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+#LIBEFENCE = -lefence
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -ldl
+LDFLAGS=-dynamic -ldl @LDFLAGS@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+sysconfdir=@sysconfdir@
+
+DO_DEBUG = @DO_DEBUG@
+
+VPATH = $(srcdir)
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+
+SUBDIRS = lib
+MISCSUBDIRS = 
+INSTSUBDIRS = 
+OTHERSUBDIRS =
+OBJS =
+
+PROGS =
+
+LIBS=@LIBS@
+LIB=um_librpm.a
+LOADLIBES = $(topdir)/lib/librpm.a
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: make-subdirs $(LIB)
+
+
+$(topdir)/lib/librpm.a: $(wildcard  $(topdir)/lib/*.o)
+	( cd $(topdir)/lib ; $(MAKE) )
+
+make-subdirs:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE)) \
+		  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac;\
+	done && test -z "$$fail"
+
+$(LIB): $(LOADLIBES)
+	(mkdir tmp 2>/dev/null; exit 0)	
+	(cd tmp && rm -f *)	
+	(cd tmp;  ar x $(topdir)/lib/librpm.a)
+	(cd tmp;  $(AR) r ../$@ *$(LIBOBJECTS))
+	(ranlib $@)
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+.PHONY:		clean
+clean:
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	rm -f *.S *.a *.o core *~ rpm.shared tmp/* a.out
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+	/bin/rm -fr .deps
+
+NOFILE:
+
+.PHONY:		distclean
+distclean:	
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	/bin/rm -f *.S *.a *.o core *~  rpm.shared librpmrc find-provides.sh find-requires.sh tmp/*
+	/bin/rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+	/bin/rm -fr stamp-h* 
+	/bin/rm -fr lib/.lib/* lib/*.a
+	/bin/rm -fr lib/.deps .deps
+	/bin/rm -f .[a-z]*
+
+
+.PHONY:		depend
+depend:
+	( > .depend )
+	for d in $(SUBDIRS) $(MISCSUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	/bin/rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

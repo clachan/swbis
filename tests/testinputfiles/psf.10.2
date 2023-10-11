@@ -1,0 +1,11 @@
+distribution
+product
+	revision 1.0
+	tag tag1
+
+fileset
+	tag tag2
+	directory . /FOO/BAR
+	file_permissions  -u 027 -o foo_uname,1002  -g foo_gname,1003
+	file -t d /foo/bar/aa
+	file -t d foo/bar/aa

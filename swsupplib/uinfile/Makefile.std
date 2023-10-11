@@ -1,0 +1,46 @@
+#
+#
+#
+
+REVISION=0.11
+
+SHELL=	/bin/sh
+CC=	gcc
+INC_PATH= .
+CFLAGS=	 -O2 -Wall -I$(INC_PATH) -I/usr/local/include -DLINUX_GCC
+OUT_PATH = .
+LDFLAGS=
+LIBS=/usr/local/lib/uxfio.a /usr/local/lib/taru.a /usr/local/lib/strob.a /usr/lib/libz.a
+BIN=$(OUT_PATH)
+LIB = tarb.a
+
+
+OBJS= parbag.o uinfile.o tarb.o
+
+all: $(LIB) testtarb
+
+.c.o:
+	$(CC) -c -o $(OUT_PATH)/$*.o  $(CFLAGS) $< 
+
+testtarb: testtarb.o $(LIB) $(LIBS)
+	$(CC)  $(LDFLAGS) testtarb.o $(LIB) $(LIBS) -o testtarb
+
+$(LIB): $(OBJS)
+	ar rcs $(LIB) $(OBJS)
+
+clean:
+	rm -f $(OBJS) testtarb testtarb.o core $(LIB)
+
+atarfile: NOFILE
+	make -s clean
+	(cd ..; tar cf - tarb-$(REVISION) | gzip -9 >tarb-$(REVISION).`date +%Y%m%d%H%M`.tar.gz)
+
+install: $(LIB)
+	cp $(LIB) /usr/local/lib
+	cp *.h /usr/local/include
+
+
+NOFILE:
+
+
+

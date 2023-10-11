@@ -1,0 +1,1519 @@
+host
+hostname low01
+os_name Linux
+os_release 2.0.27
+os_version "#1 Mon Apr 7 21:21:58 EDT 1997"
+machine_type i486
+distribution
+layout_version 1.0
+dfiles dfiles
+pfiles pfiles
+tag XFree86-devel
+title X11R6 static libraries, headers and programming man pages
+description "
+Libraries, header files, and documentation for developing programs that
+run as X clients. It includes the base Xlib library as well as the Xt
+and Xaw widget sets. For information on programming with these libraries,
+Red Hat recommends the series of books on X Programming produced by
+O'Reilly and Associates."
+revision 3.3.1
+release 14
+copyright MIT
+architecture i386
+url unknown
+affiliation Hurricane
+build_time 878745148
+build_arch linux
+default_prefix /
+build_root /
+vendor
+tag Red_Hat_Software
+title Red Hat Software
+packager Red Hat Software <bugs@redhat.com>
+bundle
+tag X11/XFree86
+product
+tag XFree86-devel
+control_directory XFree86-devel
+vendor_tag Red_Hat_Software
+all_filesets 3.3.1
+fileset
+tag 3.3.1
+control_directory 3.3.1
+exclusive_arch "
+i386
+alpha"
+install_prefix /
+prerequisites "
+/bin/sh,r=,rpm_flag=0
+libc.so.6,r=,rpm_flag=0
+ld-linux.so.2,r=,rpm_flag=0"
+change_log "
+878731200 Wed Nov  5 07:00:00 1997
+Erik Troan <ewt@redhat.com>
+- removed XF86Setup
+- updated file list to include some missing files
+"
+change_log "
+878644800 Tue Nov  4 07:00:00 1997
+Michael K. Johnson <johnsonm@redhat.com>
+- New PAM conversation function conventions
+"
+change_log "
+875534400 Mon Sep 29 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- built against tcl/tk 8.0
+"
+change_log "
+873288000 Wed Sep  3 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- set libc version to 6 (which turns on thread support as well)
+- used wildcards more liberally in file lists
+"
+change_log "
+873201600 Tue Sep  2 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- added notiocsltc patch
+- added /usr/X11R6/lib/X11/xserver/SecurityPolicy
+"
+change_log "
+872251200 Fri Aug 22 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- updated to XFree86 3.3.1
+"
+change_log "
+868536000 Thu Jul 10 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- add shlibs patch, we links shared libraries against -lc
+"
+change_log "
+866116800 Thu Jun 12 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- Increased release number to 10 for glibc version
+"
+change_log "
+865252800 Mon Jun  2 08:00:00 1997
+Erik Troan <ewt@redhat.com>
+- Updated to XFree86 3.3
+"
+change_log "
+858859200 Thu Mar 20 07:00:00 1997
+Erik Troan <ewt@redhat.com>
+- Changed xdm to use xbanner
+- Changed xdm paths to point to /var/run, /var/log, /etc/X11/xdm instead
+  of all pointing to /usr/X11R6/lib/X11/xdm
+"
+change_log "
+857649600 Thu Mar  6 07:00:00 1997
+Erik Troan <ewt@redhat.com>
+Modified to use pam.d.
+"
+title The Packaged Files (the package distribution files)
+file
+path /usr/X11R6/bin/imake
+source /usr/X11R6/bin/imake
+owner root
+group root
+mtime 878745146
+type f
+mode 00755
+file
+path /usr/X11R6/bin/makedepend
+source /usr/X11R6/bin/makedepend
+owner root
+group root
+mtime 878745146
+type f
+mode 00755
+file
+path /usr/X11R6/bin/xmkmf
+source /usr/X11R6/bin/xmkmf
+owner root
+group root
+mtime 878744878
+type f
+mode 00755
+file
+path /usr/X11R6/include
+source /usr/X11R6/include
+owner root
+group root
+mtime 878744872
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11
+source /usr/X11R6/include/X11
+owner root
+group root
+mtime 878744904
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/Composite.h
+source /usr/X11R6/include/X11/Composite.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/CompositeP.h
+source /usr/X11R6/include/X11/CompositeP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ConstrainP.h
+source /usr/X11R6/include/X11/ConstrainP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Constraint.h
+source /usr/X11R6/include/X11/Constraint.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Core.h
+source /usr/X11R6/include/X11/Core.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/CoreP.h
+source /usr/X11R6/include/X11/CoreP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/DECkeysym.h
+source /usr/X11R6/include/X11/DECkeysym.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/HPkeysym.h
+source /usr/X11R6/include/X11/HPkeysym.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE
+source /usr/X11R6/include/X11/ICE
+owner root
+group root
+mtime 878744885
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/ICE/ICE.h
+source /usr/X11R6/include/X11/ICE/ICE.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE/ICEconn.h
+source /usr/X11R6/include/X11/ICE/ICEconn.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE/ICElib.h
+source /usr/X11R6/include/X11/ICE/ICElib.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE/ICEmsg.h
+source /usr/X11R6/include/X11/ICE/ICEmsg.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE/ICEproto.h
+source /usr/X11R6/include/X11/ICE/ICEproto.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ICE/ICEutil.h
+source /usr/X11R6/include/X11/ICE/ICEutil.h
+owner root
+group root
+mtime 878744885
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Intrinsic.h
+source /usr/X11R6/include/X11/Intrinsic.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/IntrinsicP.h
+source /usr/X11R6/include/X11/IntrinsicP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Object.h
+source /usr/X11R6/include/X11/Object.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ObjectP.h
+source /usr/X11R6/include/X11/ObjectP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PEX5
+source /usr/X11R6/include/X11/PEX5
+owner root
+group root
+mtime 878744895
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/PEX5/PEX.h
+source /usr/X11R6/include/X11/PEX5/PEX.h
+owner root
+group root
+mtime 878744895
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PEX5/PEXlib.h
+source /usr/X11R6/include/X11/PEX5/PEXlib.h
+owner root
+group root
+mtime 878744895
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PEX5/PEXlibint.h
+source /usr/X11R6/include/X11/PEX5/PEXlibint.h
+owner root
+group root
+mtime 878744895
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PEX5/PEXproto.h
+source /usr/X11R6/include/X11/PEX5/PEXproto.h
+owner root
+group root
+mtime 878744895
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PEX5/PEXprotost.h
+source /usr/X11R6/include/X11/PEX5/PEXprotost.h
+owner root
+group root
+mtime 878744895
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PM
+source /usr/X11R6/include/X11/PM
+owner root
+group root
+mtime 878744904
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/PM/PM.h
+source /usr/X11R6/include/X11/PM/PM.h
+owner root
+group root
+mtime 878744904
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/PM/PMproto.h
+source /usr/X11R6/include/X11/PM/PMproto.h
+owner root
+group root
+mtime 878744904
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/RectObj.h
+source /usr/X11R6/include/X11/RectObj.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/RectObjP.h
+source /usr/X11R6/include/X11/RectObjP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/SM
+source /usr/X11R6/include/X11/SM
+owner root
+group root
+mtime 878744886
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/SM/SM.h
+source /usr/X11R6/include/X11/SM/SM.h
+owner root
+group root
+mtime 878744886
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/SM/SMlib.h
+source /usr/X11R6/include/X11/SM/SMlib.h
+owner root
+group root
+mtime 878744886
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/SM/SMproto.h
+source /usr/X11R6/include/X11/SM/SMproto.h
+owner root
+group root
+mtime 878744886
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Shell.h
+source /usr/X11R6/include/X11/Shell.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ShellP.h
+source /usr/X11R6/include/X11/ShellP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/StringDefs.h
+source /usr/X11R6/include/X11/StringDefs.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Sunkeysym.h
+source /usr/X11R6/include/X11/Sunkeysym.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Vendor.h
+source /usr/X11R6/include/X11/Vendor.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/VendorP.h
+source /usr/X11R6/include/X11/VendorP.h
+owner root
+group root
+mtime 878744887
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/X.h
+source /usr/X11R6/include/X11/X.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/X10.h
+source /usr/X11R6/include/X11/X10.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/XKBlib.h
+source /usr/X11R6/include/X11/XKBlib.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/XWDFile.h
+source /usr/X11R6/include/X11/XWDFile.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xalloca.h
+source /usr/X11R6/include/X11/Xalloca.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xatom.h
+source /usr/X11R6/include/X11/Xatom.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xauth.h
+source /usr/X11R6/include/X11/Xauth.h
+owner root
+group root
+mtime 878744879
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw
+source /usr/X11R6/include/X11/Xaw
+owner root
+group root
+mtime 878744892
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/Xaw/AllWidgets.h
+source /usr/X11R6/include/X11/Xaw/AllWidgets.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiSink.h
+source /usr/X11R6/include/X11/Xaw/AsciiSink.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiSinkP.h
+source /usr/X11R6/include/X11/Xaw/AsciiSinkP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiSrc.h
+source /usr/X11R6/include/X11/Xaw/AsciiSrc.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiSrcP.h
+source /usr/X11R6/include/X11/Xaw/AsciiSrcP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiText.h
+source /usr/X11R6/include/X11/Xaw/AsciiText.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/AsciiTextP.h
+source /usr/X11R6/include/X11/Xaw/AsciiTextP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Box.h
+source /usr/X11R6/include/X11/Xaw/Box.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/BoxP.h
+source /usr/X11R6/include/X11/Xaw/BoxP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Cardinals.h
+source /usr/X11R6/include/X11/Xaw/Cardinals.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Command.h
+source /usr/X11R6/include/X11/Xaw/Command.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/CommandP.h
+source /usr/X11R6/include/X11/Xaw/CommandP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Dialog.h
+source /usr/X11R6/include/X11/Xaw/Dialog.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/DialogP.h
+source /usr/X11R6/include/X11/Xaw/DialogP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Form.h
+source /usr/X11R6/include/X11/Xaw/Form.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/FormP.h
+source /usr/X11R6/include/X11/Xaw/FormP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Grip.h
+source /usr/X11R6/include/X11/Xaw/Grip.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/GripP.h
+source /usr/X11R6/include/X11/Xaw/GripP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Label.h
+source /usr/X11R6/include/X11/Xaw/Label.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/LabelP.h
+source /usr/X11R6/include/X11/Xaw/LabelP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/List.h
+source /usr/X11R6/include/X11/Xaw/List.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/ListP.h
+source /usr/X11R6/include/X11/Xaw/ListP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MenuButtoP.h
+source /usr/X11R6/include/X11/Xaw/MenuButtoP.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MenuButton.h
+source /usr/X11R6/include/X11/Xaw/MenuButton.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MultiSink.h
+source /usr/X11R6/include/X11/Xaw/MultiSink.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MultiSinkP.h
+source /usr/X11R6/include/X11/Xaw/MultiSinkP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MultiSrc.h
+source /usr/X11R6/include/X11/Xaw/MultiSrc.h
+owner root
+group root
+mtime 878744891
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/MultiSrcP.h
+source /usr/X11R6/include/X11/Xaw/MultiSrcP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Paned.h
+source /usr/X11R6/include/X11/Xaw/Paned.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/PanedP.h
+source /usr/X11R6/include/X11/Xaw/PanedP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Panner.h
+source /usr/X11R6/include/X11/Xaw/Panner.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/PannerP.h
+source /usr/X11R6/include/X11/Xaw/PannerP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Porthole.h
+source /usr/X11R6/include/X11/Xaw/Porthole.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/PortholeP.h
+source /usr/X11R6/include/X11/Xaw/PortholeP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Repeater.h
+source /usr/X11R6/include/X11/Xaw/Repeater.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/RepeaterP.h
+source /usr/X11R6/include/X11/Xaw/RepeaterP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Reports.h
+source /usr/X11R6/include/X11/Xaw/Reports.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Scrollbar.h
+source /usr/X11R6/include/X11/Xaw/Scrollbar.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/ScrollbarP.h
+source /usr/X11R6/include/X11/Xaw/ScrollbarP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Simple.h
+source /usr/X11R6/include/X11/Xaw/Simple.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SimpleMenP.h
+source /usr/X11R6/include/X11/Xaw/SimpleMenP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SimpleMenu.h
+source /usr/X11R6/include/X11/Xaw/SimpleMenu.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SimpleP.h
+source /usr/X11R6/include/X11/Xaw/SimpleP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Sme.h
+source /usr/X11R6/include/X11/Xaw/Sme.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SmeBSB.h
+source /usr/X11R6/include/X11/Xaw/SmeBSB.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SmeBSBP.h
+source /usr/X11R6/include/X11/Xaw/SmeBSBP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SmeLine.h
+source /usr/X11R6/include/X11/Xaw/SmeLine.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SmeLineP.h
+source /usr/X11R6/include/X11/Xaw/SmeLineP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/SmeP.h
+source /usr/X11R6/include/X11/Xaw/SmeP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/StripCharP.h
+source /usr/X11R6/include/X11/Xaw/StripCharP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/StripChart.h
+source /usr/X11R6/include/X11/Xaw/StripChart.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Template.c
+source /usr/X11R6/include/X11/Xaw/Template.c
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Template.h
+source /usr/X11R6/include/X11/Xaw/Template.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TemplateP.h
+source /usr/X11R6/include/X11/Xaw/TemplateP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Text.h
+source /usr/X11R6/include/X11/Xaw/Text.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TextP.h
+source /usr/X11R6/include/X11/Xaw/TextP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TextSink.h
+source /usr/X11R6/include/X11/Xaw/TextSink.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TextSinkP.h
+source /usr/X11R6/include/X11/Xaw/TextSinkP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TextSrc.h
+source /usr/X11R6/include/X11/Xaw/TextSrc.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TextSrcP.h
+source /usr/X11R6/include/X11/Xaw/TextSrcP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Toggle.h
+source /usr/X11R6/include/X11/Xaw/Toggle.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/ToggleP.h
+source /usr/X11R6/include/X11/Xaw/ToggleP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Tree.h
+source /usr/X11R6/include/X11/Xaw/Tree.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/TreeP.h
+source /usr/X11R6/include/X11/Xaw/TreeP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/VendorEP.h
+source /usr/X11R6/include/X11/Xaw/VendorEP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/Viewport.h
+source /usr/X11R6/include/X11/Xaw/Viewport.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/ViewportP.h
+source /usr/X11R6/include/X11/Xaw/ViewportP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/XawImP.h
+source /usr/X11R6/include/X11/Xaw/XawImP.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xaw/XawInit.h
+source /usr/X11R6/include/X11/Xaw/XawInit.h
+owner root
+group root
+mtime 878744892
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xcms.h
+source /usr/X11R6/include/X11/Xcms.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xdmcp.h
+source /usr/X11R6/include/X11/Xdmcp.h
+owner root
+group root
+mtime 878744879
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xfuncproto.h
+source /usr/X11R6/include/X11/Xfuncproto.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xfuncs.h
+source /usr/X11R6/include/X11/Xfuncs.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xlib.h
+source /usr/X11R6/include/X11/Xlib.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xlibint.h
+source /usr/X11R6/include/X11/Xlibint.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xlocale.h
+source /usr/X11R6/include/X11/Xlocale.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmd.h
+source /usr/X11R6/include/X11/Xmd.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu
+source /usr/X11R6/include/X11/Xmu
+owner root
+group root
+mtime 878744889
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/Xmu/Atoms.h
+source /usr/X11R6/include/X11/Xmu/Atoms.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/CharSet.h
+source /usr/X11R6/include/X11/Xmu/CharSet.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/CloseHook.h
+source /usr/X11R6/include/X11/Xmu/CloseHook.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Converters.h
+source /usr/X11R6/include/X11/Xmu/Converters.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/CurUtil.h
+source /usr/X11R6/include/X11/Xmu/CurUtil.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/CvtCache.h
+source /usr/X11R6/include/X11/Xmu/CvtCache.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/DisplayQue.h
+source /usr/X11R6/include/X11/Xmu/DisplayQue.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Drawing.h
+source /usr/X11R6/include/X11/Xmu/Drawing.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Editres.h
+source /usr/X11R6/include/X11/Xmu/Editres.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/EditresP.h
+source /usr/X11R6/include/X11/Xmu/EditresP.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Error.h
+source /usr/X11R6/include/X11/Xmu/Error.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/ExtAgent.h
+source /usr/X11R6/include/X11/Xmu/ExtAgent.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Initer.h
+source /usr/X11R6/include/X11/Xmu/Initer.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Misc.h
+source /usr/X11R6/include/X11/Xmu/Misc.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/StdCmap.h
+source /usr/X11R6/include/X11/Xmu/StdCmap.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/StdSel.h
+source /usr/X11R6/include/X11/Xmu/StdSel.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/SysUtil.h
+source /usr/X11R6/include/X11/Xmu/SysUtil.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/WidgetNode.h
+source /usr/X11R6/include/X11/Xmu/WidgetNode.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/WinUtil.h
+source /usr/X11R6/include/X11/Xmu/WinUtil.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Xct.h
+source /usr/X11R6/include/X11/Xmu/Xct.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xmu/Xmu.h
+source /usr/X11R6/include/X11/Xmu/Xmu.h
+owner root
+group root
+mtime 878744889
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xos.h
+source /usr/X11R6/include/X11/Xos.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xos_r.h
+source /usr/X11R6/include/X11/Xos_r.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xosdefs.h
+source /usr/X11R6/include/X11/Xosdefs.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xpoll.h
+source /usr/X11R6/include/X11/Xpoll.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xproto.h
+source /usr/X11R6/include/X11/Xproto.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xprotostr.h
+source /usr/X11R6/include/X11/Xprotostr.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xresource.h
+source /usr/X11R6/include/X11/Xresource.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xthreads.h
+source /usr/X11R6/include/X11/Xthreads.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/Xutil.h
+source /usr/X11R6/include/X11/Xutil.h
+owner root
+group root
+mtime 878744884
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/ap_keysym.h
+source /usr/X11R6/include/X11/ap_keysym.h
+owner root
+group root
+mtime 878744872
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps
+source /usr/X11R6/include/X11/bitmaps
+owner root
+group root
+mtime 878744928
+type d
+mode 00755
+file
+path /usr/X11R6/include/X11/bitmaps/1x1
+source /usr/X11R6/include/X11/bitmaps/1x1
+owner root
+group root
+mtime 878744873
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/2x2
+source /usr/X11R6/include/X11/bitmaps/2x2
+owner root
+group root
+mtime 878744873
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Dashes
+source /usr/X11R6/include/X11/bitmaps/Dashes
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Down
+source /usr/X11R6/include/X11/bitmaps/Down
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Excl
+source /usr/X11R6/include/X11/bitmaps/Excl
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/FlipHoriz
+source /usr/X11R6/include/X11/bitmaps/FlipHoriz
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/FlipVert
+source /usr/X11R6/include/X11/bitmaps/FlipVert
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Fold
+source /usr/X11R6/include/X11/bitmaps/Fold
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Left
+source /usr/X11R6/include/X11/bitmaps/Left
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Right
+source /usr/X11R6/include/X11/bitmaps/Right
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/RotateLeft
+source /usr/X11R6/include/X11/bitmaps/RotateLeft
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/RotateRight
+source /usr/X11R6/include/X11/bitmaps/RotateRight
+owner root
+group root
+mtime 878744902
+type f
+mode 00444
+file
+path /usr/X11R6/include/X11/bitmaps/Stipple
+source /usr/X11R6/include/X11/bitmaps/Stipple
+owner root
+group root
+mtime 878744902
+type f
+mode 00444

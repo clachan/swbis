@@ -1,0 +1,64 @@
+ distribution
+layout_version 1.0
+AUTHORS <AUTHORS
+COPYING <COPYING
+checkdigest <checkdigest
+control_directory swbis-1.13.3
+tag swbis-1.13.3
+owner root
+group root
+mode 0755
+create_time 1688294248 # Sun Jul  2 10:37:28 2023 UTC
+signer_pgm gpg
+signer_pgm_version 1
+tar_format_emulation_options -b1 --format=ustar --numeric
+tar_format_emulation_utility tar,r=1.15.*,r=1.14.*
+uuid 1b7e088e-3272-49ec-98dd-bfd330bc827d
+dfiles dfiles
+pfiles pfiles
+md5sum <md5sum
+sha1sum <sha1sum
+sha512sum <sha512sum
+adjunct_md5sum <adjunct_md5sum
+size <size
+files <files
+sig_header <sig_header
+signature <signature
+vendor
+the_term_vendor_is_misleading True
+tag GNU
+title GNU's Not Unix
+description "The GNU Project was launched in 1984 to develop a complete UNIX-like
+operating system which is free software: free as in freedom, not price.
+See http://www.gnu.org."
+bundle
+tag swbis
+instance_id 1
+product
+description "GNU swbis is a software administration system for
+GNU/Linux systems and systems that are UNIX system-like. It implements
+the Open Group's CAE Spec C701 (XDSA) Distributed Software Administration.
+This spec closely follows ISO/IEC 15068-2:1999 (now withdrawn) which was
+identical to IEEE 1387.2:1995.  The implementation relies on POSIX
+functionality as provided by a typical GNU system.  It has security
+enhancement extensions that use GNU Privacy Guard.  It provides
+distributed functionality by direct use of the client ssh program and
+matches the administration functionality of RPM or dpkg without any
+new utilities required on the target hosts."
+tag swbis
+revision 1.13.3
+vendor_tag GNU
+title GNU swbis - POSIX software packaging
+control_directory ""
+is_locatable true
+is_locatable true
+instance_id 2
+all_filesets swbis-sources
+fileset
+tag swbis-sources
+control_directory ""
+title GNU swbis source code
+is_locatable true
+description The source distribution of swbis
+instance_id 1
+size 14234137

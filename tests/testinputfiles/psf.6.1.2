@@ -1,0 +1,27 @@
+  distribution
+   layout_version 1.0
+   product
+    tag bc
+    
+    control_file
+     tag postinstall
+     interpreter /bin/sh
+     source bc-1.04-2/postinstall
+    control_file
+     tag unpreinstall
+     interpreter /bin/sh
+     source bc-1.04-2/unpreinstall
+    fileset
+     tag d_files
+	directory  /etc
+	directory  /etc /usr/tmp
+	file_permissions -m 0600 -o jhl -g other
+	checkinstall source1 path1
+	checkinstall source2 path2
+	file -m 666 -o ftp passwd
+	file passwd aa/bb
+	file hosts
+     file
+      path /usr/bin/123
+      source bc-1.04-2/usr/bin/123
+

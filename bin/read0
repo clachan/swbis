@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Iforgot" |  
+(
+export SWPACKAGEPASSFD=0
+exec  swpackage --sign --gpg-name="Test User" -s PSF
+)
+
+

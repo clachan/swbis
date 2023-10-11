@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "Iforgot" >/tmp/Iforgot
+
+(
+export SWPACKAGEPASSFD=3
+exec  3</tmp/Iforgot swpackage --sign --gpg-name="Test User"  -s PSF
+)
+
+rm /tmp/Iforgot
+

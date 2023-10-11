@@ -1,0 +1,128 @@
+# File: sw defaults
+## uncomment options as needed.
+
+installed_software_catalog	= var/lib/swbis/catalog
+
+#swinstall.allow_downdate			= false
+#swinstall.allow_incompatible			= false
+#swinstall.ask					= false
+#swinstall.autoreboot				= false
+#swinstall.autoselect_dependencies		= false
+#swinstall.defer_configure			= false
+#swinstall.distribution_source_directory	= -
+#swinstall.enforce_dependencies			= false
+#swinstall.enforce_dsa				= false
+#swinstall.enforce_locatable			= false
+#swinstall.enforce_scripts			= false
+#swinstall.installed_software_catalog		= var/lib/swbis/catalog
+#swinstall.logfile				= /var/log/swinstall.log
+#swinstall.loglevel				= 1
+#swinstall.reinstall				= false
+#swinstall.select_local				= 
+#swinstall.software				= 
+#swinstall.targets				= 
+#swinstall.verbose				= 1
+
+#swcopy.autoselect_dependencies			= false		# Support not implemented.
+#swcopy.compress_files				= false 	# Support not implemented.
+#swcopy.compression_type			= none  	# Support not implemented.
+#swcopy.distribution_source_directory		= -	# Standard input
+#swcopy.distribution_target_directory		= -	# Standard output
+#swcopy.enforce_dependencies			= false		# Support not implemented.
+#swcopy.enforce_dsa				= false		# Support not implemented.
+#swcopy.logfile					= /var/log/swcopy.log
+#swcopy.loglevel				= 0		# Support not implemented.
+#swcopy.recopy					= false		# Support not implemented.
+#swcopy.select_local				= false		# Support not implemented.
+#swcopy.software				= 
+#swcopy.targets					= 
+#swcopy.uncompress_files			= false		# Support not implemented.
+#swcopy.verbose					= 1
+
+#swremove.autoselect_dependencies		= true
+#swremove.distribution_target_directory		= /var/spool/sw
+#swremove.enforce_dependencies			= true
+#swremove.enforce_scripts			= true
+#swremove.enforce_dsa				= true
+#swremove.installed_software_catalog		= var/lib/swbis/catalog
+#swremove.logfile				= /var/log/swremove.log
+#swremove.loglevel				= 1
+#swremove.select_local				= true
+#swremove.software				= 
+#swremove.targets				= 
+#swremove.verbose				= 1
+
+#swconfig.allow_incompatible			= false
+#swconfig.allow_multiple_versions		= false
+#swconfig.ask					= false
+#swconfig.autoselect_dependencies		= true
+#swconfig.autoselect_dependents			= false
+#swconfig.enforce_dependencies			= true
+#swconfig.installed_software_catalog		= var/lib/swbis/catalog
+#swconfig.logfile				= /var/log/swconfig.log
+#swconfig.loglevel				= 1
+#swconfig.reconfigure				= false
+#swconfig.select_local				= true
+#swconfig.software				= 
+#swconfig.targets				= 
+#swconfig.verbose				= 1
+
+#swask.autoselect_dependencies			= true
+#swask.distribution_source_directory		= /var/spool/sw
+#swask.distribution_source_serial		= -
+#swask.logfile					= /var/log/swask.log
+#swask.loglevel					= 1
+#swask.select_local				= true
+#swask.software					= 
+#swask.targets					= 
+#swask.verbose					= 1
+
+#swmodify.distribution_target_directory		= /var/spool/sw
+#swmodify.installed_software_catalog		= var/lib/swbis/catalog
+#swmodify.files					= 
+#swmodify.logfile				= /var/log/swmodify.log
+#swmodify.loglevel				= 1
+#swmodify.select_local				= true
+#swmodify.software				= 
+#swmodify.targets				= 
+#swmodify.verbose				= 1
+
+#swverify.allow_incompatible			= false
+#swverify.autoselect_dependencies		= true
+#swverify.check_contents			= true
+#swverify.check_permissions			= true
+#swverify.check_requisites			= true
+#swverify.check_scripts				= true
+#swverify.check_volatile			= false
+#swverify.distribution_target_directory		= /var/spool/sw
+#swverify.enforce_dependencies			= true
+#swverify.enforce_locatable			= true
+#swverify.installed_software_catalog		= var/lib/swbis/catalog
+#swverify.logfile				= /var/log/swverify.log
+#swverify.loglevel				= 1
+#swverify.select_local				= 
+#swverify.software				= 
+#swverify.targets				= 
+#swverify.verbose				= 1
+
+#swlist.distribution_target_directory		= /
+#swlist.installed_software_catalog		= var/lib/swbis/catalog
+#swlist.one_liner				= products # {products|files|dir}
+#swlist.select_local				= true
+#swlist.software				= 
+#swlist.targets					= 
+#swlist.verbose					= 1
+
+#swpackage.distribution_target_directory	= /var/spool/sw
+#swpackage.distribution_target_serial		= -
+#swpackage.enforce_dsa				= false
+#swpackage.follow_symlinks			= false
+#swpackage.logfile				= /var/log/swpackage.log
+#swpackage.loglevel				= 1
+#swpackage.media_capacity			= 0
+#swpackage.media_type				= serial
+#swpackage.psf_source_file			= -
+#swpackage.software				= 
+#swpackage.verbose				= 1
+
+# end of swdefaults file

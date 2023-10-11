@@ -1,0 +1,83 @@
+distribution
+	layout_version	1.0
+	uuid		944B41Z-X135
+
+media
+	sequence_number		1
+
+
+vendor
+		tag		FineSoft
+		title		Fine Software Corporation
+		description	" Fine Software Corporation
+1233 Technology way
+Sunset Bay, Ca. 90456
+1-800-555-1212"
+
+bundle
+	tag 		POSIX-SM
+	title		POSIX 1387 System Management
+	revision	1.0
+	vendor_tag	FineSoft
+	contents	POSIX-Printer,r=4.0 POSIX-Software,r=2.0 POSIX-User,r=1.0
+
+product
+	tag 			POSIX-Software
+	instance_id		1	
+	control_directory	POSIX_Software		
+	revision		2.0
+	vendor_tag		FineSoft
+	title			POSIX 1387.2 Software Administration Utilities
+	description		"The objective of this standard is to address this problem
+for software administration, a specific area of system administration, and to
+contribute to the overall solution of administering computing environments, both stand
+alone and distributed.
+
+In pursuit of this goal, this standard defines a set of utilities, a set of objects acted
+upon by those utilities, a set of information maintained about installed software, and the
+layout on a physical medium of software awaiting installation.
+These definitions provide the flexibility necessary for system administrators to enforce
+policies suitable for their environments."
+	directory /
+	machine_type	9000/7[8]
+	os_name		HP-UX
+	os_release	?.09.
+	os_version	?
+	all_filesets	agent commands man
+	number	J2326AA
+	copyright	<copyright
+
+
+subproduct
+	tag		Agent
+	title		target daemon and agent
+	contents	agent man
+
+subproduct
+	tag		Manager
+	title		management Utilities
+	contents	commands agent man
+
+fileset
+	tag			agent
+	control_directory	agent
+	size			5333089
+	title			Agent (target agent)
+	state			available
+
+fileset
+	tag			commands
+	control_directory	commands
+	size			8531074
+	title			Commands (management utilities)
+	state			available
+	prerequisites		POSIX-Software.agent
+
+fileset
+	tag			man
+	control_directory	man
+	size			162749
+	title			Manual (man pages)
+	state			available
+
+

@@ -1,0 +1,121 @@
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+<!-- 
+Copyright (C) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man sw_parse_1.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<REFENTRY ID="rpm2swbis">
+<REFMETA>
+<REFENTRYTITLE>
+rpm2swbis
+</REFENTRYTITLE>
+<REFMISCINFO>
+rpm2swbis - Convert an RPM to a IEEE 1387.2 layout tar archive.
+</REFMISCINFO>
+<MANVOLNUM>1</MANVOLNUM> 
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+swign
+</REFNAME>
+<REFPURPOSE>
+Convert an RPM to a IEEE 1387.2 layout tar archive.
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>rpm2swbis</FUNCTION> <OPTIONAL>options</OPTIONAL> <OPTIONAL>rpmfile|-</OPTIONAL>
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+<REFSECT1 ID="rpm2swbis">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>rpm2swbis</FUNCTION>
+is a shell script which uses extension options of swpackage and the swbis libexec program
+<FUNCTION>lxpsf</FUNCTION>.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA>
+<VERB><SBR>
+<PROGRAMLISTING>
+     --help show this help to stdout.
+</PROGRAMLISTING>
+</VERB>
+<VERB><SBR>
+<PROGRAMLISTING>
+These options correspond to the Extension options of swpackage.
+	--files
+	--archive-digests
+	--digests
+	--sign
+	--homedir=home
+	--local-user=name
+	--dir=dir
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+0 on success, non-zero on failure.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<PARA>
+none
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+swpackage(8), lxpsf(1)
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<PARA>
+<VERB>
+ Copying Terms: GNU GPL
+ Last Updated: 2003-03-11.
+ Identification: Implementation extension administration program of swbis.
+</VERB>
+</PARA>
+</REFSECT1>
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+No temporary files are used in the conversion process, just lots of memory.  This capability 
+was created as a testing tool of swpackage.  It seems to convert without any error messages
+about 95% of binary RPMs and nearly 100% of source RPMs.  
+The accuracy of the file or metadata after conversion has not been exhaustively confirmed.
+</PARA>
+</REFSECT1>
+</REFENTRY>

@@ -1,0 +1,544 @@
+INSTALL  Last updated March 2014
+----------------------------------
+just type:
+
+./configure && make
+The default prefix is /usr/local
+    
+	-or-
+
+./configure && gmake   # On non-GNU Hosts 
+
+
+The CVS repository does not include the autotools generated
+files: To fix CVS related time stamp induced annoyances, if compiling
+from a CVS export try (See README.CVS):
+
+touch -c aclocal.m4 configure config.h.in Makefile.in
+
+The autotools versions used on the release system are:
+#
+# automake --version
+automake (GNU automake) 1.11.1
+
+# autoconf --version
+autoconf (GNU Autoconf) 2.69
+
+#
+#
+To compile with gcc-4.3.0, use the -fgnu89-inline option, for example:
+	CFLAGS="-Os -fgnu89-inline"  ./configure && make
+
+When using gcc 4.2.3 (and possibly gcc 3.2) and above with optimization
+level -Os or -O2  you should disable the -foptimize-sibling-calls
+optimization.  The negative effects, if any, of -foptimize-sibling-calls
+are minor and do not cause a major malfuntion.
+
+For Example:
+
+	CFLAGS="-O2 -fno-optimize-sibling-calls" ./configure && make # --or--
+	CFLAGS="-Os -fno-optimize-sibling-calls" ./configure && make # --or--
+
+The recommended Optimization levels for production use are
+(in preferred order) for no particular reason:
+
+	CFLAGS="-O1"  ./configure && make   #
+	CFLAGS="-O"  ./configure && make   # --or--
+	CFLAGS="-O0"  ./configure && make  # --or--
+	CFLAGS="-O2"  ./configure && make   #
+
+
+RPM translation support (option --with-self-rpm) is on by default.
+
+To make a self-contained non-root install, try:
+	
+CFLAGS=-O1 ./configure --prefix=`pwd`/tmp && make && make install
+
+
+To Change the Version String reported by the utilities
+------------------------------------------------------
+For example, to change version to 1.5.101
+
+	sh bin/reversion.sh 1.5.101
+	./configure && make
+	make distclean
+
+
+Requirements for Compilation
+-----------------------------
+
+	libz.a      # e.g. /usr/lib/libz.a
+	GNU make    # GNU make is required. 
+                    # Install GNU make as 'gmake' and simply 
+                    # 'gmake' at the command line.   
+	GCC and a GNU U*ix-like environment.
+
+	Other compilers may work, but one known incompatibility with
+	strict ANSI C is excessive length of some variable length format
+	strings (i.e. usages of fprintf, vsnprintf, et.al).
+
+	Flex and Bison are optional, if not present a pre-compiled file will
+ 	be used.  See  --with-flex and --with-bison
+
+Requirements for use, and running the tests
+--------------------------------------------
+The following are required to be in PATH:
+       md5sum  # or openssl
+       sha1sum # or openssl
+       gpg
+       tar  # as GNU tar, or set GTAR if not tar is not GNU tar
+       sh   # must be a POSIX shell with specific compliance to STDIN handling.
+            # Only bash, public-domain ksh and OpenSolaris xpg4 sh are compliant.
+            # Set POSIXSHELL=/bin/bash before compiling if /bin/sh is not bash
+
+Important Environment Variables
+-------------------------------
+
+	If you are using a GNU/Linux system with /bin/bash as your
+	shell then you can skip the environment configuration.
+
+	The POSIXSHELL and GTAR variables are transferred into the production
+	swverify(8) and swign(1) programs.  They should point to the path of the
+	posix shell and the GNU tar program.
+
+	If tar is GNU tar then you don't have to set GTAR.
+
+	If /bin/sh is sufficiently posix then you don't have to set POSIXSHELL.
+
+	The following shell variables affect compilation:
+
+
+	SHELL POSIXSHELL CC CXX CFLAGS PATH GTAR
+	----------------------------------------		
+	GTAR:  The name of the GNU tar program on your system.
+	       If ''tar'' is GNU tar then you don't need to set this.
+
+	MAKE:  Must be GNU make, ** you don't need to set this. **
+		GNU make is often installed as ''gmake'' if not
+		the default ''make''.  If gmake, then just type
+		gmake instead of make in the examples below.
+
+	
+	SHELL:  This is the shell that does the compilation work.
+                Must be a some-what modern Bourne shell.
+		This is already set in your environment and
+		ignored by make(1) unless you use the -e option.
+		If /bin/sh is too broken then you *must* set this
+		to a unbroken shell and use the '-e' option.
+			
+	POSIXSHELL:  This is the shell that is written into the
+                     production shell programs.  The default is /bin/sh. 
+	             It should be set to the output of:	
+
+			PATH=`getconf PATH` which sh
+
+			To find your Posix shell try:
+				# sh
+				# PATH=`getconf PATH` which sh	
+				# exit
+
+			Example values that are OK:
+				/bin/bash         # Bash has the POSIX features required.
+				/bin/ksh          # Public Domain Implementaion (not KSH93)
+				/usr/xpg4/bin/sh  # Commonly found on Sun/Solaris platforms.
+	
+	CC:  Typically 'gcc'  or 'cc' 
+
+	CXX:  Typically 'g++'  or 'cxx' 
+
+
+	PATH:  If your system is not a GNU/Linux system, such as Sun, and if
+			you experience problems then try adding the output of 
+			''getconf PATH'' to your PATH.
+
+	 		 PATH=$PATH:`getconf PATH`
+
+	CFLAGS: This can be unset or set to one of the following
+		typical values:
+				CFLAGS=-O0
+				CFLAGS=-O1
+				CFLAGS=-O2      # Recommended.
+				CFLAGS=-O3
+				CFLAGS=-g	# Turn on Debugging
+
+Large file Support
+------------------
+	Large File support is enabled by default, to disable
+		--disable-largefile
+
+	To enable manually and with the compiler switches:
+	Determine the proper CFLAGS to use
+		Run:  ``getconf LFS_CFLAGS''
+	It will display something like
+		_FILE_OFFSET_BITS=64
+
+	Swbis does not call any 64-bit system call variants by name, hence,
+	defining _LARGEFILE64_SOURCE or _LARGEFILE_SOURCE is probably not
+	required. Defining _FILE_OFFSET_BITS=64 causes the standard names
+	to become the 64-bit enabled variants.
+
+	Use the CFLAGS variable to set these preprocessor values via the 
+	C/C++ compiler.  For example:
+	
+	./configure CFLAGS="-D_FILE_OFFSET_BITS=64 -Os" --prefix=/tmp && make
+
+	Determing the proper LDFLAGS to use
+		Run:  ``getconf LFS_LFFLAGS''
+
+	Currently swbis assumes that no special LDFLAGS are required, if your
+	system returns flags here then you may have to edit the Makefiles manually.
+
+./configure Options
+--------------------
+
+	The following configure options are supported by the Makefiles:
+
+	--prefix=DIR               [PREFIX]
+	--libexecdir=DIR           [PREFIX/libexec]
+	--mandir=DIR               [PREFIX/man]
+	--infodir=DIR              [PREFIX/info]
+	--datadir=DIR              [PREFIX/share]
+	--with-self-rpm	Builds rpm translation utilities using the
+				included rpmlib. No RPM installation
+				required.
+	--with-rpm	Builds rpm translation utilities using the system
+				RPM installation and links to the sytem rpm
+				shared libs.
+				Note: rpm version 4.2 and higher may not compile.
+	--with-tests	Builds regression test binaries.
+	--with-debugdump	Builds debug code and generates .S files
+	--with-no-flex	Builds using the supplied .c file pre-generated by flex.
+	--with-no-bison	Builds using the supplied .c file pre-generated by bison.
+	--with-flex	
+	--with-bison	
+
+	the default PREFIX is /usr/local
+
+	Note:  To install library binaries in /lib/, not /libexec/
+	       use option  --libexecdir='/usr/lib'
+
+
+RPM configuration:
+------------------
+    (RPM support is on by default)
+    * --with-self-rpm is the default
+    * To compile the RPM capabilities use one of the ./configure
+      options: --with-rpm  or --with-self-rpm
+    
+                --with-rpm      Requires rpm shared libraries
+                                in /lib or /usr/lib.
+                --with-self-rpm Does not require a rpm package.
+                                This is the default
+
+Using swbis on Windows(TM) via CYGWIN
+-------------------------------------
+
+It ought to work out-of-the-box, however, performance will be
+poor since swbis makes heavy use of fork() and pipe() which are
+not very fast on windows.
+
+Caveat: The swbis distributed utilities are likely affected by
+what some believe is a bug in CYGWIN relating to POSIX read/write
+semantics on pipes.  Perform an internet search on
+"cygwin pipe hang rsync" for what may be a related problem.
+
+Regardless, Make these required changes to the defaults
+file ~/.swbis/swbisdefaults
+
+   swbis_no_getconf=true
+   swbis_shell_command=bash
+
+To show the files and options, Try:
+	swinstall --show-options-files
+	swinstall --show-options
+
+swverify appears broken on NT4.1 maybe due to its use of FIFOs.
+On XP5.1 and Cygwin 1.5.18 everything  *probably* works OK with
+the caveat above.
+
+Disabling FLEX and BISON Requirement:
+-------------------------------------
+                --with-no-flex
+                --with-no-bison 
+
+By default, if no sutable version of flex and/or bison are found,
+pre-compiled C files will be used transparently.
+
+Currently, GNU flex 2.5.4 is the only version of flex supported.
+Later versions (2.5.34 and 33) create an infinite and tight loop
+in swlex.c but only for some contexts. That is, use of same object
+code  inside swpackage is broken, however, the test-bed parser program,
+swprogs/swbisparse, works OK with the same object code and same input.
+ 
+To build with all object debuging functions included:
+-----------------------------------------------------
+     Use configure option '--with-debugdump'
+     For example:
+
+          CFLAGS=-g ./configure --prefix=`pwd`/tmp --with-tests --with-debugdump --with-self-rpm
+          make && make install
+    
+     Then try:
+
+          swprogs/swinstall -p -x verbose=9 --allow-rpm <any_rpm  
+    
+
+Examples:
+---------
+    CFLAGS=-O0 ./configure --prefix=`pwd`/tmp --with-self-rpm  && make && make install
+        -OR-
+    CFLAGS=-O2 ./configure --prefix=/usr --with-self-rpm --libexecdir=/usr/lib --infodir=/usr/share/info --mandir=/usr/share/man  && make
+	
+  For non-root install to the source package ./tmp directory.
+
+	./configure CFLAGS=-O0 --prefix=`pwd`/tmp  && make && make install && make testall
+
+  For non-root install to a directory in your home directory:
+
+	./configure --prefix=$HOME/swbis && make
+     
+ On a RedHat System 8.0:
+
+	CFLAGS=-O2 ./configure --prefix=/usr --libexecdir=/usr/lib --mandir=/usr/share/man && make
+				- or -
+	./configure --prefix=/usr --mandir=/usr/share/man && make
+
+ On a Unix or GNU/Linux System without a libexec directory.
+
+	./configure --prefix=/usr --libexecdir=/usr/lib --mandir=/usr/share/man && make
+
+ To Turn on the debugging compiler option.
+
+	CFLAGS=-g ./configure && make
+
+ To make all all the tests and include rpm support support:
+	CFLAGS=-O2 ./configure --prefix=/usr --mandir=/usr/share/man --with-rpm --with-tests && make
+
+  Example of what you might have to do on a AMD64 linux machine:
+  As of gcc (GCC) 3.4.2 20041017 (Red Hat 3.4.2-6.fc3), you need -m32 -O0 to avoid 
+  core dumps and flakyness.
+	LDFLAGS=-m32  CFLAGS="-m32 -O0" ./configure --prefix=$HOME/amd64 --with-self-rpm  && make
+
+ Example of what you might have to do on a Solaris machine:
+
+	When compiling, your PATH variable should be something like:
+		PATH=/usr/sbin:/usr/bin
+
+	export GTAR POSIXSHELL CC CXX SHELL MAKE
+	MAKE=gmake GTAR=gtar; POSIXSHELL=/usr/xpg4/bin/sh; CC=gcc; CXX=g++; SHELL=/bin/sh ./configure CFLAGS=-O0 --prefix=${HOME}/swbis && gmake
+
+		Note: On a Sun machine setting SHELL=/usr/xpg4/bin/sh caused the
+			swsupplib/um_rpm/rpm-3.0.5/config.h to be zero length, hence
+			set SHELL=/bin/bash and POSIXSHELL=/usr/xpg4/bin/sh
+			(of course POSIXSHELL=/bin/bash is OK too!)
+
+
+Helpful hints if something goes wrong:
+--------------------------------------
+
+	* Just type 'gmake' instead of 'make'.
+	
+	* If /bin/sh is broken then set SHELL=/better/bourne/shell
+	  and invoke make or gmake with the -e option.
+			# gmake -e
+	
+	* Find out what the C and C++ compiler commands are
+           then try various combinations of (for example):
+		export CXX=c++ 
+		export CXX=g++ 
+		export CC=cc 
+		export CC=gcc
+		export POSIXSHELL=<your posix shell>
+		export SHELL=<your posix shell>,  then invoke this shell.
+
+	* Just type 'make' again and it might work.
+
+	* unset the CFLAGS environment variable,
+		and don't give it on the command line.
+
+	For Example:
+		export CC=cc; export CC=cxx; export GTAR=gtar; export SHELL=/usr/xpg4/bin/sh; gmake -e
+
+		-or- if not using bash, then you may have to do this:
+
+		export CC=cc; export CC=cxx; \
+		export GTAR=gtar; export SHELL=/usr/xpg4/bin/sh gmake -e
+
+How to install:
+---------------
+	*===============================================================	
+	* The <libexec> dir is compiled as a static string.  Therefore 
+	* if you relocate the <libexec> directory, expect breakage.
+	*===============================================================	
+
+	After building, run: 
+
+           make install
+
+	All the files will install within the prefix directory unless 
+	specifically configured otherwise.
+
+How to Configure the runtime config files:
+------------------------------------------ 
+	The Run time defaults Files are usually:
+
+		<prefix>/lib/swbis/swdefaults
+		<prefix>/lib/swbis/swbisdefaults 
+		~/.swbis/swdefaults
+		~/.swbis/swbisdefaults
+
+	To verify your customizations display the options
+	 and defaults files:
+		swcopy --show-options
+		swcopy --show-options-files
+
+How to test the compilation:
+-----------------------------
+
+	Note:
+	If /bin/sh and tar are not a POSIX shell and not GNU tar
+        then set SHELL and GTAR and export them.
+
+	*- Self-contained qualificaton test.
+	-------------------------------------
+	  - You don't have to be (should not be) root.
+	  - You will need the following utilities:
+		gpg     :  GnuPG (1.0.7 or 1.2.x)
+	        tar     :  GNU tar 1.14 or greater
+                           If not installed as 'tar' then you must set GTAR.
+	        md5sum  :
+                sha1sum :
+		openssl :  Only req'd if you don't have sha1sum or md5sum
+ 
+            After unpacking as a non-root user run at the shell prompt:
+
+		sh bin/testbuild0
+
+			- or -
+
+                Examples:
+	        ---------	
+		GTAR=gtar POSIXSHELL=/usr/xpg4/bin/sh sh bin/testbuild0
+		GTAR=gtar XX=`getconf PATH` POSIXSHELL=`PATH=$XX which sh` sh bin/testbuild0
+
+
+		For Example, on a particular FreeBSD 5.1 host:
+		----------------------------------------------
+		(export GTAR=gtar; export POSIXSHELL=/usr/local/xpg4/bin/sh; export MAKE=gmake; sh bin/testbuild0)
+			-or-
+
+		(export GTAR=gtar; export POSIXSHELL=/bin/bash; export MAKE=gmake; sh bin/testbuild0)
+
+	
+		For Example, on a particular Solaris (c.2008) host:
+		-------------------------------------------
+		(export CC=gcc; export CXX=g++; export POSIXSHELL=/usr/xpg4/bin/sh; export GTAR=gtar; export MAKE=gmake; sh bin/testbuild0)
+
+
+		For Example, on a particular Oracle Solaris 11.1 host:
+		-------------------------------------------------------
+
+		./configure && gmake && gmake install
+		GTAR=gtar gmake check
+		GTAR=gtar gmake installcheck
+
+
+
+	*- Parser and digest tests.
+	---------------------------
+		make test
+
+	*- Parser, digests and package signing test.
+	----------------------------------------------------
+		make testall
+
+	*- Test package signing and verification.
+	------------------------------------------
+	See the Makefile target 'testsuite2'
+
+		make testsuite2
+
+
+	*- Test sha1 and md5  and the parser.
+	--------------------------------------
+	See the Makefile target 'testsuite1'
+
+		make testsuite1
+
+	Swbis uses md5 and sha1 code taken from the GNU/Linux code base
+	and modified slightly, and, in addition is using the same code
+	to verify and generate the digests.
+	Users who are deploying on platforms other than Intel/32-bit 
+	RedHat 6.0/7.0/8.0 should test the sha1 and md5 code by running:
+		
+		make digesttest
+		make digesttest2
+
+	    Tested systems that passed:
+		RedHat GNU/Linux (6.0 thru 8.0) Intel 32-Bit
+		Debian GNU/Linux (2.4.18) Sparc Ultra 60
+		SunOS sparc-solaris2 5.9 Generic_112233-03 sun4u sparc
+
+	*- Development Regression Tests
+	-------------------------------
+	First, compile and install with --with-tests and --with-rpm
+
+		 (cd tests/regression; make test008) &&
+		 (cd tests/regression; make test009) &&
+		 (cd tests/regression; make test015) &&
+		 (cd tests/regression; make test016) &&
+		 (cd tests/regression; make test017) &&
+		 (cd tests/regression; make test018) &&
+		 (cd tests/regression; make test019) &&
+		 (cd tests/regression; make test020) &&
+		 (cd tests/regression; make test021) &&
+		 (cd tests/regression; make test022) &&
+		 (cd tests/regression; make test023)
+
+
+		# These tests require you to be 'root' and
+		* require GNU tar (>=1.14)
+
+		 (cd tests/regression; make test031) &&
+		 (cd tests/regression; make test032) &&
+		 (cd tests/regression; make test033) &&
+		 (cd tests/regression; make test034)
+
+How to Prepare a Signed Release:
+---------------------------------
+STEP 1:
+This step updates the ./catalog and the file list in ./catalog/dfiles/files.
+This file list is used by the dist-hook Makefile target when invoking the
+dist-swbis target.  This step is unique to swbis as, in general, use of
+'dist-hook' in this manner is not a requirement [but is due to under-developed
+use of Automake Makefiles by swbis].
+
+    make distclean
+    (export SWPACKAGEPASSFD=agent; GNUPGNAME="Your Name"  swign --name-version=swbis-`cat VERSION` -s PSF.in --no-remove @.)
+
+
+STEP 2:
+Now the ./catalog/dfiles/files file list is updated, now run the the final step:
+(For packages that fully use Automake STEP 2 is all you need to do)
+
+   ./configure
+   (export SWPACKAGEPASSFD=agent; GNUPGNAME="Your Name" make dist-swbis)
+
+
+To make a snapshot of a CVS working directory
+----------------------------------------------
+
+(
+export SWPACKAGEPASSPHRASE=Iforgot;
+make distclean;
+export SWPACKAGEPASSFD=env;
+GNUPGNAME="Test User"  swign --name-version=swbis-`cat VERSION` -s PSF.in --no-remove @. || exit 1
+./configure && GNUPGNAME="Test User" make dist-swbis && mv -i swbis-`cat VERSION`.tar.gz ../swbis-`cat VERSION``date +%Y%m%d%H%M%S`.tar.gz
+)
+
+How to update the ./catalog directory
+-------------------------------------
+ make distclean
+ (export SWPACKAGEPASSFD=agent; GNUPGNAME="Your Name"  swign --name-version=swbis-`cat VERSION` -s PSF.in --no-remove @.)
+
+End of INSTALL.

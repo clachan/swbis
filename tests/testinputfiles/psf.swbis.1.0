@@ -1,0 +1,69 @@
+# File: PSF
+distribution
+
+  description "Swbis is a free and from-scratch GPL'ed implementation of
+IEEE 1387.2-1995 Std (Part 2: Software Administration) which describes a
+format and utilities for software packaging.  [The IEEE standard is superceeded by 
+ISO 15068-2,1999, and it is almost identical to the Open Group spec CAE C701 
+which is available at no cost on the web]."
+
+  title "swbis - posix software packaging."
+  copyright <COPYING
+
+# Vendor definition
+vendor
+   tag jhlowe@acm.org
+   title Jim Lowe
+   qualifier author
+   description "Independent programmer"
+  
+product
+   tag binaries
+   title Swbis Binary distribution
+   control_directory "binary" 
+
+   control_file
+       tag install
+       path install.sh
+       source tests/testinputfiles/install.sh
+       owner root
+       mode 755
+       uid 0
+       group root
+       gid 0
+
+fileset
+    tag executables
+    control_directory "posix_execs"
+    title Posix Administration Programs
+   control_file
+       tag install
+       path install.sh
+       source tests/testinputfiles/install.sh
+       owner root
+       mode 755
+       uid 0
+       group root
+       gid 0
+
+
+file
+	path /usr/bin/swpackage
+	source swprogs/swpackage
+	mode 755
+	owner root
+	group root
+
+fileset
+    tag executables
+    control_directory "support_utilities"
+    title Administration Support Programs
+
+file
+	path /usr/libexec/swbis/swbistar
+	source swsupplib/progs/swbistar
+	mode 755
+	owner root
+	group root
+
+

@@ -1,0 +1,12 @@
+
+distribution
+	layout_version 1.0
+	product
+		#tag aa
+		tag aaa
+		tag aaaa
+		tagababd aaaa
+		fileset
+			tag tagaa1
+			file
+				path /usr/tmp/aa1.1

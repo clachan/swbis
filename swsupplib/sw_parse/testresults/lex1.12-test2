@@ -1,0 +1,78 @@
+<INITIAL>{comment}#$Id: lex1.12-test2,v 1.1.1.1 2006/03/25 20:12:09 jhlowe Exp ${end of comment}
+<INITIAL>{nl}
+<INITIAL>{id}keyworda{end of id}
+<VALUE> {ws}
+<INITIAL>{beginquote}"{end of beginquote}}
+{qstring}line 1
+        line 2 \"
+	       line 3"{end of qstring}
+{endquote}"{end of endquote}
+<INITIAL>{nl}
+<INITIAL>{id}keywordb{end of id}
+<VALUE> {ws}
+{unquotedvalue}line 4{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{comment}# comment 0{end of comment}
+<INITIAL>{nl}
+<INITIAL>{comment}   # comment 3 " " \"{end of comment}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{id}keywordc{end of id}
+<VALUE> {ws}
+{unquotedvalue}line 5{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{id}keywordd{end of id}
+<VALUE> {ws}
+<INITIAL>{beginquote}"{end of beginquote}}
+{qstring}line 6"{end of qstring}
+{endquote}"{end of endquote}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{id}keyaa{end of id}
+<VALUE> {ws}
+{unquotedvalue}valbbb{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{id}keycc{end of id}
+<VALUE> {ws}
+{unquotedvalue}valddd{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{id}keyworde{end of id}
+<VALUE> {ws}
+<INITIAL>{beginquote}"{end of beginquote}}
+{qstring}line 1a
+        line 2a \"
+	       line 3a"{end of qstring}
+{endquote}"{end of endquote}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{id}object_keyword{end of id}
+<VALUE> {objectkeywordws}
+{end of object keywordws}
+<INITIAL>{lws}
+<INITIAL>{id}name{end of id}
+<VALUE> {ws}
+{unquotedvalue}/etc/passwd{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{lws}
+<INITIAL>{id}uid{end of id}
+<VALUE> {ws}
+{unquotedvalue}root{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{nl}
+<INITIAL>{lws}
+<INITIAL>{id}distribution{end of id}
+<VALUE> {objectkeywordws}    
+{end of object keywordws}
+<INITIAL>{lws}
+<INITIAL>{id}tag{end of id}
+<VALUE> {ws}
+{unquotedvalue}lexer{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{lws}
+<INITIAL>{id}id{end of id}
+<VALUE> {ws}
+{unquotedvalue}v1{end unquoted value}
+<INITIAL>{nl}
+<INITIAL>{nl}

@@ -1,0 +1,32 @@
+# File: psf.posix
+# Description: this is
+host
+   hostname localhost
+   os_name linux
+distribution
+product
+	tag 		_tag_
+	revision	100.0
+	vendor_tag	_vendor_tag_
+	number		J2326AA
+	description	_desc_
+	title		POSIX
+	copyright	_copyright
+	machine_type	9000
+	os_name		HP
+	os_release	09
+	os_version	?
+	directory	/
+
+fileset
+	tag		commands
+	title		Commands (management utilities)
+	prerequisites	POSIX-S
+	configure	scripts/configure.data
+	directory	/build/usr/sbin /usr/bin
+	file		file1swinstall
+	file		file2swconfig
+	file		file3swcopy
+	file		file4swremove
+	file		file5swverify
+	file		file6swpackage

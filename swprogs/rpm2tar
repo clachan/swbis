@@ -1,0 +1,13 @@
+#!/bin/sh
+# rpm2tar -- translate an RPM payload to tar format.
+#
+# This script is part of the swbis package.
+
+swbis swinstall \
+	--no-defaults \
+	-x verbose=1 \
+	--allow-rpm \
+	-p \
+	-W preview-tar-file=- \
+	-s - @ / && dd if=/dev/zero count=2 2>/dev/null
+exit $?

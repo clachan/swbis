@@ -1,0 +1,24 @@
+topincdir=@topincdir@
+topdir=@topdir@
+prefix= @prefix@
+exec_prefix = @exec_prefix@
+libdir= $(prefix)/lib
+
+AR = ar
+RANLIB = @RANLIB@
+OPTS = @DEFS@ @SWBISDEFS@
+LIBRPMRC_FILENAME=
+LIBRPMALIAS_FILENAME=
+RPMNLSDIR=
+RPMNLSPACKAGE=
+RPMINCOPT=@RPMINCOPT@
+
+DO_DEBUG = @DO_DEBUG@
+DO_UM_RPM = @DO_UM_RPM@
+#CCDEPMODE = @CCDEPMODE@
+
+CFLAGS = @CFLAGS@ $(WARNINGS) $(OPTS) -I. -I$(topincdir) -I$(topdir) $(RPMINCOPT) -D_POSIX_PTHREAD_SEMANTICS
+LDFLAGS = @LDFLAGS@ -L$(topdir)/lib \
+		-L$(topdir)/tarb -L$(topdir)/misc -L$(topdir)/taru -L$(topdir)/uxfio \
+		-L$(topdir)/strob -L$(topdir)/uinfile
+

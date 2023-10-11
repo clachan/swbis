@@ -1,0 +1,14 @@
+/var/adm/prepath/catalog/
+/var/adm/prepath/catalog/INDEX
+/var/adm/prepath/catalog/dfiles
+/var/adm/prepath/catalog/dfiles/INDEX
+/var/adm/prepath/catalog/prod_dir/
+/var/adm/prepath/catalog/prod_dir/pfiles
+/var/adm/prepath/catalog/prod_dir/pfiles/INFO
+/var/adm/prepath/catalog/prod_dir/fileset_dir/
+/var/adm/prepath/catalog/prod_dir/fileset_dir/INFO
+/var/adm/prepath/catalog/prod_dir/fileset_dir/configure
+/var/adm/prepath/prod_dir
+/var/adm/prepath/prod_dir/fileset_dir/
+/var/adm/prepath/prod_dir/fileset_dir/path0a/path1a/file1
+/var/adm/prepath/prod_dir/fileset_dir/path0b/path1b/path1c/file2

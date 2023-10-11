@@ -1,0 +1,2117 @@
+<html lang="en">
+<head>
+<title>Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+\. 
+<!-- TROFF INPUT: .fl			\" force out current output buffer -->
+<!-- .fl			\" force out current output buffer -->
+\\!%PB
+\\!/showpage{}def
+<!-- TROFF INPUT: ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+<!-- ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+\\!/tempdict 200 dict def tempdict begin
+<!-- TROFF INPUT: .fl			\" prolog -->
+<!-- .fl			\" prolog -->
+<!-- TROFF INPUT: .sy cat \\$1\" bring in postscript file -->
+<!-- .sy cat \\$1\" bring in postscript file -->
+<!-- TROFF INPUT: ...\" the following line matches the tempdict above -->
+<!-- ...\" the following line matches the tempdict above -->
+\\!end % tempdict %
+\\!PE
+\\!. 
+<!-- TROFF INPUT: .sp \\$2u	\" move below the image -->
+<!-- .sp \\$2u	\" move below the image -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de pF -->
+<!-- .de pF -->
+<!-- TROFF INPUT: .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- TROFF INPUT: .el .tm ? font overflow -->
+<!-- .el .tm ? font overflow -->
+<!-- TROFF INPUT: .ft \\$1 -->
+<!-- .ft \\$1 -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de fP -->
+<!-- .de fP -->
+<!-- TROFF INPUT: .ie     !\\*(f4 \{\ -->
+<!-- .ie     !\\*(f4 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f4 -->
+<!-- .	ft \\*(f4 -->
+<!-- TROFF INPUT: .	ds f4\" -->
+<!-- .	ds f4\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f3 \{\ -->
+<!-- .el .ie !\\*(f3 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f3 -->
+<!-- .	ft \\*(f3 -->
+<!-- TROFF INPUT: .	ds f3\" -->
+<!-- .	ds f3\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f2 \{\ -->
+<!-- .el .ie !\\*(f2 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f2 -->
+<!-- .	ft \\*(f2 -->
+<!-- TROFF INPUT: .	ds f2\" -->
+<!-- .	ds f2\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f1 \{\ -->
+<!-- .el .ie !\\*(f1 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f1 -->
+<!-- .	ft \\*(f1 -->
+<!-- TROFF INPUT: .	ds f1\" -->
+<!-- .	ds f1\" -->
+'	br \}
+<!-- TROFF INPUT: .el .tm ? font underflow -->
+<!-- .el .tm ? font underflow -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .ds f1\" -->
+
+<!-- WARNING: man/man8/swinstall.8:49:%%unrecognized define-string command: [.ds f1\"] -->
+<!-- TROFF INPUT: .ds f2\" -->
+<!-- WARNING: man/man8/swinstall.8:50:%%unrecognized define-string command: [.ds f2\"] -->
+<!-- TROFF INPUT: .ds f3\" -->
+<!-- WARNING: man/man8/swinstall.8:51:%%unrecognized define-string command: [.ds f3\"] -->
+<!-- TROFF INPUT: .ds f4\" -->
+<!-- WARNING: man/man8/swinstall.8:52:%%unrecognized define-string command: [.ds f4\"] -->
+<!-- TROFF INPUT: .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- TROFF INPUT: .TH "swinstall" "8" -->
+<div class="node">
+<a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<h2 class="chapter">1 swinstall" "8</h2>
+
+<!-- TROFF INPUT: .hy 0 -->
+<!-- .hy 0 -->
+<!-- TROFF INPUT: .if n .na -->
+<!-- .if n .na -->
+<!-- TROFF INPUT: .SH "NAME" -->
+<!-- DEBUG: print_menu("Top") -->
+<ul class="menu">
+<li><a accesskey="1" href="#NAME">NAME</a>
+<li><a accesskey="2" href="#SYNOPSIS">SYNOPSIS</a>
+<li><a accesskey="3" href="#DESCRIPTION">DESCRIPTION</a>
+<li><a accesskey="4" href="#OPTIONS">OPTIONS</a>
+<li><a accesskey="5" href="#INSTALLATION">INSTALLATION</a>
+<li><a accesskey="6" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+<li><a accesskey="7" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>
+<li><a accesskey="8" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+<li><a accesskey="9" href="#RETURN-VALUE">RETURN VALUE</a>
+<li><a href="#NOTES">NOTES</a>
+<li><a href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE-ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="NAME"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SYNOPSIS">SYNOPSIS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.1 NAME</h3>
+
+<p>swinstall <span class="roman">&mdash;</span> Install POSIX and RPM packages. 
+<!-- TROFF INPUT: .SH "SYNOPSIS" -->
+<!-- DEBUG: print_menu("NAME") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SYNOPSIS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DESCRIPTION">DESCRIPTION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.2 SYNOPSIS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swinstall</b> [-p] [-r] [-s <i>source</i><tt>_</tt><i>file</i>] [-f <i>file</i>] \\
+     [-t <i>targetfile</i>] [-x <i>option=value</i>]  [-X <i>options</i><tt>_</tt><i>file</i>] [-W <i>option</i>] \\
+     [software<tt>_</tt>selections] [@target [target1...]]
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swinstall</b> -s -    # Minimum unambiguous invocation.
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .SH "DESCRIPTION" -->
+<!-- DEBUG: print_menu("SYNOPSIS") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="DESCRIPTION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OPTIONS">OPTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SYNOPSIS">SYNOPSIS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.3 DESCRIPTION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>swinstall</b> installs a POSIX distribution from a source archive to a target
+directory.  A POSIX distribution is a package, typically a compressed tarball with metadata files in the prescribed file layout. 
+Neither swinstall nor any component of swbis is required
+on the target host, however, the target host must look like a Unix system at
+the shell and command-line utility level and have a POSIX shell. 
+Remote network connections are made by ssh. 
+Ssh is the default but rsh can be selected by a command line
+option. 
+<!-- TROFF INPUT: .PP -->
+
+<p>By default and with no external influences (i.e. swdefaults file) swinstall
+will read an archive on stdin and install all products and filesets of package
+in "/" directory on the target host.  An alternate root may be specified using
+the target syntax.  The distribution source directory (swbis default: stdin)
+is selectable via the defaults file, therefore it should be specified in
+uncontrolled environments. 
+<!-- TROFF INPUT: .PP -->
+
+<p><b>swinstall</b> operates on  cpio or tar archives. 
+swinstall supports cpio archives by first translating to tar format, therefore,
+to reduce the data transformations performed by swinstall, distributors encouraged to
+deliver products in tar format. 
+<!-- TROFF INPUT: .PP -->
+
+<p><b>swinstall</b> will create an entry in an installed software catalog.  This is a directory
+usually located at /var/lib/swbis/catalog.  Using this information
+checks for upgrade, downdate, dependencies, and reinstallation are made. 
+<!-- TROFF INPUT: .SH "OPTIONS" -->
+<!-- DEBUG: print_menu("DESCRIPTION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="OPTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#INSTALLATION">INSTALLATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DESCRIPTION">DESCRIPTION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.4 OPTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+
+<!-- TROFF INPUT: .RE -->
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-f FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Reads software<tt>_</tt>selections from FILE. (Not implemented). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-p</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Preview the operation. 
+Depending on the verbose level information is written to stdout. 
+The target is not modified although a remote connection is established. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-r</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>This option has no affect. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-s SOURCE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Specify the source file SOURCE, "-" is standard input. 
+The syntax is the same as for a target. 
+SOURCE may be an archive file or stdin. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-t targetfile</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Specify a file containing a list of targets (one per line). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-x option=value</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Specify the extended option overriding the defaults file value. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-X FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Specify the extended options filename, FILE,  overriding the default filenames. 
+This option may be given more then once. If the resulting specified value is an empty string
+then reading of any options file is disabled. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-v</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Given one time it is identical to -x verbose=2. 
+This option can be given multiple times with increasing effect. 
+(Implementation extension option). 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-v  is level 2, -vv is level 3,... etc. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+    level 0: silent on stdout and stderr. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+    level 1: fatal and warning messages to stderr. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-v  level 2: level 1 plus a progress bar. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vv level 3: level 2 plus script stderr. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vvv level 4: level 3 plus events. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vvvv level 5: level 4 plus events. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vvvvv level 6: level 5 plus set shell -vx option. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vvvvvv level 7 and higher: level 6 plus debugging messages. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>&minus;&minus;version, -V</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Show version (Implementation extension)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>&minus;&minus;help</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Show help (Implementation extension)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W option[,option,...]</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Specify the implementation extension option. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Syntax: -W option[=option<tt>_</tt>argument[,option...] 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Options may be separated by a comma.  The implementation extension
+options may also be given individually using the '&ndash;long-option[=option<tt>_</tt>arg]' syntax. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W preview-tar-file=FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>This is a testing/development option. 
+Writes the fileset archive to FILE.  This is the same data stream that would have been loaded on the target. 
+This option should only be used with the '-p' option.  The output sent to FILE is a tar archive but without
+trailer blocks. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W remote-shell=NAME</b>
+
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+
+<p>Defaults File Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>shell</b><tt>_</tt><b>client</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+This is the remote connection client program on the management (originating host). 
+The path NAME may be an absolute path (not located in $PATH). 
+The basename of NAME is used for intermediate hops. 
+Supported shells are "ssh" and "rsh". 
+The default is "ssh". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W quiet-progress</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Defaults File Option: <b>swbis</b><tt>_</tt><b>quiet</b><tt>_</tt><b>progress</b><tt>_</tt><b>bar</b> Disable progress bar, which is active for verbose levels 2 and higher (i.e. -v). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W show-options-files</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Show the complete list of options files and if they are found. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W show-options</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Show the options after reading the files and parsing the command line options. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W pax-command={tar|pax|star|gtar}</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the portable archive command for all operations. 
+The default is "pax". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W pax-read-command={tar|pax|star|gtar}</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the read command for local and remote hosts. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W remote-pax-read-command={tar|pax|star|gtar}</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>pax</b><tt>_</tt><b>read</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Set the read command for remote hosts. 
+This is the command that runs on the target (e.g. pax -r, tar xpf -). 
+The default is "pax". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W local-pax-read-command={tar|pax|star|gtar}</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>local</b><tt>_</tt><b>pax</b><tt>_</tt><b>read</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Set the read command for local hosts. 
+This is the command that runs on the target (e.g. pax -r, tar xpf -). 
+The default is "pax". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W pax-write-command={tar|pax|star|gtar|swbistar}</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the write command for local and remote hosts. 
+This is the command that runs on the target (e.g. pax -w, tar cf -). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>pax</b><tt>_</tt><b>write</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Set the write command for remote hosts. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W local-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>local</b><tt>_</tt><b>pax</b><tt>_</tt><b>write</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Set the portable archive write command for local host operations. 
+This is the command that runs on the source (e.g. pax -w, tar cf -). 
+The default is "pax". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>pax</b><tt>_</tt><b>write</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Set the portable archive write command for remote host operations. 
+This is the command that runs on the source (e.g. pax -w, tar cf -). 
+The default is "pax". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-defaults</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Do not read any defaults files. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-remote-kill</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>no</b><tt>_</tt><b>remote</b><tt>_</tt><b>kill</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Disables the use of a second remote connection to tear down the first in
+the event of SIGINT or SIGTERM or SIGPIPE. 
+Only has effect if the number of ssh hops is greater than 1. 
+A single host remote connection (ssh hop = 1) never uses a
+second remote connection. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-getconf</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>no</b><tt>_</tt><b>getconf</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Makes the remote command be '/bin/sh -s' instead of the default
+'PATH=`getconf PATH` sh -s'. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W shell-command=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>shell</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+This is the interactive shell on the target host. 
+NAME may be one of "detect" "bash", "sh", "ksh"  or "posix" and specifies the
+remote command run by the remote shell. 
+"posix" is 'PATH=`getconf PATH` sh -s', "bash" is "/bin/bash -s",
+"sh" is "/bin/sh -s", and "ksh" is "ksh -s". 
+The default is "detect". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W use-getconf</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Opposite of &minus;&minus;no-getconf. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W allow-rpm</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Defaults File Option: <b>swbis</b><tt>_</tt><b>allow</b><tt>_</tt><b>rpm</b>
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .RS -->
+<!--  -->
+<blockquote>
+Enable automatic detection, translation to POSIX format, and installation of RPMs. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W pump-delay1=NANOSECONDS</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Adds a NANOSECONDS delay (999999999 nanoseconds ~ 1 second) every ADJSIZE bytes in
+the file data byte pump.  A delay of 10111000 nanoseconds (~1/100th second) is added
+for 2-hop or greater target (i.e more than 1 remote host in the target spec). 
+This is a work around for a bug in OpenSSH [or Linux kernel] that is seen for multi-hop
+installs where the intermediate host is a Linux kernel.  If 2-hop install fails, try it
+again, you may get lucky, or, increase this delay, or, use ssh protocol version 1 by
+using &rdquo;&ndash;ssh-options=1&rdquo;, or try a 2-hop install where the middle host is BSD. 
+To disable delay for multi-hop targets specify zero. 
+For more information about this bug see the README file from the source distribution. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W burst-adjust=ADJSIZE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+ADJSIZE is the pumped data size, in bytes, between the NANOSECONDS delays. 
+This is a work around for a bug in OpenSSH or the Linux kernel that is
+seen for multi-hop installs where the intermediate host is a Linux kernel. 
+The default is 72000 for 2-hops or greater, and zero for
+single hop and localhost installs. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W ssh-options=OPTIONS</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+ssh client program options.  For example -W ssh-options=1 sets the
+'-1' ssh client option which specifies protocol version 1. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W source-script-name=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Write the script that is written into the remote shell's stdin to NAME. 
+This is useful for debugging. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W target-script-name=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Write the script that is written into the remote shell's stdin to NAME. 
+This is useful for debugging. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>software</b><tt>_</tt><b>selections</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Refers to the software objects (products, filesets)
+on which to be operated. This is not implemented, however, specification of a
+<b>location</b> and <b>qualifier</b> are supported. 
+<b>location</b> allow specification of a alternate relative root path
+within the target path, and <b>qualifier</b> allows specification of a
+user-selectable modifier.  For example:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swinstall q=exp @ 192.168.1.1  # Tag the package as experimental
+     swinstall l=/unionfs/somepackage-1.0 @ 192.168.1.1  # Allows multiple
+                                   # packages with same tag to exist in the
+                                   # same target path, where the location
+                                   # disambiguates.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .RE -->
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swinstall.8:426:%%new font B started without closing previous font R -->
+<p></span><b>target</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Refers to the software<tt>_</tt>collection where the software
+selections are to be applied.  Allows specification of host and pathname where the software collection is to be located. 
+A target that contains only one part is assumed to be a hostname. 
+To force interpretation as a path, use an absolute path or prefix with ':'.  The default target path for 'swinstall' is always '/'. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     Source and Target Specification and Logic
+     
+          Synopsis:
+               Posix:
+                    host[:path]
+                    host
+                    host:
+                    /path  # Absolute path
+     
+               Swbis Extension:
+                    [user@]host[:path]
+                    [user@]host<tt>_</tt>port[:path]
+                    :path
+     
+               Swbis Multi-hop Target Extension:
+                    # ':' is the target delimiter
+     	       # '<tt>_</tt>' delimits a port number in the host field
+     
+                    [user@]host[@@[user@]host[@@...]][:file]
+                    [user@]host<tt>_</tt>port[@@[user@]host[@@...]][:file]
+     
+                    # Using ':', a trailing colon is used to
+                    # disambiguate between a host and file.
+     	       # For Example,
+                    :file
+                    host:
+                    host
+                    host:file
+                    host:host:
+                    host<tt>_</tt>port:host<tt>_</tt>port:
+                    host:host:file
+                    user@host:user@host:
+                    user@host:user@host:host:
+                    user@host:user@host:file
+     
+          A more formal description:
+     
+          target : HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING ':' PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING ':'
+                 | HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | ':' PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING   # Impl extension
+                 ;
+     
+            PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING must be an absolute path unless
+                            a HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING is given.  Allowing
+                            a relative path is a feature of the swbis
+                            implementation.
+     
+                     NOTE: A '.' as a target is an implementation
+                           extension and means extract in current
+                           directory.
+     
+                     NOTE: A '-' indicating stdout/stdin is an
+                           implementation extension.
+     
+                     NOTE: A ':' in the first character indicates a filename.
+                           This is an implementation extension.
+     
+            HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING is an IP or hostname.
+     
+         Examples:
+            Copy the  distribution /var/tmp/foo.tar.gz at 192.168.1.10
+                   swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+     
+     
+     Implementation Extension Syntax (multi ssh-hop) :
+         Syntax:
+         %start   wtarget    # the Implementation Extension Target
+                             # Note: a trailing ':' forces interpretation
+                             # as a host, not a file.
+         wtarget   : wtarget DELIM sshtarget
+                   | sshtarget
+                   | sshtarget DELIM
+                   ;
+         sshtarget : user '@' target # Note: only the last target
+                   | target          # may have a PATHNAME, and only a host
+                   ;                 * may have a user
+         target   : HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                  | PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                  ;
+         user     : PORTABLE<tt>_</tt>CHARACTER<tt>_</tt>STRING  # The user name
+     
+         DELIM    : ':'   # The multi-hop delimiter.
+                  ;  <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "INSTALLATION" -->
+<!-- DEBUG: print_menu("OPTIONS") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="INSTALLATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OPTIONS">OPTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.5 INSTALLATION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Installation consists of an analysis phase and an execution phase. 
+<!-- TROFF INPUT: .SS "Analysis Phase" -->
+<!-- DEBUG: print_menu("INSTALLATION") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Analysis-Phase">Analysis Phase</a>
+<li><a accesskey="2" href="#Execution-Phase">Execution Phase</a>
+<li><a accesskey="3" href="#o-Execution-Script-Environment">o Execution Script Environment</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Analysis-Phase"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Execution-Phase">Execution Phase</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLATION">INSTALLATION</a>
+
+</div>
+
+<h4 class="subsection">1.5.1 Analysis Phase</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The installed software catalog is queried and checks are made to detect reinstallation, downdating
+(installing an older version).  Dependency tests are made at this point.  If these checks pass or
+are overridden by options, then the installed software catalog entry is created (moving the old entry).
+
+<!-- WARNING: man/man8/swinstall.8:534:%%new font B started without closing previous font R -->
+<p>The <b>checkinstall</b> script is exectuted.  This script should be non-interactive,
+idempotent, and read-only from the system's perspective.  This script may exit with status of 0,1,2, or 3. 
+If the exit status is 3 (or 1) installation is rejected and the installed catalog is restored. 
+<!-- TROFF INPUT: .SS "Execution Phase" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Execution-Phase"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Execution-Script-Environment">o Execution Script Environment</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Analysis-Phase">Analysis Phase</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLATION">INSTALLATION</a>
+
+</div>
+
+<h4 class="subsection">1.5.2 Execution Phase</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The <b>preinstall</b> script is executed, the fileset files are loaded by the
+system tar utility and <b>postinstall</b> is executed. 
+<!-- TROFF INPUT: .SS "o   Execution Script Environment" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Execution-Script-Environment"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Execution-Phase">Execution Phase</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLATION">INSTALLATION</a>
+
+</div>
+
+<h4 class="subsection">1.5.3 o   Execution Script Environment</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>swinstall</b> sets certain enviroment variables during execution. 
+The values set are hard-coded in the <b>control.sh</b> script generated by swinstall. 
+<!-- TROFF INPUT: .PP -->
+
+<p>For example, execution of the <b>postinstall</b> script in
+package <i>foobar-1.0.tar.gz</i> with the following layout
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     foobar-1.0/
+     foobar-1.0/<b>catalog</b>/
+     foobar-1.0/<b>catalog</b>/<b>INDEX</b>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     foobar-1.0/<b>catalog</b>/dfiles/
+     foobar-1.0/<b>catalog</b>/foobar/
+     foobar-1.0/<b>catalog</b>/foobar/pfiles/
+     foobar-1.0/<b>catalog</b>/foobar/pfiles/<b>INFO</b>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     foobar-1.0/<b>catalog</b>/foobar/pfiles/<b>postinstall</b>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     foobar-1.0/<b>catalog</b>/foobar/bin/
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     foobar-1.0/<b>catalog</b>/foobar/bin/<b>INFO</b>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>installed with the following command:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swinstall -x installed</span><tt>_</tt><span class="roman">software</span><tt>_</tt><span class="roman">catalog=/var/software/catalog \\
+     
+     <!-- WARNING: man/man8/swinstall.8:575:%%new font R started without closing previous font R -->
+     
+     		@ /mnt/test</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>will result in the following environment (among others, inspect <b>control.sh</b>):
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+          SW<tt>_</tt>PATH=/bin:/usr/bin
+          SW<tt>_</tt>ROOT<tt>_</tt>DIRECTORY=/mnt/test
+          SW<tt>_</tt>CATALOG=var/software/catalog/foobar/foobar/1.0/0
+          SW<tt>_</tt>CONTROL<tt>_</tt>TAG= postinstall
+          SW<tt>_</tt>CONTROL<tt>_</tt>DIRECTORY=/mnt/test/var/software/catalog/\\
+     			foobar/foobar/1.0/0/export/foobar-1.0/catalog/foobar/pfiles
+          SW<tt>_</tt>SESSION<tt>_</tt>OPTIONS=/mnt/test/var/software/catalog/\\
+     			foobar/foobar/1.0/0/session<tt>_</tt>options<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swinstall.8:595:%%new font B started without closing previous font R -->
+<p></span><b>SW</b><tt>_</tt><b>PATH</b> is constructed using getconf(1) to locate the posix level utilites, otherwise it is
+the same as <b>PATH</b>. 
+<!-- TROFF INPUT: .PP -->
+
+<p>If the interpreter attribute from the <b>INFO</b> file, is 'sh' or unset, the executed shell interpreter
+is /bin/bash,  sh as found in the PATH specified by getconf(1),  or /bin/sh in this order. 
+<!-- TROFF INPUT: .PP -->
+
+<p>As of swbis-1.12 (Version 1.12), control script execution begins with a
+current working directory ($PWD) of
+<b>SW</b><tt>_</tt><b>ROOT</b>. 
+Prior to version 1.12, initial current working directory was equivalent to <b>$SW</b><tt>_</tt><b>ROOT/$SW</b><tt>_</tt><b>CATALOG</b>.
+
+<!-- TROFF INPUT: .SH "INSTALLED SOFTWARE CATALOG" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="INSTALLED-SOFTWARE-CATALOG"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#INSTALLATION">INSTALLATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.6 INSTALLED SOFTWARE CATALOG</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>The form or format of an installed software catalog is
+not specified by the ISO/IEC spec although it does specify
+an interface to it (e.g. swlist utility) and operations on it. 
+<!-- TROFF INPUT: .PP -->
+
+<p>This implementation creates a de-facto installed software catalog rooted at the file system path specified by the value of the
+installed<tt>_</tt>software<tt>_</tt>catalog extended option.  The catalog is a file system hierarchy containing regular files
+and directories. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The catalog is typically located relative to the target path.  As of swbis version 1.5, the catalog location
+may be specified using the file URL syntax to indicate an absolute path.  Any other form, such as an unadorned
+absolute UNIX path will be treated as a path relative to the target path. 
+<!-- TROFF INPUT: .PP -->
+
+<p>For Example:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Below are example values of the
+<i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i> extended option found in
+the <b>swdefaults</b> file usually located in
+$HOME/.swbis/swdefaults
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+        var/lib/swbis/catalog   # Default, relative to target path
+     
+        /var/lib/swbis/catalog  # Same, leading slash not respected
+     
+        file://localhost/var/lib/swbis/catalog  # Really absolute
+     
+        file:///var/lib/swbis/catalog           # Note triple leading slash<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "CATALOG FILE LAYOUT" -->
+<!-- DEBUG: print_menu("INSTALLED SOFTWARE CATALOG") -->
+<ul class="menu">
+<li><a accesskey="1" href="#CATALOG-FILE-LAYOUT">CATALOG FILE LAYOUT</a>
+<li><a accesskey="2" href="#CATALOG-LOCATION">CATALOG LOCATION</a>
+<li><a accesskey="3" href="#g_t_002a-Root-or-Alternate-Root">* Root or Alternate Root</a>
+<li><a accesskey="4" href="#g_t_002a-Catalog-Relative-Root-Directory">* Catalog Relative Root Directory</a>
+<li><a accesskey="5" href="#PACKAGE-CATALOG-RELATIVE-ROOT">PACKAGE CATALOG RELATIVE ROOT</a>
+<li><a accesskey="6" href="#CATALOG-SEQUENCE-NUMBER">CATALOG SEQUENCE NUMBER</a>
+<li><a accesskey="7" href="#CATALOG-CONTENTS">CATALOG CONTENTS</a>
+<li><a accesskey="8" href="#The-export-directory">The export directory</a>
+<li><a accesskey="9" href="#INSTALLED-_002d_002d-The-state-metadata-file">INSTALLED -- The state metadata file</a>
+<li><a href="#control-sh-_002d_002d-The-master-control-script">control sh -- The master control script</a>
+<li><a href="#session_003c_002fspan_003e_003ctt_003e_005f_003c_002ftt_003e_003cspan-class_003d_0022roman_0022_003eoptions-_002d_002d-The-extended-options">session</span><tt>_</tt><span class="roman">options -- The extended options</a>
+<li><a href="#EXAMPLE-CATALOG-ENTRY">EXAMPLE CATALOG ENTRY</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="CATALOG-FILE-LAYOUT"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#CATALOG-LOCATION">CATALOG LOCATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.1 CATALOG FILE LAYOUT</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     
+     <!-- WARNING: man/man8/swinstall.8:647:%%new font I started without closing previous font R -->
+     
+      &lt;<i>path</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>seqence</i><tt>_</tt><i>number</i>&gt;/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/<b>catalog.tar</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/<b>catalog.tar.sig</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/<b>catalog.tar.sig</b>&lt;<i>N</i>&gt;
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>INSTALLED</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>control.sh</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>session</b><tt>_</tt><b>options</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>vendor</b><tt>_</tt><b>tag</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>location</b>
+      &lt;<i>path</i>&gt;/&lt;<i>ISC</i>&gt;/&lt;<i>bundle</i>&gt;/&lt;<i>product</i>&gt;/&lt;<i>pr</i>&gt;/&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>qualifier</b> <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swinstall.8:666:%%new font I started without closing previous font R -->
+<p>&lt;</span><i>path</i>&gt; is the target path. 
+&lt;<i>ISC</i>&gt; is the value of the installed<tt>_</tt>software<tt>_</tt>cataglog extended option. 
+&lt;<i>bundle</i>&gt; and &lt;<i>product</i>&gt; are bundle and product tags. 
+If there is no bundle in the distribution the product tag is used. 
+&lt;<i>pr</i>&gt; is the product revision.  Other items are explained below. 
+<!-- TROFF INPUT: .SS "CATALOG LOCATION" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="CATALOG-LOCATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#g_t_002a-Root-or-Alternate-Root">* Root or Alternate Root</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CATALOG-FILE-LAYOUT">CATALOG FILE LAYOUT</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.2 CATALOG LOCATION</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     /&lt;<i>path</i>&gt;/
+     /&lt;<i>path</i>&gt;/&lt;<i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i>&gt;/
+     /&lt;<i>path</i>&gt;/&lt;<i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i>&gt;/...<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "    * Root or Alternate Root" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="*-Root-or-Alternate-Root"></a>
+<a name="g_t_002a-Root-or-Alternate-Root"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#g_t_002a-Catalog-Relative-Root-Directory">* Catalog Relative Root Directory</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CATALOG-LOCATION">CATALOG LOCATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.3 * Root or Alternate Root</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:684:%%new font I started without closing previous font R -->
+     
+     /&lt;<i>path</i>&gt;/
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>&lt;<i>path</i>&gt;/
+is the target path specified in the target syntax. By default "/". 
+<!-- TROFF INPUT: .SS "    * Catalog Relative Root Directory" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="*-Catalog-Relative-Root-Directory"></a>
+<a name="g_t_002a-Catalog-Relative-Root-Directory"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#PACKAGE-CATALOG-RELATIVE-ROOT">PACKAGE CATALOG RELATIVE ROOT</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#g_t_002a-Root-or-Alternate-Root">* Root or Alternate Root</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.4 * Catalog Relative Root Directory</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     /&lt;<i>path</i>&gt;/
+     /&lt;<i>path</i>&gt;/&lt;<i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i>&gt;/
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>&lt;<i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i>&gt;/
+is the value of the extended option by the same name.  By default "var/lib/swbis/catalog". 
+<!-- TROFF INPUT: .SS "PACKAGE CATALOG RELATIVE ROOT" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="PACKAGE-CATALOG-RELATIVE-ROOT"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#CATALOG-SEQUENCE-NUMBER">CATALOG SEQUENCE NUMBER</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#g_t_002a-Catalog-Relative-Root-Directory">* Catalog Relative Root Directory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.5 PACKAGE CATALOG RELATIVE ROOT</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     /&lt;<i>{bundle|prod}.tag</i>&gt;/&lt;<i>prod.tag</i>&gt;/&lt;<i>prod.revision</i>&gt;/...<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>In other words, if 'product' and 'bundle' refers to tags, and
+product</span><tt>_</tt><span class="roman">revision is the value of the product.revision attribute then
+the path segment is:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:712:%%new font R started without closing previous font R -->
+     
+      /bundle/product/product</span><tt>_</tt><span class="roman">revision</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "CATALOG SEQUENCE NUMBER" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="CATALOG-SEQUENCE-NUMBER"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#CATALOG-CONTENTS">CATALOG CONTENTS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#PACKAGE-CATALOG-RELATIVE-ROOT">PACKAGE CATALOG RELATIVE ROOT</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.6 CATALOG SEQUENCE NUMBER</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      /&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/
+      /&lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/...<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swinstall.8:725:%%new font I started without closing previous font R -->
+<p></span><i>sequence</i><tt>_</tt><i>number</i> is a decimal integer starting with '0'. 
+It is chosen by swinstall to be unique at the time of installation. 
+<!-- TROFF INPUT: .SS "CATALOG CONTENTS" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="CATALOG-CONTENTS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#The-export-directory">The export directory</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CATALOG-SEQUENCE-NUMBER">CATALOG SEQUENCE NUMBER</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.7 CATALOG CONTENTS</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/<b>catalog.tar</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>export</b>/<b>catalog.tar.sig</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>INSTALLED</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>control.sh</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>session</b><tt>_</tt><b>options</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>vendor</b><tt>_</tt><b>tag</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>location</b>
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>qualifier</b> <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "    The export directory" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="The-export-directory"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#INSTALLED-_002d_002d-The-state-metadata-file">INSTALLED -- The state metadata file</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CATALOG-CONTENTS">CATALOG CONTENTS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.8 The export directory</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:749:%%new font B started without closing previous font R -->
+     
+      <b>export</b>/
+      <b>export</b>/...
+      <b>export</b>/<b>catalog.tar</b>
+      <b>export</b>/<b>catalog.tar.sig</b>
+      <b>export</b>/<b>catalog.tar.sig2</b>
+                    ...
+      <b>export</b>/<b>catalog.tar.sig</b><i>N</i><span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swinstall.8:759:%%new font B started without closing previous font R -->
+<p>The </span><b>export</b>/ is a file system directory and its name is constant for all
+packages and is unique to the swbis implementation. 
+The <b>export</b>/<b>catalog.tar</b> file is the signed file from the POSIX
+distribution. 
+The <b>export</b>/<b>catalog.tar.sig</b> file is the signature file
+from the distribution.  If there is more than one signature, then it is the last one. 
+<b>export</b>/<b>catalog.tar.sig2</b> is the next to
+last signature, and <b>export</b>/<b>catalog.tar.sig</b><i>N</i> is
+the first one, where <i>N</i> is the total number of signatures. 
+<!-- TROFF INPUT: .SS "    INSTALLED - The state metadata file" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="INSTALLED----The-state-metadata-file"></a>
+<a name="INSTALLED-_002d_002d-The-state-metadata-file"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#control-sh-_002d_002d-The-master-control-script">control sh -- The master control script</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#The-export-directory">The export directory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.9 INSTALLED &ndash; The state metadata file</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>INSTALLED</b> <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>The INSTALLED file is similar to an INDEX file in its grammar and syntax.  Unlike an INDEX file, it may contain
+control</span><tt>_</tt><span class="roman">file definitions. 
+The INSTALLED file stores the control script return codes and fileset installation state.  It is updated several times during the
+operation of 'swinstall'.  It can be parsed using  libexec/swbisparse and the '&ndash;installed' option. 
+<!-- TROFF INPUT: .SS "    control\&.sh - The master control script" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="control-sh----The-master-control-script"></a>
+<a name="control-sh-_002d_002d-The-master-control-script"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#session_003ctt_003e_005f_003c_002ftt_003eoptions-_002d_002d-The-extended-options">session&lt;tt&gt;_&lt;/tt&gt;options -- The extended options</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#INSTALLED-_002d_002d-The-state-metadata-file">INSTALLED -- The state metadata file</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.10 control.sh &ndash; The master control script</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:786:%%new font I started without closing previous font R -->
+     
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>control.sh</b>
+       SYNOPSIS: <b>control.sh</b> <i>tag</i><tt>_</tt><i>spec</i> <i>script</i><tt>_</tt><i>tag</i><span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>The control.sh file is a POSIX shell script that is automatically generated by swinstall.  It provides a common interface for
+control script execution.  Its primary purpose is to set up the script's execution environment and map script tags to the
+control script pathnames.  It assumes that 'export/catalog.tar' is unpacked in export/. 
+<!-- TROFF INPUT: .SS "    session_options - The extended options" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="session%3ctt%3e_%3c%2ftt%3eoptions----The-extended-options"></a>
+<a name="session_003ctt_003e_005f_003c_002ftt_003eoptions-_002d_002d-The-extended-options"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#EXAMPLE-CATALOG-ENTRY">EXAMPLE CATALOG ENTRY</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#control-sh-_002d_002d-The-master-control-script">control sh -- The master control script</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.11 session<tt>_</tt>options &ndash; The extended options</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:799:%%new font I started without closing previous font R -->
+     
+      &lt;<i>sequence</i><tt>_</tt><i>number</i>&gt;/<b>session</b><tt>_</tt><b>options</b> <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>This file contains the extended options in a form that may be executed by the shell '.' (dot) command. 
+It is automatically generated by swinstall.  The value of the SW</span><tt>_</tt><span class="roman">SESSION</span><tt>_</tt><span class="roman">OPTIONS environment variable is the absolute
+pathname of the this file. 
+<!-- TROFF INPUT: .SS "EXAMPLE CATALOG ENTRY" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="EXAMPLE-CATALOG-ENTRY"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#session_003ctt_003e_005f_003c_002ftt_003eoptions-_002d_002d-The-extended-options">session&lt;tt&gt;_&lt;/tt&gt;options -- The extended options</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>
+
+</div>
+
+<h4 class="subsection">1.6.12 EXAMPLE CATALOG ENTRY</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Below is an example entry of the catalog created by swbis version 0.405.
+
+<!-- WARNING: man/man8/swinstall.8:809:%%new font I started without closing previous font R -->
+<p>In this example, the target path is '/mnt/test', the <i>installed</i><tt>_</tt><i>software</i><tt>_</tt><i>catalog</i> is '/var/lib/swbis/catalog/', the
+bundle tag is 'foobare', the product tag is 'foobare-doc', and the product revision attribute is '0.902'. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export/catalog.tar
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export/catalog.tar.sig
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/INSTALLED
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/control.sh
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/vendor<tt>_</tt>tag
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/location
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/qualifier
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/session<tt>_</tt>options<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>A deleted old catalog entry begin with '</span><tt>_</tt><span class="roman">', for example
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swinstall.8:827:%%new font R started without closing previous font R -->
+     
+     /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/</span><tt>_</tt><span class="roman">0/...</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Although swinstall does not depend on the file name as this accommodates installing from
+standard input, a typical name for this package would be:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">            foobare-doc-0.902-sl04.tar.gz<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>where 'sl04' is the vendor tag. 
+<!-- TROFF INPUT: .SH "IMPLEMENTATION EXTENSIONS" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="IMPLEMENTATION-EXTENSIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#INSTALLED-SOFTWARE-CATALOG">INSTALLED SOFTWARE CATALOG</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.7 IMPLEMENTATION EXTENSIONS</h3>
+
+<!-- TROFF INPUT: .SS "Software Specification Targets" -->
+<!-- DEBUG: print_menu("IMPLEMENTATION EXTENSIONS") -->
+<ul class="menu">
+<li><a accesskey="1" href="#Software-Specification-Targets">Software Specification Targets</a>
+<li><a accesskey="2" href="#RPM-Translation">RPM Translation</a>
+<li><a accesskey="3" href="#Testing-with-RPM">Testing with RPM</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Software-Specification-Targets"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#RPM-Translation">RPM Translation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>
+
+</div>
+
+<h4 class="subsection">1.7.1 Software Specification Targets</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>A dash '-' is supported and means stdout or stdin. 
+Operations with stdout and stdin on a remote host is not supported. 
+<!-- TROFF INPUT: .PP -->
+
+<p>A decimal '.' is supported and means the current directory. 
+This is supported for remote and non-remote targets. 
+If the source is standard input, the distribution will be unpacked
+(e.g. pax -r) in the directory '.'. 
+If the source is a regular file then a regular file in '.' will be created
+with the same name.
+
+<!-- TROFF INPUT: .SS "RPM Translation" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="RPM-Translation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Testing-with-RPM">Testing with RPM</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Software-Specification-Targets">Software Specification Targets</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>
+
+</div>
+
+<h4 class="subsection">1.7.2 RPM Translation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>RPM (RedHat Package Manager) format packages are installed by first translating to
+an equivalent ISO/IEEE file layout in POSIX tar format and then installing as
+a POSIX package.  This translation and detection is transparent to the user if
+the &rdquo;&ndash;allow-rpm&rdquo; option is set in the command line args or the swbis<tt>_</tt>allow<tt>_</tt>rpm
+is set to "true" by the defaults files, otherwise an error occurs. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Since translation is done on the local (management) host, RPM is not required on
+the remote (target) host. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The translation is (internally) equivalent to :
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        cat your-0.0-1.bin.rpm |
+        /usr/lib/swbis/lxpsf &ndash;psf-form2 -H ustar |
+     
+     <!-- WARNING: man/man8/swinstall.8:868:%%new font R started without closing previous font R -->
+     
+        swpackage -W source=- -s @PSF | swinstall -s - @/
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Testing with RPM" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Testing-with-RPM"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#RPM-Translation">RPM Translation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>
+
+</div>
+
+<h4 class="subsection">1.7.3 Testing with RPM</h4>
+
+<p>To test the swbis components, a completely independent means to install and
+verify a package is needed.  RPM provides this means and can be used in the
+following way:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        rpm -i &ndash;nodeps &ndash;force your-0.0-1.i386.rpm  # Install
+        rpm &ndash;verify &ndash;nodeps your-0.0-1             # Show that all is well
+        rpm -e &ndash;nodeps your-0.0-1                   # Remove it.
+        rpm -i &ndash;nodeps &ndash;justdb your-0.0-1.i386.rpm # Install just the database.
+        rpm &ndash;verify &ndash;nodeps your-0.0-1             # Shows the files are missing.
+        swinstall &ndash;allow-rpm -s - &lt; your-0.0-1.i386.rpm
+        rpm &ndash;verify &ndash;nodeps your-0.0-1             # Show that all is well again<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "EXTENDED OPTIONS" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="EXTENDED-OPTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#RETURN-VALUE">RETURN VALUE</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#IMPLEMENTATION-EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.8 EXTENDED OPTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults.  Shown below is an actual portion of
+a defaults file which show default values. 
+<!-- TROFF INPUT: .SS "POSIX" -->
+<!-- DEBUG: print_menu("EXTENDED OPTIONS") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#POSIX">POSIX</a>
+<li><a accesskey="2" href="#Swbis-Implementation">Swbis Implementation</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="POSIX"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Swbis-Implementation">Swbis Implementation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.8.1 POSIX</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>These options are set in the /usr/lib/swbis/swdefaults or the ~/.swdefaults
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       allow<tt>_</tt>downdate              = false      # Not Implemented
+       allow<tt>_</tt>incompatible          = false      # Not Implemented
+       ask                         = false      # Not Implemented
+       autoreboot                  = false      # Not Implemented
+       autorecover                 = false      # Not Implemented
+       autoselect<tt>_</tt>dependencies     = false      # Not Implemented
+       defer<tt>_</tt>configure             = false      # Not Implemented
+       distribution<tt>_</tt>source<tt>_</tt>directory   = -	     # Stdin
+       enforce<tt>_</tt>dependencies        = false      # Not Implemented
+       enforce<tt>_</tt>locatable           = false      # Not Implemented
+       enforce<tt>_</tt>scripts             = false      # Not Implemented
+       enforce<tt>_</tt>dsa                 = false      # Not Implemented
+       installed<tt>_</tt>software<tt>_</tt>catalog  = var/lib/swbis/catalog
+       logfile             = /var/lib/sw/swinstall.log #Not Implemented
+       loglevel                    = 0          # Not Implemented
+       reinstall                   = false      # Not Implemented
+       select<tt>_</tt>local		= false      # Not Implemented
+     
+     <!-- WARNING: man/man8/swinstall.8:914:%%new font R started without closing previous font R -->
+     
+       verbose			= 1
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Swbis Implementation" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Swbis-Implementation"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#POSIX">POSIX</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.8.2 Swbis Implementation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>These options are set in the /usr/lib/swbis/swbisdefaults or the ${HOME}/.swbis/swbisdefaults
+file. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       swinstall.swbis<tt>_</tt>no<tt>_</tt>getconf = true # true or false
+       swinstall.swbis<tt>_</tt>shell<tt>_</tt>command = detect # {detect|sh|bash|ksh|posix}
+       swinstall.swbis<tt>_</tt>no<tt>_</tt>remote<tt>_</tt>kill = false # true or false
+       swinstall.swbis<tt>_</tt>no<tt>_</tt>audit = false # true or false
+       swinstall.swbis<tt>_</tt>quiet<tt>_</tt>progress<tt>_</tt>bar = false # true or false
+       swinstall.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=pax #{pax|tar|star|gtar}
+       swinstall.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=pax #{pax|tar|star|gtar}
+       swinstall.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command=pax #{pax|tar|gtar|star}
+       swinstall.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command=pax #{pax|tar|gtar|star}
+       swinstall.swbis<tt>_</tt>enforce<tt>_</tt>sig=false # true or false
+       swinstall.swbis<tt>_</tt>enforce<tt>_</tt>file<tt>_</tt>md5=false # true or false
+       swinstall.swbis<tt>_</tt>allow<tt>_</tt>rpm=false # true or false
+       swinstall.swbis<tt>_</tt>remote<tt>_</tt>shell<tt>_</tt>client=ssh
+       swinstall.swbis<tt>_</tt>install<tt>_</tt>volatile=true
+       swinstall.swbis<tt>_</tt>volatile<tt>_</tt>newname=     #empty string, e.g. ".rpmnew"<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "RETURN VALUE" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="RETURN-VALUE"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#NOTES">NOTES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.9 RETURN VALUE</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>0 if all targets succeeded, 1 if all targets failed, 2 if some targets failed and some succeeded. 
+<!-- TROFF INPUT: .SH "NOTES" -->
+<!-- DEBUG: print_menu("RETURN VALUE") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="NOTES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#RETURN-VALUE">RETURN VALUE</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.10 NOTES</h3>
+
+<p>Multiple ssh-hops is an implementation extension. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "REQUISITE UTILITIES" -->
+<!-- DEBUG: print_menu("NOTES") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="REQUISITE-UTILITIES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#FILES">FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#NOTES">NOTES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.11 REQUISITE UTILITIES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>The swbis distributed utilities require
+
+<!-- WARNING: man/man8/swinstall.8:950:%%new font B started without closing previous font R -->
+<p><b>bash</b>, public domain <b>ksh</b>, or ksh93 (version 2009-05-05), or
+Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+<b>swbis</b><tt>_</tt><b>shell</b><tt>_</tt><b>command</b> extended option is set to 'detect'
+you don't have to know which one is present, otherwise you may specify one explicitly. 
+<!-- TROFF INPUT: .PP -->
+
+<p>A POSIX <b>awk</b> is required, and with the ability to
+specify several thousand bytes of program text as a command argument. 
+GNU awk  works, as does the ATT Awk book awk, and the awk on BSD systems. 
+See the INSTALL file for further details regarding a small issue with the
+OpenSolaris (c.2006) awk. 
+<!-- TROFF INPUT: .SH "FILES" -->
+<!-- DEBUG: print_menu("REQUISITE UTILITIES") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.12 FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      /var/lib/swbis/catalog # Location of installed catalog
+      /usr/lib/swbis/swdefaults
+      /usr/lib/swbis/swbisdefaults
+      $HOME/.swbis/swdefaults
+      $HOME/.swbis/swbisdefaults<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "APPLICABLE STANDARDS" -->
+<!-- DEBUG: print_menu("FILES") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="APPLICABLE-STANDARDS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SEE-ALSO">SEE ALSO</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#FILES">FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.13 APPLICABLE STANDARDS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>ISO/IEC 15068-2:1999, Open Group CAE C701
+<!-- TROFF INPUT: .SH "SEE ALSO" -->
+<!-- DEBUG: print_menu("APPLICABLE STANDARDS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SEE-ALSO"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.14 SEE ALSO</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>info swbis
+<!-- TROFF INPUT: .PP -->
+
+<p>swcopy(8), sw(5), swbisparse(1), swign(1), swverify(8), swbis(1), swbis(7)
+<!-- TROFF INPUT: .SH "IDENTIFICATION" -->
+<!-- DEBUG: print_menu("SEE ALSO") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="IDENTIFICATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#BUGS">BUGS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SEE-ALSO">SEE ALSO</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.15 IDENTIFICATION</h3>
+
+<p>swinstall(8): The installation utility of the swbis project. 
+ Author: Jim Lowe   Email: jhlowe at acm.org
+ Version: 1.13.1
+ Last Updated: 2014-02-12
+ Copying: GNU Free Documentation License
+<!-- TROFF INPUT: .SH "BUGS" -->
+<!-- DEBUG: print_menu("IDENTIFICATION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="BUGS"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.16 BUGS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>swinstall is subject to breakage if a user's account on an intermediate
+(or terminal) host in a target spec is not configured to use a Bourne
+compatible shell. (This breakage may be eliminated by use of the
+&ndash;no-getconf option as explained above.) 
+<!-- TROFF INPUT: .PP -->
+
+<p>A multiple ssh hop source spec  (more than 1 remote host involved in the
+source transfer) upon a SIGINT may result in sshd and ssh processes
+being left on on the intermediate host(s), this despite, swinstall's action of
+sending a SIGTERM to the remote script's parent process. 
+<!-- TROFF INPUT: .PP -->
+
+<p>swinstall does not currently implement Software Selections, not fileset dependencies, and much more. 
+Only packages with one product and one fileset are supported. 
+<!-- created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39 -->
+
+</body></html>
+

@@ -1,0 +1,86 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include ../Makefile.inc
+topdir=..
+topincdir=../../include
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+DO_DEBUG = @DO_DEBUG@
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = ahs_debug.o xformat_debug2.o taru_dump_r.o
+endif
+
+LIBOBJECTS = idcache.o taru.o copyout.o translate.o hllist.o readinheader.o \
+             pcopyin.o copyinb.o copyinold.o copyinnew.o defer.o porinode.o taruib_i.o taruib.o \
+	     ahs.o xformat.o to_oct.o filemode.o otar.o mtar.o etar.o $(DEBUGLIBOBJECTS)
+
+LIBTAR = taru.a
+
+# Source code adapted for rpm from GNU cpio
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: $(LIBTAR)
+
+$(LIBTAR): $(LIBOBJECTS) 
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS)
+
+clean:
+	rm -f *.S *.a *.o *~ $(PROGS) a.out
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+distclean: clean
+	rm -f .depend Makefile
+
+depend:
+	(> .depend)
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.c > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

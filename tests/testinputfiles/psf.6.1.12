@@ -1,0 +1,45 @@
+  distribution
+   layout_version 1.0
+   product
+    tag rc
+    description "etc runlevel scripts"  
+    fileset
+     	tag rc0
+	directory  /etc/rc0.d /tmp/runlevel.0
+	file *
+
+    fileset
+     	tag rc1
+	directory  /etc/rc1.d /tmp/runlevel.1
+	file *
+
+    fileset
+     	tag rc2
+	directory  /etc/rc2.d /tmp/runlevel.2
+	file *
+
+    fileset
+     	tag rc3
+	directory  /etc/rc3.d /tmp/runlevel.3
+	file *
+   
+     fileset
+     	tag rc4
+	directory  /etc/rc4.d /tmp/runlevel.4
+	file *
+  
+     fileset
+     	tag rc5
+	directory  /etc/rc5.d /tmp/runlevel.5
+	file *
+
+   product
+       tag sysdb
+       description "system database"  
+       fileset
+       	 tag sysdb
+	 directory /etc /tmp/db
+         file_permissions -m 644 -o root -g root 
+         file passwd
+         file group
+         

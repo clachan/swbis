@@ -1,0 +1,476 @@
+GNU swbis NEWS  Noteworthy changes. Jul 2023 (2023-07)
+
+version 1.13.3 - Jim Lowe,  2023-07-01
+    NEW FIXES:
+      * Building, compilation
+       - fix errors related to use of extern that
+         show up with newer GCC compilers
+       - Fix sysmacros.h issue again, use correct name
+
+version 1.13.2 - Jim Lowe,  2020-02-28
+    NEW FIXES:
+      * Building, compilation
+       -fix conditional inclusion for sys/sysmacros.h
+        which was not being included up to now
+	(swsupplib/configure was re-generated).
+
+      * <swpackage>
+	- Now add "state available" to fileset definition as
+	the spec requires.
+
+
+version 1.13.1 - Jim Lowe,  2018-11-03
+    NEW FIXES:
+      * <swpackage>
+        - fixed coredump (segfault) when processing PSFs having
+         an attribute value with a length larger than 99999 bytes
+         (e.g. happens when translating some Linux kernel RPMs).
+
+      * <swign, swinstall, swlist, et.al.>
+        - reorder options in the invocation of GNU tar (to support
+          latest version).
+
+
+    NEW FEATURES:
+      * <swpackage> - added support for translating Debian packages
+          (deb format) that use xz compression internally.
+
+      * <swpackage> - added option to exclude system directories from
+           a package (for use when translating Deb format packages).
+
+
+version 1.13 - Jim Lowe,  2016-05-14
+    * Minor fixes, see ./ChangeLog
+
+version 1.12 - Jim Lowe,  2014-08-02
+
+   NEW FEATURES:
+
+     * pax extended headers are now supported for name and file
+       attributes too long for traditional tar.
+
+     * The '-H pax' option of GNU tar is specified for all uses
+       of the system tar utility.  A runtime check is made to support
+       generic tar as much as possible.
+     
+     * Now multiple signatures are supported both in a package archive
+       and in installed software.
+
+     * 'swpackage' now has capability to resign, add and delete
+        signatures of a previously signed package.
+
+   NEW FIXES, among many others (See ./ChangeLog).
+
+     * <all utilities except swpackage>
+       A rare hang when accessing the installed software catalog is
+       probably fixed.
+
+     * <swverify>
+       Now the package catalog is not decoded if the package signature
+       fails.
+
+     * <swverify>
+       Fixed hang on non-Linux kernels.
+
+     * <swverify>
+       Added a new feature to verify prelink'ed binaries
+       using prelink(8) on systems that use prelink.
+
+     * <swverify>
+       Added new reporting form (--report-format=FORM) that
+       very similar to rpm's output format for verification.
+
+     * <swlist, swremove,>
+       FIXED operation with mksh or pdksh as the shell command
+
+     * <swinstall>
+       FIXED support for catalog at location outside installed 
+       root dir.  The starting current working directory for control
+       scripts is now SW_ROOT
+
+     * <lxpsf> (rpm translation>
+       Fixed support of RPMTAG_DEFAULTPREFIX.
+     
+     * <lxpsf> (deb translation)
+       Added support for xz compressed archives.
+
+     * <lxpsf> (rpm translation>
+       Many corner cases in RPM translation are now fixed. Translation,
+       installation, and cross verification have been tested on many
+       hundreds of packages (on CentOS release 6.5)
+
+
+version 1.11 - Jim Lowe,  2011-04-23
+* <swpackage>: FIXED a race condition resulting in a signing failure
+* <lxpsf>: FIXED segfault when translating some .deb file
+* <lxpsf>: added support .lzma compressed data files in a .deb file
+
+version 1.10 - Jim Lowe,  2011-04-15
+* <swpackage>: FIXED the translation mode busted in the 1.9
+release.
+
+version 1.9 - Jim Lowe,  2011-01-20
+* <swinstall>: FIXED the to-stdout mode 'swinstall @-'
+
+version 1.8 - Jim Lowe,  2011-01-16
+
+Fixed defects in the error code paths of all the utilities
+that occur when file system permissions deny success to an
+installed catalog operation.
+
+Re-wrote (and fixed) the synct_* routines used for reading installed
+catalog data with an in-band EOF.  These routines could fail due to
+certain data contents.
+
+version 1.7 - Jim Lowe,  2010-12-18
+* <swinstall>: FIXED a broken speed optimization
+* <swlist>: FIXED crashes due to use of unsupported features.
+* <swinstall>: Improved compatibility with systems that have neither GNU tar
+nor pax.
+* FIXED several long standing bugs affecting all utilities except
+swpackage.
+
+version 1.6 - Jim Lowe,  2010-09-08
+* All utilities fixed to operate on relative path target (such as the
+  login landing directory of a remote target).
+* <swlist>: added features. support -v mode more support for lising
+attributes
+* <swinstall>: FIXED swinstall preview mode for non-existent target directory
+* <swinstall>: FIXED preview ''swinstall -p'' deleting catalog entry.
+* <swinstall>: ADDED checks for existing files.  --replacefiles and --keepfiles
+option added
+* <swpackage>: ADDED implements the extended option -x follow_symlinks=true
+* <swpackage>: FIXED uid/gid handling for case of `-o owner,' in a explicit
+file definition in a PSF.  Now, finally, hopefully full arbitrary
+specification of uids and unames now work
+
+version 1.5 - Jim Lowe,  2010-03-15
+
+* <swverify>: Now has a verification summary for installed software.
+
+* the utilities now support an absolute path location for
+the installed software catalog that is outside the target path.
+This is specified by the file URL syntax: file:///absolute/path/name
+
+* <swconfig>: swconfig is completed and enters Beta testing. 
+
+* <swpackage>: Improvements to the ''exclude'' directive in a PSF file
+
+* Many other fixes
+
+version 1.4 - Jim Lowe,  2009-07-06
+
+* Added swpackage --regfiles-only option
+
+* Fixed specification of extended options on the command line.
+
+* Added support for decrypting/encrypting via gpg command
+
+* Added support for LZMA compression.
+
+* Fixed <swpackage> Now software_definitions in a PSF
+are properly merged.
+
+* Fixed <lxpsf> Now the contents of ./conffiles in .deb format package
+are used to set the 'is_volatile' attribute.
+
+version 1.3 - Jim Lowe,  2009-03-11
+
+* Fixed <swverify>
+
+* Fixed <swinstall>
+Now permissions and ownerships of all created files are
+determined from values of of the installed_software_catalog
+
+version 1.2 - Jim Lowe,  2008-11-22
+
+* Fixed <swverify>
+Fixed false verification failure of installed software due to broken
+detection of file digests in the INFO file.
+
+* New Feature
+Volatile files detected when translating slackware runtime packages.
+swverify
+
+* Fixed <swpackage>
+Now file attributes explicitly set in a PSF file definition are properly
+preserved and merged.  Duplicate file definitions in a PSF are properly
+merged.
+
+* New option
+--dereference and --ignore-slack-install options added for
+swverify
+
+* New option
+--justdb added for swinstall and swremove
+
+* New option
+--justdb added for swinstall and swremove
+
+* New Default
+Now the --pump-delay for swinstall (a bug work-around)
+is zero (disabled) by default.
+
+* New Feature
+Now the owners and permissions of the installed
+software catalog (usually /var/lib/swbis/catalog/) are used
+for new file creation in the catalog.  This will allow
+non-root access policy if desired.
+
+version 1.1 - Jim Lowe,  2008-10-26
+
+* Fixed false report of files missing for installed software
+verification for some packages.
+* added - swverify --system-info=NAME option
+* added - swverify --catalog-info=NAME option
+* Fixed compiler warnings when using gcc version >4.x
+
+version 1.0 - Jim Lowe,  2008-10-08
+
+* New capability:
+swinstall now correctly supports the checkinstall script and
+deselects with side-effects based on the scripts status.
+
+* New capability:
+all utilties: now all the distributed utilites will auto-detect
+the POSIX shell and a tar reading utility. This eliminates knowing
+about the remote hosts' provisioning.
+
+* New capability:
+swverify now verifies installed software
+
+* New capability:
+swpackage will now translate slackware binary packages
+swpackage will now translate .deb format packages
+
+RELEASE NOTES: 0.598  2007-05-12
+Summary (0.499 -> 0.598):
+-------------------------
+This release adds large file support to swpackage, and a
+functional swlist program that supports installed software
+catalog queries.  swinstall development was advanced to include
+required installed catalog tests for reinstall, downdate,
+and prerequisites.  All of the utilities were improved
+with a safer and new remote script execution architecture.
+sha512 digests of the archive and individual files are now
+supported.
+
+2007-08-30 James Lowe, Jr. <jhlowe@acm.org>
+* swremove utility is now funtional
+
+2007-06-30 James Lowe, Jr. <jhlowe@acm.org>
+* License changed to GPL version 3
+
+2007-06-13 James Lowe, Jr. <jhlowe@acm.org>
+* work begun on swremove
+
+2007-06-01 James Lowe, Jr. <jhlowe@acm.org>
+* swinstall now supports dependency checks and detects and
+uses the correct catalog instance for supporting multiple
+instances of the same package at different locations.
+
+2007-04-28  James Lowe, Jr. <jhlowe@acm.org>
+* swinstall now supports downdate, and reinstall detection.
+
+2007-02-04  James Lowe, Jr. <jhlowe@acm.org>
+* swlist now supports a defacto ad-hoc dependency
+test feature, swlist --dep --prereq 'emacs' --exreq 'vi' @/
+
+2007-01-21  James Lowe, Jr. <jhlowe@acm.org>
+* Large File Support added
+* The catalog/dfiles/signature file is now padded with newlines
+instead of NULs.
+
+2006-11-28  James Lowe, Jr. <jhlowe@acm.org>
+* swlist is now working and supports software selections.
+* swinstall now supports the qualifier version id (q=xxx)
+and the location version id (l=/path)
+* swinstall now has a --ignore-scripts option
+
+RELEASE NOTES: 0.499  2006-08-02
+Summary (0.483 -> 0.499):
+-------------------------
+This release adds features to swpackage for using gpg-agent
+when signing packages.  Also features were added to enable
+use of swign in an Automake rule.  Enhancements to swverify
+were made to allow verification of a signed directory
+exported from a SCM repository such as CVS.  The distribution
+package is now a self-hosting example of using the swign
+utility along with automake to create tar archive distributions
+with an embedded GPG signature.  An unsafe use of gpg's exit
+status by swverify was fixed.
+
+
+RELEASE NOTES: 0.483  2006-02-18
+Summary (0.474 -> 0.483):
+-------------------------
+Fixed a tar header name split problem in 'swpackage'.
+Fixed use of 'distribution_*_directory' extended options
+in swinstall and swcopy.  Fixed abnormal termination code
+paths in swinstall to avoid leaving stranded processes.
+Added preliminary support for software selections and
+arch compatibility checks.  Fixes for the CYGWIN platform
+were made which consisted of sleep() calls to slow down busy
+wait loops.
+
+RELEASE NOTES: 0.474  2005-11-05
+Summary (0.463 -> 0.474):
+-------------------------
+A problem with Explicit file definitions in a PSF when
+using the "-t d" was fixed.  A long standing mis-use of
+vsnprintf was fixed which fixed a segfault on a ppc64
+GNU/Linux platform.  There were documentation and example
+file updates.  swpackage was optimized and now 20% faster
+for large packages.
+
+RELEASE NOTES: 0.464  2005-09-26
+Summary (0.446 -> 0.464):
+-------------------------
+Fixes were made to swpackage and its explict file 
+definition processing for definitions without a source
+file.  Fixes and changes were made to code sections used
+during RPM translation.  Fixes were made to the
+documentation.  Development and code cleanups begun
+in several new areas.
+
+
+RELEASE NOTES: 0.456  2005-05-21
+Summary (0.446 -> 0.456):
+-------------------------
+Portability fixes were made to the build system.
+For swpackage, file descriptor availability is now
+verfied to prevent possible circumvention of file
+descriptor leak checks that were already in place.
+
+
+RELEASE NOTES: 0.446  2005-05-08
+Summary (0.420 -> 0.446):
+-------------------------
+For swinstall, support was added for post, pre and check
+install control script execution.  Fileset state transition
+as well as script exit status recording is now implemented.
+For swpackage, the ustar format is changed to be identical to
+GNU tar 1.15.1.  Improvements to RPM translation were made,
+including support for configuration file preservation.
+
+
+RELEASE NOTES: 0.426  2004-12-23
+Summary (0.420 -> 0.426):
+-------------------------
+Added a tar verbose listing to swpackage and swinstall, and
+an extra verbose listing that shows the owner id and owner
+name.  Fixed  the system database uid/gid and owner/group
+name lookup mechanism which improves the sanity of PSF's
+which specify owners/groups that are not present on the
+packaging host.  In swpackage, fixed the lack of exec bit
+for directories included by a recursive file extended definition.
+
+
+RELEASE NOTES: 0.420  2004-11-14
+Summary (0.415 -> 0.420):
+-------------------------
+Improvenments to swpackage's handling of duplicate
+file definitions in a PSF.  Fixed a use of uninitialized
+pointer which will either be harmless or cause an internal 
+error hard exit.  Fixed swinstall's warning messages when
+comparing file stats in the the INFO file to the storage
+archive file stats.
+
+
+RELEASE NOTES: 0.415  2004-10-27
+Summary (0.411 -> 0.415):
+-------------------------
+Improvenments to swpackage's handling of duplicate
+file definitions in a PSF.  RPM translation was fixed
+which was broken in version 0.410.
+
+
+RELEASE NOTES: 0.411  2004-10-04
+Summary (0.405.1 -> 0.411):
+-------------------------
+The swpackage exclude keyword processing was fixed.
+Minor fixes to swinstall were made.  swverify's
+exit status when checking installed software was fixed.
+Setting extendeded options on the command line
+was fixed for swcopy and swinstall.  A texinfo manual
+was created.
+
+RELEASE NOTES: 0.405.1  2004-06-23
+Summary (0.405 -> 0.405.1):
+-------------------------
+Fixed swverify(8) option processing.
+
+
+RELEASE NOTES: 0.405  2004-06-17
+Summary (0.371 -> 0.405):
+-------------------------
+A swinstall core dump was fixed.
+Swbis' RPM installation/translation support is now built-in
+by the inclusion of rpmlib, derived from rpm-3.0.5 (RH-6.2).
+Swinstall is now more usable, although control script
+execution is *still* not done.  Fixes were made to swpackage
+and swinstall for user/group names not in the system database,
+and for pathnames with non-ascii chars.  Swinstall now works with
+HP-UX depot packages.  Swinstall now imposes the file meta-data
+from the INFO [per spec].  Swinstall and RPM translation has been
+tested on Sparc/SunOS, x86/NetBSD, and many Linux versions.  These
+fixes produce 100% success rate for translating/installing RPMs
+from RH8.0 (although the postinst and preinst scrripts are not yet
+run) and other vendor's RPMs appear to work as well.
+
+
+RELEASE NOTES: 0.370  2004-05-23
+swbis-0.370.tar.gz 72d6d93f3014a17eed3418d011355489
+Summary (0.344 -> 0.370):
+-------------------------
+Swinstall is now more usable, although control script
+execution is *still* not done.  Minor fixes to swpackage.
+RPM translation was improved and integrated into swinstall
+and swcopy.  swinstall should be considered _alpha_,
+however, with implementation of INFO file meta-data checks,
+file md5 checks, and direct comparison of RPM and
+swinstall installs possible as a test, a measure of
+correctness can be demonstrated for swinstall. 
+
+RELEASE NOTES: 0.343  2004-04-22 
+Summary:
+--------
+Several bugs in swpackage related to hard link handling were
+fixed.  Enhancements and fixes to swpackage and swign were
+made to support regression tests that check the output equality
+with GNU tar.  Increased file resource limit inside swpackage.
+Implemented instance_id in swpackage generation per spec.
+
+
+RELEASE NOTES: 0.329  2004-04-09
+Summary:
+--------
+Several bugs and deficiencies related to swpackage's processing
+of extended definitions were fixed.  Logging was implemented
+in swcopy and swinstall.  swinstall development.  Minor fixes
+all around.  swinstall remains in _alpha_ release state.
+
+RELEASE NOTES: 0.314  2004-02-22
+Summary:
+--------
+Changed the form of the installed software catalog so that
+gpg(1) can be used directly to verify an installed signed
+package.  The '-r' swinstall option is now implemented.
+The -t type option of an explicit file extended definition
+in a PSF file was fixed.
+
+
+RELEASE NOTES: 0.308  2004-02-17
+Summary:
+--------
+Fixes to the INDEX file parser and to swinstall.
+
+
+RELEASE NOTES: 0.307  2004-02-15
+Summary:
+--------
+swinstall(8) is now usable at an alpha release level.
+Control script execution for swinstall is not yet implemented.
+Minor fixes to swpackage were made.  There were changes to the
+RPM conversion policy relating to attribute mapping.  swverify(8)
+now supports (limited) verification of installed software meta-data.

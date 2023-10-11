@@ -1,0 +1,43 @@
+diff -ruN pax-3.0/src/ftree.c pax-3.0.patched/src/ftree.c
+--- pax-3.0/src/ftree.c	2001-12-18 15:17:32.000000000 -0500
++++ pax-3.0.patched/src/ftree.c	2002-11-25 21:26:57.000000000 -0500
+@@ -465,6 +465,7 @@
+ 		 */
+ 		switch(S_IFMT & arcn->sb.st_mode) {
+ 		case S_IFDIR:
++			arcn->sb.st_rdev = (dev_t)(0);
+ 			arcn->type = PAX_DIR;
+ 			if (!tflag)
+ 				break;
+@@ -479,6 +480,7 @@
+ 			arcn->type = PAX_BLK;
+ 			break;
+ 		case S_IFREG:
++			arcn->sb.st_rdev = (dev_t)(0);
+ 			/*
+ 			 * only regular files with have data to store on the
+ 			 * archive. all others will store a zero length skip.
+@@ -490,6 +492,7 @@
+ 			break;
+ 		case S_IFLNK:
+ 			arcn->type = PAX_SLK;
++			arcn->sb.st_rdev = (dev_t)(0);
+ 			/*
+ 			 * have to read the symlink path from the file
+ 			 */
+@@ -507,6 +510,7 @@
+ 			arcn->ln_nlen = cnt;
+ 			break;
+ 		case S_IFSOCK:
++			arcn->sb.st_rdev = (dev_t)(0);
+ 			/*
+ 			 * under BSD storing a socket is senseless but we will
+ 			 * let the format specific write function make the
+@@ -515,6 +519,7 @@
+ 			arcn->type = PAX_SCK;
+ 			break;
+ 		case S_IFIFO:
++			arcn->sb.st_rdev = (dev_t)(0);
+ 			arcn->type = PAX_FIF;
+ 			break;
+ 		}

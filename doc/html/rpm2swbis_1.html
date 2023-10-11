@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+<TITLE>rpm2swbis(1)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>rpm2swbis(1)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<li><a href="#OPTIONS">OPTIONS</a>
+<li><a href="#RETURN VALUE">RETURN VALUE</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swign -- Convert an RPM to a IEEE 1387.2 layout tar archive.
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>rpm2swbis</b> [options] [rpmfile|-]
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>rpm2swbis</b> is a shell script which uses extension options of swpackage
+       and the swbis libexec program <b>lxpsf</b>.
+</pre><h3><a name="OPTIONS"><b>OPTIONS</b></a></h3><pre>            --help show this help to stdout.
+
+       These options correspond to the Extension options of swpackage.
+            --files
+            --archive-digests
+            --digests
+            --sign
+            --homedir=home
+            --local-user=name
+            --dir=dir
+</pre><h3><a name="RETURN VALUE"><b>RETURN VALUE</b></a></h3><pre>       0 on success, non-zero on failure.
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre>       none
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       <a href=swpackage_8.html>swpackage(8)</a>, <a href=lxpsf_1.html>lxpsf(1)</a>
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        Copying Terms: GNU GPL
+        Last Updated: 2003-03-11.
+        Identification: Implementation extension administration program of
+       swbis.
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       No temporary files are used in the conversion process, just lots of
+       memory.  This capability was created as a testing tool of swpackage.
+       It seems to convert without any error messages about 95% of binary RPMs
+       and nearly 100% of source RPMs.  The accuracy of the file or metadata
+       after conversion has not been exhaustively confirmed.
+
+
+
+                                                                  <a href=rpm2swbis_1.html>rpm2swbis(1)</a>
+</pre><hr></body></html>

@@ -1,0 +1,87 @@
+This is ../info/swbis.info, produced by makeinfo version 4.13 from
+swbis.texi.
+
+This manual is for swbis (version 1.13.1, 24 Jul 2014), which is an
+implementation of the POSIX System Administration Standard - Part 2:
+Software Administration IEEE Std 1387.2-1995 (ISO/IEC 15068-2) (both
+now withdrawn) and the Open Group Specification CAE C701.  Currently,
+most of the the standard is implemented.  Most notably the
+implementation lacks the ability to operate on packages with multiple
+fileset or products.  There are extensions for package authentication
+using GNU Privacy Guard.  Extensions to the standard are indicated as
+such in this document.
+
+   Copyright (C) 2008,2014 Jim Lowe
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover Texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+
+INFO-DIR-SECTION Software development
+START-INFO-DIR-ENTRY
+* Swbis: (swbis).               POSIX software packaging utilities.
+END-INFO-DIR-ENTRY
+
+
+Indirect:
+swbis.info-1: 1494
+swbis.info-2: 299988
+
+Tag Table:
+(Indirect)
+Node: Top1494
+Node: Creating Signed Distributions4228
+Node: Creating a signed POSIX archive using `swign'7705
+Node: Creating a signed directory using `swign'9494
+Node: Environment Variables that direct `swign'11151
+Node: Providing a `checkdigest' script11624
+Node: Using `swign' in an Automake target12945
+Node: Status13988
+Node: Invoking swbis17820
+Node: Target Syntax20690
+Node: Copying This Manual23659
+Node: GNU Free Documentation License23897
+Node: Applicable Standards46301
+Node: Command Reference47242
+Node: swpackage.8 in one text file48151
+Node: swinstall.8 in one text file91523
+Node: swremove.8 in one text file121598
+Node: swcopy.8 in one text file134838
+Node: swlist.8 in one text file157241
+Node: swverify.8 in one text file172606
+Node: swconfig.8 in one text file196538
+Node: swign.1 in one text file209438
+Node: lxpsf.1 in one text file224606
+Node: swpackage.5 in one text file227365
+Node: sw.5 in one text file246789
+Node: Glossary296251
+Node: Configuring swbis298032
+Node: swdefaults configuration file299988
+Node: swbisdefaults configuration file304576
+Node: Archive Reading/Writing Utility Selection310362
+Node: Shell Selection311161
+Node: Introduction311642
+Node: About This Manual313340
+Node: Other Resources313784
+Node: Making PSFs for Package Creation314435
+Node: A Minimal PSF317085
+Node: A PSF for Source Packages317731
+Node: Installing POSIX Distributions321357
+Node: Host Requirements321994
+Node: Signing File System Directories323372
+Node: Creating a Catalog of Installed Packages324216
+Node: Translating and Installing Other Formats326793
+Node: Remote Host Operations328040
+Node: GNU Toolset Orthogonality329464
+Node: Package Layout and Interchange Format Mimicry329987
+Node: Index331752
+
+End Tag Table

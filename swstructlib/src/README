@@ -1,0 +1,24 @@
+
+DIRECTORY CONTENTS
+./misc
+	- Misc. stuff.
+	misc/swattributelist.h  Pointer list object.
+	misc/swattributemem.h   Provides memory for storage of some ./swmetadata/ objects.
+	misc/switer.h 	(Not Used). (from earlier version, Only used in test programs).
+	misc/swparser.h       C++ wrapper of parser (see swsupplib/sw_parse).
+	misc/swptrlist.h      Linked-list class used in ./swmetadata classes.
+	misc/swselection.h    Under development.  
+	misc/swstructdef.h    C++ wrapper for the "C" swsdflt_defaults object in swsupplib/misc
+	misc/swstructiter.h  (Not Used). Iterator for ../swstruct/*.h classes.  Only used in historic test programs.
+
+./swexport
+	- Class hierarchy used in constructing a package from a PSF.
+	  Basis of swpackage utility.
+
+./swmetadata
+	- Primary widely used classes.
+
+./swstruct (Not Used)
+	- Not Used. (from earlier version, now obsolete)
+	- Used in some test programs, Should not have linkage in production binaries.
+

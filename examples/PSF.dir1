@@ -1,0 +1,16 @@
+# File: PSF.dir1
+# Example of a package that stores a directory that does
+# not have to exist in the source file system.
+
+distribution
+	tag test-0.1
+product
+	tag swbis
+	revision 0.000
+
+fileset
+	tag bin
+	directory / /
+	file -o root -g bin -m 700 -t d /BB	
+
+# End of PSF.

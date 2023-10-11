@@ -1,0 +1,897 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (c) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document 
+under the terms of the GNU Free Documentation License, Version 1.1 or any 
+later version published by the Free Software Foundation; with no Invariant 
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man swpackage_8.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<!DOCTYPE form
+[
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY ID="swverify">
+<REFMETA>
+<REFENTRYTITLE>
+swverify
+</REFENTRYTITLE>
+<REFMISCINFO>
+swverify - Software Administration
+</REFMISCINFO>
+<MANVOLNUM>8</MANVOLNUM> 
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+swverify
+</REFNAME>
+<REFPURPOSE>
+Verify Software
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+Posix:
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION>  <OPTIONAL>-d|-r</OPTIONAL>  <OPTIONAL>-F</OPTIONAL>  <OPTIONAL>-f <REPLACEABLE>file</REPLACEABLE></OPTIONAL>  <OPTIONAL>-t <REPLACEABLE>targetfile</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>-x <REPLACEABLE>option=value</REPLACEABLE></OPTIONAL>  <OPTIONAL>-X <REPLACEABLE>options_file</REPLACEABLE></OPTIONAL>  <OPTIONAL>-W <REPLACEABLE>option</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>software_selections</OPTIONAL>  <OPTIONAL>@targets</OPTIONAL> 
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION>  # Verify standard input
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> selection [@ target] # Verify Installed Software
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> -d [@ target]
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> -d @-   # dash means standard input
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [--scm|--order-files] -d @.  # . means current directory
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [--scm|--order-files] -d @:package_directory
+</SYNOPSIS>
+<SYNOPSIS>
+Implementation Extension:
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [-Wd] -Wemit-digest-file <OPTIONAL>portable_archive_file</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [-Wd] -Wemit-signed-file <OPTIONAL>portable_archive_file</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [-Wd] [-Wsha1] -Wemit-digest-file <OPTIONAL>portable_archive_file</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swverify</FUNCTION> [-Wd] -Wget-sig-if=sigfilename <OPTIONAL>portable_archive_file</OPTIONAL>
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+
+<REFSECT1>
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+The
+<FUNCTION>swverify</FUNCTION>
+utility checks the accuracy of software in distributions and installed_software.
+If no options are given, a serial distribution on stdin is verified.
+</PARA>
+<PARA>
+Currently, 
+<FUNCTION>swverify</FUNCTION>
+does not read the defaults files.
+"/" is the default target for installed software. 
+Stdin is the default target for distributions.
+The built-in value of "installed_software_catalog" is
+"var/lib/swbis/catalog".
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA></PARA>
+<OPTION>-d</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify to operate on a distribution rather than installed software.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<OPTION>-r</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify that target is an alternate root target. (Not currently used)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<PARA>
+<OPTION>software_selections</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+See other man pages.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>targets</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+See other man pages.
+Currently, only one (1) target can be specified.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>-x option=value</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended option overriding the defaults file value.
+This option not yet implemented.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-X FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended options filename, FILE,  overriding the default filename.
+This option not yet implemented.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+Other POSIX options not implemented.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+POSIX EXTENDED OPTIONS
+</TITLE>
+<PARA>
+Not yet implemented.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+IMPLEMENTATION EXTENSION OPTIONS
+</TITLE>
+<PARA>
+<OPTION>-W option[,option,...]</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the implementation extension option.<SBR>
+Syntax: -W option[=option_argument[,option...]<SBR>
+Options may be separated by a comma.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-checksig | -W checksig </OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+This is the default action and is the same as the POSIX syntax "-d @target".
+If target file is not a directory then verify archive md5 and sha1 and gpg signature directly from the file.
+If target file is a directory, attempt to verify the signature using GNU tar and gpg and if successful
+execute the distributor extension script <FUNCTION>checksig</FUNCTION>.  If <FUNCTION>checksig </FUNCTION> 
+does not exist then exit with failure.  <SBR>
+FILE may be "." (current directory) or "-" (standard input).  A serial archive file may be compressed
+with gzip, bzip2, or Unix compress.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--order-catalog</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Use the order of files in catalog/<REPLACEABLE>dfiles</REPLACEABLE>/files to recreate
+the signed data when verifying the directory (unpacked tarball) form of the package.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--cvs</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Read and process information in the ./catalog (before it is authenticated) to correct the file sytem
+meta-data in an attempt to verify the GPG signature.
+It only affects verification on the directory (unpacked tarball), not tarball verification.
+It is required when verifying an exported or working SCM (Source Code Management, such as CVS) directory if
+the SCM does not preserve and restore file system meta-data.
+This option also emliminates the dependency on the order of files in file system directories.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--scm</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Currently, same as the <OPTION>--cvs</OPTION> option.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--no-checkdigest</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+When verifying the directory form, do not run the checkdigest script even if the GPG signed data contains
+the checkdigest script.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--signed-file </OPTION> [FILE]
+<GLOSSLIST>
+<GLOSSLIST> 
+Write the GPG signed portion of the package to stdout without verifying it.
+Read archive file FILE or standard input and write the signed file 
+(i.e. gpg's signed stuff) to stdout.  This is the catalog section of the Posix package.
+This option is supported for the tarball file and unpacked tarball directory.
+Use of the --scm option may be required for the unpacked tarball directory form.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--digest-file </OPTION> [FILE]
+<GLOSSLIST>
+<GLOSSLIST> 
+Write the payload portion of the package to stdout without verifying its digest
+matches the digest in the signed data.
+This is the storage section of the Posix package.
+This option is not supported for the unpacked tarball form.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W emit-signed-file | -W C</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Same as <OPTION>--signed-data</OPTION>.  Also the same as -WC
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W emit-digest-file [FILE]</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Same as <OPTION>--digest-data</OPTION>.  Also the same as -WS
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W show-auth-files | -W d</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Writes the relevent security file to stderr.
+Applies to emit-digest-file and emit-signed-file modes.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W sig-number=N</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Operates on the Nth signature, 0 is last, 1 is the first.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W get-sig-if=outputfile</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Verifies the archive digests
+by comparing to the digests in the catalog and if they match
+write the sigfile to outputfile and the signed data to stdout.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+DISTRIBUTOR SCRIPTS
+</TITLE>
+<PARA>
+Not yet implemented.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+IMPLEMENTATION EXTENSION DISTRIBUTOR SCRIPTS
+</TITLE>
+<REFSECT2>
+<TITLE>
+checkdigest <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>checkdigest</FUNCTION>
+</TITLE>
+
+<PARA>
+This script was named 'checksig'.  As of 2006-03-28, the name of this script should be 'checkdigest'.
+The name 'checksig' should be considered deprecated for new packages.
+</PARA>
+
+<PARA>
+A software distributor may choose to provide a <FUNCTION>checkdigest </FUNCTION>script.
+The <FUNCTION>checkdigest </FUNCTION> script is part of the distribution object.
+It is used to verify the directory form of a distribution  (as distinguished
+from installed_software).  The verified attributes are the same as those verified
+from the archive file form with the addition of the distribution file list.
+In addition the script may chose to verify the <REPLACEABLE>adjunct_md5sum</REPLACEABLE> and file.md5 digests and symbolic links.
+Due to the constraints of reproducing the archive message digests 
+from the directory, which include tar utility dependence and file owner/group specification, 
+this script may not be useful to all distributors.
+</PARA>
+<REFSECT3>
+<TITLE>
+Execution Environment
+</TITLE>
+The script may require the SW_CONTROL_TAG environment variable be set to "checkdigest" or "checkfile"
+and if not exit with failure.
+swverify will set this variable to "checkfile" if the --scm or --cvs option is
+used, and otherwise to "checkdigest".  The script may take different action based on the value.
+Currently, the checkdigest script used by the swbis source package will omit the archive digests
+checks if set to SW_CONTROL_TAG="checkfile" since reproducing the archive digest is not possible
+when the package is exported from CVS due to file system meta-data non-preservation. In this case
+the file list is checked and the md5 and sha1 digests are verified for each regular file.
+</REFSECT3>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+VERIFYING SIGNATURES
+</TITLE>
+<PARA>
+The design separates the payload and catalog, therefore,
+verification requires verifying the storage section md5 and sha1
+message digests and then verifying the signature of the catalog.
+Naturally, it is required that the signed data include the storage
+section message digests and that they match the storage sections.
+The storage section digests are stored as separate attribute files
+in the dfiles catalog directory.
+</PARA>
+<PARA>
+The 
+<FUNCTION>checksig</FUNCTION> (i.e. swverify -d @-) mode verifies a tarballs embedded signature.
+This mode checks all the security files in the package and
+is the preferred way to authenticate a package.
+The <FUNCTION>emit-signed-file</FUNCTION>,
+<FUNCTION>emit-digest-file</FUNCTION> modes are useful for testing, sanity checks 
+and custom applications.
+The <FUNCTION>get-sig-if</FUNCTION> is the function used when verifying a tarball.
+</PARA>
+
+<REFSECT2>
+<TITLE>
+Verifying a POSIX Distribution Archive Manually
+</TITLE>
+<PARA>
+The design of the authentication attributes supports manual verification of
+the archive file (e.g. tarball) form of the distribution, that is verification
+take place on the uncompressed archive using 'gpg', GNU 'tar' and the swbis
+utility 'swverify' (or the library utility 'arf2arf').
+</PARA>
+<PARA>
+The authentication requires the following steps:
+<PROGRAMLISTING>
+1) Obtain the signature from the package.
+2) Recreate the signed data and present this byte stream and 
+   the signature to GNU privacy guard (gpg) for authentication.
+3) Obtain the message digest (md5, sha1,) contained in the
+   control file in the authenticated archive byte stream.
+4) Recreate the digest byte stream and present to the appropriate
+   hash generation program to generate the message digest.
+5) Compare the digest message generated in step 4 to the 
+   authenicated digest obtained in step 3.
+</PROGRAMLISTING>
+</PARA>
+1) Obtain the signature from the package.
+<PROGRAMLISTING>
+  #!/bin/sh
+  tar zxf - -O \\*/catalog/dfiles/signature < swbis-0.460.tar.gz
+</PROGRAMLISTING>
+
+2)  Recreate the signed data
+<PROGRAMLISTING>
+  #!/bin/sh
+  swverify -WC < swbis-0.460.tar.gz | gpg --verify /dev/tty -
+  # Cut and paste the signature file obtained in step 1
+</PROGRAMLISTING>
+
+3)  Obtain the message digest
+<PROGRAMLISTING>
+  #!/bin/sh
+  swverify -WC < swbis-0.460.tar.gz | \\
+  tar xf - -O \\*/catalog/dfiles/md5sum
+</PROGRAMLISTING>
+
+4)  Create the digested byte stream
+<PROGRAMLISTING>
+  #!/bin/sh
+  swverify -WS < swbis-0.460.tar.gz | md5sum
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Verifying a POSIX Distribution Directory Manually
+</TITLE>
+<PARA>
+Verifying the unpacked tarball package form.
+</PARA>
+<PARA>
+The design of the authentication attributes supports manual verification of
+the directory (unpacked) form of the distribution, that is verification
+takes place on the leading package directory and its contents. It should
+be noted that it is left to the user to verify that the archive 
+installed no files outside of this directory as this would likely indicate
+a trojan'ed package.
+</PARA>
+<PARA>
+If authenticating on a GNU/Linux system using GNU tar it is possible
+to validate the archive message digests and signature if the
+following are true: 
+
+<PROGRAMLISTING>
+1) The package file is a tar archive.
+2) The installed version of GNU tar produces archives with
+   bit-for-bit sameness relative to the swpackage(8) utility
+   that generated the signature and message digests.  For packages
+   made with swbis versions >= 0.474 and with format option "ustar"
+   you will need GNU tar 1.14 or 1.15.*
+3) The package has a single leading package directory, like a source
+   package.
+4) The package catalog contains the 'checkdigest' script.
+5) The package catalog contains the distribution file list.
+6) The ownership names are present and have the same uid's and gid's.
+7) The package was unpacked with a version of tar that
+   preserves all file times.  Use for example "tar xpf".
+</PROGRAMLISTING>
+
+</PARA>
+<PARA>
+In this example, the package has a single path name prefix called, <FILENAME>namedir</FILENAME> and
+the file owner/group are root.  These restrictions are suited to
+source packages.<SBR>
+</PARA>
+Verify the signature:
+<PROGRAMLISTING>
+  #!/bin/sh
+  tar cf - -b1 --owner=root --group=root \\
+  --exclude=namedir/catalog/dfiles/signature  \\
+  namedir/catalog | gpg --verify namedir/catalog/dfiles/signature -
+</PROGRAMLISTING>If this fails try using GNU tar option --posix.
+If this fails then, try experimenting with the owner, group, and
+numeric-id options.
+If you are unable to verify a tar byte stream using gpg(1)
+that contains the storage section message digests, then the package
+cannot be authenticated.
+</PARA>
+<PARA>
+Assuming you successfully verified the catalog as shown above, now generate
+the message digest and compare it to the md5sum file attribute from
+the same byte stream that gpg(1) claims is authenticate.
+<PROGRAMLISTING>
+  #!/bin/sh
+  grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+  tar cf - -b1 --owner=root --group=root \\
+  --no-recursion --files-from=- | md5sum
+
+  tar cf - -b1 --owner=root --group=root \\
+  --exclude=namedir/catalog/dfiles/signature  \\
+  namedir/catalog | tar xf - -O  namedir/catalog/dfiles/md5sum
+</PROGRAMLISTING>Likewise for the sha1 digest.
+</PARA>
+<PARA>
+If the package has symbolic links, Verify the adjunct_md5sum:
+<PROGRAMLISTING>
+  #!/bin/sh
+  grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+  ( while read file; do if [ ! -h $file ]; then echo $file; fi done; )|\\
+  tar cf - -b1 --owner=root --group=root \\
+  --no-recursion --files-from=- | md5sum
+  cat namedir/catalog/dfiles/adjunct_md5sum
+</PROGRAMLISTING>The symbolic link files must be verified manually by comparing to the INFO file
+information.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Verifying a POSIX distribution in tar format
+</TITLE>
+<PARA>
+Below is output from successful authentication.  The authentication requires
+checking the archive md5 message digest (and sha1 if present).
+All present message digests must succeed and if this is true then
+the signed file is written and gpg proceeds to check the signature.
+If the <FILENAME>sig_header</FILENAME> file is present then the requirement 
+that its data be identical to the ustar header of every signature file is
+enforced.
+If any one of these checks fails, authentication fails.
+<SBR>
+<VERB>
+<PROGRAMLISTING>
+   #!/bin/sh
+   swverify --checksig mypackage-00.1.tar.gz
+        # - or -
+   swverify -d @- < mypackage-00.1.tar.gz
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+<VERB><SBR>
+<PROGRAMLISTING>
+gpg: /home/userx/.gnupg/options:82: deprecated option "honor-http-proxy"
+gpg: please use "keyserver-options honor-http-proxy" instead
+gpg: WARNING: using insecure memory!
+gpg: please see http://www.gnupg.org/faq.html for more information
+swbis: Archive digest: md5 OK (Good)
+swbis: Archive digest: sha1 OK (Good)
+gpg: Signature made Sun Mar 16 20:28:23 2003 EST using DSA key ID 82B0DBE4
+gpg: Good signature from "Test User (pass=Iforgot) <nobody@localhost>"
+Primary key fingerprint: 77BB A98E B3A2 ED4C 217E  8A25 2BF4 28AB 82D0 DDE4
+</PROGRAMLISTING>
+</VERB>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Verifying the Directory Form of a Distribution
+</TITLE>
+<PARA>
+Authenticating using 'swverify' is subject to the same constraints as
+verifying manually using GNU tools because swverify implements this using GNU tools.
+
+'swverify' when verifying the directory form of a distribution attempts to
+authenticate the exported catalog signature.  If it is successful it executes the 'checkdigest'
+script found in the 'catalog/dfiles' directory of the exported
+catalog.  If the 'checkdigest' script does not exist, authentication fails. 'swverify'
+will only attempt to run the 'checkdigest' script if it is found in the dfiles directory of
+an authenticated catalog.
+
+'swverify' currently has no provision to verify the archive section (i.e. the
+file storage structure) of a directory (unpacked) form of a POSIX distribution.
+It is the role of the checkdigest script to do this.
+
+For example, if filemypackage-00.1 is a directory unpacked with a tar reading utility
+that preserved file times then try,
+
+<VERB>
+<PROGRAMLISTING>
+   #!/bin/sh
+   swverify --checksig mypackage-00.1
+</PROGRAMLISTING>
+</VERB>
+or change directory into mypackage-00.1
+and use the POSIX syntax:
+<VERB>
+<PROGRAMLISTING>
+   swverify -d @.
+</PROGRAMLISTING>
+</VERB>
+
+<VERB>
+<PROGRAMLISTING>
+   swverify -d @`pwd`/mypackage-00.1
+</PROGRAMLISTING>
+</VERB>
+Below is example output of a package with a 'checksig' script.
+
+<VERB><SBR>
+<PROGRAMLISTING>
+swverify: Attempting to verify using --posix tar option.
+gpg: /home/userx/.gnupg/options:82: deprecated option "honor-http-proxy"
+gpg: please use "keyserver-options honor-http-proxy" instead
+gpg: WARNING: using insecure memory!
+gpg: please see http://www.gnupg.org/faq.html for more information
+gpg: Signature made Sun Mar 16 21:00:54 2003 EST using DSA key ID 82B0DBE4
+gpg: BAD signature from "Test User (pass=Iforgot) <nobody@localhost>"
+swverify: First attempt failed.
+swverify: Attempting to verify without using --posix tar option.
+gpg: /home/jhl/.gnupg/options:82: deprecated option "honor-http-proxy"
+gpg: please use "keyserver-options honor-http-proxy" instead
+gpg: WARNING: using insecure memory!
+gpg: please see http://www.gnupg.org/faq.html for more information
+gpg: Signature made Sun Mar 16 21:00:54 2003 EST using DSA key ID 82B0DBE4
+gpg: Good signature from "Test User (pass=Iforgot) <nobody@localhost>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 77BB A98E B3A2 ED4C 217E  8A25 2BF4 28AB 82D0 DDE4
+swverify: GPG signature verified.
+swverify: Got it!
+swverify: The vendor extension script checksig can now be executed.
+checksig: Checking files OK (Good)
+checksig: Checking Archive md5 OK (Good)
+checksig: Checking Archive sha1 OK (Good)
+gpg: /home/userx/.gnupg/options:82: deprecated option "honor-http-proxy"
+gpg: please use "keyserver-options honor-http-proxy" instead
+gpg: WARNING: using insecure memory!
+gpg: please see http://www.gnupg.org/faq.html for more information
+gpg: Signature made Sun Mar 16 21:00:54 2003 EST using DSA key ID 82B0DBE4
+gpg: Good signature from "Test User (pass=Iforgot) <nobody@localhost>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 77BB A98E B3A2 ED4C 217E  8A25 2BF4 28AB 82D0 DDE4
+checksig: Signature proper OK (Good)
+checksig: /usr/bin/gpg exit status : 0
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Verifying Installed Software
+</TITLE>
+<PARA>
+(This capability is only partially implemented.)
+Verifying Installed Software involves comparing the package
+meta-data to the live file system.  The validity of a successful
+comparison depends on the validity of the installed software catalog.
+swverify makes no attempt to check the validity of the entire
+catalog, however, it can use the distribution GPG signature, which
+is stored in the catalog, to authenticate the meta-data of the selected
+package.
+</PARA>
+<PARA>
+Below is an example. Note, the package is selected on the basis of its
+product or bundle tag.
+</PARA>
+<VERB>
+<PROGRAMLISTING>
+$ swverify -r your_product_tag @ /
+swverify: verifying installed software at:
+swverify: //var/lib/swbis/catalog/swbis/your_product_tag/0.000/0
+gpg: WARNING: --honor-http-proxy is a deprecated option.
+gpg: please use "--keyserver-options honor-http-proxy" instead
+gpg: Signature made Fri Feb 20 00:21:00 2004 EST using DSA key ID 82B0DBE4
+gpg: Good signature from "Test User (pass=Iforgot) <nobody@localhost>"
+Fingerprint: 77BB B98D A3A2 ED4C 217E  9A25 8BF4 05AB 82B0 DBE4
+swverify: Warning: file checks not implemented
+swverify: signature verification return status=0
+</PROGRAMLISTING>
+</VERB>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Create the digest byte stream -Wemit-digest-file mode:
+</TITLE>
+<PARA>
+Here are some examples that verify the archive digests.
+</PARA>
+<PARA>
+<PROGRAMLISTING>
+   #!/bin/sh
+   cat your-tarball | swverify -Wd -WS | md5sum
+</PROGRAMLISTING>
+</PARA>
+<PARA>
+Your should see a pair of identical digests. Use the -Wsha1 option to check the
+sha1 digest in a similar manner.
+</PARA>
+<PARA>
+** IMPORTANT **<SBR>
+This does not mean that the data is authenticate
+in the sense of being attributable to a person,
+merely that the md5sum attribute and the payload byte stream match.
+</PARA>
+<PARA>
+To inspect the digested data, try:
+<PROGRAMLISTING>
+  #!/bin/sh
+  cat your-tarball | swverify -WS | tar tvf -
+</PROGRAMLISTING>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Create the signed byte stream -Wemit-signed-file mode:
+</TITLE>
+<PARA>
+Here is an example which allows inspection of the signed file.
+</PARA>
+<PARA>
+<PROGRAMLISTING>
+  cat your-tarball | swverify -WC | tar tvf -
+</PROGRAMLISTING>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+-Wget-sig-if mode:
+</TITLE>
+<PARA>
+This is the mode that is used internally when verifying a tarball.
+Below is an example of using this mode manually.
+</PARA>
+<PARA>
+<PROGRAMLISTING>
+  #!/bin/sh
+  cat your-tarball | swverify -Wget-sig-if=/dev/tty | \\
+  gpg --verify  /dev/tty -
+</PROGRAMLISTING>
+</PARA>
+<PARA>
+Now try to copy and paste the sigfile and gpg should attempt to verify the signature.
+<NOTE>
+This verifies the md5 or sha1 digests before writing the signed data to stdout.
+If the sha1 or md5 match fails then an empty file is written to stdout.
+</NOTE>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+EXAMPLES
+</TITLE>
+<PARA>
+Examples of verifying distributions and installed software.
+</PARA>
+<REFSECT2>
+<TITLE>
+Distribution Verification
+</TITLE>
+<PARA>
+* Verify a tar archive
+</PARA>
+<PROGRAMLISTING>
+  swverify -d < foo-1.1.tar.gz 
+           or
+  swverify -d @`pwd`/foo-1.1.tar.gz 
+           or
+  swverify -d @:foo-1.1.tar.gz 
+           or
+  cat foo-1.1.tar.gz | swverify -d @-
+
+          Note: --checksig and '-d' perform the same operations.             
+</PROGRAMLISTING>
+<PARA>
+* Verify a unpacked distribution
+</PARA>
+<PROGRAMLISTING>
+  swverify -d @`pwd`/foo-1.1
+           or
+  cd foo-1.1; swverify -d @.
+           or
+  swverify -d @:foo-1.1
+
+          Note: --checksig and '-d' perform the same operations.             
+</PROGRAMLISTING>
+<PARA>
+* Verify an exported SCM Directory
+</PARA>
+<PROGRAMLISTING>
+  # This is the same as directory verification except the '--cvs' option is needed.
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Installed Software Verification
+</TITLE>
+<PARA>
+* Verify installed software
+</PARA>
+<PROGRAMLISTING>
+  swverify foo.foo @/tmp/test
+           or
+  swverify foo.foo  # at default target
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+Exit status of the checksig script or gpg utility for --checksig directory operation.
+0 if successful on all targets, 1 if failed on all targets, 2 if failed on some targets.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+/var/lib/swbis/catalog # Location of installed catalog
+/usr/lib/swbis/swdefaults
+/usr/lib/swbis/swbisdefaults
+$HOME/.swbis/swdefaults
+$HOME/.swbis/swbisdefaults
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999), Open Group CAE C701.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+info swbis
+</PARA>
+<PARA>
+<PROGRAMLISTING>
+sw(5), swbis(1), swign(1), swpackage(8), gpg(1), libexec/swbis/arf2arf
+</PROGRAMLISTING>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<PARA>
+<VERB>
+ swverify: The verification utility of the swbis project.
+ Author: Jim Lowe   Email: jhlowe at acm.org
+<!-- External Entity  --> &version;
+Last Updated: 2010-02-04
+ Copying: GNU Free Documentation License
+</VERB>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+The signature file's archive header (or data) is not part of the signed
+data therefore it may be subject to undetectable tampering, however, swverify
+does perform sanity checks on the pathname, permissions and filetype if
+the <FILENAME>sig_header</FILENAME> file (See sw(5) manual page.) is not present
+[due to being signed by a old swpackage version], and if <FILENAME>sig_header</FILENAME>
+is present, swverify requires that it match the sig file header.
+The ability to verify the unpacked directory
+form of the package depends on many factors not immediately obvious, among them are the
+tar header uname and gname, and whether they are preserved by the reading utility,
+and whether these names are in the system database files
+/etc/passwd and /etc/group, and if so, whether they assign the same uid/gid as
+the package.
+</PARA>
+<PARA>
+Verification of the directory form of a distribution (i.e. the installed tarball
+path name prefix) such as running 'swverify -d @.' after running 'swign @.' 
+will fail if the order of directory entries is not compatible with
+traditional Unix file system directory entry ordering, which is the order of file creation.
+This ordering is almost always apparent on Ext2 file system for small directories (but not
+always for big directories).  Ext3, reiserFS, and DarwinOS et.al file systems do not have
+this ordering, use of the '--order-catalog' option is therefore required.
+Use of the '--cvs' or '--order-catalog' options is theoretically problematic
+because it causes the use and interpretation of data in the verification of that
+same data therefore opening possible attack vectors.
+</PARA>
+</REFSECT1>
+</REFENTRY>

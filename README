@@ -1,0 +1,411 @@
+    swbis - Distributed Software Administration
+    --------------------------------------------
+              Version 1.13.3
+
+    swbis is a GNU package
+    The official home page is http://www.gnu.org/software/swbis
+
+    Please send bug reports to <bug-swbis@gnu.org>
+    
+    The latest version is found at
+    ftp://ftp.gnu.org/pub/gnu/swbis    
+ 
+    The entry in the FSF/UNESCO Free Software Directory is
+    http://directory.fsf.org/GNU/swbis.html
+
+    The maintainer is Jim Lowe  http://savannah.gnu.org/users/jhlowe
+    Please see the AUTHORS file
+
+Introduction
+------------
+  swbis is a software administration system for GNU/Linux systems and
+  systems that are UNIX system-like. It implements the Open Group's CAE
+  Spec C701 (XDSA) Distributed Software Administration.  This spec
+  closely follows ISO/IEC 15068-2:1999 (now withdrawn) which was
+  identical to IEEE 1387.2:1995.  The implementation relies on POSIX
+  functionality as provided by a typical GNU system.  It has security
+  enhancement extensions that use GNU Privacy Guard.  Although swpackage
+  is a self-contained tar writing utility and swinstall will use generic
+  tar for file loading, several features are based on bit-for-bit
+  sameness with the GNU tar POSIX tar interchange format and other GNU
+  tar features, hence, GNU tar is a special tool requirement to access
+  the full features of swbis.
+ 
+  Its package management features are unique. It is network transparent,
+  and requires no new programs, services, or configuration on the remote
+  target host. It connects to remote hosts using the stock system ssh
+  client program and executes the POSIX shell which must be one of
+  /bin/bash, /bin/ksh (public domain, recent AT&T ksh93, or mksh), or
+  OpenSolaris /usr/xpg4/bin/sh.  It connects to POSIX shell via its
+  standard input using its unique ability to read shell program code
+  and data on stdin.  File loading (for installation) is performed by
+  the system tar (/bin/tar) command.
+  
+  It is back compatible with the tar archive format and typical file
+  layouts for source and run-time packages.  Its security features include
+  multiple embedded package signatures and MD5, SHA-1, and SHA-2 digests
+  for the payload and individual files.  The package management utilities
+  can operate locally or from a central host to a heterogeneous collection
+  of remote U*IX-Like hosts with supported checks for reinstall, downdate,
+  compatibility and prerequisites.
+
+  In addition to package management, there are several other applications
+  of the package management utilities:  Format translation of RPM and
+  dpkg packages (swpackage), data copying from host to host (swcopy),
+  creation of tar archive distributions from a detailed recipe file
+  (swpackage and swign), and the ability to sign a directory and verify
+  it thus to act as a directory content integrity checker (swign and
+  swverify).
+  
+    * ISO/POSIX Utilities (location: <prefix>/bin) :
+
+       swcopy - Distribution copying utility.
+       swpackage -  Packages files according to a PSF file.
+       swverify -  Authenticates a signed package.
+       swinstall  -  Install a posix package
+       swlist  -  List the catalog
+       swremove  -  Remove installed software
+       swconfig -  Configure installed software
+ 
+    * Non-POSIX (Ad Hoc) Utilities (location: <prefix>/bin) :
+
+       swign   -  Signs a directory by loading the ./catalog/ directory
+                  into the current directory.
+
+    * Non-POSIX Library Utilities (location: <libexecdir>/swbis) :
+           (et.al., others not mentioned)
+
+       swbistar - write a tar archive (not used by any utility)
+       swbisparse - parse INFO, INDEX, and PSF files (not used by
+                  any utility)
+       lxpsf   -  The first step translator for RPM,deb packages
+                  (used by swpackage when translating).
+       arf2arf - Internal Library interface utility to extract and
+		  verify the signed and digested byte streams. (used
+                  by swverify)
+       iswverify - swverify helper, used by swverify  
+
+ 
+Requirements
+------------
+    Compilation:
+    ------------
+
+    GNU make is required and zlib.a
+    With these satisfied swbis should compile on almost any
+    GNU/Linux or BSD host.
+    
+    For Use (in general):
+    ---------------------
+
+    To support complete functionality of the utilities, /bin/bash (or
+    public domain ksh as /bin/ksh) and GNU tar as /bin/tar (or as
+    /bin/gtar with special options) are required.  For verification and
+    signing GNU gpg is required.   GNU tar is only required when using
+    the 'swign' utility or certain features of swlist, in other contexts
+    'pax' or 'tar' can be specified for archive reading and writing.
+    GNU tar can be installed as /bin/gtar with appropriate changes to
+    the 'swbisdefaults' configuration file.
+
+    For further details on the shell requirement and a strategy for host
+    compatibility: 
+
+        see swbis(7) : LANG=C nroff -man <doc/man/man7/swbis.7 | less -r
+
+    For use on BSD and UNIX systems:
+    --------------------------------
+
+    Out-of-the box BSD systems are supported.
+    Compile like this:  (you need GNU make)
+
+         POSIXSHELL=/bin/ksh ./configure && gmake
+
+         Note: The POSIX shell need not be /bin/sh, /bin/sh on BSD
+               systems works fine.
+
+    For the shell requirement, public domain ksh works fine and is probably
+    present on BSD systems, set the 'swbis_shell_command' option in 
+    $HOME/.swbis/swbisdefaults or /usr/lib/swbis/swbisdefaults.
+
+         swbis_shell_command = detect # {bash|ksh|sh|detect}
+
+   (Note: AT&T'93 ksh does not have the required POSIX feature and will not
+          work.  It will be detected and not used however).
+
+    This will auto detect bash or ksh or /bin/sh if suitable.  'detect' is
+    the builtin default setting for all the utilities and it will allows
+    universal operability to remote UNIX, BSD and GNU/Linux hosts.
+    
+          swbis_no_getconf = true
+          swbis_shell_command = detect
+
+    For swlist and swverify, set the 'write' pax command to 'detect'.  This
+    will cause 'pax' to be used instead of the system tar which on BSD does not
+    have the required special feature.  If GNU tar is present on all your hosts
+    specify it if you wish.
+
+          swlist.swbis_local_pax_write_command = detect
+          swverify.swbis_remote_pax_write_command = detect
+
+          swbis_local_pax_write_command = detect
+          swbis_remote_pax_write_command = detect
+          swbis_local_pax_read_command = tar # {tar|pax|gtar}
+          swbis_remote_pax_read_command = tar # {tar|pax|gtar}
+
+Documentation
+-------------
+    Info Document: type
+          info swbis
+              -or-
+          info -f ./doc/info/swbis.info
+
+    Manual pages:  sw(5), swcopy(8), swpackage(5), swpackage(8)
+    swverify(8), swign(1) 
+          For example:
+	    nroff -man <doc/man/man8/swpackage.8 | less -r
+
+KNOWN BUGS
+----------
+    SWINSTALL with a Linux kernel and OpenSSH sshd (Extremely Rare)
+    -------------------------------------------------------------- 
+         (August 2008:  This seems to be fixed by OpenSSH 5.1p1)
+
+    It seems that swinstall with certain packages when accessing
+    a Linux kernel host via OpenSSH sshd (using ssh protocol v2) will fail.
+    When the failure occurs the swinstall will give a message like:
+
+    swinstall: Warning: 30 NUL blocks at start of input for task Catalog directory removal
+    tar: Unexpected EOF in archive
+    tar: Error is not recoverable: exiting now
+    swinstall: SWI_TASK_ENDS on target host low20.lowland.com: load fileset: status=2
+    swinstall: SW_SOC_LOCK_REMOVED on target host low20.lowland.com: status=0
+    swinstall: SW_SESSION_ENDS on target host low20.lowland.com: status=1
+    swinstall: error loading fileset
+    swinstall: SWBIS_TARGET_ENDS for @localhost:/tmp/aabbxx: status=1
+
+    A subsequent (immediate) retry may succeed, in fact the failure
+    may be reproducable only 1 time out of 20 or 30 attempts but only for
+    that particular package.  Another package may never exibit the bug.  It
+    seems dependent on CPU and network speed, and I/O pattern, and CPU load.
+    The probablility of failure increases if a multi-hop ssh target is used
+    such as   swinstall [...] @ localhost:localhost:localhost:/tmp/xxtest
+    which chains together three sshd servers.
+
+        Work-Arounds
+        ------------
+        Try one of the following:
+        1)  Run the exact command again, it will probably work.
+        2) --burst-adjust=8000 --pump-delay=100000 # add a 100000 nanosec
+                                                   # delay every 8000 bytes
+        Investigators may try:
+        3) --ssh-options=1                # Use ssh protocol version 1
+        4) --remote-shell=rsh             # Use rsh
+           
+    It has *never* been seen on a BSD kernel, nor for local installs [that
+    do not use ssh], nor when using rsh instead of ssh.  It can be exibited
+    with a single host using localhost and and a ssh OpenSSH
+    server 4.x - 5.x versions.
+
+    This bug was first noticed in 2004 on a 2.4.x kernel, OpenSSH v3.9 may
+    mask the occurance.
+
+      [Update --- August 2008]
+      -----------------------
+      OpenSSH 5.1p1 seems to make this problem disappear.
+      The issue probably involved the "error fd race" which
+      was claimed to be fixed in this release.  This makes sense
+      since swinstall (and all swbis utilities) make unusual heavy
+      use of stdout, stdin, and stderr at the same time.  Also in
+      SSH protocol v2, the stderr fd was relegated to a separate
+      internal mechanism whereas in protocol v1 they were implemented
+      symmetrically.  This might explain why the BUG does not appear
+      when using protocol v1.
+
+    AWK
+    ---
+    The awk code in swsupplib/shell_lib/shell_lib.sh trips a bug in
+    /usr/xpg4/bin/awk on Solaris hosts (OpenSolaris build 54) when using
+    relops (applied to revision numbers) in selections. Replacement
+    of /usr/xpg4/bin/awk with gawk, mawk, or awk (the awk-book awk
+    from AT&T) fixes the problem. A work-around to allow all awks
+    to work has not been devised.
+    For example:
+        # swlist --products as1\*,r\>1.0 
+    lists nothing,
+    but replacing awk properly lists the catalog entry:
+        as10k1                  r=1.0.8         v=1mdk
+
+    All distributed SW<utilities>
+    -----------------------------   
+    If you hit ctrl-c during a remote install, stranded shell processes
+    and its sshd parent might be left running on the target host.
+    To clean this up, do:
+         swremove --cleansh @ USER@HOST    # i.e. Same USER and HOST
+
+    SSH Oddities and Observations
+    -----------------------------
+    Problems were observed when running swinstall on a SunOS host
+    (SunOS sparc-solaris1 5.9) using the Sun ssh client (Sun_SSH_1.0)
+    The problem only affected installs to remote hosts and seemed to
+    go away if an OpenSSH ssh client was used instead of Sun's.
+
+How to install
+--------------
+    Simply,
+
+	./configure && make
+
+    See the file INSTALL for more details.
+ 
+To make the autotools
+--------------------
+ aclocal && autoconf && autoheader && automake
+
+To make under a different revision
+----------------------------------
+	# Example
+	sh bin/reversion.sh 1.0.10a
+	./configure && make && make distclean
+ 
+Internal Design of the sw<utilities> (except swpackage)
+--------------------------------------------------------
+
+,-------------------------------------.
+| # Target Script read from stdin     |
+|   "(                                |
+|   bash -s # < Task_Script_1         |
+|   bash -s # < Task_Script_2         |
+|   bash -s # < Task_Script_3         |
+|   )"       ^                        |
+|           /|\  ,-----<< Data        |
+|            |   |    ,---<< Errors,  |
+|            |   |    |      Protocol |
+|           fd0 fd1  fd2              |
+`------------o---o----o---------------'
+            /|\  |    |
+             |   |   \|/
+             |  \|/   |
+        ,----o---o----o---.
+        |   fd1  fd0  fd2 |
+        |                 |
+        |    (bash -s)    |
+        |                 |
+        |   fd0  fd1  fd2 |
+        `----o----o---o---'
+             |    |   |
+             |    |   |
+        ,----o----o---o---.
+        |   fd0  fd1  fd2 |
+        |                 |
+        |      (sshd)     |
+        `---------o-------'     TARGET HOST
+                  |            -------------
+                  |                NETWORK 
+      ,-----------o----------.
+      |   Public Network     |  1 or more "ssh hops"
+      `-----------o----------'
+                  |                NETWORK 
+                  |            -----------------
+        ,---------o-------.     MANAGEMENT HOST
+        |       (ssh)     |
+        |                 |
+        |   fd0  fd1  fd2 |
+        `----o----o----o--'
+             |    |    |
+            /|\   |   errors &
+             |    |  protocol events &
+             |  data   |    control script output
+          script  |   \|/
+             &    |    | 
+           data  \|/   `------------------------,
+             |    |                             |
+        ,----o----o----o------------.           |
+        |  fdN   fdM   fdP (closed) |           |
+        |                           |          \|/
+        |     (Main Program)        |           |
+        |  sw<utility> [Parent]     |       ,---o-------------------,
+        |                           |       |  fd E                 |
+        |                           |       |                       |
+        |                           |       |  (Logger Process)     |
+        |                           |       | sw<utility> [child]   |
+        |                           |       |                       |
+        | 1: Send Main Target Script|       | Process SWI_<events>  |
+	|                           |       |                       |
+        |                           |       | Monitor Remote stderr |
+        | 2: Send Task_Script_N     |       | Send Events to Parent |
+        |    Monitor SWI_<events>   | event | \ /                   |
+        |     (See swicol.c)        |  fd   |  |                    |
+        |    Wait for END event <---o---<---o--'                    |
+        |    Check exit status      |       |                       |
+        |        messages.          |       |       Write to stderr |
+        |                           |       |             \|/       |
+        |                           |       | Write Log    |        |
+        |                           |       |   \|/        |        |
+        `--o----------------o-------'       `----o---------o--------'
+           |                |                    |         |
+       STDIN_FILENO      STDOUT_FILENO          LOG    STDERR_FILENO
+   
+
+Debugging and Hacking
+---------------------
+
+   Make program execution verbose:
+   -------------------------------
+
+   Add verbose switches, up to ten (10)
+   may have increasing effect, for example
+                 swcopy  -vvvvvv
+   -x verbose=8  , same as -vvvvvvvvv
+   -v
+   --debug-verbose 
+   --debug-events  Show the internal events listing to stderr
+   --swi-debug-name=NAME  write a ascii dump of the the internal package object
+
+
+   Inspect the scripts that are generated
+   --------------------------------------
+
+   Try these options:
+
+   --debug-task-scripts   write the individual task scripts to files in /tmp
+   --source-script-name=NAME  write the main script to NAME.
+   --target-script-name=NAME  write the main script to NAME.
+                              NAME may be a number, for example 2 meaning stderr
+
+   The --debug-task-scripts option fills /tmp with files like:
+        /tmp/swbis_task_load_control.sh
+        /tmp/swbis_task_Remove_catalog_entry
+        /tmp/swbis_task_Make_catalog_entry_directory
+        /tmp/swbis_task_Lock_Session
+
+   To run a task script manually from the command line for testing,
+   you must provide input it expects, scripts which do not receive input
+   always will read one block of data.
+
+      For example:
+
+       (cat  /tmp/swbis_task_Remove_files; dd if=/dev/zero count=1) |
+       (cd / && bash -s -vx ) 1>/tmp/xxout 2>&1
+
+
+   Turn on Debugging statements
+   ----------------------------
+   
+   Define this at the top of every file .c or .cxx on a
+   file-by-file basis:
+
+       #define FILENEEDDEBUG 1
+
+   Then recompile.  This turns on E_DEBUG statements that appear
+   in source code as:
+
+       E_DEBUG("msg");
+       E_DEBUG2(format, arg1);   /* like sprintf, fprintf, etc */
+       E_DEBUG3(format, arg1, arg2);
+
+
+   Turn on older (deprecated, maybe broken) debugging statements
+   ----------------------------------------------------------------
+        See  include/debug_config.h
+
+End of README

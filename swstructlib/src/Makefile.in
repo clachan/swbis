@@ -1,0 +1,185 @@
+srcdir = @srcdir@
+topdir = @topdir@
+
+# GNU make targets
+#all
+#install
+#install-html
+#install-dvi
+#install-pdf
+#install-ps
+#uninstall
+#install-strip
+#clean
+#distclean
+#mostlyclean
+#maintainer-clean
+#info
+#dvi
+#html
+#pdf
+#ps
+#dist
+#check
+#
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+
+include $(topdir)/Makefile.inc
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+srcdir= @srcdir@
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+#LIBEFENCE = -lefence
+
+SWSLIB = swstructlib.a
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -ldl
+LDFLAGS=-dynamic -ldl
+
+################################### Leave this stuff alone
+
+### These are variables meant to be exported
+
+VPATH = $(srcdir)
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+# -----------------------------------------------------------------------
+SWSTRUCT_DIR=swstruct
+@SWSTRUCT_DIR_@
+
+SUBDIRS = misc archive swmetadata $(SWSTRUCT_DIR) swexport
+
+INSTSUBDIRS = lib @PO@
+OTHERSUBDIRS =
+OBJS =
+PROGS = 
+LIBS = @LIBS@
+LIB=$(SWSLIB)
+
+
+SWSTRUCTLOADLIB=$(topdir)/swstruct/swstruct.a
+@SWSTRUCTLOADLIB_@
+
+LOADLIBES = $(topdir)/misc/misc.a $(SWSTRUCTLOADLIB) $(topdir)/swexport/swexport.a $(topdir)/swmetadata/swmetadata.a $(topdir)/archive/archive.a
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: makelibdir $(LIB) $(PROGS)
+
+makelibdir:
+	rm -fr lib
+	mkdir lib
+
+installlib: all copylibif
+
+copylibif: ../$(LIB)
+
+../$(LIB): $(LIB)
+	/bin/cp -p $(LIB) ..
+
+$(topdir)/misc/misc.a: $(wildcard $(topdir)/misc/*.h) $(wildcard $(topdir)/misc/*.cxx)
+	( cd $(topdir)/misc ; ${MAKE}; )
+
+$(topdir)/archive/archive.a: $(wildcard $(topdir)/archive/*.h) $(wildcard $(topdir)/archive/*.cxx)
+	( cd $(topdir)/archive ; ${MAKE}; )
+
+$(topdir)/swmetadata/swmetadata.a: $(wildcard $(topdir)/swmetadata/*.h) $(wildcard $(topdir)/swmetadata/*.cxx)
+	( cd $(topdir)/swmetadata ; ${MAKE}; )
+
+$(topdir)/swstruct/swstruct.a: $(wildcard $(topdir)/swstruct/*.h) $(wildcard $(topdir)/swstruct/*.cxx)
+	( cd $(topdir)/swstruct ; ${MAKE}; )
+
+$(topdir)/swexport/swexport.a: $(wildcard $(topdir)/swexport/*.h) $(wildcard $(topdir)/swexport/*.cxx)
+	( cd $(topdir)/swexport ; ${MAKE}; )
+
+make-subdirs:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE)) \
+		  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac;\
+	done && test -z "$$fail"
+
+install:
+
+$(LIB): $(LOADLIBES)
+	(cd tmp && /bin/rm -f *)
+	for d in $(SUBDIRS); do \
+		(cd tmp;  ar x $(topdir)/$$d/$$d.a); \
+	done	
+	(cd tmp;  $(AR) r ../$@ *)
+	(ranlib $@)
+
+.PHONY:		clean
+clean:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared tmp/*
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+	rm -f lib/*
+
+NOFILE:
+
+.PHONY:		distclean
+distclean:	
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	rm -f *.a *.o core *~ $(PROGS) rpm.shared librpmrc find-provides.sh find-requires.sh tmp/*
+	rm -f .depend config.h config.cache config.status config.log lib-rpmrc
+	rm -f swstruct/Makefile \
+		swmetadata/Makefile \
+		misc/Makefile \
+		archive/Makefile \
+		swexport/Makefile \
+		swmetadata/Makefile \
+		filedata/Makefile
+	rm -fr lib
+	rm -f Makefile Makefile.inc
+	rm -fr autom4te.cache
+
+.PHONY:		depend
+depend:
+#	for d in $(SUBDIRS); do \
+#		(cd $$d; $(MAKE) $@) ;\
+#	done
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

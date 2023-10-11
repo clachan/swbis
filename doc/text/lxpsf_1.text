@@ -1,0 +1,90 @@
+LXPSF(1)		    General Commands Manual		      LXPSF(1)
+
+
+
+NAME
+       lxpsf - Translate packages to a tar archive with a PSF.
+
+SYNOPSIS
+       lxpsf [options] [package_file]
+
+DESCRIPTION
+       Lxpsf  reads the input package and writes a tar or cpio archive to std‐
+       out, depending on the native (or	 encapsulated)	format	of  the	 input
+       package.	  The  output  layout  has  a  single  leading directory named
+       according to the name, version, and release attributes.
+
+       The first regular file is ``PSF'', and is a IEEE	 1387.2-1995  (ISO/IEC
+       15068-2:1999)  Product  Specification File containing the package meta‐
+       data.  Subsequent files are control data represented as files, and, the
+       files  of  the  distribution.   The output is designed so the swpackage
+       utility is able to form a Posix package from the installed output.
+
+       Currently,  RPM format v3 (both source and binary), Debian Package for‐
+       mat,  Slackware	runtime	 packages  and	plain vanilla tarballs (with a
+       leading directory path) are supported for translation.
+
+   Options
+       -p ,--psf-only
+	      Write only the psf file to stdout.
+
+       -A ,--psf-form1
+	      A PSF form for RPM translation (deprecated).
+
+       -A ,--psf-form2
+	      A second PSF form for RPM translation (deprecated).
+
+       -A ,--psf-form3
+	      A third PSF form for RPM translation (current).
+
+
+       -H format
+	      Force the specified format.  The	choices	 are  currently
+	      (only) ustar.
+
+       -x ,--use-recursive-fileset
+	      Use  "file  *"  instead of individual file definitions in
+	      the PSF.
+
+       -r ,--no-leading-path
+	      use "." as the leading archive path.
+
+       -o ,--info-only
+	      Write the INFO file for the rpm archive to stdout.
+
+       -D ,debug-level=TYPE
+	      Always set to "link"
+
+HOWTO Use with swpackage
+       Either install into file system or use the -W source=- option of
+       GNU swpackage.
+
+	 cat your_rpm.rpm |
+	 lxpsf --format=ustar --psf-form3 |
+	 (mkdir /tmp/swbis; cd /tmp/swbis && tar xpf -; exit $?) &&
+	 (cd /tmp/swbis && swpackage -s PSF @- ) | tar tvf -
+
+	 cat your_rpm.rpm |
+	 lxpsf --format=ustar --psf-form3 |
+	 swpackage -W source=- -s@PSF @- | tar tvf -
+
+FILES
+RELATED STANDARDS
+       POSIX.1, IEEE 1387.2, XDSA C701
+
+IDENTIFICATION
+	The RPM translation program of the swbis project.
+	DATE: 2010-02-22
+	Revision: 1.5
+
+SEE ALSO
+       swbisparse(1), swpackage(8)
+
+BUGS
+       Probably	 many. A de-facto conversion policy is intimated in the
+       PSF by this program.
+
+
+
+
+								      LXPSF(1)

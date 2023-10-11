@@ -1,0 +1,752 @@
+swinstall(8)		    System Manager's Manual		  swinstall(8)
+
+
+
+NAME
+       swinstall — Install POSIX and RPM packages.
+
+SYNOPSIS
+       swinstall [-p] [-r] [-s source_file] [-f file] \
+       [-t targetfile] [-x option=value]  [-X options_file] [-W option] \
+       [software_selections] [@target [target1...]]
+
+       swinstall -s -	 # Minimum unambiguous invocation.
+
+
+DESCRIPTION
+       swinstall installs a POSIX distribution from a source archive to a
+       target directory.  A POSIX distribution is a package, typically a
+       compressed tarball with metadata files in the prescribed file layout.
+       Neither swinstall nor any component of swbis is required on the target
+       host, however, the target host must look like a Unix system at the
+       shell and command-line utility level and have a POSIX shell.  Remote
+       network connections are made by ssh.  Ssh is the default but rsh can be
+       selected by a command line option.
+
+       By default and with no external influences (i.e. swdefaults file)
+       swinstall will read an archive on stdin and install all products and
+       filesets of package in "/" directory on the target host.	 An alternate
+       root may be specified using the target syntax.  The distribution source
+       directory (swbis default: stdin) is selectable via the defaults file,
+       therefore it should be specified in uncontrolled environments.
+
+       swinstall operates on  cpio or tar archives.  swinstall supports cpio
+       archives by first translating to tar format, therefore, to reduce the
+       data transformations performed by swinstall, distributors encouraged to
+       deliver products in tar format.
+
+       swinstall will create an entry in an installed software catalog.	 This
+       is a directory usually located at /var/lib/swbis/catalog.  Using this
+       information checks for upgrade, downdate, dependencies, and
+       reinstallation are made.
+
+OPTIONS
+       -f FILE
+
+	      Reads software_selections from FILE. (Not implemented).
+
+       -p
+
+	      Preview the operation.  Depending on the verbose level
+	      information is written to stdout.	 The target is not modified
+	      although a remote connection is established.
+
+
+       -r
+
+	      This option has no affect.
+
+
+       -s SOURCE
+
+	      Specify the source file SOURCE, "-" is standard input.  The
+	      syntax is the same as for a target.  SOURCE may be an archive
+	      file or stdin.
+
+       -t targetfile
+
+	      Specify a file containing a list of targets (one per line).
+
+       -x option=value
+
+	      Specify the extended option overriding the defaults file value.
+
+       -X FILE
+
+	      Specify the extended options filename, FILE,  overriding the
+	      default filenames.  This option may be given more then once. If
+	      the resulting specified value is an empty string then reading of
+	      any options file is disabled.
+
+       -v
+
+	      Given one time it is identical to -x verbose=2.  This option can
+	      be given multiple times with increasing effect.  (Implementation
+	      extension option).
+	      -v  is level 2, -vv is level 3,... etc.
+		  level 0: silent on stdout and stderr.
+		  level 1: fatal and warning messages to stderr.
+	      -v  level 2: level 1 plus a progress bar.
+	      -vv level 3: level 2 plus script stderr.
+	      -vvv level 4: level 3 plus events.
+	      -vvvv level 5: level 4 plus events.
+	      -vvvvv level 6: level 5 plus set shell -vx option.
+	      -vvvvvv level 7 and higher: level 6 plus debugging messages.
+
+       --version, -V
+
+	      Show version (Implementation extension)
+
+       --help
+
+	      Show help (Implementation extension)
+
+       -W option[,option,...]
+
+	      Specify the implementation extension option.
+	      Syntax: -W option[=option_argument[,option...]
+	      Options may be separated by a comma.  The implementation
+	      extension options may also be given individually using the
+	      '--long-option[=option_arg]' syntax.
+
+       -W preview-tar-file=FILE
+
+	      This is a testing/development option.  Writes the fileset
+	      archive to FILE.	This is the same data stream that would have
+	      been loaded on the target.  This option should only be used with
+	      the '-p' option.	The output sent to FILE is a tar archive but
+	      without trailer blocks.
+
+       -W remote-shell=NAME
+
+
+	      Defaults File Option: swbis_remote_shell_client
+
+	      This is the remote connection client program on the management
+	      (originating host).  The path NAME may be an absolute path (not
+	      located in $PATH).  The basename of NAME is used for
+	      intermediate hops.  Supported shells are "ssh" and "rsh".	 The
+	      default is "ssh".
+
+       -W quiet-progress
+
+	      Defaults File Option: swbis_quiet_progress_bar Disable progress
+	      bar, which is active for verbose levels 2 and higher (i.e. -v).
+
+       -W show-options-files
+	      Show the complete list of options files and if they are found.
+
+       -W show-options
+	      Show the options after reading the files and parsing the command
+	      line options.
+
+       -W pax-command={tar|pax|star|gtar}
+	      Set the portable archive command for all operations.  The
+	      default is "pax".
+
+       -W pax-read-command={tar|pax|star|gtar}
+	      Set the read command for local and remote hosts.
+
+       -W remote-pax-read-command={tar|pax|star|gtar}
+	      Defaults File Option: swbis_remote_pax_read_command
+	      Set the read command for remote hosts.  This is the command that
+	      runs on the target (e.g. pax -r, tar xpf -).  The default is
+	      "pax".
+
+       -W local-pax-read-command={tar|pax|star|gtar}
+	      Defaults File Option: swbis_local_pax_read_command
+	      Set the read command for local hosts.  This is the command that
+	      runs on the target (e.g. pax -r, tar xpf -).  The default is
+	      "pax".
+
+       -W pax-write-command={tar|pax|star|gtar|swbistar}
+	      Set the write command for local and remote hosts.	 This is the
+	      command that runs on the target (e.g. pax -w, tar cf -).
+
+       -W remote-pax-write-command={tar|pax|star|gtar|swbistar}
+	      Defaults File Option: swbis_remote_pax_write_command
+	      Set the write command for remote hosts.
+
+       -W local-pax-write-command={tar|pax|star|gtar|swbistar}
+	      Defaults File Option: swbis_local_pax_write_command
+	      Set the portable archive write command for local host
+	      operations.  This is the command that runs on the source (e.g.
+	      pax -w, tar cf -).  The default is "pax".
+
+       -W remote-pax-write-command={tar|pax|star|gtar|swbistar}
+	      Defaults File Option: swbis_remote_pax_write_command
+	      Set the portable archive write command for remote host
+	      operations.  This is the command that runs on the source (e.g.
+	      pax -w, tar cf -).  The default is "pax".
+
+       -W no-defaults
+	      Do not read any defaults files.
+
+       -W no-remote-kill
+	      Defaults File Option: swbis_no_remote_kill
+	      Disables the use of a second remote connection to tear down the
+	      first in the event of SIGINT or SIGTERM or SIGPIPE.  Only has
+	      effect if the number of ssh hops is greater than 1.  A single
+	      host remote connection (ssh hop = 1) never uses a second remote
+	      connection.
+
+       -W no-getconf
+	      Defaults File Option: swbis_no_getconf
+	      Makes the remote command be '/bin/sh -s' instead of the default
+	      'PATH=`getconf PATH` sh -s'.
+
+       -W shell-command=NAME
+	      Defaults File Option: swbis_shell_command
+	      This is the interactive shell on the target host.	 NAME may be
+	      one of "detect" "bash", "sh", "ksh"  or "posix" and specifies
+	      the remote command run by the remote shell.  "posix" is
+	      'PATH=`getconf PATH` sh -s', "bash" is "/bin/bash -s", "sh" is
+	      "/bin/sh -s", and "ksh" is "ksh -s".  The default is "detect".
+
+       -W use-getconf
+	      Opposite of --no-getconf.
+
+       -W allow-rpm
+	      Defaults File Option: swbis_allow_rpm
+	      Enable automatic detection, translation to POSIX format, and
+	      installation of RPMs.
+
+       -W pump-delay1=NANOSECONDS
+	      Adds a NANOSECONDS delay (999999999 nanoseconds ~ 1 second)
+	      every ADJSIZE bytes in the file data byte pump.  A delay of
+	      10111000 nanoseconds (~1/100th second) is added for 2-hop or
+	      greater target (i.e more than 1 remote host in the target spec).
+	      This is a work around for a bug in OpenSSH [or Linux kernel]
+	      that is seen for multi-hop installs where the intermediate host
+	      is a Linux kernel.  If 2-hop install fails, try it again, you
+	      may get lucky, or, increase this delay, or, use ssh protocol
+	      version 1 by using ''--ssh-options=1'', or try a 2-hop install
+	      where the middle host is BSD.  To disable delay for multi-hop
+	      targets specify zero.  For more information about this bug see
+	      the README file from the source distribution.
+
+       -W burst-adjust=ADJSIZE
+	      ADJSIZE is the pumped data size, in bytes, between the
+	      NANOSECONDS delays.  This is a work around for a bug in OpenSSH
+	      or the Linux kernel that is seen for multi-hop installs where
+	      the intermediate host is a Linux kernel.	The default is 72000
+	      for 2-hops or greater, and zero for single hop and localhost
+	      installs.
+
+       -W ssh-options=OPTIONS
+	      ssh client program options.  For example -W ssh-options=1 sets
+	      the '-1' ssh client option which specifies protocol version 1.
+
+       -W source-script-name=NAME
+	      Write the script that is written into the remote shell's stdin
+	      to NAME.	This is useful for debugging.
+
+       -W target-script-name=NAME
+	      Write the script that is written into the remote shell's stdin
+	      to NAME.	This is useful for debugging.
+
+       software_selections
+
+	      Refers to the software objects (products, filesets) on which to
+	      be operated. This is not implemented, however, specification of
+	      a location and qualifier are supported.  location allow
+	      specification of a alternate relative root path within the
+	      target path, and qualifier allows specification of a user-
+	      selectable modifier.  For example:
+
+	      swinstall q=exp @ 192.168.1.1  # Tag the package as experimental
+	      swinstall l=/unionfs/somepackage-1.0 @ 192.168.1.1  # Allows multiple
+					    # packages with same tag to exist in the
+					    # same target path, where the location
+					    # disambiguates.
+
+       target
+
+	      Refers to the software_collection where the software selections
+	      are to be applied.  Allows specification of host and pathname
+	      where the software collection is to be located.  A target that
+	      contains only one part is assumed to be a hostname.  To force
+	      interpretation as a path, use an absolute path or prefix with
+	      ':'.  The default target path for 'swinstall' is always '/'.
+
+
+       Source and Target Specification and Logic
+
+	    Synopsis:
+		 Posix:
+		      host[:path]
+		      host
+		      host:
+		      /path  # Absolute path
+
+		 Swbis Extension:
+		      [user@]host[:path]
+		      [user@]host_port[:path]
+		      :path
+
+		 Swbis Multi-hop Target Extension:
+		      # ':' is the target delimiter
+		   # '_' delimits a port number in the host field
+
+		      [user@]host[@@[user@]host[@@...]][:file]
+		      [user@]host_port[@@[user@]host[@@...]][:file]
+
+		      # Using ':', a trailing colon is used to
+		      # disambiguate between a host and file.
+		   # For Example,
+		      :file
+		      host:
+		      host
+		      host:file
+		      host:host:
+		      host_port:host_port:
+		      host:host:file
+		      user@host:user@host:
+		      user@host:user@host:host:
+		      user@host:user@host:file
+
+	    A more formal description:
+
+	    target : HOST_CHARACTER_STRING ':' PATHNAME_CHARACTER_STRING
+		   | HOST_CHARACTER_STRING ':'
+		   | HOST_CHARACTER_STRING
+		   | PATHNAME_CHARACTER_STRING
+		   | ':' PATHNAME_CHARACTER_STRING   # Impl extension
+		   ;
+
+	      PATHNAME_CHARACTER_STRING must be an absolute path unless
+			      a HOST_CHARACTER_STRING is given.	 Allowing
+			      a relative path is a feature of the swbis
+			      implementation.
+
+		       NOTE: A '.' as a target is an implementation
+			     extension and means extract in current
+			     directory.
+
+		       NOTE: A '-' indicating stdout/stdin is an
+			     implementation extension.
+
+		       NOTE: A ':' in the first character indicates a filename.
+			     This is an implementation extension.
+
+	      HOST_CHARACTER_STRING is an IP or hostname.
+
+	   Examples:
+	      Copy the	distribution /var/tmp/foo.tar.gz at 192.168.1.10
+		     swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+
+
+       Implementation Extension Syntax (multi ssh-hop) :
+	   Syntax:
+	   %start   wtarget    # the Implementation Extension Target
+			       # Note: a trailing ':' forces interpretation
+			       # as a host, not a file.
+	   wtarget   : wtarget DELIM sshtarget
+		     | sshtarget
+		     | sshtarget DELIM
+		     ;
+	   sshtarget : user '@' target # Note: only the last target
+		     | target	       # may have a PATHNAME, and only a host
+		     ;		       * may have a user
+	   target   : HOST_CHARACTER_STRING
+		    | PATHNAME_CHARACTER_STRING
+		    ;
+	   user	    : PORTABLE_CHARACTER_STRING	 # The user name
+
+	   DELIM    : ':'   # The multi-hop delimiter.
+		    ;
+
+INSTALLATION
+       Installation consists of an analysis phase and an execution phase.
+
+   Analysis Phase
+       The installed software catalog is queried and checks are made to detect
+       reinstallation, downdating (installing an older version).  Dependency
+       tests are made at this point.  If these checks pass or are overridden
+       by options, then the installed software catalog entry is created
+       (moving the old entry).	The checkinstall script is exectuted.  This
+       script should be non-interactive, idempotent, and read-only from the
+       system's perspective.  This script may exit with status of 0,1,2, or 3.
+       If the exit status is 3 (or 1) installation is rejected and the
+       installed catalog is restored.
+
+   Execution Phase
+       The preinstall script is executed, the fileset files are loaded by the
+       system tar utility and postinstall is executed.
+
+   o   Execution Script Environment
+       swinstall sets certain enviroment variables during execution.  The
+       values set are hard-coded in the control.sh script generated by
+       swinstall.
+
+       For example, execution of the postinstall script in package
+       foobar-1.0.tar.gz with the following layout
+
+       foobar-1.0/
+       foobar-1.0/catalog/
+       foobar-1.0/catalog/INDEX
+       foobar-1.0/catalog/dfiles/
+       foobar-1.0/catalog/foobar/
+       foobar-1.0/catalog/foobar/pfiles/
+       foobar-1.0/catalog/foobar/pfiles/INFO
+       foobar-1.0/catalog/foobar/pfiles/postinstall
+       foobar-1.0/catalog/foobar/bin/
+       foobar-1.0/catalog/foobar/bin/INFO
+
+       installed with the following command:
+
+       swinstall -x installed_software_catalog=/var/software/catalog \
+		 @ /mnt/test
+
+       will result in the following environment (among others, inspect
+       control.sh):
+
+	    SW_PATH=/bin:/usr/bin
+	    SW_ROOT_DIRECTORY=/mnt/test
+	    SW_CATALOG=var/software/catalog/foobar/foobar/1.0/0
+	    SW_CONTROL_TAG= postinstall
+	    SW_CONTROL_DIRECTORY=/mnt/test/var/software/catalog/\
+		      foobar/foobar/1.0/0/export/foobar-1.0/catalog/foobar/pfiles
+	    SW_SESSION_OPTIONS=/mnt/test/var/software/catalog/\
+		      foobar/foobar/1.0/0/session_options
+
+       SW_PATH is constructed using getconf(1) to locate the posix level
+       utilites, otherwise it is the same as PATH.
+
+       If the interpreter attribute from the INFO file, is 'sh' or unset, the
+       executed shell interpreter is /bin/bash,	 sh as found in the PATH
+       specified by getconf(1),	 or /bin/sh in this order.
+
+       As of swbis-1.12 (Version 1.12), control script execution begins with a
+       current working directory ($PWD) of SW_ROOT.  Prior to version 1.12,
+       initial current working directory was equivalent to
+       $SW_ROOT/$SW_CATALOG.
+
+
+INSTALLED SOFTWARE CATALOG
+       The form or format of an installed software catalog is not specified by
+       the ISO/IEC spec although it does specify an interface to it (e.g.
+       swlist utility) and operations on it.
+
+       This implementation creates a de-facto installed software catalog
+       rooted at the file system path specified by the value of the
+       installed_software_catalog extended option.  The catalog is a file
+       system hierarchy containing regular files and directories.
+
+       The catalog is typically located relative to the target path.  As of
+       swbis version 1.5, the catalog location may be specified using the file
+       URL syntax to indicate an absolute path.	 Any other form, such as an
+       unadorned absolute UNIX path will be treated as a path relative to the
+       target path.
+
+       For Example:
+       Below are example values of the installed_software_catalog extended
+       option found in the swdefaults file usually located in
+       $HOME/.swbis/swdefaults
+
+
+	  var/lib/swbis/catalog	  # Default, relative to target path
+
+	  /var/lib/swbis/catalog  # Same, leading slash not respected
+
+	  file://localhost/var/lib/swbis/catalog  # Really absolute
+
+	  file:///var/lib/swbis/catalog		  # Note triple leading slash
+
+   CATALOG FILE LAYOUT
+	<path>/
+	<path>/<ISC>/
+	<path>/<ISC>/<bundle>/
+	<path>/<ISC>/<bundle>/<product>/
+	<path>/<ISC>/<bundle>/<product>/<pr>/
+	<path>/<ISC>/<bundle>/<product>/<pr>/<seqence_number>/
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/export/
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/export/catalog.tar
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/export/catalog.tar.sig
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/export/catalog.tar.sig<N>
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/INSTALLED
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/control.sh
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/session_options
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/vendor_tag
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/location
+	<path>/<ISC>/<bundle>/<product>/<pr>/<sequence_number>/qualifier
+
+       <path> is the target path.  <ISC> is the value of the
+       installed_software_cataglog extended option.  <bundle> and <product>
+       are bundle and product tags.  If there is no bundle in the distribution
+       the product tag is used.	 <pr> is the product revision.	Other items
+       are explained below.
+
+   CATALOG LOCATION
+       /<path>/
+       /<path>/<installed_software_catalog>/
+       /<path>/<installed_software_catalog>/...
+
+       * Root or Alternate Root
+       /<path>/
+
+       <path>/ is the target path specified in the target syntax. By default
+       "/".
+
+       * Catalog Relative Root Directory
+       /<path>/
+       /<path>/<installed_software_catalog>/
+
+       <installed_software_catalog>/ is the value of the extended option by
+       the same name.  By default "var/lib/swbis/catalog".
+
+   PACKAGE CATALOG RELATIVE ROOT
+       /<{bundle|prod}.tag>/<prod.tag>/<prod.revision>/...
+
+	In other words, if 'product' and 'bundle' refers to tags, and
+       product_revision is the value of the product.revision attribute then
+       the path segment is:
+
+	/bundle/product/product_revision
+
+   CATALOG SEQUENCE NUMBER
+	/<sequence_number>/
+	/<sequence_number>/...
+
+       sequence_number is a decimal integer starting with '0'.	It is chosen
+       by swinstall to be unique at the time of installation.
+
+   CATALOG CONTENTS
+       <sequence_number>/
+	<sequence_number>/export/
+	<sequence_number>/export/catalog.tar
+	<sequence_number>/export/catalog.tar.sig
+	<sequence_number>/INSTALLED
+	<sequence_number>/control.sh
+	<sequence_number>/session_options
+	<sequence_number>/vendor_tag
+	<sequence_number>/location
+	<sequence_number>/qualifier
+
+       The export directory
+	export/
+	export/...
+	export/catalog.tar
+	export/catalog.tar.sig
+	export/catalog.tar.sig2
+		      ...
+	export/catalog.tar.sigN
+
+       The export/ is a file system directory and its name is constant for all
+       packages and is unique to the swbis implementation.  The
+       export/catalog.tar file is the signed file from the POSIX distribution.
+       The export/catalog.tar.sig file is the signature file from the
+       distribution.  If there is more than one signature, then it is the last
+       one.  export/catalog.tar.sig2 is the next to last signature, and
+       export/catalog.tar.sigN is the first one, where N is the total number
+       of signatures.
+
+       INSTALLED -- The state metadata file
+	<sequence_number>/INSTALLED
+
+       The INSTALLED file is similar to an INDEX file in its grammar and
+       syntax.	Unlike an INDEX file, it may contain control_file definitions.
+       The INSTALLED file stores the control script return codes and fileset
+       installation state.  It is updated several times during the operation
+       of 'swinstall'.	It can be parsed using	libexec/swbisparse and the
+       '--installed' option.
+
+       control.sh -- The master control script
+	<sequence_number>/control.sh
+	 SYNOPSIS: control.sh tag_spec script_tag
+
+       The control.sh file is a POSIX shell script that is automatically
+       generated by swinstall.	It provides a common interface for control
+       script execution.  Its primary purpose is to set up the script's
+       execution environment and map script tags to the control script
+       pathnames.  It assumes that 'export/catalog.tar' is unpacked in
+       export/.
+
+       session_options -- The extended options
+	<sequence_number>/session_options
+
+       This file contains the extended options in a form that may be executed
+       by the shell '.' (dot) command.	It is automatically generated by
+       swinstall.  The value of the SW_SESSION_OPTIONS environment variable is
+       the absolute pathname of the this file.
+
+   EXAMPLE CATALOG ENTRY
+       Below is an example entry of the catalog created by swbis version
+       0.405.  In this example, the target path is '/mnt/test', the
+       installed_software_catalog is '/var/lib/swbis/catalog/', the bundle tag
+       is 'foobare', the product tag is 'foobare-doc', and the product
+       revision attribute is '0.902'.
+
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export/catalog.tar
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/export/catalog.tar.sig
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/INSTALLED
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/control.sh
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/vendor_tag
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/location
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/qualifier
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/0/session_options
+
+	A deleted old catalog entry begin with '_', for example
+
+       /mnt/test/var/lib/swbis/catalog/foobare/foobare-doc/0.902/_0/...
+
+       Although swinstall does not depend on the file name as this
+       accommodates installing from standard input, a typical name for this
+       package would be:
+
+	      foobare-doc-0.902-sl04.tar.gz
+
+	where 'sl04' is the vendor tag.
+
+IMPLEMENTATION EXTENSIONS
+   Software Specification Targets
+       A dash '-' is supported and means stdout or stdin.  Operations with
+       stdout and stdin on a remote host is not supported.
+
+       A decimal '.' is supported and means the current directory.  This is
+       supported for remote and non-remote targets.  If the source is standard
+       input, the distribution will be unpacked (e.g. pax -r) in the directory
+       '.'.  If the source is a regular file then a regular file in '.' will
+       be created with the same name.
+
+
+   RPM Translation
+       RPM (RedHat Package Manager) format packages are installed by first
+       translating to an equivalent ISO/IEEE file layout in POSIX tar format
+       and then installing as a POSIX package.	This translation and detection
+       is transparent to the user if the ''--allow-rpm'' option is set in the
+       command line args or the swbis_allow_rpm is set to "true" by the
+       defaults files, otherwise an error occurs.
+
+       Since translation is done on the local (management) host, RPM is not
+       required on the remote (target) host.
+
+       The translation is (internally) equivalent to :
+
+	  cat your-0.0-1.bin.rpm |
+	  /usr/lib/swbis/lxpsf --psf-form2 -H ustar |
+	  swpackage -W source=- -s @PSF | swinstall -s - @/
+
+   Testing with RPM
+	To test the swbis components, a completely independent means to
+       install and verify a package is needed.	RPM provides this means and
+       can be used in the following way:
+
+	  rpm -i --nodeps --force your-0.0-1.i386.rpm  # Install
+	  rpm --verify --nodeps your-0.0-1	       # Show that all is well
+	  rpm -e --nodeps your-0.0-1		       # Remove it.
+	  rpm -i --nodeps --justdb your-0.0-1.i386.rpm # Install just the database.
+	  rpm --verify --nodeps your-0.0-1	       # Shows the files are missing.
+	  swinstall --allow-rpm -s - < your-0.0-1.i386.rpm
+	  rpm --verify --nodeps your-0.0-1	       # Show that all is well again
+
+EXTENDED OPTIONS
+       Extended options can be specified on the command line using the -x
+       option or from the defaults file, swdefaults.  Shown below is an actual
+       portion of a defaults file which show default values.
+
+   POSIX
+       These options are set in the /usr/lib/swbis/swdefaults or the
+       ~/.swdefaults
+
+	 allow_downdate		     = false	  # Not Implemented
+	 allow_incompatible	     = false	  # Not Implemented
+	 ask			     = false	  # Not Implemented
+	 autoreboot		     = false	  # Not Implemented
+	 autorecover		     = false	  # Not Implemented
+	 autoselect_dependencies     = false	  # Not Implemented
+	 defer_configure	     = false	  # Not Implemented
+	 distribution_source_directory	 = -	    # Stdin
+	 enforce_dependencies	     = false	  # Not Implemented
+	 enforce_locatable	     = false	  # Not Implemented
+	 enforce_scripts	     = false	  # Not Implemented
+	 enforce_dsa		     = false	  # Not Implemented
+	 installed_software_catalog  = var/lib/swbis/catalog
+	 logfile	     = /var/lib/sw/swinstall.log #Not Implemented
+	 loglevel		     = 0	  # Not Implemented
+	 reinstall		     = false	  # Not Implemented
+	 select_local	   = false	# Not Implemented
+	 verbose	   = 1
+
+   Swbis Implementation
+       These options are set in the /usr/lib/swbis/swbisdefaults or the
+       ${HOME}/.swbis/swbisdefaults file.
+
+	 swinstall.swbis_no_getconf = true # true or false
+	 swinstall.swbis_shell_command = detect # {detect|sh|bash|ksh|posix}
+	 swinstall.swbis_no_remote_kill = false # true or false
+	 swinstall.swbis_no_audit = false # true or false
+	 swinstall.swbis_quiet_progress_bar = false # true or false
+	 swinstall.swbis_local_pax_write_command=pax #{pax|tar|star|gtar}
+	 swinstall.swbis_remote_pax_write_command=pax #{pax|tar|star|gtar}
+	 swinstall.swbis_local_pax_read_command=pax #{pax|tar|gtar|star}
+	 swinstall.swbis_remote_pax_read_command=pax #{pax|tar|gtar|star}
+	 swinstall.swbis_enforce_sig=false # true or false
+	 swinstall.swbis_enforce_file_md5=false # true or false
+	 swinstall.swbis_allow_rpm=false # true or false
+	 swinstall.swbis_remote_shell_client=ssh
+	 swinstall.swbis_install_volatile=true
+	 swinstall.swbis_volatile_newname=     #empty string, e.g. ".rpmnew"
+
+RETURN VALUE
+       0 if all targets succeeded, 1 if all targets failed, 2 if some targets
+       failed and some succeeded.
+
+NOTES
+	Multiple ssh-hops is an implementation extension.
+
+REQUISITE UTILITIES
+       The swbis distributed utilities require bash, public domain ksh, or
+       ksh93 (version 2009-05-05), or Sun's /usr/xpg4/bin/sh to be present on
+       the target host.	 If the swbis_shell_command extended option is set to
+       'detect' you don't have to know which one is present, otherwise you may
+       specify one explicitly.
+
+       A POSIX awk is required, and with the ability to specify several
+       thousand bytes of program text as a command argument.  GNU awk  works,
+       as does the ATT Awk book awk, and the awk on BSD systems.  See the
+       INSTALL file for further details regarding a small issue with the
+       OpenSolaris (c.2006) awk.
+
+FILES
+	/var/lib/swbis/catalog # Location of installed catalog
+	/usr/lib/swbis/swdefaults
+	/usr/lib/swbis/swbisdefaults
+	$HOME/.swbis/swdefaults
+	$HOME/.swbis/swbisdefaults
+
+APPLICABLE STANDARDS
+       ISO/IEC 15068-2:1999, Open Group CAE C701
+
+SEE ALSO
+       info swbis
+
+       swcopy(8), sw(5), swbisparse(1), swign(1), swverify(8), swbis(1),
+       swbis(7)
+
+IDENTIFICATION
+	swinstall(8): The installation utility of the swbis project.
+	Author: Jim Lowe   Email: jhlowe at acm.org
+	Version: 1.13.1
+	Last Updated: 2014-02-12
+	Copying: GNU Free Documentation License
+
+BUGS
+       swinstall is subject to breakage if a user's account on an intermediate
+       (or terminal) host in a target spec is not configured to use a Bourne
+       compatible shell. (This breakage may be eliminated by use of the --no-
+       getconf option as explained above.)
+
+       A multiple ssh hop source spec  (more than 1 remote host involved in
+       the source transfer) upon a SIGINT may result in sshd and ssh processes
+       being left on on the intermediate host(s), this despite, swinstall's
+       action of sending a SIGTERM to the remote script's parent process.
+
+       swinstall does not currently implement Software Selections, not fileset
+       dependencies, and much more.  Only packages with one product and one
+       fileset are supported.
+
+
+
+								  swinstall(8)

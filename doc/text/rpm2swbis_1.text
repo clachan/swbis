@@ -1,0 +1,51 @@
+rpm2swbis(1)		    General Commands Manual		  rpm2swbis(1)
+
+
+
+NAME
+       swign — Convert an RPM to a IEEE 1387.2 layout tar archive.
+
+SYNOPSIS
+       rpm2swbis [options] [rpmfile|-]
+
+DESCRIPTION
+       rpm2swbis is a shell script which uses extension options of swpackage
+       and the swbis libexec program lxpsf.
+
+OPTIONS
+	    --help show this help to stdout.
+
+       These options correspond to the Extension options of swpackage.
+	    --files
+	    --archive-digests
+	    --digests
+	    --sign
+	    --homedir=home
+	    --local-user=name
+	    --dir=dir
+
+RETURN VALUE
+       0 on success, non-zero on failure.
+
+FILES
+       none
+
+SEE ALSO
+       swpackage(8), lxpsf(1)
+
+IDENTIFICATION
+	Copying Terms: GNU GPL
+	Last Updated: 2003-03-11.
+	Identification: Implementation extension administration program of
+       swbis.
+
+BUGS
+       No temporary files are used in the conversion process, just lots of
+       memory.	This capability was created as a testing tool of swpackage.
+       It seems to convert without any error messages about 95% of binary RPMs
+       and nearly 100% of source RPMs.	The accuracy of the file or metadata
+       after conversion has not been exhaustively confirmed.
+
+
+
+								  rpm2swbis(1)

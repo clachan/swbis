@@ -1,0 +1,26 @@
+--- pax-3.0/src/pax.1.rh1	2002-07-03 14:38:19.000000000 +0200
++++ pax-3.0/src/pax.1	2002-07-03 14:43:08.000000000 +0200
+@@ -720,7 +720,9 @@
+ .It Ar tar
+ The old BSD tar format as found in BSD4.3.
+ The default blocksize for this format is 10240 bytes.
+-Pathnames stored by this format must be 100 characters or less in length.
++Pathnames stored by this format must be 100 characters or less in length
++(including the trailing \0 character, which means that filenames can have 
++a maximum length of 99 characters).
+ Only
+ .Em regular
+ files,
+@@ -738,7 +740,11 @@
+ .St -p1003.2
+ standard.
+ The default blocksize for this format is 10240 bytes.
+-Pathnames stored by this format must be 250 characters or less in length.
++Filenames stored by this format must be 100 characters or less in length
++(including the trailing \0 character, which means that filenames can have 
++a maximum length of 99 characters).
++Pathnames (directorynames + filenames) stored by this format must be 
++250 characters or less in length.
+ .El
+ .Pp
+ .Nm

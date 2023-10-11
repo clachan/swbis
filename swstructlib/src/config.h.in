@@ -1,0 +1,23 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+#undef SWBISNEEDDEBUG
+#undef SWBISNEEDFAIL
+
+/* Define if you have the <sys/sysmacros.h> header file.  */
+#undef HAVE_SYSMACROS_H
+
+/* Define if you have the <sys/mkdev.h> header file.  */
+#undef HAVE_SYSMKDEV_H
+
+/* The size of a `int', as computed by sizeof. */
+#undef SIZEOF_INT
+
+/* The size of a `unsigned short', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_SHORT
+
+/* The size of a `unsigned int', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_INT
+
+/* The size of a `unsigned long', as computed by sizeof. */
+#undef SIZEOF_UNSIGNED_LONG
+

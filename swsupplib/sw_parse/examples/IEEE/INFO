@@ -1,0 +1,34 @@
+control_file
+	path	INFO
+	size	638
+	tag	INFO
+
+
+
+control_file
+	path	configure
+	size	3023
+	tag	configure	
+
+
+
+
+
+
+
+file
+	path	/usr/lbin/swagnetd
+	type	f	
+	size	2973696
+	chksum	3139283961
+	mode	0555
+	uid	0
+	gid	3
+	owner	root
+	group	sys
+	mtime	739080771
+control_file
+	path	unconfigure
+	size	375
+	tag	unconfigure	
+

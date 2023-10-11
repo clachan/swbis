@@ -1,0 +1,74 @@
+# PSF.destdir -- Example PSF for using DESTDIR for a binary package.
+# This file may be copied without restriction
+#
+# This PSF assumes you configure'd thusly:
+#   DESTDIR=`pwd`/tmp ./configure && make && make install
+#     and that swpackage is invoked in ./
+
+distribution
+    # The distribution object may be empty
+
+
+# Vendor definition,  optional.
+# A vendor definition is not required.
+vendor
+    the_term_vendor_is_misleading True  # One of: True, False
+
+    tag me001 # Only use ``GNU'' if an official release of a GNU project.
+              # You could use your initials, or any short character
+	      # string to disambiguate from the upstream distributor that
+	      # your release is a variation or bugfix of.
+	      # 
+	      # The vendor.<tag> ``me001'' should strive to be unique for a
+	      # given product.<tag>, not necessarily globally unique.
+ 
+    title mine
+    description "My custom set of packages"
+
+
+# A product definition is required 
+product
+   tag swbis			# This is the package NAME
+   control_directory ""
+   revision 0.1			# This is the package VERSION
+   # architecture i586-pc-linux-gnu  # Used for version disambiguation
+   # os_name Linux		# Used for Host compatibility check
+   # machine_type i?86		# Used for Host compatibility check
+
+   # Associate this product with a vendor definition  
+   vendor_tag me001		# Matches vendor object above, and acts
+				# as a RELEASE identifier
+
+#control_file
+#     source bin/postinstall.sh
+#     path configure
+ 
+#control_file
+#     source bin/postinstall.sh
+#     path postinstall
+
+fileset
+    tag BIN
+    control_directory ""
+    directory tmp/ /    # i.e. We compiled with DESTDIR set to `pwd`/tmp
+    file *		# Include all files in `pwd`/tmp
+
+    exclude /		# May be required as swinstall and swpackage BUG workaround
+
+    exclude usr/	# trailing slash means exclude directory, but not its
+			# contents, to exclude entire directory use
+			#   exclude dir/dirA/*    # or just dir/dirA
+	
+    exclude usr/local/  # Exclude directory archive members per your policy.
+    exclude usr/local/libexec/
+    exclude usr/local/bin/
+    exclude usr/local/lib/
+    exclude usr/local/share/
+    exclude usr/local/share/man/
+    exclude usr/local/share/man/man1/
+    exclude usr/local/share/man/man5/
+    exclude usr/local/share/man/man7/
+    exclude usr/local/share/man/man8/
+    exclude usr/local/share/info/
+
+# End of PSF

@@ -1,0 +1,99 @@
+<!-- 
+Copyright (C) 2004 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man sw_5.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented ftp sites.
+-- >
+<!DOCTYPE form
+[
+<!ENTITY swexout SYSTEM "swpackage_output.sgml">
+<!ENTITY swexin SYSTEM "swpackage_input.sgml">
+<!ENTITY swextdef SYSTEM "swpackage_extdef.sgml">
+<!ENTITY swpsfexamples SYSTEM "swpackage_examples.sgml">
+<!ENTITY swconventions SYSTEM "swpackage_conventions.sgml">
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY>
+<REFMETA>
+<REFENTRYTITLE>
+swpackage
+</REFENTRYTITLE>
+<MANVOLNUM>5</MANVOLNUM> 
+<REFMISCINFO>
+file formats
+</REFMISCINFO>
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+swpackage
+</REFNAME>
+<REFPURPOSE>
+file formats
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+Output format - Data Interchange Formats
+Input format - Product Specification File (PSF)
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+<REFSECT1>
+<!-- External Entity  --> &swexout; 
+</REFSECT1>
+<REFSECT1>
+<!-- External Entity  --> &swexin; 
+<REFSECT2>
+<!-- External Entity  --> &swextdef; 
+</REFSECT2>
+<REFSECT2>
+<!-- External Entity  --> &swconventions; 
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+POSIX.1, IEEE Std 1387.2-1995 (Identical to ISO 15068-2:1999),
+Open Group CAE C701.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<VERB>
+ XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm<SBR>
+ info swbis<SBR>
+ sw(5)<SBR>
+ swpackage(8)
+ swbisparse(1) -- An implementation extension parser utility.<SBR>
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<VERB>
+ Copyright (C) 2004,2005 Jim Lowe
+<!-- External Entity  --> &version;
+Last Updated: 2006-07-01
+ Copying Terms: GNU Free Documentation License
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+None
+</PARA>
+</REFSECT1>
+</REFENTRY>

@@ -1,0 +1,746 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (c) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document 
+under the terms of the GNU Free Documentation License, Version 1.1 or any 
+later version published by the Free Software Foundation; with no Invariant 
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man swlist_8.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<!DOCTYPE form
+[
+<!ENTITY swtarget SYSTEM "target.sgml">
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY>
+<REFMETA>
+<REFENTRYTITLE>
+swlist
+</REFENTRYTITLE>
+<MANVOLNUM>8</MANVOLNUM> 
+<REFMISCINFO>
+swlist - Software Administration
+</REFMISCINFO>
+</REFMETA>
+
+<REFNAMEDIV>
+<REFNAME>
+swlist
+</REFNAME>
+<REFPURPOSE>
+List information about the software
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>swlist</FUNCTION>  <OPTIONAL>-d|-r</OPTIONAL> <OPTIONAL>-v</OPTIONAL> <OPTIONAL>-a <REPLACEABLE>attribute</REPLACEABLE></OPTIONAL> <OPTIONAL>-l <REPLACEABLE>level</REPLACEABLE></OPTIONAL>  <OPTIONAL>-t <REPLACEABLE>targetfile</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>-c <REPLACEABLE>file</REPLACEABLE></OPTIONAL> <OPTIONAL>-x <REPLACEABLE>option=value</REPLACEABLE></OPTIONAL>  <OPTIONAL>-X <REPLACEABLE>options_file</REPLACEABLE></OPTIONAL>  <OPTIONAL>-W <REPLACEABLE>option</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>software_selections</OPTIONAL>  <OPTIONAL>@targets</OPTIONAL> 
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swlist</FUNCTION> --products <OPTIONAL>software_selections</OPTIONAL>  <OPTIONAL>@targets</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swlist</FUNCTION> --files  <OPTIONAL>@targets</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swlist</FUNCTION> --dir <OPTIONAL>software_selections</OPTIONAL> <OPTIONAL>@targets</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swlist</FUNCTION> --dependencies <OPTIONAL>--prerequisites <REPLACEABLE>sw_spec</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>--exrequisites <REPLACEABLE>sw_spec</REPLACEABLE></OPTIONAL> <OPTIONAL>@targets</OPTIONAL>
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+
+<REFSECT1 ID="R1 swlist">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>swlist</FUNCTION>
+lists information about a distribution or installed software.
+Neither swlist nor any component of swbis is required
+on the target host, however, the target host must look like a Unix system at
+the shell and command-line utility level.  Remote network connections are made
+by ssh.  Ssh is the default but rsh can be selected by a command line
+option.
+</PARA>
+<PARA>
+<FUNCTION>swlist</FUNCTION>
+operates on serial archives (e.g. compressed tar archives) or on a file system
+directory representing installed software.  The default target directory is '/', this
+default is subject to user configuration.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA>
+<GLOSSLIST>
+<GLOSSLIST> 
+</PARA>
+
+<PARA>
+<OPTION>-a attribute</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify an attribute to list.   Only the <OPTION>architecture</OPTION> attribute is
+supported for installed_software at this time (MAR 2007).  The returned value is determined by running
+GNU <FILENAME>config.guess</FILENAME> on the target host.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-c FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Write the catalog to FILE. Software selections are applied.
+The only supported FILE is '-' causing a dump of the catalog
+to stdout in tar format.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-d</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the target is a distribution.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-f FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Read the list of software selections from FILE.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-l LEVEL</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify a level to list. LEVEL is an enumerated list of objects: bundle, product, fileset, control_file, file
+(Not yet implemented)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-r</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Indicates that the operation is on installed software at a location indicated by the the target. 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-t targetfile</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify a file containing a list of targets (one per line).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-v</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+List attribute value pairs in INDEX file format according to
+attibutes specified by the -a option, list all attributes if
+-a not used; or, increment the verbose level.
+<NOTE>
+This option is overloaded. It means two different things depending
+on the context.  If a mode is explicitly given, then it means
+increment verbosity, otherwise it means list in INDEX file format.
+</NOTE>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-x option=value</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended option overriding the defaults file value.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-X FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended options filename, FILE,  overriding the default filenames.
+This option may be given more then once. If the resulting specified value is an empty string
+then reading of any options file is disabled.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-help</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Show help (Implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W option[,option,...]</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the implementation extension option.<SBR>
+Syntax: -W option[=option_argument[,option...]<SBR>
+Options may be separated by a comma.  The implementation extension
+options may also be given individually using the '\-\-long-option[=option_arg]' syntax.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>--products</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+List the product's tag, revision, vendor_tag and location.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>--directory</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+List the catalog directory entries.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>--files</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+List files as defined in the installed catalog
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>--sys</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+List files as exists in the file system
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>--dependencies</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Run in check dependency mode.
+Assert dependencies against installed software catalog. Dependencies are
+software specs given by the --prerequisites and --extrequisites options
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--prerequisites=SW_SPEC</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify depencency to check, may be used multiple times.
+Prerequisites packages are required to be installed.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--exrequisites=SW_SPEC</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify depencency to check, may be used multiple times.
+Exrequisites packages are required not to be installed.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-W remote-shell=SHELL</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Defaults File Option: <OPTION>swbis_remote_shell_client</OPTION><SBR>
+Supported shells are "ssh" and "rsh", ssh is the default.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options-files</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Show the complete list of options files and if they are found.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Show the options after reading the files and parsing the command line options.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-command={tar|pax|star|gtar}</OPTION><SBR>
+<GLOSSLIST>
+<GLOSSLIST>
+Set the portable archive command for all operations.
+The default is "pax".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for local and remote hosts.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_read_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for remote hosts.
+This is the command that runs on the target (e.g. pax -r, tar xpf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W local-pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_local_pax_read_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for local hosts.
+This is the command that runs on the target (e.g. pax -r, tar xpf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-write-command={tar|pax|star|gtar|swbistar}</OPTION><SBR>
+<GLOSSLIST><GLOSSLIST>
+Set the write command for local and remote hosts.
+This is the command that runs on the target (e.g. pax -w, tar cf -).
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION><SBR>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the write command for remote hosts.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W local-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_local_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the portable archive write command for local host operations.
+This is the command that runs on the source (e.g. pax -w, tar cf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the portable archive write command for remote host operations.
+This is the command that runs on the source (e.g. pax -w, tar cf -).
+The default is "pax".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-defaults</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not read any defaults files.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-getconf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_no_getconf</OPTION><SBR>
+Makes the remote command be '/bin/sh -s' instead of the default
+'PATH=`getconf PATH` sh -s'. 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W shell-command=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_shell_command</OPTION><SBR>
+NAME may be one of "detect" "bash", "sh" or "posix" and specifies the
+remote command run by the remote shell.
+"posix" is 'PATH=`getconf PATH` sh -s', "bash" is "/bin/bash -s",
+"sh" is "/bin/sh -s", and "ksh" is "ksh -s".
+The default is "posix".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W use-getconf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Opposite of \-\-no-getconf.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+</PARA>
+<PARA>
+<OPTION>-W source-script-name=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the script that is written into the remote shell's stdin to NAME.
+This is useful for debugging.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W target-script-name=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the script that is written into the remote shell's stdin to NAME.
+This is useful for debugging.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>software_selections</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Refer to the software objects (products, filesets)
+using software spec syntax. (See sw(5) for syntax).
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>target</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Refers to the software_collection where the software
+selections are to be applied.
+Allows specification of host and pathname where the software collection is located.
+A target that contains only one part is assumed to be a hostname.
+To force interpretation as a path, use a absolute path or prefix with ':'.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+&swtarget; 
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+IMPLEMENTATION EXTENSIONS
+</TITLE>
+<PARA>
+The
+<OPTION>--dependencies</OPTION>,
+<OPTION>--products</OPTION>, and
+<OPTION>--files</OPTION> are implementation extension modes.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+USAGE EXAMPLES
+</TITLE>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+Show the path of the installed software catalog.
+</TITLE>
+<PROGRAMLISTING>
+  swlist --show-options | grep installed_
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+List Product from a certain distributor
+</TITLE>
+<PARA>
+ List products from a certain distributor, foo (Note:  this requires that
+the <REPLACEABLE>foo</REPLACEABLE> vendor uses foo_something_ as the product vendor_tag
+in their distributions.
+<VERB>
+<PROGRAMLISTING>
+  swlist v="foo*"
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+List all products
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swlist @/   # If distribution_target_directory=/ then "swlist" alone
+              # will suffice.
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+List products installed at alternate root  /mnt/test
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swlist @/mnt/test 
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+List the files of package foo as they exist in the file system
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+swlist -vv --files --sys foo @ root@localhost
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+List products according to a name pattern and revision, and distributor
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swlist emacs"*","r>20",v=rh"*" @/
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<!-- ______________________________ EXAMPLE _________________ 
+-- >
+<REFSECT2>
+<TITLE>
+Test Dependencies
+</TITLE>
+<PARA>
+Check if a given dependency passes against a given
+installed catalog on a host
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swlist -x verbose=3 --depend --pre="foo*,r>=1.0,r<2" @192.168.3.1:/; echo $?
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+EXTENDED OPTIONS
+</TITLE>
+<PARA>
+Extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults.  Shown below is an actual portion of
+a defaults file which show default values.
+</PARA>
+<REFSECT2>
+<TITLE>
+POSIX
+</TITLE>
+<PARA>
+These options are set in the /usr/lib/swbis/swdefaults or the ~/.swdefaults on
+the local (management host, host where swlist invoked).
+These files on the target host are not used.
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+   distribution_target_directory  = /
+   installed_software_catalog  = var/lib/swbis/catalog/
+   one_liner                   = files|products   # Mode when -v not given
+   select_local                = false      # Not Implemented
+   verbose                     = 1
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Swbis Implementation
+</TITLE>
+<PARA>
+These options are set in the /usr/lib/swbis/swbisdefaults or the ~/.swbis/swbisdefaults
+file. 
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swlist.swbis_no_getconf = true # true or false
+  swlist.swbis_shell_command = detect # {detect|sh|bash|posix|ksh}
+  swlist.swbis_no_remote_kill = false # true or false
+  swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+  swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+  swlist.swbis_local_pax_read_command=tar #{pax|tar|gtar|star}
+  swlist.swbis_remote_pax_read_command=tar #{pax|tar|gtar|star}
+  swlist.swbis_remote_shell_client=ssh
+  swlist.swbis_forward_agent=True
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+0 if all targets succeeded, 1 if all targets failed or internal error, 2 if some targets failed
+and some succeeded.
+When checking dependencies, 3 if the given sw_specs failed as dependencies, 0 if succeeded.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+NOTES
+</TITLE>
+Multiple ssh-hops is an implementation extension.<SBR>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+REQUISITE UTILITIES
+</TITLE>
+<PARA>
+The swbis distributed utilities require
+<FUNCTION>bash</FUNCTION>, public domain <FUNCTION>ksh</FUNCTION>, or 
+Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+<FUNCTION>swbis_shell_command</FUNCTION> extended option is set to 'detect'
+you don't have to know which one is present, otherwise you may specify one explicitly.
+</PARA>
+<PARA>
+A POSIX <FILENAME>awk</FILENAME> is required, and with the ability to
+specify several thousand bytes of program text as a command argument.
+GNU awk  works, as does the ATT Awk book awk, and the awk on BSD systems.
+See the INSTALL file for further details regarding a small issue with the
+OpenSolaris (c.2006) awk.
+</PARA>
+<PARA>
+Tar or pax is used for internally for data transfer.  You may specify which one.  
+<FUNCTION>swlist</FUNCTION> and <FUNCTION>swverify</FUNCTION> require
+either GNU tar or pax be present on a host.  You may set auto detection
+for this requirement
+<VERB>
+<PROGRAMLISTING>
+swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+
+<PARA>
+GNU Privacy Guard, gpg is required for verification of package signatures.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+/var/lib/swbis/catalog # Location of installed catalog
+/usr/lib/swbis/swdefaults
+/usr/lib/swbis/swbisdefaults
+$HOME/.swbis/swdefaults
+$HOME/.swbis/swbisdefaults
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+ISO/IEC 15068-2:1999, Open Group CAE C701
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+info swbis
+</PARA>
+<PARA>
+swbis(7), sw(5), swbisparse(1), swign(1), swverify(8) 
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<VERB>
+ swlist(8): The query/listing utility of the swbis project.
+ Author: Jim Lowe   Email: jhlowe at acm.org
+<!-- External Entity  --> &version;
+Last Updated: 2006-07
+ Copying: GNU Free Documentation License
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+swlist is subject to breakage if a user's account on an intermediate
+(or terminal) host in a target spec is not configured to use a Bourne
+compatible shell. (This breakage may be eliminated by use of the 
+--no-getconf option as explained above.)
+</PARA>
+<PARA>
+swlist does not currently implement the -v,-a options.  Listing products
+in a distribution is not supported.  Operating on a distribution in
+directory form is not supported.  The catalog query funtions are
+implemented in awk and subject to its bugs.
+</PARA>
+</REFSECT1>
+</REFENTRY>

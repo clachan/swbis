@@ -1,0 +1,25 @@
+  distribution
+   layout_version 1.0
+   product
+    tag bc
+    directory dpath1
+    directory dpath2
+    
+	checkinstall source path
+    control_file
+     tag postinstall
+     interpreter /bin/sh
+     source bc-1.04-2/postinstall
+    control_file
+     tag unpreinstall
+     interpreter /bin/sh
+     source bc-1.04-2/unpreinstall
+    fileset
+     tag d_files
+
+	checkinstall source path
+	checkinstall source path
+
+     file
+      path /usr/bin/bc
+      source bc-1.04-2/usr/bin/bc

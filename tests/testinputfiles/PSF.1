@@ -1,0 +1,47 @@
+# File: PSF
+distribution
+ description "your description"
+ tag short_single_word
+ title "short phrase or sentence"
+	
+ # Vendor definition
+  vendor
+   tag your_email
+   title your_name
+   qualifier author	# One of seller, author, packager, maintainer.
+   description "Independent programmer"
+  
+  product
+     tag sources
+     title Swbis Sources
+ 
+     fileset
+       tag support_routines
+       control_directory "C_support"
+       title "C Support Routines"
+       description  "Low level C support routines including tar/cpio reading/writing,
+package opening; and the following objects:  string, pointer list,
+Unix pipeline execution, Unix buffered file descriptor, and the 
+metadata parser among others."
+
+       file_permissions -o root -g root
+       directory swsupplib
+       file *
+     
+     fileset
+       tag impl_objects
+       control_directory "Cpp"
+       title "C++ Objects of the Implementation"
+       description "Implementation of IEEE software objects and structures."
+       file_permissions -o root -g root
+       directory swstructlib
+       file *
+
+     fileset
+       tag man
+       control_directory "doc"
+       title Manual (man pages)
+       file_permissions -o root -g root
+       directory doc
+       file *
+

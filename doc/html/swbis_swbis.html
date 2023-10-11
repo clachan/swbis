@@ -1,0 +1,1415 @@
+<html lang="en">
+<head>
+<title>Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+\. 
+<!-- TROFF INPUT: .fl			\" force out current output buffer -->
+<!-- .fl			\" force out current output buffer -->
+\\!%PB
+\\!/showpage{}def
+<!-- TROFF INPUT: ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+<!-- ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+\\!/tempdict 200 dict def tempdict begin
+<!-- TROFF INPUT: .fl			\" prolog -->
+<!-- .fl			\" prolog -->
+<!-- TROFF INPUT: .sy cat \\$1\" bring in postscript file -->
+<!-- .sy cat \\$1\" bring in postscript file -->
+<!-- TROFF INPUT: ...\" the following line matches the tempdict above -->
+<!-- ...\" the following line matches the tempdict above -->
+\\!end % tempdict %
+\\!PE
+\\!. 
+<!-- TROFF INPUT: .sp \\$2u	\" move below the image -->
+<!-- .sp \\$2u	\" move below the image -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de pF -->
+<!-- .de pF -->
+<!-- TROFF INPUT: .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- TROFF INPUT: .el .tm ? font overflow -->
+<!-- .el .tm ? font overflow -->
+<!-- TROFF INPUT: .ft \\$1 -->
+<!-- .ft \\$1 -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de fP -->
+<!-- .de fP -->
+<!-- TROFF INPUT: .ie     !\\*(f4 \{\ -->
+<!-- .ie     !\\*(f4 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f4 -->
+<!-- .	ft \\*(f4 -->
+<!-- TROFF INPUT: .	ds f4\" -->
+<!-- .	ds f4\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f3 \{\ -->
+<!-- .el .ie !\\*(f3 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f3 -->
+<!-- .	ft \\*(f3 -->
+<!-- TROFF INPUT: .	ds f3\" -->
+<!-- .	ds f3\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f2 \{\ -->
+<!-- .el .ie !\\*(f2 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f2 -->
+<!-- .	ft \\*(f2 -->
+<!-- TROFF INPUT: .	ds f2\" -->
+<!-- .	ds f2\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f1 \{\ -->
+<!-- .el .ie !\\*(f1 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f1 -->
+<!-- .	ft \\*(f1 -->
+<!-- TROFF INPUT: .	ds f1\" -->
+<!-- .	ds f1\" -->
+'	br \}
+<!-- TROFF INPUT: .el .tm ? font underflow -->
+<!-- .el .tm ? font underflow -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .ds f1\" -->
+
+<!-- WARNING: man/man7/swbis.7:49:%%unrecognized define-string command: [.ds f1\"] -->
+<!-- TROFF INPUT: .ds f2\" -->
+<!-- WARNING: man/man7/swbis.7:50:%%unrecognized define-string command: [.ds f2\"] -->
+<!-- TROFF INPUT: .ds f3\" -->
+<!-- WARNING: man/man7/swbis.7:51:%%unrecognized define-string command: [.ds f3\"] -->
+<!-- TROFF INPUT: .ds f4\" -->
+<!-- WARNING: man/man7/swbis.7:52:%%unrecognized define-string command: [.ds f4\"] -->
+<!-- TROFF INPUT: .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- TROFF INPUT: .TH "SWBIS" "7" -->
+<div class="node">
+<a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<h2 class="chapter">1 SWBIS" "7</h2>
+
+<!-- TROFF INPUT: .hy 0 -->
+<!-- .hy 0 -->
+<!-- TROFF INPUT: .if n .na -->
+<!-- .if n .na -->
+<!-- TROFF INPUT: .SH "NAME" -->
+<!-- DEBUG: print_menu("Top") -->
+<ul class="menu">
+<li><a accesskey="1" href="#NAME">NAME</a>
+<li><a accesskey="2" href="#SYNOPSIS">SYNOPSIS</a>
+<li><a accesskey="3" href="#DESCRIPTION">DESCRIPTION</a>
+<li><a accesskey="4" href="#OPTIONS">OPTIONS</a>
+<li><a accesskey="5" href="#EXAMPLES">EXAMPLES</a>
+<li><a accesskey="6" href="#COMMANDS-OVERVIEW">COMMANDS OVERVIEW</a>
+<li><a accesskey="7" href="#RUNTIME-CONFIGURATION">RUNTIME CONFIGURATION</a>
+<li><a accesskey="8" href="#HOST-REQUIREMENTS">HOST REQUIREMENTS</a>
+<li><a accesskey="9" href="#DISCUSSION">DISCUSSION</a>
+<li><a href="#COPYING">COPYING</a>
+<li><a href="#PRONUNCIATION">PRONUNCIATION</a>
+<li><a href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE-ALSO">SEE ALSO</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="NAME"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SYNOPSIS">SYNOPSIS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.1 NAME</h3>
+
+<p>swbis <span class="roman">&mdash;</span> Distributed Software Administration
+
+<!-- TROFF INPUT: .SH "SYNOPSIS" -->
+<!-- DEBUG: print_menu("NAME") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="SYNOPSIS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DESCRIPTION">DESCRIPTION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.2 SYNOPSIS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis <i>\&lt;sw</i><tt>_</tt><i>utility\&gt;</i> [options] [software<tt>_</tt>selections] [@targets]
+     <i>\&lt;sw</i><tt>_</tt><i>utility\&gt;</i> [options] [software<tt>_</tt>selections] [@targets]
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .SH "DESCRIPTION" -->
+<!-- DEBUG: print_menu("SYNOPSIS") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="DESCRIPTION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OPTIONS">OPTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SYNOPSIS">SYNOPSIS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.3 DESCRIPTION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>swbis</b> is a network transparent software administration system for
+GNU/Linux systems and systems that are UNIX system-like. It implements the
+Open Group's CAE Spec C701 (XDSA) Distributed Software Administration. 
+This spec closely follows ISO/IEC 15068-2:1999 (now withdrawn)
+which was identical to IEEE 1387.2:1995. 
+The implementation relies on POSIX functionality as provided by a typical GNU system. 
+It has security enhancement extensions that use GNU Privacy Guard. 
+Although swpackage is a self-contained tar writing utility and swinstall will use
+generic tar for file loading, several features are based on bit-for-bit sameness with the GNU tar POSIX
+tar interchange format, hence, GNU tar is a special tool requirement for swbis (although for most uses of the
+system tar utility, only generic options are specified). 
+<!-- TROFF INPUT: .SH "OPTIONS" -->
+<!-- DEBUG: print_menu("DESCRIPTION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="OPTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#EXAMPLES">EXAMPLES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DESCRIPTION">DESCRIPTION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.4 OPTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>The  <b>selection@target</b> syntax supports multiple selections and targets. 
+The same selection spec applies to all the targets.  A single 'Commercial at' '@'
+separates the two lists.  Software selections apply within a single distribution
+tarball or within a single directory representing
+installed  software. 
+Software selections don't specify a source file. 
+The source file is specified by a separate option for utilites that use
+the  target as a destination, and by the target if the source is the
+destination. 
+<!-- TROFF INPUT: .SS "Software Selections" -->
+<!-- DEBUG: print_menu("OPTIONS") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Software-Selections">Software Selections</a>
+<li><a accesskey="2" href="#Targets">Targets</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Software-Selections"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Targets">Targets</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#OPTIONS">OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.4.1 Software Selections</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Software Selections specify, by a software<tt>_</tt>spec, objects which to operate. 
+A software<tt>_</tt>spec consists of a period '.' delimited list of tags
+followed by a comma and a comma delimited list of version identifiers
+for revision, qualifier, vendor<tt>_</tt>tag, architecture, location, denoted by
+the letters <b>r,q,v,a,l</b>. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The important tags of familiar repute are
+<i>product</i>.<b>tag</b> and
+<i>product</i>.<b>revision</b> along with an optional
+<i>product</i>.<b>vendor</b><tt>_</tt><b>tag</b>. 
+These correspond to RPMTAG<tt>_</tt>NAME, RPMTAG<tt>_</tt>VERSION, and RPMTAG<tt>_</tt>RELEASE attributes. 
+These are specified in a software<tt>_</tt>selection by example thusly:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        # Note: Quotes are needed to prevent command-line interpretation
+        "*"                        # all packages
+        r==3.1                     # Any package with revision 3.1
+        somepackage                # all packages named 'somepackage'
+        somepackage,r"&gt;"2          # and revision greater than 2
+        somepackage,r"&gt;"2,r"&lt;"3    # and revision greater than 2 and less than 3
+        somepackage,r"&gt;"2,v=hal    # and by vendor 'hal'<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Logical alternation or 'OR' is supported by using a second software</span><tt>_</tt><span class="roman">spec on the
+command line. software</span><tt>_</tt><span class="roman">specs are separated by whitespace. 
+<!-- TROFF INPUT: .SS "Targets" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="Targets"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Software-Selections">Software Selections</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#OPTIONS">OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.4.2 Targets</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Targets are hosts or files on a host.  The syntax follows the familiar
+
+<!-- WARNING: man/man7/swbis.7:121:%%new font B started without closing previous font R -->
+<p><b>host:file</b> convention but differs in that an unadorned name is a host
+not a file. 
+To impose interpretation as a file prefix with a colon ':' or
+use an absolute path (i.e. prefix with '/'). 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     Source and Target Specification and Logic
+     
+          Synopsis:
+               Posix:
+                    host[:path]
+                    host
+                    host:
+                    /path  # Absolute path
+     
+               Swbis Extension:
+                    [user@]host[:path]
+                    [user@]host<tt>_</tt>port[:path]
+                    :path
+     
+               Swbis Multi-hop Target Extension:
+                    # ':' is the target delimiter
+     	       # '<tt>_</tt>' delimits a port number in the host field
+     
+                    [user@]host[@@[user@]host[@@...]][:file]
+                    [user@]host<tt>_</tt>port[@@[user@]host[@@...]][:file]
+     
+                    # Using ':', a trailing colon is used to
+                    # disambiguate between a host and file.
+     	       # For Example,
+                    :file
+                    host:
+                    host
+                    host:file
+                    host:host:
+                    host<tt>_</tt>port:host<tt>_</tt>port:
+                    host:host:file
+                    user@host:user@host:
+                    user@host:user@host:host:
+                    user@host:user@host:file
+     
+          A more formal description:
+     
+          target : HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING ':' PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING ':'
+                 | HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                 | ':' PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING   # Impl extension
+                 ;
+     
+            PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING must be an absolute path unless
+                            a HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING is given.  Allowing
+                            a relative path is a feature of the swbis
+                            implementation.
+     
+                     NOTE: A '.' as a target is an implementation
+                           extension and means extract in current
+                           directory.
+     
+                     NOTE: A '-' indicating stdout/stdin is an
+                           implementation extension.
+     
+                     NOTE: A ':' in the first character indicates a filename.
+                           This is an implementation extension.
+     
+            HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING is an IP or hostname.
+     
+         Examples:
+            Copy the  distribution /var/tmp/foo.tar.gz at 192.168.1.10
+                   swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+     
+     
+     Implementation Extension Syntax (multi ssh-hop) :
+         Syntax:
+         %start   wtarget    # the Implementation Extension Target
+                             # Note: a trailing ':' forces interpretation
+                             # as a host, not a file.
+         wtarget   : wtarget DELIM sshtarget
+                   | sshtarget
+                   | sshtarget DELIM
+                   ;
+         sshtarget : user '@' target # Note: only the last target
+                   | target          # may have a PATHNAME, and only a host
+                   ;                 * may have a user
+         target   : HOST<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                  | PATHNAME<tt>_</tt>CHARACTER<tt>_</tt>STRING
+                  ;
+         user     : PORTABLE<tt>_</tt>CHARACTER<tt>_</tt>STRING  # The user name
+     
+         DELIM    : ':'   # The multi-hop delimiter.
+                  ;  <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "EXAMPLES" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="EXAMPLES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#COMMANDS-OVERVIEW">COMMANDS OVERVIEW</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OPTIONS">OPTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.5 EXAMPLES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Unpack a tarball on host1 and host2:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man7/swbis.7:221:%%new font R started without closing previous font R -->
+     
+        swcopy -s :somepackage-1.0.tar.gz &ndash;extract @ host1 host2
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>List installed entries matching the software selections:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swlist somepackage,"r&gt;2" @ host1:/ host2:/
+        swlist "kde*" @ 192.168.2.2<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>List the architectures of the specified hosts:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man7/swbis.7:236:%%new font R started without closing previous font R -->
+     
+        swlist -x verbose=3 -a architecture @ localhost 192.168.2.2 host1 host2</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Install a package from stdin to a location, l=/unionfs/foo-1.0,
+and a "exp" qualification:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swinstall q=exp,l=/unionfs/foo-1.0 @ 192.168.2.2<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Remove a package named somepackage
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man7/swbis.7:252:%%new font R started without closing previous font R -->
+     
+         swremove somepackage @ 192.168.2.2:/</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Make a tarball according to the recipe file <b>myPSF</b>:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swpackage -s myPSF @- | tar tvf -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "COMMANDS OVERVIEW" -->
+<!-- DEBUG: print_menu("EXAMPLES") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="COMMANDS-OVERVIEW"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#RUNTIME-CONFIGURATION">RUNTIME CONFIGURATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#EXAMPLES">EXAMPLES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.6 COMMANDS OVERVIEW</h3>
+
+<!-- TROFF INPUT: .SS "POSIX Commands" -->
+<!-- DEBUG: print_menu("COMMANDS OVERVIEW") -->
+<ul class="menu">
+<li><a accesskey="1" href="#POSIX-Commands">POSIX Commands</a>
+<li><a accesskey="2" href="#Swbis-Specific-Commands">Swbis Specific Commands</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="POSIX-Commands"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Swbis-Specific-Commands">Swbis Specific Commands</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#COMMANDS-OVERVIEW">COMMANDS OVERVIEW</a>
+
+</div>
+
+<h4 class="subsection">1.6.1 POSIX Commands</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Utilities specified by C701 and ISO/IEC 15068-2:1999 include the following:
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<!-- WARNING: man/man7/swbis.7:268:%%new font B started without closing previous font R -->
+<p><b>swpackage</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Create a tarball according to a recipe file. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swcopy</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Copy a distribution from host to host. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swverify</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Verify a software distribution signature. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swinstall</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Install a software distribution. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swlist</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>List software information. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swremove</b>(8)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Remove packages
+<!-- TROFF INPUT: .SS "Swbis Specific Commands" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Swbis-Specific-Commands"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#POSIX-Commands">POSIX Commands</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#COMMANDS-OVERVIEW">COMMANDS OVERVIEW</a>
+
+</div>
+
+<h4 class="subsection">1.6.2 Swbis Specific Commands</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Utilities unique to swbis. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>swign</b>(1)
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Create the signed meta-data directory, <b>catalog</b>/, of the contents of the current directory and
+optionally write the entire directory, including the signed catalog as a tar archive. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>\&lt;<i>libexecdir</i>\&gt;<b>/swbis/swbistar</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Archive writing (creation) utility, useful for testing. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>\&lt;<i>libexecdir</i>\&gt;<b>/swbis/swbisparse</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Stand-alone parser of POSIX Metadata files, useful for testing. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>\&lt;<i>libexecdir</i>\&gt;<b>/swbis/arf2arf</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Archive decoder/checker, Used by swverify. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>\&lt;<i>libexecdir</i>\&gt;<b>/swbis/lxpsf</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>Archive translator, used by <b>swpackage</b> to translate RPM packages. 
+<!-- TROFF INPUT: .SH "RUNTIME CONFIGURATION" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="RUNTIME-CONFIGURATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#HOST-REQUIREMENTS">HOST REQUIREMENTS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#COMMANDS-OVERVIEW">COMMANDS OVERVIEW</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.7 RUNTIME CONFIGURATION</h3>
+
+<!-- TROFF INPUT: .SS "Configuration Files" -->
+<!-- DEBUG: print_menu("RUNTIME CONFIGURATION") -->
+<ul class="menu">
+<li><a accesskey="1" href="#Configuration-Files">Configuration Files</a>
+<li><a accesskey="2" href="#Strategy-for-Compatibility-with-Existing-Hosts">Strategy for Compatibility with Existing Hosts</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Configuration-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Strategy-for-Compatibility-with-Existing-Hosts">Strategy for Compatibility with Existing Hosts</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#RUNTIME-CONFIGURATION">RUNTIME CONFIGURATION</a>
+
+</div>
+
+<h4 class="subsection">1.7.1 Configuration Files</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>All of the utilities share the same configuration files:
+<b>swdefaults</b> and
+<b>swbisdefaults</b>. 
+The files are sourced on the local management host and ignored (if present) on the
+remote target host. Below are commands that give information about them. 
+All the utilities support these options and the defaults are separate for each
+utility, swcopy is shown as an example. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      swcopy &ndash;show-options-files  # Show locations of existing files to stdout
+      swcopy &ndash;show-options     # Show options with a shell assignment syntax
+      swcopy &ndash;no-defaults &ndash;show-options  # Show builtin defaults<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>The syntax is:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      # Comment
+      # Here optionName applies to all utilities
+      # the whitespace around the '=' is optional
+      optionName = value # Comment
+     
+      # In addition a option can be applied to a specific utility
+      # overriding the general one and the built-in default
+     
+     <!-- WARNING: man/man7/swbis.7:343:%%new font R started without closing previous font R -->
+     
+      swutilityName.optionName = value</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Strategy for Compatibility with Existing Hosts" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Strategy-for-Compatibility-with-Existing-Hosts"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Configuration-Files">Configuration Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#RUNTIME-CONFIGURATION">RUNTIME CONFIGURATION</a>
+
+</div>
+
+<h4 class="subsection">1.7.2 Strategy for Compatibility with Existing Hosts</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The most important utiltities on which swbis relies is a POSIX shell, the system <b>/bin/sh</b>, and
+the system tar utility, usually <b>/bin/tar</b>.  The POSIX shell need not be <b>/bin/sh</b>. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The POSIX shell must have specific compliance to
+POSIX described the POSIX sh(1) manual page (IEEE Std 1003.1, 2004 Edition, Section STDIN) regarding
+its use of stdin when it invokes a command that also uses stdin.  GNU Bash, public-domain ksh (pdksh),
+OpenSolaris <b>/usr/xpg4/bin/sh</b>,  ATT ksh (latest version such as 93t+ 2010-03-05) have this feature. 
+Other shells including ash, dash, and <b>/bin/sh</b> on BSD, UNIX(tm), BusyBox systems do not. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Therefore, the most reliable and least intrusive strategy is use the auto-detection option. 
+If a host does not contain bash or a suitable ksh or sh the distributed utility will fail. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis<tt>_</tt>no<tt>_</tt>getconf               = true # true or false, false=use getconf
+     swbis<tt>_</tt>shell<tt>_</tt>command            = detect # {detect|sh|bash|posix|ksh}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man7/swbis.7:365:%%new font B started without closing previous font R -->
+<p>Alternatively, simply make </span><b>/bin/bash</b> a requirement on all hosts and set
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis<tt>_</tt>no<tt>_</tt>getconf               = true # true or false, false=use getconf
+     swbis<tt>_</tt>shell<tt>_</tt>command            = bash # {detect|sh|bash|posix|ksh}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>NOTE: The shell requirement does not apply to the user's account shell (specified in /etc/passwd), although there
+are reasons this shell should be a Bourne compatible shell.  See Acount Login Shell below
+<!-- TROFF INPUT: .PP -->
+
+<p>Regarding tar, it is used for file loading (installation) and also during verfication of installed software (as a means
+to copy and inspect the installed files state).  For installation, any tar will work as no non-traditional options are specified. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- WARNING: man/man7/swbis.7:379:%%new font B started without closing previous font R -->
+<p>The configuration options, in </span><b>swbisdefaults</b> allow some flexibilty here
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command  = tar  # {pax|tar|star|gtar}
+     swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command = tar  # {pax|tar|star|gtar}
+     swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command   = tar  # {pax|tar|star|gtar}
+     swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command  = tar  # {pax|tar|star|gtar}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swverify.swbis</span><tt>_</tt><span class="roman">local</span><tt>_</tt><span class="roman">pax</span><tt>_</tt><span class="roman">write</span><tt>_</tt><span class="roman">command   = detect # {pax|tar|star|gtar}
+     swverify.swbis</span><tt>_</tt><span class="roman">remote</span><tt>_</tt><span class="roman">pax</span><tt>_</tt><span class="roman">write</span><tt>_</tt><span class="roman">command  = detect # {pax|tar|star|gtar}
+     swlist.swbis</span><tt>_</tt><span class="roman">local</span><tt>_</tt><span class="roman">pax</span><tt>_</tt><span class="roman">write</span><tt>_</tt><span class="roman">command   =   detect  # {pax|tar|star|gtar}
+     
+     <!-- WARNING: man/man7/swbis.7:393:%%new font R started without closing previous font R -->
+     
+     swlist.swbis</span><tt>_</tt><span class="roman">remote</span><tt>_</tt><span class="roman">pax</span><tt>_</tt><span class="roman">write</span><tt>_</tt><span class="roman">command  =   detect  # {pax|tar|star|gtar}</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>This allows keeping and using the system '/bin/tar', and only using GNU tar or pax
+for verification and listing. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Other important options are:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swcopy.swbis<tt>_</tt>allow<tt>_</tt>rpm       = true  # Enable automatic translation
+     swinstall.swbis<tt>_</tt>allow<tt>_</tt>rpm    = true  # Enable automatic translation
+     swcopy.swbis<tt>_</tt>no<tt>_</tt>audit        = true  # Copy as arbitrary data, true or false
+     swbis<tt>_</tt>remote<tt>_</tt>shell<tt>_</tt>client    = ssh   # {ssh|rsh}
+     swbis<tt>_</tt>forward<tt>_</tt>agent          = true  # Set ssh -A for multi-hop (&gt;1) jumps
+     <!-- TROFF INPUT: .PP -->
+     
+     <!-- TROFF INPUT: .nf -->
+     
+     <!--  -->
+     <pre class="display">          <span class="roman">
+          <!-- TROFF INPUT: .fi -->
+          
+</pre>
+     
+     <!--  -->
+     <!-- TROFF INPUT: .PP -->
+     
+
+     <!-- WARNING: man/man7/swbis.7:413:%%new font R started without closing previous font R -->
+     
+     <p></span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Here is a incomplete explanation of each option
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>Extended Option: <b>swbis</b><tt>_</tt><b>local</b><tt>_</tt><b>pax</b><tt>_</tt><b>read</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Extended Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>pax</b><tt>_</tt><b>read</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>If installing
+on a system, any <b>tar</b> will work.  GNU <b>tar</b> is required when using <b>swign</b> to create a signed archive or directory. 
+If <b>pax</b> is selected as the archive read command (for installing), errors will
+be returned if the installation is not by a root user (or if not root, if the package contained files
+with different ownerships than the current user). 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command = tar #{pax|tar|gtar}
+     swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command= tar #{pax|tar|gtar}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+<!-- WARNING: man/man7/swbis.7:435:%%new font B started without closing previous font R -->
+<p>Extended Option: </span><b>swbis</b><tt>_</tt><b>local</b><tt>_</tt><b>pax</b><tt>_</tt><b>write</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Extended Option: <b>swbis</b><tt>_</tt><b>remote</b><tt>_</tt><b>pax</b><tt>_</tt><b>write</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p><b>swcopy</b> and <b>swinstall</b> may use the system tar (which may not be
+GNU tar or pax). 
+<b>swpackage</b> is self-contained and does not use any file system tar-like utility. 
+<b>swign</b> does not read the options files and assumes and requires that <b>tar</b> is GNU tar. 
+<b>swlist</b> and <b>swverify</b> requires either GNU tar or pax and can be set to
+detect a suitable tar or pax. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swlist.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swlist.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swverify.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swverify.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command = tar #{pax|tar|gtar}
+     swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command= tar #{pax|tar|gtar}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+<!-- WARNING: man/man7/swbis.7:458:%%new font B started without closing previous font R -->
+<p>Extended Option: </span><b>swbis</b><tt>_</tt><b>shell</b><tt>_</tt><b>command</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>This may be one of
+<b>detect</b>,
+<b>bash</b>,
+<b>ksh</b>,
+<b>sh</b>, or
+<b>posix</b>.  <b>detect</b> is the best choice. 
+ksh must be public domain ksh or ATT ksh93 (version 2009-05-05 or newer). Older versions of
+ksh93 do not have the required POSIX feature. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p><b>Account Login Shell</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>The login shell may be any shell, however, if a host will ever be a intermediate
+host in a multi-hop target, then it should be a Bourne compatible or POSIX conforming shell. 
+This requirement is due to the escapement and processing of shell special characters which are
+performed by the login shell of the intermediate host account. 
+<!-- TROFF INPUT: .IP "   \(bu" 6 -->
+
+<p>Extended Option: <b>swbis</b><tt>_</tt><b>forward</b><tt>_</tt><b>agent</b>
+<!-- TROFF INPUT: .IP "" 10 -->
+
+<p>The default value is True.  This sets the <b>-A</b> in the <b>ssh</b> client for multi-hop targets.  There are security considerations when forwarding the
+authentication agent. 
+<!-- TROFF INPUT: .SH "HOST REQUIREMENTS" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="HOST-REQUIREMENTS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DISCUSSION">DISCUSSION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#RUNTIME-CONFIGURATION">RUNTIME CONFIGURATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.8 HOST REQUIREMENTS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>The swbis distributed utilties have no special requirements and will operate
+on any full-size OpenSolaris, BSD or GNU/Linux host.  You may immediately and remotely
+distribute and manage packages on these hosts with nothing more than a login account
+and a ssh connection.  Below are the technical details.  The configuration file options
+to allow this are the built-in defaults,  certain values in historic versions of the defaults file,
+<b>swbisdefaults</b>, may break this functionality. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The swbis distributed utilities require
+<b>bash</b>, public domain <b>ksh</b>, or
+Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+<b>swbis</b><tt>_</tt><b>shell</b><tt>_</tt><b>command</b> extended option is set to 'detect'
+you don't have to know which one is present, otherwise you may specify one explicitly. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swbis<tt>_</tt>shell<tt>_</tt>command=detect #{posix|sh|bash|ksh|detect}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Tar or pax is used for file loading (installation) and internally for data transfer.  You may specify which one.
+
+<!-- WARNING: man/man7/swbis.7:501:%%new font B started without closing previous font R -->
+<p></span><b>swlist</b> and <b>swverify</b> require
+either GNU tar or pax be present on a host.  You may set auto detection
+for this requirement.  As of release 1.12 (c.August 2014), all invocations of the system tar utility
+for archive creation use the '&ndash;format=pax' option of GNU tar.  A test is made for GNU tar and generic
+options are used if no suitable version of GNU tar is present allowing generic tar to work.
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swlist.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swlist.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swverify.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swverify.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command=detect #{pax|tar|gtar|detect}
+     swinstall.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command = tar #{pax|tar|gtar}
+     swinstall.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>write<tt>_</tt>command= tar #{pax|tar|gtar}
+     swinstall.swbis<tt>_</tt>local<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command  = tar #{pax|tar|gtar}
+     swinstall.swbis<tt>_</tt>remote<tt>_</tt>pax<tt>_</tt>read<tt>_</tt>command = tar #{pax|tar|gtar}<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man7/swbis.7:520:%%new font B started without closing previous font R -->
+<p>A POSIX </span><b>awk</b> is required, and with the ability to
+specify several thousand bytes of program text as a command argument. 
+GNU awk  works, as does the ATT Awk book awk, and the awk on BSD systems. 
+See the INSTALL file for further details regarding a small issue with the
+OpenSolaris (c.2006) awk. 
+<!-- TROFF INPUT: .PP -->
+
+<p>GNU Privacy Guard, gpg is required for verification and  signing. 
+Use of the passphrase agent <b>gpg-agent</b> is supported so
+as to avoid telling swpackage your passphrase.  When swverify uses gpg,
+a FIFO  is  constructed and deleted.  /dev/null and /dev/zero are required. 
+Verification takes place on the management host. It would not be used on the
+(remote) target host. 
+<!-- TROFF INPUT: .PP -->
+
+<p>For verifying package tarballs, only <b>swverify</b> and <b>gpg</b> is required. 
+For verifying the unpacked tarball (i.e. as a signed directory) GNU  tar,
+awk,  sha1sum,  md5sum  (or  openssl)  and  various other utilities are
+required. 
+<!-- TROFF INPUT: .PP -->
+
+<p>When a host is participating in remote connections via ssh/rsh, either as
+the terminal target host or intermediate host, the login shell for the user
+must be a Bourne compatible shell, for example <b>/bin/sh</b>. 
+Most traditional Bourne shell's are acceptable as /bin/sh, one notable exception
+is <b>/bin/ash</b> when operating on the terminal host (due to its read block size). 
+However, <b>/bin/dash</b>, BSD <b>/bin/sh</b>, and Sun's /bin/sh
+are all acceptable.  Note that /bin/sh need not be the system POSIX shell. 
+<!-- TROFF INPUT: .PP -->
+
+<p>As stated above, a POSIX shell is required and the only suitable implementations (as of Sep 2010) are
+<b>/bin/bash</b>, <b>/bin/ksh</b> (Public Domain or ksh93 v.2009-05-05 or newer),
+Sun's <b>/usr/xpg4/bin/sh</b>, and MirBSD Korn Shell (<b>/bin/mksh</b>) all assumed
+to be in these locations. 
+<!-- TROFF INPUT: .SH "DISCUSSION" -->
+<!-- DEBUG: print_menu("HOST REQUIREMENTS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="DISCUSSION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#COPYING">COPYING</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#HOST-REQUIREMENTS">HOST REQUIREMENTS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.9 DISCUSSION</h3>
+
+<!-- TROFF INPUT: .SS "Background" -->
+<!-- DEBUG: print_menu("DISCUSSION") -->
+<ul class="menu">
+<li><a accesskey="1" href="#Background">Background</a>
+<li><a accesskey="2" href="#Distributed-Software-Administration">Distributed Software Administration</a>
+<li><a accesskey="3" href="#A-Directory-Content-Checker">A Directory Content Checker</a>
+<li><a accesskey="4" href="#Package-Security">Package Security</a>
+<li><a accesskey="5" href="#Extensibility">Extensibility</a>
+<li><a accesskey="6" href="#Support-for-Unprivileged-Users">Support for Unprivileged Users</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Background"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Distributed-Software-Administration">Distributed Software Administration</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.1 Background</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The spec describes a format for storing package meta-data in a software
+distribution and a set of utilities.  The meta-data is stored
+in-band for format level compatibility.  The meta-data is separated by placement
+in a specially named directory, <b>catalog/</b>. 
+The spec goes further and describes how multiple products, for example
+a distribution archive containing products for multiple architectures,
+can be placed in a separate control directories within the distribution archive. 
+This is supported along with an extension to allow these directories to be
+nil collapsing the layout into the familiar form of a free software
+tarball or run-time distribution directly installable by <b>tar</b>. 
+When the collapsed form is used, the in-band <b>catalog/</b> directory
+is next to (in the same directory as) the payload files hence "catalog" becomes
+a reserved word for package files. 
+<!-- TROFF INPUT: .PP -->
+
+<p>While the swbis system has features comparable with package managers, it has
+features that are of general purpose usefulness to system administrators and
+developers.  These include host-to-host copying of file system directories,
+advanced tarball creation methods,
+backward compatibility with uses of plain tarballs, and the capability
+to act as a directory content integrity checker, and the ability to
+translate and install RPM format packages. 
+<!-- TROFF INPUT: .SS "Distributed Software Administration" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Distributed-Software-Administration"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#A-Directory-Content-Checker">A Directory Content Checker</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Background">Background</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.2 Distributed Software Administration</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The XDSA spec describes a syntax for distributed operations, but does not
+specify any implementation approach to the problem of remote command invocation. 
+The approach taken by swbis is to require nothing that is not already present
+on all POSIX systems. To that end, swbis uses rsh (or ssh) for remote connections and
+uses bash (A POSIX shell) for command processing specifically using
+the 'bash -s' invocation for all operations.  Using bash in this manner casts
+all swbis utilties as programs that dynamically write and deliver shell program code
+to the remote 'bash -s' through its standard input, which can be a secure ssh channel. 
+This eliminates the requirement that swbis be installed on the remote target host. 
+<!-- TROFF INPUT: .SS "A Directory Content Checker" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="A-Directory-Content-Checker"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Package-Security">Package Security</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Distributed-Software-Administration">Distributed Software Administration</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.3 A Directory Content Checker</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The <b>swign</b> program creates the
+<b>catalog/</b> directory which is, in effect, a GPG signed
+manifest of the directory.  GNU tar is then used to recreate the signed and
+digest  byte  streams  from the directory contents which are never removed nor
+altered (except for the creation of catalog/). It is able to do so
+because swpackage, which generated the original byte  streams,  matches
+GNU tar's output bit-for-bit. For example:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swign  -D /usr/local/bin/checkdigest.sh  -o "" -g ""  -u  "Test User" @.
+        swverify &ndash;order-catalog -d @.
+               # If your file system is Ext2, then &ndash;order-catalog
+               # is not required.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man7/swbis.7:603:%%new font B started without closing previous font R -->
+<p>The  </span><b>checkdigest.sh</b> is a distributor specific shell
+script that is run by swverify if it is present and part of the signed  stream. 
+<b>checkdigest.sh</b> then checks the archive MD5 and SHA1. 
+If this fails, it checks the individual files'  MD5 and SHA1 digests. 
+[In current  versions of checkdigest,  the ownerships and permissions
+are not checked individually, as swign was originally
+intended as a source directory/archive signer tool.] 
+<!-- TROFF INPUT: .PP -->
+
+<p>Use as a SCM (e.g. CVS, svn. etc) security tool easily follows by
+making <b>catalog/</b> a tracked directory in the SCM. 
+The catalog directory is updated using the <b>swign</b> command. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">          export SWPACKAGEPASSFD
+          SWPACKAGEPASSFD=agent
+          export GNUPGNAME
+          GNUPGNAME="Your Name"
+          swign &ndash;name-version=somepackage-1.1 -s PSF.in &ndash;no-remove @.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man7/swbis.7:623:%%new font B started without closing previous font R -->
+<p>See the </span><b>swign</b> manual page for an example <b>PSF.in</b> file. 
+<!-- TROFF INPUT: .SS "Package Security" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Package-Security"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Extensibility">Extensibility</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#A-Directory-Content-Checker">A Directory Content Checker</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.4 Package Security</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>As implementation extensions,
+<b>swbis</b> supports creation and verification
+of tar archives with embedded digital signatures, and cryptographic digests of
+the archive (payload) and individual files.  The design supports multiple
+signatures (each signing an identical byte stream) and offers full package life-cycle
+relevance, that is, the signature and the signed bytes are transferred into the installed
+catalog. 
+<!-- TROFF INPUT: .SS "Extensibility" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Extensibility"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Support-for-Unprivileged-Users">Support for Unprivileged Users</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Package-Security">Package Security</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.5 Extensibility</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The distribution form is extensible at the format and layout levels. 
+Additional distributor specific attributes (i.e. keywords) are allowed
+in the meta-data files, and distributor specific control files are allowed
+in the meta-data directory file layout.  The security files are implemented
+as control files.  This allows adding new stronger cryptograpic digests in the
+file layout while preserving back compatibility. 
+The format, POSIX tar, is extensible by adoption of the Extended Header Format
+specified in later POSIX revisions. 
+<!-- TROFF INPUT: .SS "Support for Unprivileged Users" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Support-for-Unprivileged-Users"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Extensibility">Extensibility</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#DISCUSSION">DISCUSSION</a>
+
+</div>
+
+<h4 class="subsection">1.9.6 Support for Unprivileged Users</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Support for unprivileged users is treated as a requirement.  <b>swpackage</b> does
+not use a central repository and makes no copies of the source files.  The utilities
+support alternate target paths and all activity is confined within the target path. 
+<b>swinstall</b> supports the <i>location</i> attribute
+which locates the installed files in target path but uses the installed software catalog
+at the un-located target path.  Access to the installed software catalog can be controlled
+via the catalog directory sticky bit per local administrative policy. 
+<!-- TROFF INPUT: .SH "COPYING" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="COPYING"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#PRONUNCIATION">PRONUNCIATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DISCUSSION">DISCUSSION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.10 COPYING</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Swbis is a copyrighted work. 
+Non-copyright holders may use and make copies under the terms of the GNU GPL
+<!-- TROFF INPUT: .SH "PRONUNCIATION" -->
+<!-- DEBUG: print_menu("COPYING") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="PRONUNCIATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#COPYING">COPYING</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.11 PRONUNCIATION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Swbis is a concatenation of the command name prefix 'sw' with the
+Italian suffix 'bis' meaning again, or one more time. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         Pronunciation: /es dub-u bis/
+                       sw - bis
+          POSIX packaging - Play it again, One more time<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "APPLICABLE STANDARDS" -->
+<!-- DEBUG: print_menu("PRONUNCIATION") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="APPLICABLE-STANDARDS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SEE-ALSO">SEE ALSO</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#PRONUNCIATION">PRONUNCIATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.12 APPLICABLE STANDARDS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999),
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Open Group CAE C701,
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+http://www.opengroup.org/publications/catalog/c701.htm
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "SEE ALSO" -->
+<!-- DEBUG: print_menu("APPLICABLE STANDARDS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SEE-ALSO"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#FILES">FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.13 SEE ALSO</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      info swbis
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      sw(5), swpackage(8), swbisparse(1), swign(1), swverify(8), swcopy(8)
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      swbis(1), swconfig(8), swlist(8), swremove(8)
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/lxpsf
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/arf2arf
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/swbisparse
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/swbistar
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     http://www.gnu.org/software/swbis/sourcesign-1.2/gendocs/manual/index.html
+     <!-- TROFF INPUT: .PP -->
+     
+     <!-- TROFF INPUT: .nf -->
+     
+     <!--  -->
+     <pre class="display">          
+          <!-- WARNING: man/man7/swbis.7:696:%%new font R started without closing previous font R -->
+          
+          
+          <!-- TROFF INPUT: .fi -->
+          
+</pre>
+     
+     <!--  -->
+     <!-- TROFF INPUT: .PP -->
+     
+     <p><span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "FILES" -->
+<!-- DEBUG: print_menu("SEE ALSO") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SEE-ALSO">SEE ALSO</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.14 FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man7/swbis.7:704:%%new font B started without closing previous font R -->
+<p><b>/var/lib/swbis/catalog</b>/  # The installed software catalog
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>catalog</b>/  # The package meta-data directory
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>swdefaults</b>     # Options configuration file
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>swbisdefaults</b>  # Options configuration file
+<!-- TROFF INPUT: .SH "IDENTIFICATION" -->
+<!-- DEBUG: print_menu("FILES") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="IDENTIFICATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#BUGS">BUGS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#FILES">FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.15 IDENTIFICATION</h3>
+
+<p>swbis(7)
+ Author: Jim Lowe   Email: jhlowe at acm.org
+ Version: 1.13.1
+ Last Updated: 2008-04-18
+ Copying: GNU Free Documentation License
+<!-- TROFF INPUT: .SH "BUGS" -->
+<!-- DEBUG: print_menu("IDENTIFICATION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="BUGS"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.16 BUGS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Not everything is implemented yet. 
+<!-- created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39 -->
+
+</body></html>
+

@@ -1,0 +1,648 @@
+# doc/Makefile.in
+
+prefix = @prefix@
+srcdir = @srcdir@
+topdir = @topdir@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+infodir=@infodir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+
+DOCBOOKTOMAN=@DOCBOOKTOMAN@
+VPATH = $(srcdir)
+
+include $(topdir)/Makefile.inc
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+
+all: $(TARGET)
+
+SGML2TXT = sgml2txt
+SGML2HTML = sgml2html
+MAN2HTML = yman2html
+GMANCOMMAND = groff -man -T ascii8
+GMANCOMMAND = groff -man -T ascii
+MANCOMMAND = man -M $(topdir)/doc/man
+POSTCONVERT = ./refme.sh
+DOCBOOK2MAN=docbook-to-man
+MAN2TEXI=man2texi
+INSTALL-INFO=install-info
+MAN2TEXI_OPTIONS=
+MAKEINFO=makeinfo
+MAKEINFO_OPTIONS=--force --number-sections --error-limit=1000
+MAKEINFO_HTML_OPTIONS=--no-split --force --number-sections --error-limit=1000 --html
+MY-INSTALL-INFO=sh ./install-info.sh
+
+INSTALLPREFIX=/usr/local
+SGML2TXTFLAGS = -man
+SGML2HTMLFLAGS = -s 1
+#MAN2HTMLFLAGS = -ts 4
+MAN2HTMLFLAGS =
+
+MANDIR1=$(mandir)/man1
+MANDIR5=$(mandir)/man5
+MANDIR7=$(mandir)/man7
+MANDIR8=$(mandir)/man8
+
+REVISION=0.90
+	
+define fix-direntry
+sh fixdirentry.sh $@ >$@.tmp; mv $@.tmp $@
+endef
+
+SWDOC_OBJS_INFO = info/swbis_swbisparse.info \
+                  info/swbis_sw.info \
+                  info/swbis.info \
+                  info/swbis_user.info \
+                  info/swbis_swbis.info \
+                  info/swbis_swpackage.info \
+                  info/swbis_swcopy.info \
+                  info/swbis_swlist.info \
+                  info/swbis_swremove.info \
+                  info/swbis_swconfig.info \
+                  info/swbis_swinstall.info \
+                  info/swbis_swverify.info \
+                  info/swbis_rpm2swbis.info \
+                  info/swbis_swign.info \
+                  info/swbis_lxpsf.info
+
+SWDOC_OBJS_TEXI = texi/swbis_swbisparse.texi \
+                  texi/swbis_sw.texi \
+                  texi/swbis_user.texi \
+                  texi/swbis_swbis.texi \
+                  texi/swbis_swpackage.texi \
+                  texi/swbis_swremove.texi \
+                  texi/swbis_swconfig.texi \
+                  texi/swbis_swcopy.texi \
+                  texi/swbis_swinstall.texi \
+                  texi/swbis_swverify.texi \
+                  texi/swbis_rpm2swbis.texi \
+                  texi/swbis_swign.texi \
+                  texi/swbis_lxpsf.texi
+
+SWDOC_OBJS_MAN = man/man1/swbisparse.1 \
+                  man/man5/sw.5 \
+                  man/man1/swbis.1 \
+                  man/man7/swbis.7 \
+                  man/man5/swpackage.5 \
+                  man/man8/swpackage.8 \
+                  man/man8/swlist.8 \
+                  man/man8/swremove.8 \
+                  man/man8/swconfig.8 \
+                  man/man8/swcopy.8 \
+                  man/man8/swinstall.8 \
+                  man/man8/swverify.8 \
+                  man/man1/rpm2swbis.1 \
+                  man/man1/swign.1 \
+                  man/man1/lxpsf.1
+
+SWDOC_OBJS_HTML = html/swbisparse_1.html \
+                  html/sw_5.html \
+                  html/swbis_1.html \
+                  html/swbis_7.html \
+                  html/swpackage_5.html \
+                  html/swpackage_8.html \
+                  html/swlist_8.html \
+                  html/swremove_8.html \
+                  html/swconfig_8.html \
+                  html/swcopy_8.html \
+                  html/swinstall_8.html \
+                  html/swverify_8.html \
+                  html/rpm2swbis_1.html \
+                  html/swign_1.html \
+                  html/lxpsf_1.html
+
+SWDOC_OBJS_TEXT = text/swbisparse_1.text \
+                  text/sw_5.text \
+                  text/swbis_1.text \
+                  text/swbis_7.text \
+                  text/swpackage_5.text \
+                  text/swpackage_8.text \
+                  text/swlist_8.text \
+                  text/swremove_8.text \
+                  text/swconfig_8.text \
+                  text/swcopy_8.text \
+                  text/swinstall_8.text \
+                  text/swverify_8.text \
+                  text/rpm2swbis_1.text \
+                  text/swign_1.text \
+                  text/lxpsf_1.text
+
+SWDOC_OBJS_TEXI_HTML = \
+                  html/sw.html \
+                  html/swbis.html \
+                  html/swbis_user.html \
+                  html/swbis_swbis.html \
+                  html/swpackage.html \
+                  html/swlist.html \
+                  html/swremove.html \
+                  html/swconfig.html \
+                  html/swcopy.html \
+                  html/swign.html \
+                  html/swinstall.html \
+                  html/swverify.html
+pdf:
+dvi:
+ps:
+
+man: textfiles $(SWDOC_OBJS_MAN)
+
+html: textfiles $(SWDOC_OBJS_MAN) $(SWDOC_OBJS_TEXI_HTML) $(SWDOC_OBJS_HTML) original_texi
+
+text: textfiles $(SWDOC_OBJS_TEXT) original_texi
+
+info: text $(SWDOC_OBJS_TEXI) original_texi $(SWDOC_OBJS_INFO) 
+
+everything:
+	echo "doc/Makefile: assuming docs are pre-built, doing nothing."
+	echo "doc/Makefile: to make: make realclean text man info html"
+	true
+
+original_texi:
+	cp -pf source/*.texi texi
+
+textfiles:
+	sed \
+		-e 's/<PROGRAMLISTING>//' \
+		-e 's/<\/PROGRAMLISTING>//' \
+		<source/target.sgml >texi/target.texi
+
+man/man1/swbisparse.1: source/swbisparse_1.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man1/swign.1: source/swign_1.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man1/rpm2swbis.1: source/rpm2swbis_1.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man1/lxpsf.1: source/lxpsf.1
+	/bin/cp $< $@
+
+man/man5/sw.5: source/sw_5.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man1/swbis.1: source/swbis_1.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man7/swbis.7: source/swbis_7.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man5/swpackage.5: source/swpackage_5.sgml source/swpackage_input.sgml source/swpackage_output.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swpackage.8: source/swpackage_8.sgml \
+		source/swpackage_input.sgml \
+		source/swpackage_extdef.sgml \
+		source/swpackage_examples.sgml \
+		source/swpackage_output.sgml \
+		source/swpackage_conventions.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+man/man8/swlist.8: source/swlist_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swremove.8: source/swremove_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swconfig.8: source/swconfig_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swcopy.8: source/swcopy_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swinstall.8: source/swinstall_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man8/swverify.8: source/swverify_8.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+html/lxpsf_1.html: man/man1/lxpsf.1
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swign_1.html: man/man1/swign.1
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbisparse_1.html: man/man1/swbisparse.1
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/rpm2swbis_1.html: man/man1/rpm2swbis.1
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/sw_5.html: man/man5/sw.5
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbis_1.html: man/man1/swbis.1
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbis_7.html: man/man7/swbis.7
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swpackage_5.html: man/man5/swpackage.5
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swpackage_8.html: man/man8/swpackage.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swlist_8.html: man/man8/swlist.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swremove_8.html: man/man8/swremove.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swconfig_8.html: man/man8/swconfig.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swcopy_8.html: man/man8/swcopy.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swinstall_8.html: man/man8/swinstall.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swverify_8.html: man/man8/swverify.8
+	$(GMANCOMMAND) < $< | $(MAN2HTML) | $(POSTCONVERT) > $@
+	mv $@ $@.tmp; sh fixlinks2.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+texi/swbis_lxpsf.texi: man/man1/lxpsf.1
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_swign.texi: man/man1/swign.1
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swign/' -e 's/%__desc/make source packages with embedded GPG signature/' direntry.in | $(fix-direntry)
+
+texi/swbis_swbisparse.texi: man/man1/swbisparse.1
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_rpm2swbis.texi: man/man1/rpm2swbis.1
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_sw.texi: man/man5/sw.5
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_user.texi: man/man1/swbis.1
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_swbis.texi: man/man7/swbis.7
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+
+texi/swbis_swpackage.texi: man/man8/swpackage.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swpackage/' -e 's/%__desc/make POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swlist.texi: man/man8/swlist.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swlist/' -e 's/%__desc/list POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swremove.texi: man/man8/swremove.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swremove/' -e 's/%__desc/list POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swconfig.texi: man/man8/swconfig.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swconfig/' -e 's/%__desc/list POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swcopy.texi: man/man8/swcopy.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swcopy/' -e 's/%__desc/copy POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swinstall.texi: man/man8/swinstall.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swinstall/' -e 's/%__desc/install POSIX format packages/' direntry.in | $(fix-direntry)
+
+texi/swbis_swverify.texi: man/man8/swverify.8
+	cat $< | sed -e 's/\\f(CW//' | $(MAN2TEXI) -filename $< 2>/dev/null >$@; true
+	sed -e 's/%__name/swverify/' -e 's/%__desc/verify POSIX format packages/' direntry.in | $(fix-direntry)
+
+info/swbis_lxpsf.info: texi/swbis_lxpsf.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swign.info: texi/swbis_swign.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swbisparse.info: texi/swbis_swbisparse.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_rpm2swbis.info: texi/swbis_rpm2swbis.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_sw.info: texi/swbis_sw.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis.info: source/swbis.texi \
+			source/signing.texi \
+			source/status.texi \
+			source/invoke.texi \
+			source/copying.texi \
+			source/standards.texi \
+			source/commands.texi \
+			source/glossary.texi \
+			source/configure.texi 
+	(cd source; makeinfo -o ../info/swbis.info swbis.texi )
+
+info/swbis_user.info: texi/swbis_user.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swbis.info: texi/swbis_swbis.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swpackage.info: texi/swbis_swpackage.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swlist.info: texi/swbis_swlist.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swremove.info: texi/swbis_swremove.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swconfig.info: texi/swbis_swconfig.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swcopy.info: texi/swbis_swcopy.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swinstall.info: texi/swbis_swinstall.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+info/swbis_swverify.info: texi/swbis_swverify.texi
+	cat $< | $(MAKEINFO) $(MAKEINFO_OPTIONS) -o $@ 2>/dev/null ; true
+
+html/sw.html: texi/swbis_sw.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbis_user.html: texi/swbis_user.texi 
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+	mv $@ $@.tmp; sh fixlinks.sh swbis_user <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbis.html: source/swbis.texi 
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+	mv $@ $@.tmp; sh fixlinks.sh swbis_swbis <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swbis_swbis.html: texi/swbis_swbis.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swpackage.html: texi/swbis_swpackage.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swlist.html: texi/swbis_swlist.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swremove.html: texi/swbis_swremove.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swconfig.html: texi/swbis_swconfig.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swcopy.html: texi/swbis_swcopy.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swinstall.html: texi/swbis_swinstall.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swign.html: texi/swbis_swign.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+html/swverify.html: texi/swbis_swverify.texi
+	(cd texi; $(MAKEINFO) $(MAKEINFO_HTML_OPTIONS) -o ../$@ ../$< 2>/dev/null) ; true
+	mv $@ $@.tmp; sh fixlinks.sh <$@.tmp >$@; /bin/rm -f $@.tmp
+
+text/lxpsf_1.text: man/man1/lxpsf.1
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swign_1.text: man/man1/swign.1
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swbisparse_1.text: man/man1/swbisparse.1
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/rpm2swbis_1.text: man/man1/rpm2swbis.1
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/sw_5.text: man/man5/sw.5
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swbis_1.text: man/man1/swbis.1
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swbis_7.text: man/man7/swbis.7
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swpackage_5.text: man/man5/swpackage.5
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swpackage_8.text: man/man8/swpackage.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swlist_8.text: man/man8/swlist.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swremove_8.text: man/man8/swremove.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swconfig_8.text: man/man8/swconfig.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swcopy_8.text: man/man8/swcopy.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swinstall_8.text: man/man8/swinstall.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+text/swverify_8.text: man/man8/swverify.8
+	$(MANCOMMAND) `basename $< | sed -e 's/.*\.//'`  `basename $< | sed -e 's/\..//'` | col -b > $@
+
+install-html:
+	if [ ! -d $(DESTDIR)$(datadir) ]; then \
+		echo "creating $(DESTDIR)$(datadir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(datadir); \
+	fi
+	$(INSTALL) -m 755 -d $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swign_1.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/rpm2swbis_1.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbisparse_1.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbis_1.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbis_7.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbis_user.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbis_swbis.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swpackage_5.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swpackage_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swlist_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swremove_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swconfig_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swcopy_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swinstall_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swverify_8.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/sw_5.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/lxpsf_1.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/sw.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swbis.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swlist.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swremove.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swconfig.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swcopy.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swinstall.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swpackage.html $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 644 html/swverify.html $(DESTDIR)$(datadir)/swbis
+install-dvi:
+install-pdf:
+install-ps:
+installdirs:
+installcheck:
+uninstall:
+
+install: all
+	if [ ! -d $(DESTDIR)$(mandir)/man1 ]; then \
+		echo "creating $(DESTDIR)$(mandir)/man1"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(mandir)/man1; \
+	fi
+	if [ ! -d $(DESTDIR)$(mandir)/man5 ]; then \
+		echo "creating $(DESTDIR)$(mandir)/man5"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(mandir)/man5; \
+	fi
+	if [ ! -d $(DESTDIR)$(mandir)/man8 ]; then \
+		echo "creating $(DESTDIR)$(mandir)/man8"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(mandir)/man8; \
+	fi
+	if [ ! -d $(DESTDIR)$(mandir)/man7 ]; then \
+		echo "creating $(DESTDIR)$(mandir)/man7"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(mandir)/man7; \
+	fi
+	$(INSTALL) -m 644 man/man1/lxpsf.1  $(DESTDIR)$(MANDIR1)
+	$(INSTALL) -m 644 man/man1/swbisparse.1  $(DESTDIR)$(MANDIR1)
+	$(INSTALL) -m 644 man/man1/rpm2swbis.1  $(DESTDIR)$(MANDIR1)
+	$(INSTALL) -m 644 man/man1/swign.1  $(DESTDIR)$(MANDIR1)
+	$(INSTALL) -m 644 man/man5/sw.5  $(DESTDIR)$(MANDIR5)
+	$(INSTALL) -m 644 man/man1/swbis.1  $(DESTDIR)$(MANDIR1)
+	$(INSTALL) -m 644 man/man7/swbis.7  $(DESTDIR)$(MANDIR7)
+	$(INSTALL) -m 644 man/man5/swpackage.5  $(DESTDIR)$(MANDIR5)
+	$(INSTALL) -m 644 man/man8/swpackage.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swlist.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swremove.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swconfig.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swcopy.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swinstall.8  $(DESTDIR)$(MANDIR8)
+	$(INSTALL) -m 644 man/man8/swverify.8  $(DESTDIR)$(MANDIR8)
+
+	if [ ! -d $(DESTDIR)$(datadir) ]; then \
+		echo "creating $(DESTDIR)$(datadir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(datadir); \
+	fi
+	$(INSTALL) -m 755 -d $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 444 ../COPYING $(DESTDIR)$(datadir)/swbis
+	$(INSTALL) -m 444 ../README $(DESTDIR)$(datadir)/swbis
+	$(MAKE) -s install-html
+	$(MAKE) -s install-info
+
+install-info:
+	if [ ! -d $(DESTDIR)$(infodir) ]; then \
+		echo "creating $(DESTDIR)$(infodir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(infodir); \
+	fi
+	$(INSTALL) -m 444 info/swbis.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis.info-1 $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis.info-2 $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_user.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swbis.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swpackage.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swinstall.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swverify.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_sw.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swbisparse.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swcopy.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swlist.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swremove.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swconfig.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_swign.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_lxpsf.info $(DESTDIR)$(infodir)
+	$(INSTALL) -m 444 info/swbis_rpm2swbis.info $(DESTDIR)$(infodir)
+
+	$(MY-INSTALL-INFO) info/swbis.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swpackage.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swinstall.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swverify.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swcopy.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swlist.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swconfig.info $(DESTDIR)$(infodir)
+	$(MY-INSTALL-INFO) info/swbis_swign.info $(DESTDIR)$(infodir)
+
+distdir:
+install-data: install
+install-exec:
+install-strip: install
+mostlyclean: clean
+maintainer-clean: distclean
+dvi: all
+dist: all
+check: all
+tags:
+ctags:
+
+clean:
+	/bin/rm -f *.S *.1 *.ps *.html *.2 *.man? *.man
+	/bin/rm -f core a.out tmp/*
+	/bin/rm -f tmp/*
+
+distclean: clean
+	/bin/rm -f .depend Makefile
+
+realclean:
+	/bin/rm -f *.1 *.ps *.html *.2 *.man? *.man
+	/bin/rm -f man/man1/*.1
+	/bin/rm -f man/man5/*.5
+	/bin/rm -f man/man8/*.8
+	/bin/rm -f man/man7/*.7
+	/bin/rm -f texi/*.texi
+	/bin/rm -f text/*.text text/*txt
+	/bin/rm -f info/*.info
+	/bin/rm -f info/*.info-*
+	/bin/rm -f html/*.html
+	/bin/rm -f core a.out tmp/*
+
+atarfile: clean
+	make
+	(cd ..; tar cf - swdoc | gzip -9 >../swdoc.`date +%Y%m%d%H%M`.tar.gz)
+
+depend:
+	( > .depend )
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+

@@ -1,0 +1,337 @@
+srcdir = @srcdir@
+topdir = @topdir@
+
+include ../Makefile.inc
+topdir=..
+topincdir=../include
+srcdir= @srcdir@
+
+DO_DEBUG = @DO_DEBUG@
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+EXE=
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+mandir=@mandir@
+mansubdir=@mansubdir@
+
+GTAR=@GTAR@
+POSIXSHELL=@POSIXSHELL@
+
+ifeq ($(DO_DEBUG),)
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = 
+DO_C_ASSEM = 
+else
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = $(CXX) $(CFLAGS) -S -gstabs+ -Wno-unused $(CPPFLAGS) -c -o $(OUT_PATH)/$*.S $<
+DO_C_ASSEM = $(CC) $(CFLAGS) -S -gstabs+ -c -o $(OUT_PATH)/$*.S $<
+endif
+
+RM=rm
+INSTALL= @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+#LIBEFENCE = -lefence
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -lefence
+
+VPATH = $(srcdir)
+WARNINGS =
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include
+ETCDIR=$(ROOT)/etc
+
+INSTSUBDIRS = lib @PO@
+OTHERSUBDIRS =
+SWINSTALL_OBJS = swinstall_lib.o
+SWLIST_OBJS = swlist_lib.o
+SWREMOVE_OBJS = swremove_lib.o 
+SWVERIFY_OBJS = swverify_lib.o 
+SWCONFIG_OBJS = swconfig_lib.o 
+SWVERIFY_OBJS = swverify_lib.o 
+SWCOPY_OBJS = 
+OBJS = swcommon.o swcommon0.o globalblob.o swproglib.o
+PROGS = swpackage swinstall swcopy swlist swremove swconfig iswverify swbisparse swverify swign swbis rpm2swbis rpm2psf intsizes
+OUT_PATH = .
+LIBS = @LIBS@
+RPMLIBS = @RPMLIBS@
+LIB= swproglib.a
+#LOADLIBES = $(topdir)/swstructlib/swstructlib.a  $(topdir)/swsupplib/swsupplib.a
+
+CLOADLIBES = \
+$(topdir)/swsupplib/swsupplib.a
+
+CPPLOADLIBES = \
+$(topdir)/swstructlib/src/swexport/swexport.a \
+$(topdir)/swstructlib/src/swmetadata/swmetadata.a \
+$(topdir)/swstructlib/src/archive/archive.a \
+$(topdir)/swstructlib/src/misc/misc.a
+
+SOURCES = *.c *.cxx
+
+ifeq ($(POSIXSHELL),)
+POSIXSHELL=/bin/sh
+endif
+
+ifeq ($(GTAR),)
+GTAR=tar
+endif
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+.SUFFIXES:
+.SUFFIXES: .cxx .o
+.SUFFIXES: .c .o
+
+.cxx.o:
+	$(CXX) $(CFLAGS) -Wno-unused -Wno-write-strings $(CPPFLAGS) -c -o $(OUT_PATH)/$*.o  $<; $(DO_CPP_ASSEM)
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $(OUT_PATH)/$*.o  $<; $(DO_C_ASSEM)
+
+all: $(TARGET)
+
+everything: $(PROGS) runswpackagetest
+
+lib: $(LIB)
+
+$(LIB): $(OBJS)
+	ar rc $(LIB) $(OBJS)
+	ranlib $(LIB)
+
+runswpackagetest: runswpackagetest.o $(OBJS)
+	$(CC)  $(LDFLAGS) ${@}.o $(LIBS) $(CLOADLIBES) -o $@
+
+swpackage.o: swpackage.cxx
+	$(CXX) $(CFLAGS) -Wno-unused -Wno-write-strings $(CPPFLAGS) -c -o $@ swpackage.cxx
+
+swpackage: swpackage.o $(OBJS) $(LIB) $(CPPLOADLIBES) $(CLOADLIBES)
+	$(CXX)  $(LDFLAGS) ${@}.o swcommon0.o swcommon.o swproglib.o $(LIBS) $(CPPLOADLIBES) $(CLOADLIBES) -o $@
+
+swcopy: swcopy.o $(OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+intsizes: intsizes.o $(OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+swlist: swlist.o $(OBJS) $(SWLIST_OBJS) $(SWINSTALL_OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(SWLIST_OBJS) $(SWINSTALL_OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+swremove: swremove.o $(OBJS) $(SWREMOVE_OBJS) $(SWINSTALL_OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(SWREMOVE_OBJS) $(SWINSTALL_OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+swconfig: swconfig.o $(OBJS) $(SWCONFIG_OBJS) $(SWINSTALL_OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(SWCONFIG_OBJS) $(SWINSTALL_OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+iswverify: iswverify.o $(OBJS) $(SWVERIFY_OBJS) $(SWINSTALL_OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(SWVERIFY_OBJS) $(SWINSTALL_OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+swinstall: swinstall.o $(OBJS) $(SWINSTALL_OBJS) $(LIB) $(CLOADLIBES)
+	$(CC)  $(LDFLAGS) ${@}.o $(OBJS) $(SWINSTALL_OBJS) $(CLOADLIBES) $(LIBS) -o $@
+
+swverify: swverify.sh.in
+	sed \
+	 -e "s@\@SWBISLIBEXECDIR\@@"$(libexecdir)@ \
+	 -e "s@\@SWBISLIBDIR\@@"$(libdir)@ \
+	 -e "s@\@POSIXSHELL\@@"$(POSIXSHELL)@ \
+	 -e "s@\@SWBISGTAR\@@"$(GTAR)@ \
+	 -e "s@\@SWBIS_RELEASE\@@"`cat ../include/swprog_versions.h | \
+		grep SWBIS_RELEASE | \
+		expand | \
+		awk '{ print $$3 }'`@ \
+	<${@}.sh.in >$@; \
+	chmod 775 $@
+
+swbis: swbis.sh.in
+	sed \
+	 -e "s@\@SWBISLIBEXECDIR\@@"$(libexecdir)@ \
+	 -e "s@\@SWBISLIBDIR\@@"$(libdir)@ \
+	 -e "s@\@SWBIS_BINDIR\@@"$(bindir)@ \
+	 -e "s@\@POSIXSHELL\@@"$(POSIXSHELL)@ \
+	 -e "s@\@SWBISGTAR\@@"$(GTAR)@ \
+	 -e "s@\@SWBIS_RELEASE\@@"`cat ../include/swprog_versions.h | \
+		grep SWBIS_RELEASE | \
+		expand | \
+		awk '{ print $$3 }'`@ \
+	<${@}.sh.in >$@; \
+	chmod 775 $@
+
+rpm2psf: rpm2psf.sh.in
+	sed -e "s@\@SWBISLIBEXECDIR\@@"$(libexecdir)@ <${@}.sh.in >$@
+	chmod 775 $@
+
+swign: swign.sh.in
+	sed \
+	-e "s@\@SWBISLIBEXECDIR\@@"$(libexecdir)@ \
+	 -e "s@\@SWBISLIBDIR\@@"$(libdir)@ \
+	 -e "s@\@POSIXSHELL\@@"$(POSIXSHELL)@ \
+	 -e "s@\@SWBISGTAR\@@"$(GTAR)@ \
+	 -e "s@\@SWBIS_RELEASE\@@"`cat ../include/swprog_versions.h | \
+		grep SWBIS_RELEASE | \
+		expand | \
+		awk '{ print $$3 }'`@ \
+	<${@}.sh.in >$@
+	chmod 775 $@
+
+rpm2swbis: rpm2swbis.sh.in
+	sed -e "s@\@SWBISLIBEXECDIR\@@"$(libexecdir)@ <${@}.sh.in >$@
+	chmod 775 $@
+
+swbisparse: $(LIB) $(OBJS) $(CPPLOADLIBES) $(CLOADLIBES) swbisparse.o
+	$(CXX) -o $@  $(LDFLAGS) swbisparse.o $(OBJS)  $(LIB) $(CPPLOADLIBES) $(CLOADLIBES) $(LIBS) $(LIBEFENCE)
+
+sw_2tar: $(LIB) $(OBJS) $(CPPLOADLIBES) $(CLOADLIBES) sw_2tar.o
+	$(CXX) -o $@  $(LDFLAGS) sw_2tar.o $(OBJS)  $(LIB) $(CPPLOADLIBES) $(CLOADLIBES) $(LIBS) $(LIBEFENCE)
+
+$(topdir)/swstructlib/swstructlib.a:
+	( cd $(topdir)/swstructlib ; $(MAKE) )
+
+$(topdir)/swstructlib/swfdecl.a:
+	( cd $(topdir)/swstructlib ; $(MAKE) )
+
+$(PROGS): $(OBJS) 
+
+install-strip: all
+	strip swpackage$(EXE)
+	strip swcopy$(EXE)
+	strip swinstall$(EXE)
+	strip swremove$(EXE)
+	strip swconfig$(EXE)
+	strip iswverify$(EXE)
+	strip swlist$(EXE)
+	strip swbisparse$(EXE)
+	$(MAKE) -s install
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+#install-strip:
+install-info:
+installdirs:
+installcheck:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+install: all
+	if [ ! -d $(DESTDIR)$(libexecdir) ]; then \
+		echo "creating $(DESTDIR)$(libexecdir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(libexecdir); \
+	fi
+	if [ ! -d $(DESTDIR)$(bindir) ]; then \
+		echo "creating $(DESTDIR)$(bindir)"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(bindir); \
+	fi
+	if [ ! -d $(DESTDIR)$(LIBDIR)/swbis ]; then \
+		echo "creating $(DESTDIR)$(LIBDIR)/swbis"; \
+		$(INSTALL) -m 755 -d $(DESTDIR)$(LIBDIR)/swbis; \
+	fi
+	if [ ! -f $(DESTDIR)$(LIBDIR)/swbis/swdefaults ]; then \
+		echo "Installing defaults file $(DESTDIR)$(LIBDIR)/swbis/swdefaults"; \
+		$(INSTALL) -m 644 ../etc/swdefaults  $(DESTDIR)$(LIBDIR)/swbis/swdefaults; \
+	fi
+	if [ ! -f $(DESTDIR)$(LIBDIR)/swbis/swbisdefaults ]; then \
+		echo "Installing swbisdefaults file $(DESTDIR)$(LIBDIR)/swbis/swbisdefaults"; \
+		$(INSTALL) -m 644 ../etc/swbisdefaults  $(DESTDIR)$(LIBDIR)/swbis/swbisdefaults; \
+	fi
+
+	$(INSTALL) -m 644 ../examples/PSF.source.in $(DESTDIR)$(LIBDIR)/swbis/
+	$(INSTALL) -m 644 ../bin/checkdigest.sh $(DESTDIR)$(LIBDIR)/swbis/
+	$(INSTALL) -m 755 rpm2psf $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swverify $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swign $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swbis $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 rpm2swbis $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swpackage$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swcopy$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swinstall$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swremove$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swconfig$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 swlist$(EXE) $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 -d $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 swbisparse$(EXE) $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 fixcatalog.awk $(DESTDIR)$(libexecdir)/swbis
+	$(INSTALL) -m 755 iswverify$(EXE) $(DESTDIR)$(libexecdir)/swbis
+
+uninstall:
+	$(RM) $(DESTDIR)$(bindir)/rpm2psf
+	$(RM) $(DESTDIR)$(bindir)/swverify
+	$(RM) $(DESTDIR)$(bindir)/swign
+	$(RM) $(DESTDIR)$(bindir)/swbis
+	$(RM) $(DESTDIR)$(bindir)/rpm2swbis
+	$(RM) $(DESTDIR)$(bindir)/swpackage$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swcopy$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swinstall$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swremove$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swconfig$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swlist$(EXE)
+	$(RM) $(DESTDIR)$(bindir)/swbisparse$(EXE)
+	$(RM) $(DESTDIR)$(libexecdir)/swbis/iswverify$(EXE)
+	$(RM) $(DESTDIR)$(libexecdir)/swbis/fixcatalog.awk
+	$(RM) $(DESTDIR)$(libexecdir)/swbis/swbisparse$(EXE)
+	rmdir $(DESTDIR)$(libexecdir)/swbis; true
+	$(RM) $(DESTDIR)$(LIBDIR)/swbis/swdefaults
+	$(RM) $(DESTDIR)$(LIBDIR)/swbis/swbisdefaults
+	$(RM) $(DESTDIR)$(LIBDIR)/swbis/PSF.source.in
+	$(RM) $(DESTDIR)$(LIBDIR)/swbis/checkdigest.sh
+	rmdir $(DESTDIR)$(libexecdir); true;
+	rmdir $(DESTDIR)$(bindir); true;
+	rmdir $(DESTDIR)$(LIBDIR)/swbis; true;
+	rmdir $(DESTDIR)$(LIBDIR); true;
+
+.PHONY:		clean
+clean:
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared tmp/*
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+	rm -f runswpackagetest
+
+.PHONY:		distclean
+distclean:	
+	$(MAKE) -s clean
+	rm -f *.S *.a *.o core *~ $(PROGS) rpm.shared librpmrc find-provides.sh find-requires.sh tmp/*
+	rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+
+.PHONY:		depend
+depend:
+	( >.depend)
+#	($(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend; exit 0)
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

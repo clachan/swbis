@@ -1,0 +1,103 @@
+swbisparse(1)		    General Commands Manual		 swbisparse(1)
+
+
+
+NAME
+       swbisparse — Read and parse POSIX.7.2 metadata.
+
+SYNOPSIS
+       swbisparse {--installed|-o,--info|-i,--index|-p,--psf} [-b] [-n] [-l level] [file]
+
+       swbisparse {-d,--decode} [package_file]
+
+DESCRIPTION
+       swbisparse reads and parses POSIX.7.2 metadata files: INDEX, INFO and
+       psf files.
+
+       swbisparse writes an implementation defined format to stdout.  The
+       format indicates the keyword type, (O)bject, (A)ttribute, or,
+       (E)xtended, and, containment level.  Newlines in multi-line values are
+       translated to '\n' and output on a single line.
+
+       When decoding a package file, package_file, swbisparse emits a format
+       that includes the length (in bytes) of the attribute value.  The format
+       consists of ASCII data.	Binary data in the input will cause an error.
+
+       For Example, the following PSF file:
+
+	distribution
+	layout_version 1.0
+	product
+	description "This is a
+	multi line value"
+	tag p1
+	fileset
+	tag p2
+	file
+	path /etc/passwd
+
+       is translated to:
+
+	F00 PSF:
+	O01 distribution
+	A02  layout_version 1.0
+	O02  product
+	A03   description "This is a\nmulti line value"
+	A03   tag p1
+	O03   fileset
+	A04    tag p2
+	O04    file
+	A05	path /etc/passwd
+
+   Hewlett-Packard SD-UX Compatibility
+       This parser does not use nor require the end keyword to terminate
+       objects as is commonly the practice for PSF files written for Hewlett-
+       Packard's SD-UX equipped systems.  The end keyword can appear in PSF,
+       INDEX and INFO files, however, it will merely be scanned and the token
+       discarded.  Another incompatibility is based on this parser's
+       termination of an object definition by the first extended keyword.
+       This restriction may not exist in the SD-UX grammar because the object
+       is bracketed by the nesting of end keywords and not by the existence of
+       the first object or extended keyword.
+
+OPTIONS
+       --info-o	    Parse an INFO file.
+
+       --installed     Parse the installed software catalog file INSTALLED.
+
+       --psf-p	   Parse a PSF file.
+
+       --index-i     Parse an INDEX file.
+
+       -b     Beautify by indention and emit a file
+	      semantically identical to the input file.
+
+       -n     Emit format that is marked up with the
+	      value's lengths in bytes.
+
+       -l level	    Set initial containment level
+	      to level.
+
+APPLICABLE STANDARDS
+       Conforming to POSIX.7.2, however, A stand-alone parser utility by this
+       (or any) name is not specified in ISO/IEC 15068-2:1999
+
+SEE ALSO
+       sw(5)
+
+IDENTIFICATION
+	Author: Jim Lowe
+	Version: 0.481
+	Last Updated 2006-02-15
+	Copying: GNU Free Documentation License v1.1
+
+BUGS
+       This program is mainly a testing and development tool.
+
+       Requirements for inclusion (exclusion) of certain keywords in (from)
+       the parsed output is not enforced.  Quoted trailing whitespace in the
+       attribute value is discarded.
+
+
+
+								 swbisparse(1)

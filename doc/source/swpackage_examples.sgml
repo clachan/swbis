@@ -1,0 +1,111 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (c) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document 
+under the terms of the GNU Free Documentation License, Version 1.1 or any 
+later version published by the Free Software Foundation; with no Invariant 
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man swpackage_8.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<TITLE>
+SAMPLE PRODUCT SPEC FILES 
+</TITLE>
+<PARA>
+This section shows several example PSF files.
+</PARA>
+<REFSECT2>
+<TITLE>
+o   A minimal PSF to package all files in current directory.
+</TITLE>
+<PROGRAMLISTING>
+ distribution
+ product
+   tag prod
+   control_directory "" 
+   revision 1.0
+ fileset
+    tag files
+    control_directory ""
+    directory .
+    file *
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+o   A PSF that uses directory mapping.
+</TITLE>
+<PARA>
+This PSF creates a package with live system paths from source that is installed
+in non-live temporary locations. It is modeled on the swbis source package.
+<PROGRAMLISTING>
+ distribution
+ product
+   tag somepackage  # this is the package name
+   control_directory ""  
+   revision 1.0  # this is the package revision
+ fileset
+    tag files
+    control_directory ""
+ 
+    file_permissions -o root -g root
+    directory swprogs /usr/bin
+    file swpackage
+    file swinstall
+    file swverify
+
+    file -m 755 -o root -g root / /usr/libexec/swbis
+
+    directory swprogs /usr/libexec/swbis
+    file swbisparse
+    
+    directory swsupplib/progs /usr/libexec/swbis
+    file swbistar
+
+    file -m 755 -o root -g root / /usr/share/doc/swbis
+    directory . /usr/share/doc/swbis
+    file -m 444 ./README
+    file -m 444 CHANGES
+</PROGRAMLISTING>When this PSF is processed by the command:
+<PROGRAMLISTING>
+            swpackage -Wsign -s - @- | tar tvf -
+</PROGRAMLISTING>It produces the following:
+<VERB>
+<PROGRAMLISTING>
+ drwxr-x--- root/root      0 2003-06-03 ... catalog/
+ -rw-r----- root/root    307 2003-06-03 ... catalog/INDEX
+ drwxr-x--- root/root      0 2003-06-03 ... catalog/dfiles/
+ -rw-r----- root/root     65 2003-06-03 ... catalog/dfiles/INFO
+ -rw-r----- root/root     33 2003-06-03 ... catalog/dfiles/md5sum
+ -rw-r----- root/root     41 2003-06-03 ... catalog/dfiles/sha1sum
+ -rw-r----- root/root     33 2003-06-03 ... catalog/dfiles/adjunct_md5sum
+ -rw-r----- root/root    512 2003-06-03 ... catalog/dfiles/sig_header
+ -rw-r----- root/root   1024 2003-06-03 ... catalog/dfiles/signature
+ drwxr-x--- root/root      0 2003-06-03 ... catalog/pfiles/
+ -rw-r----- root/root     65 2003-06-03 ... catalog/pfiles/INFO
+ -rw-r----- root/root   1503 2003-06-03 ... catalog/INFO
+ -rwxr-xr-x root/root 510787 2003-06-03 ... usr/bin/swpackage
+ -rwxr-xr-x root/root 301255 2003-06-03 ... usr/bin/swinstall
+ -rwxr-xr-x root/root   4105 2003-06-03 ... usr/bin/swverify
+ drwxr-xr-x root/root      0 2003-06-03 ... usr/libexec/swbis/
+ -rwxr-xr-x root/root 365105 2003-06-03 ... usr/libexec/swbis/swbisparse
+ -rwxr-xr-x root/root 243190 2003-06-03 ... usr/libexec/swbis/swbistar
+ drwxr-xr-x root/root      0 2003-06-03 ... usr/share/doc/swbis/
+ -r--r--r-- root/root   8654 2003-05-27 ... usr/share/doc/swbis/README
+ -r--r--r-- root/root  10952 2003-06-03 ... usr/share/doc/swbis/CHANGES
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+o   Create a PSF from a list of files.
+</TITLE>
+<PROGRAMLISTING>
+           find . -print |  swpackage -Wfiles-from=- -Wlist-psf
+</PROGRAMLISTING>
+</REFSECT2>

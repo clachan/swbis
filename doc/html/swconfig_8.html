@@ -1,0 +1,397 @@
+<HTML>
+<HEAD>
+<TITLE>swconfig(8)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>swconfig(8)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<li><a href="#OPTIONS">OPTIONS</a>
+<li><a href="#USAGE EXAMPLES">USAGE EXAMPLES</a>
+<ul><li><a href="#Show the options"><font size=-1>Show the options</font></a>
+</ul><li><a href="#EXTENDED OPTIONS">EXTENDED OPTIONS</a>
+<ul><li><a href="#POSIX"><font size=-1>POSIX</font></a>
+<li><a href="#Swbis Implementation"><font size=-1>Swbis Implementation</font></a>
+</ul><li><a href="#RETURN VALUE">RETURN VALUE</a>
+<li><a href="#NOTES">NOTES</a>
+<li><a href="#REQUISITE UTILITIES">REQUISITE UTILITIES</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#APPLICABLE STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swconfig -- Configure installed software
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>swconfig</b>  [-p] [-u]  [-c <i>catalog</i>] [-f <i>file</i>] [-t <i>targetfile</i>] \
+       [-x <i>option=value</i>]  [-X <i>options</i><b>_</b><i>file</i>]  [-W <i>option</i>] \
+       [software_selections]  [@targets]
+
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>swconfig</b> configures, unconfigures, and reconfigures installed software
+       on a host.  <b>swconfig</b> is a distributed utility.  Neither swconfig nor
+       any component of swbis is required on the target host, however, the
+       target host must look like a Unix system at the shell and command-line
+       utility level.  Remote network connections are made by ssh.  Ssh is the
+       default but rsh can be selected by a command line option.
+
+       <b>swconfig</b> operates on installed software and performs configuration
+       primarily by executing the <b>configure</b> or <b>unconfigure</b> control scirpts.
+       If these scripts do not exists for an installed package, then swconfig
+       takes no action.
+</pre><h3><a name="OPTIONS"><b>OPTIONS</b></a></h3><pre>       <b>-f FILE</b>
+
+              Read the list of software selections from FILE.
+
+
+       <b>-p</b>
+
+              Preview mode, establish contact with target host, however,
+              modify nothing.
+
+
+       <b>-u</b>
+
+              Undo, run the unconfigure script.
+
+
+       <b>-c catalog</b>
+
+              Specify a file of PSF or INDEX syntax or a directory containing
+              the exported catalog.
+
+                     <b>Note:</b>  <b>This option is not yet implemented.</b>
+
+
+       <b>-t targetfile</b>
+
+              Specify a file containing a list of targets (one per line).
+
+
+       <b>-v</b>
+
+              Increment the verbose level.
+
+
+       <b>-x option=value</b>
+
+              Specify the extended option overriding the defaults file value.
+
+
+       <b>-X FILE</b>
+
+              Specify the extended options filename, FILE,  overriding the
+              default filenames.  This option may be given more then once. If
+              the resulting specified value is an empty string then reading of
+              any options file is disabled.
+
+       <b>--help</b>
+
+              Show help (Implementation extension)
+
+       <b>-W option[,option,...]</b>
+
+              Specify the implementation extension option.
+              Syntax: -W option[=option_argument[,option...]
+              Options may be separated by a comma.  The implementation
+              extension options may also be given individually using the
+              '--long-option[=option_arg]' syntax.
+
+
+       <b>--postinstall</b>
+
+              run the <b>postinstall</b> or <b>unpostinstall</b> script
+
+
+       <b>--force-locks</b>
+
+              override locking and delete existing lock
+
+
+       <b>--send-environment</b>
+
+              Include existing environment variables in the remote host's
+              execution environment.  System and common varaiables are
+              excluded and checks are made for tainted values.
+
+
+       <b>--allow-ambig</b>
+
+              Allows swconfig to act on all matching entries.  Without this
+              option a software selection that matches more than one installed
+              software entry is an error.
+
+
+       <b>--sig-level=N</b>
+
+              Specify number of required GPG signatures, N equal to 0 means
+              don't require the catalog to be signed.
+
+
+       <b>-W remote-shell=SHELL</b>
+
+              Defaults File Option: <b>swbis_remote_shell_client</b>
+              Supported shells are &quot;ssh&quot; and &quot;rsh&quot;, ssh is the default.
+
+       <b>-W show-options-files</b>
+              Show the complete list of options files and if they are found.
+
+       <b>-W show-options</b>
+              Show the options after reading the files and parsing the command
+              line options.
+
+       <b>-W pax-command={tar|pax|star|gtar}</b>
+              Set the portable archive command for all operations.  The
+              default is &quot;pax&quot;.
+
+       <b>-W pax-read-command={tar|pax|star|gtar}</b>
+              Set the read command for local and remote hosts.
+
+       <b>-W remote-pax-read-command={tar|pax|star|gtar}</b>
+              Defaults File Option: <b>swbis_remote_pax_read_command</b>
+              Set the read command for remote hosts.  This is the command that
+              runs on the target (e.g. pax -r, tar xpf -).  The default is
+              &quot;pax&quot;.
+
+       <b>-W local-pax-read-command={tar|pax|star|gtar}</b>
+              Defaults File Option: <b>swbis_local_pax_read_command</b>
+              Set the read command for local hosts.  This is the command that
+              runs on the target (e.g. pax -r, tar xpf -).  The default is
+              &quot;pax&quot;.
+
+       <b>-W pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Set the write command for local and remote hosts.  This is the
+              command that runs on the target (e.g. pax -w, tar cf -).
+
+       <b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_remote_pax_write_command</b>
+              Set the write command for remote hosts.
+
+       <b>-W local-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_local_pax_write_command</b>
+              Set the portable archive write command for local host
+              operations.  This is the command that runs on the source (e.g.
+              pax -w, tar cf -).  The default is &quot;pax&quot;.
+
+       <b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_remote_pax_write_command</b>
+              Set the portable archive write command for remote host
+              operations.  This is the command that runs on the source (e.g.
+              pax -w, tar cf -).  The default is &quot;pax&quot;.
+
+       <b>-W no-defaults</b>
+              Do not read any defaults files.
+
+       <b>-W no-getconf</b>
+              Defaults File Option: <b>swbis_no_getconf</b>
+              Makes the remote command be '/bin/sh -s' instead of the default
+              'PATH=`getconf PATH` sh -s'.
+
+       <b>-W shell-command=NAME</b>
+              Defaults File Option: <b>swbis_shell_command</b>
+              NAME may be one of &quot;bash&quot;, &quot;sh&quot; or &quot;posix&quot; and specifies the
+              remote command run by the remote shell.  &quot;posix&quot; is
+              'PATH=`getconf PATH` sh -s', &quot;bash&quot; is &quot;/bin/bash -s&quot;, &quot;sh&quot; is
+              &quot;/bin/sh -s&quot;, and &quot;ksh&quot; is &quot;ksh -s&quot;.  The default is &quot;posix&quot;.
+
+       <b>-W use-getconf</b>
+              Opposite of --no-getconf.
+
+
+       <b>-W source-script-name=NAME</b>
+              Write the script that is written into the remote shell's stdin
+              to NAME.  This is useful for debugging.
+
+       <b>-W target-script-name=NAME</b>
+              Write the script that is written into the remote shell's stdin
+              to NAME.  This is useful for debugging.
+
+       <b>software_selections</b>
+
+              Refer to the software objects (products, filesets) using
+              software spec syntax. (See <a href=sw_5.html>sw(5)</a> for syntax).
+
+
+       <b>target</b>
+
+              Refers to the software_collection where the software selections
+              are to be applied.  Allows specification of host and pathname
+              where the software collection is located.  A target that
+              contains only one part is assumed to be a hostname.  To force
+              interpretation as a path, use a absolute path or prefix with
+              ':'.
+
+
+       Source and Target Specification and Logic
+
+            Synopsis:
+                 Posix:
+                      host[:path]
+                      host
+                      host:
+                      /path  # Absolute path
+
+                 Swbis Extension:
+                      [user@]host[:path]
+                      [user@]host_port[:path]
+                      :path
+
+                 Swbis Multi-hop Target Extension:
+                      # ':' is the target delimiter
+                   # '_' delimits a port number in the host field
+
+                      [user@]host[@@[user@]host[@@...]][:file]
+                      [user@]host_port[@@[user@]host[@@...]][:file]
+
+                      # Using ':', a trailing colon is used to
+                      # disambiguate between a host and file.
+                   # For Example,
+                      :file
+                      host:
+                      host
+                      host:file
+                      host:host:
+                      host_port:host_port:
+                      host:host:file
+                      user@host:user@host:
+                      user@host:user@host:host:
+                      user@host:user@host:file
+
+            A more formal description:
+
+            target : HOST_CHARACTER_STRING ':' PATHNAME_CHARACTER_STRING
+                   | HOST_CHARACTER_STRING ':'
+                   | HOST_CHARACTER_STRING
+                   | PATHNAME_CHARACTER_STRING
+                   | ':' PATHNAME_CHARACTER_STRING   # Impl extension
+                   ;
+
+              PATHNAME_CHARACTER_STRING must be an absolute path unless
+                              a HOST_CHARACTER_STRING is given.  Allowing
+                              a relative path is a feature of the swbis
+                              implementation.
+
+                       NOTE: A '.' as a target is an implementation
+                             extension and means extract in current
+                             directory.
+
+                       NOTE: A '-' indicating stdout/stdin is an
+                             implementation extension.
+
+                       NOTE: A ':' in the first character indicates a filename.
+                             This is an implementation extension.
+
+              HOST_CHARACTER_STRING is an IP or hostname.
+
+           Examples:
+              Copy the  distribution /var/tmp/foo.tar.gz at 192.168.1.10
+                     swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+
+
+       Implementation Extension Syntax (multi ssh-hop) :
+           Syntax:
+           %start   wtarget    # the Implementation Extension Target
+                               # Note: a trailing ':' forces interpretation
+                               # as a host, not a file.
+           wtarget   : wtarget DELIM sshtarget
+                     | sshtarget
+                     | sshtarget DELIM
+                     ;
+           sshtarget : user '@' target # Note: only the last target
+                     | target          # may have a PATHNAME, and only a host
+                     ;                 * may have a user
+           target   : HOST_CHARACTER_STRING
+                    | PATHNAME_CHARACTER_STRING
+                    ;
+           user     : PORTABLE_CHARACTER_STRING  # The user name
+
+           DELIM    : ':'   # The multi-hop delimiter.
+                    ;
+</pre><h3><a name="USAGE EXAMPLES"><b>USAGE EXAMPLES</b></a></h3><pre>   <b>Run the configure script for package foo on 192.168.1.2:/</b>
+         swconfig foo @ root@192.168.1.2:/
+
+   <a name="Show the options"><b>Show the options</b></a>
+         swconfig --show-options
+</pre><h3><a name="EXTENDED OPTIONS"><b>EXTENDED OPTIONS</b></a></h3><pre>       Extended options can be specified on the command line using the -x
+       option or from the defaults file, swdefaults.  Shown below is an actual
+       portion of a defaults file which show default values.
+
+   <a name="POSIX"><b>POSIX</b></a>
+       These options are set in the /usr/lib/swbis/swdefaults or the
+       ~/.swdefaults on the local (management host, host where swconfig is
+       invoked).  These files on the target host are not used.
+
+         allow_incompatible            = false # Not implemented
+         allow_multiple_versions       = false # Not implemented
+         ask                           = false # Not implemented
+         autoselect_dependencies       = true # Not implemented
+         autoselect_dependents         = true # Not implemented
+         enforce_dependencies          = true # Not implemented
+         installed_software_catalog    = var/lib/swbis/catalog/
+         logfile                       = /var/log/sw.log
+         loglevel                      = 1
+         select_local                  = true # Not implemented
+         reconfigure                   = false
+         verbose                       = 1
+
+   <a name="Swbis Implementation"><b>Swbis Implementation</b></a>
+       These options are set in the /usr/lib/swbis/swbisdefaults or the
+       ~/.swbis/swbisdefaults file.
+
+          swconfig.swbis_no_getconf = true # true or false
+         swconfig.swbis_shell_command = posix # {sh|bash|posix|ksh}
+         swconfig.swbis_no_remote_kill = false # true or false
+         swconfig.swbis_local_pax_write_command=tar #{pax|tar|star|gtar}
+         swconfig.swbis_remote_pax_write_command=tar #{pax|tar|star|gtar}
+         swconfig.swbis_local_pax_read_command=tar #{pax|tar|gtar|star}
+         swconfig.swbis_remote_pax_read_command=tar #{pax|tar|gtar|star}
+         swconfig.swbis_local_pax_remove_command=tar
+         swconfig.swbis_remote_pax_remove_command=tar
+         swconfig.swbis_remote_shell_client=ssh
+         swconfig.swbis_forward_agent=True
+         swconfig.swbis_sig_level=0
+         swconfig.swbis_enforce_all_signatures=false
+</pre><h3><a name="RETURN VALUE"><b>RETURN VALUE</b></a></h3><pre>       0 if all targets succeeded, 1 if all targets failed or internal error,
+       2 if some targets failed and some succeeded.
+</pre><h3><a name="NOTES"><b>NOTES</b></a></h3><pre>        Multiple ssh-hops is an implementation extension.
+</pre><h3><a name="REQUISITE UTILITIES"><b>REQUISITE UTILITIES</b></a></h3><pre>       The swbis distributed utilities require <b>bash</b>, public domain <b>ksh</b>, or
+       Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+       <b>swbis_shell_command</b> extended option is set to 'detect' you don't have
+       to know which one is present, otherwise you may specify one explicitly.
+
+       A POSIX <b>awk</b> is required, and with the ability to specify several
+       thousand bytes of program text as a command argument.  GNU awk  works,
+       as does the ATT Awk book awk, and the awk on BSD systems.  See the
+       INSTALL file for further details regarding a small issue with the
+       OpenSolaris (c.2006) awk.
+
+       GNU Privacy Guard, gpg is required for verification of package
+       signatures.
+
+       Other utilities required to be in $PATH on the remote host are: dd, pax
+       (or tar|star|gtar), mkdir, echo, test, sleep, read (if not builtin).
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre>       /var/lib/swbis/catalog # Location of installed catalog
+       /usr/lib/swbis/swdefaults
+       /usr/lib/swbis/swbisdefaults
+       $HOME/.swbis/swdefaults
+       $HOME/.swbis/swbisdefaults
+</pre><h3><a name="APPLICABLE STANDARDS"><b>APPLICABLE STANDARDS</b></a></h3><pre>       ISO/IEC 15068-2:1999, Open Group CAE C701
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       info swbis
+
+       <a href=swbis_7.html>swbis(7)</a>, <a href=sw_5.html>sw(5)</a>, <a href=swlist_8.html>swlist(8)</a>
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        <a href=swconfig_8.html>swconfig(8)</a>: The package configuration utility of the swbis project.
+        Author: Jim Lowe   Email: jhlowe at acm.org
+        Version: 1.13.1
+        Last Updated: 2010-01-22
+        Copying: GNU Free Documentation License
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       This section is left intentionally black
+
+
+
+                                                                   <a href=swconfig_8.html>swconfig(8)</a>
+</pre><hr></body></html>

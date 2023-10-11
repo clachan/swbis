@@ -1,0 +1,68 @@
+<HTML><HEAD><TITLE>Manual Page</TITLE></HEAD>
+<BODY BGCOLOR=#ffffff TEXT=#000000><PRE><FONT SIZE=4>
+
+
+swparse(1)                                             swparse(1)
+
+
+<B>NAME</B>
+       swparse -- Parse metadata files: INDEX, INFO, and psf.
+
+<B>SYNOPSIS</B>
+       <B>swparse</B> {-o,--info|-i,--index|-p,--psf} [<I>file</I>]
+
+
+<B>DESCRIPTION</B>
+       <B>swparse</B>  reads  POSIX.7.2  metadata  files. One file type,
+       INDEX, INFO or PSF is specified in the first argument.  If
+       a  file name to parse is not given in the second argument,
+       <B>swparse</B> reads from stdin.
+
+       <B>swparse</B> writes a de facto format to  stdout.   The  format
+       indicates  the  keyword  type,  (O)bject, (A)ttribute, or,
+       (E)xtended, and, containment level.   Newlines  in  multi-
+       line  values are translated to '\n' and output on a single
+       line.
+
+<B>OPTIONS</B>
+       -o        Parse an INFO file.
+
+       -p        Parse a PSF file.
+
+       -i        Parse an INDEX file.
+
+<B>CAVEATS</B>
+       A stand-alone parser by this name is not specified in IEEE
+       Std 1387.2-1995 (POSIX.7.2).
+
+<B>STANDARDS</B> <B>CONFORMANCE</B>
+       POSIX.7.2
+
+<B>SEE</B> <B>ALSO</B>
+       swparse(5)
+
+<B>IDENTIFICATION</B>
+       Author: J. Lowe &lt jhl@richmond.infi.net >
+        $RCSfile: swparse_1.html,v $
+        $Revision: 1.1.1.1 $
+        $Date: 2006/03/25 20:12:11 $
+        Copying: GNU Free Documentation License
+
+<B>BUGS</B>
+       Requirements for inclusion (exclusion) of certain keywords
+       in (from) the parsed output is not enforced.
+
+
+
+
+
+
+
+
+
+
+
+                                                                1
+
+
+</FONT></PRE></BODY></HTML>

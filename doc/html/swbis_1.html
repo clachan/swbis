@@ -1,0 +1,569 @@
+<HTML>
+<HEAD>
+<TITLE>SWBIS(1)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>SWBIS(1)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#INTRODUCTION">INTRODUCTION</a>
+<li><a href="#MAKING A PACKAGE SPECIFICATION FILE (PSF)">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+<ul><li><a href="#PSFs By Example"><font size=-1>PSFs By Example</font></a>
+</ul><li><a href="#MAKING ARCHIVES">MAKING ARCHIVES</a>
+<ul><li><a href="#Using swpackage"><font size=-1>Using swpackage</font></a>
+<li><a href="#Using swign"><font size=-1>Using swign</font></a>
+</ul><li><a href="#VERIFYING ARCHIVES">VERIFYING ARCHIVES</a>
+<li><a href="#TRANSLATING OTHER FORMATS">TRANSLATING OTHER FORMATS</a>
+<li><a href="#SECURING FILE SYSTEM DIRECTORIES">SECURING FILE SYSTEM DIRECTORIES</a>
+<li><a href="#SECURING CVS REPOSITORIES">SECURING CVS REPOSITORIES</a>
+<li><a href="#COPYING FILES">COPYING FILES</a>
+<li><a href="#PACKAGE MANAGEMENT FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+<ul><li><a href="#Recovery From Hangs and Crashes"><font size=-1>Recovery From Hangs and Crashes</font></a>
+<li><a href="#Installation"><font size=-1>Installation</font></a>
+<li><a href="#Removal"><font size=-1>Removal</font></a>
+<li><a href="#Query"><font size=-1>Query</font></a>
+</ul><li><a href="#CONFIGURATION">CONFIGURATION</a>
+<li><a href="#APPLICABLE STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swbis -- Software Administration User Manual
+
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       Introduction
+       Making a Package Specification File (PSF)
+       Making Archives
+       Verifying Archives
+       Translating Other Formats
+       Securing File System Directories
+       Securing CVS Repositories
+       Copying Files
+       Package Management Functions
+       Configuration
+</pre><h3><a name="INTRODUCTION"><b>INTRODUCTION</b></a></h3><pre>       This manual page is a very short user manual. It provides basic
+       examples for using the swbis utilities.  For detailed description of
+       format, syntax, and internal structures see the swbis Info document
+       (run 'info swbis' or 'info -f doc/info/swbis.info' from within the
+       source package) or other manual pages: <a href=sw_5.html>sw(5)</a>, <a href=swpackage_5.html>swpackage(5)</a>, <a href=swbis_7.html>swbis(7)</a>.
+       Each utility has its own manual page, see <a href=swverify_8.html>swverify(8)</a>, <a href=swlist_8.html>swlist(8)</a>,
+       <a href=swcopy_8.html>swcopy(8)</a>, <a href=swinstall_8.html>swinstall(8)</a> and <a href=swpackage_8.html>swpackage(8)</a>.  For configuration help and
+       host compatibility issues see <a href=swbis_7.html>swbis(7)</a>.
+
+       swbis is a software administration system for GNU/Linux systems and
+       systems that are UNIX system-like.  It implements the Open Group's CAE
+       Spec C701 (XDSA) Distributed Software Administration.  This spec
+       closely follows ISO/IEC 15068-2:1999 (now withdrawn) which was
+       identical to IEEE 1387.2:1995.  The scope of the implementation
+       includes a package format, meta-data file format, and utilities for
+       package creation, installation, query, listing, and verification.  The
+       package management utilities are network transparent via direct use of
+       <a href=ssh_1.html>ssh(1)</a>.  They provide remote package management functions to any UNIX-
+       like remote host with a zero footprint regardless if swbis is installed
+       on the remote host.
+
+       While the swbis system has features comparable with package managers,
+       it has features that are of general purpose usefulness to system
+       administrators and developers.  These include host-to-host copying of
+       file system directories, advanced tarball creation methods, backward
+       compatibility with uses of plain tarballs, and the ability to act as a
+       directory content integrity checker and SCM security tool.
+
+       All sections of this manual page, except the last two, describe
+       security related application of <b>swpackage</b> that integrate GNU utilities
+       and the file system.  These applications along with the <b>swign</b> utility
+       are unique to swbis.  The last section, Package Management, represents
+       the intended focus of the spec.
+</pre><h3><a name="MAKING A PACKAGE SPECIFICATION FILE (PSF)"><b>MAKING A PACKAGE SPECIFICATION FILE (PSF)</b></a></h3><pre>       A PSF is a simple text file that directs <b>swpackage</b> on what to package.
+       It is not included in the package unless it lists itself as a file to
+       include.  It can contain extra attributes (that swbis would not
+       recognize).  These end up in the main meta-data file named
+       <b>catalog/INDEX</b>.  A PSF consists of sections that contain keyword/value
+       pairs.  The same keywords may appear in different sections and are
+       indeed different and separate attributes but they have the same
+       definition/usage.  The sections are delimited by the section keyword
+       (which is recognized because it has no value) and the next section
+       keyword.  The sections are properly called objects and the keyword is
+       the object keyword.  Some sections contain other sections.  The parser
+       knows and enforces the hierarchy.
+
+       White space in the PSF is not significant. A comment begins with a
+       pound '#'.
+
+       Simple PSF's can be generated with <b>swign</b>.
+
+       # Generate some generic sample PSFs
+       swign --show-psf -s.
+       swign --show-psf -s. --revision 1.1
+       swign --show-psf -s. -o root -g root
+       swign --show-psf -s. -o &quot;&quot; -g &quot;&quot;
+       swign --show-psf -s. -o 0 -g 0
+
+        Perform a test process on your PSF using the preview option
+
+       swign --show-psf -s.  | swpackage -p -v -s -
+
+   <a name="PSFs By Example"><b>PSFs By Example</b></a>
+       To test or preview the following examples use swpackage as follows:
+
+       # Example commands that read a PSF from stdin
+       swpackage -p -v  # -or-
+       swpackage -p -vv  # -or-
+       swpackage -p --files -vv  # -or-
+       swpackage -p --files --dir=pathPrefix -vv
+
+       then to make the package for real, remove the '-p' option, such as:
+
+            cat yourPSF | swpackage -s - @-  | tar tvf -
+
+   <b>o</b>  <b>Package an entire directory</b>
+       distribution
+       product
+       tag packageName
+       control_directory &quot;&quot;
+       revision 1.0
+       fileset
+       tag files
+       control_directory &quot;&quot;
+       directory .
+       file *
+       # exclude fileName
+       # exclude fileName2
+       # exclude fileName2 # ...
+
+   <b>o</b>   <b>Package Explicit Files</b>
+       distribution
+       # owner root  # ownership of catalog
+       # groupt root  # ownership of catalog
+       product
+       tag packageName
+       control_directory &quot;&quot;
+       revision 1.0
+       fileset
+       tag files
+       control_directory &quot;&quot;
+       file -m 755 -o 0 -g 0 /etc/passwd /mypasswd
+       file -m 666 -o 0 -g 0 /dev/null  /mynull
+
+   <b>o</b>   <b>Package A Directory that does not already exist</b>
+       distribution
+       product
+       tag mydir
+       revision 0.001
+       fileset
+       tag bin
+       directory / /
+       file -o root -g bin -m 700 -t d /BB
+
+       As a point of instruction, show the actual payload of this package with
+       the following command:
+
+          swpackage  | swinstall @- | tar tvf -
+</pre><h3><a name="MAKING ARCHIVES"><b>MAKING ARCHIVES</b></a></h3><pre>       swbis provide two programs to make a package: <b>swpackage</b> and <b>swign</b> To
+       make a package, take your PSF that you created and use it as input to
+       these programs.  Be aware that both write to standard output by
+       default.
+
+   <a name="Using swpackage"><b>Using swpackage</b></a>
+       <b>swpackage</b> is a self-contained tar writing utility, that is it writes a
+       tar archive without using /bin/tar.
+
+       Here is the command to read a PSF from stdin and write a tar archive on
+       stdout and list the resulting package with tar.
+
+          swpackage -s - @- | tar tvf -
+          swpackage --gzip -s - @- | tar ztvf -
+          swpackage --bzip2 -s - @- | tar jtvf -
+
+       Here are the options to use to include security attributes.  These can
+       be set in your defaults file (~/.swbis/swbisdefaults).
+
+          swpackage -s - --archive-digests --file-digests --files @-
+
+       The default digests for these options are md5 and sha1.  To add sha512
+       digests do
+
+          swpackage -s - --archive-sha512 --archive-digests \
+            --file-digests --file-sha512 --files @-
+
+       To sign the package, that is, include an embedded GPG signature just
+       add the '--sign' option, along with other options.  '--sign' turns on
+       '--archive-digest'
+
+          swpackage \
+             --archive-digests --file-digests --files \
+             --gpg-name=yourId --gpg-path=~/.gnupg --sign
+
+       When swpackage asks for a passphrase it is really swpackage.  Although
+       care is taken to handle the passphrase correctly, you can avoid having
+       swpackage handle your passphrase all together by using the gpg agent.
+
+       To use the agent, it must be running and the location must be set as
+       the environment variable <b>GPG_AGENT_INFO</b>. To verify this try:
+
+          env | grep GPG
+
+       Now, just add the option <b>--passphrase-fd=agent</b> to the swpackage
+       invocation or set and export the environment variable
+       SWPACKAGEPASSFD=agent.  The result should be that swpacakge completes
+       without asking for a passphrase at the terminal.
+
+   <a name="Using swign"><b>Using swign</b></a>
+       The <b>swign</b> utility is designed to make a package directly from the
+       contents of the current directory.  It combines usage of GNU tar and
+       swpackage such that the archive it creates is written entirely by GNU
+       tar using the file list, <b>catalog/dfiles/files</b>, generated by swpackage.
+       In this way it provides more assurance against unseen data corruption,
+       which is important when creating signed packages.
+
+       For directories whose name has the form <b>Name-Version</b>, swign will
+       properly generate its own PSF with attributes based on the directory
+       name.  The name '.' is the special name for the internally generated
+       PSF. By default, swign will read a PSF from standard input.
+
+          cd somepackage-1.1
+          swign -s. -u yourIdName @- | tar tvf -
+
+       The result is a package that looks like this
+
+       somepackage-1.1/
+       somepackage-1.1/catalog/
+       somepackage-1.1/catalog/INDEX
+       somepackage-1.1/catalog/dfiles/
+       somepackage-1.1/catalog/dfiles/INFO
+       somepackage-1.1/catalog/dfiles/md5sum
+       somepackage-1.1/catalog/dfiles/sha1sum
+       somepackage-1.1/catalog/dfiles/adjunct_md5sum
+       somepackage-1.1/catalog/dfiles/size
+       somepackage-1.1/catalog/dfiles/files
+       somepackage-1.1/catalog/dfiles/sig_header
+       somepackage-1.1/catalog/dfiles/signature
+       somepackage-1.1/catalog/pfiles/
+       somepackage-1.1/catalog/pfiles/INFO
+       somepackage-1.1/catalog/INFO
+         ...
+       somepackage-1.1/ ..
+
+       When making a package with swign, it is beneficial to include the
+       <b>checkdigest</b> control script using this option:
+
+           swign -D $HOME/checkdigest.sh -s. -u yourIdName @- | tar tvf -
+
+           # Aside:
+           # To see how the script is specified in the PSF, try
+           #     swign -D /your_secure_path/checkdigest.sh -s. --psf
+           #
+
+       This script will work unchanged for any package, and is available in
+       the swbis source package. It may be copied as a public domain program.
+       With this script included, a recipient of your signed package can
+       verify the unpacked directory using <b>swverify</b>.
+
+</pre><h3><a name="VERIFYING ARCHIVES"><b>VERIFYING ARCHIVES</b></a></h3><pre>       Packages are verified by <b>swverify</b>
+
+          # This example verifies standard input
+          swverify -d @-
+
+       In addition, packages that have a single path prefix (like source
+       packages) and that have ownerships reproducible on the local host can
+       be verified in its unpacked form, for example:
+
+          tar zxpf somepackage-1.1.tar.gz
+          cd somepackage-1.1
+          swverify -d @.
+
+       Verifying the unpacked form requires the <b>checkdigest</b> implementation
+       extension control script.  This script must have been included when the
+       package was created using the '-D NAME' option in the <b>swign</b>.
+
+</pre><h3><a name="TRANSLATING OTHER FORMATS"><b>TRANSLATING OTHER FORMATS</b></a></h3><pre>       swpackage can translate other package formats: deb, rpm, and slackware,
+       and plain vanilla source tarballs with a NAME-VERSION path name prefix.
+       In the process, the package can be signed.
+
+       The converted package is written to stdout.  The input is read from
+       standard input or specified as source using the <b>-s FILENAME</b> option.
+       Slackware packages cannot be read from standard input because the
+       revision and name is determined from the .tgz filename itself.
+
+          swpackage --to-swbis -s somepackage.rpm  # RPM
+          swpackage --to-swbis -s somepackage.deb  # DEB
+          swpackage --to-swbis -s somesourcepackage-1.0.tar.gz  # Plain Source Package
+            # or for slackware packages
+          swpackage -s somepackage-1.0-i386.tgz --to-swbis
+</pre><h3><a name="SECURING FILE SYSTEM DIRECTORIES"><b>SECURING FILE SYSTEM DIRECTORIES</b></a></h3><pre>       The <b>swign</b> utility can be used as a directory content integrity tool.
+       After processing the current directory with swign, the directory can be
+       verified against changes to file contents, ownerships and permissions.
+
+       In this capacity, the <b>./catalog/</b> directory is a GPG signed record of
+       the directory contents.  It is created this way:
+
+           swign -D $HOME/checkdigest.sh -s. -u yourIdName -o &quot;&quot; -g &quot;&quot; @.
+
+       Verification is simply:
+
+           swverify -d @.
+</pre><h3><a name="SECURING CVS REPOSITORIES"><b>SECURING CVS REPOSITORIES</b></a></h3><pre>       Securing CVS (or any Source Code Management repository) is similar to
+       securing a directory with the additional step that the <b>./catalog/</b>
+       directory is checked-in or committed to the repository just like other
+       ordinary directories in the project.
+
+       Slightly different options are used for signing and verification.
+       These have to do with file ownerships which are not tracked and
+       enforced.  Also the default action of removing ./catalog is prevented
+       by the <b>--no-remove</b> option.
+
+           swign -D $HOME/checkdigest.sh -s PSF.in --no-remove --name-version=somepackage-1.0 @.
+
+       The exported directory (without the SCM control files) can be verified.
+       Since ownerships, time stamps, and permissions are probably not
+       preserved, use a special option to swverify, --scm.
+
+            swverify --scm -d @.
+
+       The PSF.in for this usage is specialized.  Note the special exclude
+       directives and the replacement macros <i>%</i><b>__</b><i>tag</i> and <i>%</i><b>__</b><i>revision</i> which
+       allows easy control of the current revision.
+
+       Here is a minimal example, the <a href=swign_1.html>swign(1)</a> manual page for more
+       information.
+
+          # PSF.in -- Input file to swign
+          distribution
+          checkdigest  &lt; bin/checkdigest.sh
+          product
+          tag %__tag                # Replaced by swign
+          control_directory &quot;&quot;
+          revision %__revision      # Replaced by swign
+          fileset
+          tag sources
+          control_directory &quot;&quot;
+          file_permissions -o 0 -g 0
+          directory .
+          file *
+          exclude catalog
+          exclude CVS
+          exclude */CVS
+          # exclude .svn
+          # exclude */.svn
+</pre><h3><a name="COPYING FILES"><b>COPYING FILES</b></a></h3><pre>       <b>swcopy</b> can be used to copy arbitrary files or data streams from host to
+       host.  Here are a few examples.  See the manual page <a href=swcopy_8.html>swcopy(8)</a> for
+       more.
+
+       # Copy a file in the current directory to your home directory on HostA
+          swcopy --no-audit -s :file1 @ HostA
+
+       # Copy the data stream from a device on a remote host
+          swcopy --no-audit -s 192.168.1.1:/dev/tape @- | tar tvf -
+
+       # Show your network speed in real time
+          swcopy --no-audit -s 192.168.1.1:/dev/zero --show-progress @ /dev/null
+
+       # Read the entire file system on a remote host
+          swcopy --no-audit -s 192.168.1.1:/ @- | tar tvf -
+</pre><h3><a name="PACKAGE MANAGEMENT FUNCTIONS"><b>PACKAGE MANAGEMENT FUNCTIONS</b></a></h3><pre>       swbis supports typical package management functions for creation,
+       installation, listing/query, verification, and removal in a network
+       transparent fashion with zero new requirements for the remote host.
+       <b>ssh</b> is used directly for host access and no special configuration is
+       required.
+
+       The default requirements for the remote host are GNU bash, as
+       <b>/bin/bash</b>, and GNU tar as <b>/bin/tar</b>.  Other runtime and compile
+       configurations are possible to allow GNU tar to be <b>/bin/gtar</b> and a host
+       to be bash-less.  See <a href=swbis_7.html>swbis(7)</a> for information on support for other
+       POSIX shells.
+
+       Alternate root operation is supported for all operations, however, only
+       cooperatively enforced for control script execution, that is control
+       scripts must respect its relative root.
+
+       All utilities are similar in their command-line interface:
+
+           sw&lt;<i>utillity</i>&gt; [<i>PKG</i><b>_</b><i>NAME</i><b>_</b><i>SPEC</i>] @ <i>HOSTNAME</i>
+           sw&lt;<i>utillity</i>&gt; [<i>PKG</i><b>_</b><i>NAME</i><b>_</b><i>SPEC</i>] @ :<i>FILENAME</i>
+           sw&lt;<i>utillity</i>&gt; [<i>PKG</i><b>_</b><i>NAME</i><b>_</b><i>SPEC</i>] @ /<i>FILENAME</i>
+
+   <b>Internal operation,</b>  <b>Events, and Errors</b>
+       Operation of the distributed utilites consists of a shell script
+       running on the target host and the actual utility running on the
+       management host.  These hosts may be the same or different.
+       Configuration data (e.g. swbisdefaults and swdefaults files) are read
+       on the management host only.  When verifying installed software, gpg is
+       invoked on the management host only using public keys from the
+       management host only.
+
+       All the distributed utiltities operate as a utility (i.e. C program)
+       and a shell script read and executed from the POSIX shell's standard
+       input.  The C program and shell script communicate via stdin, stdout
+       and stderr using a connection provided by an ordinary rsh or ssh
+       client.  For local operation ssh/rsh is not invoked.  The utilities
+       never should be installed setuid root.  Privilege escalation can be
+       accomplished via Ssh and a UNIX user account:
+
+           sw&lt;<i>utillity</i>&gt; @ root@localhost
+
+       The shell script is a list of tasks where each task becomes an
+       additional shell reading from stdin.  Before the additional task shell
+       is executed, a Task Identification Header is read and compared with the
+       expected Task. In addition each task has an END event to return its
+       status.  If any error occurs, the error is detected by the utility
+       (i.e. the C program on the management host); and, the main script [on
+       the target host] falls through with an error.
+
+
+       For example, here is how the 'load fileset' task script appears in a
+       UNIX process listing:
+
+       14073 14071  1 20:35  /bin/bash -s _swbis _swinstall
+       14453 14073  0 20:35  /bin/bash -s /_swbis /_swinstall load fileset
+       14454 14453  0 20:35  dd bs 512 count 6870
+       14455 14453  0 20:35  /bin/bash -s /_swbis /_swinstall load fileset
+       14460 14455  0 20:35  tar xpvf -
+
+       During operation events are generated.  They may be shown by increasing
+       the verbosity level
+
+           swinstall -x verbose=3
+               # -or-
+           swinstall -vv
+
+        For example, the events for installation look like this
+
+       # swinstall -x reinstall=y --no-scripts -vv @ localhost:/tmp/aabb
+       swinstall: SWBIS_TARGET_BEGINS for @localhost:/tmp/aabb
+       swinstall: SW_SESSION_BEGINS on target host Host20:
+       swinstall: SW_NOT_LOCATABLE: xorg-x11-Xnest.xorg-x11-Xnest: status=2
+       swinstall: SW_ANALYSIS_BEGINS on target host Host20:
+       swinstall: SW_SAME_REVISION_INSTALLED at @localhost:/tmp/aabb: status=0: var/...
+       swinstall: SW_DEPENDENCY_NOT_MET: prerequisite xorg-x11,pr==6.8.2: status=2
+       swinstall: SW_SOC_LOCK_CREATED on target host Host20: lockpath=var/...
+       swinstall: SW_ANALYSIS_ENDS on target host Host20: status=0
+       swinstall: SW_EXECUTION_BEGINS on target host Host20:
+       swinstall: SW_SOC_LOCK_REMOVED on target host Host20: status=0
+       swinstall: SW_EXECUTION_ENDS on target host Host20: status=0
+       swinstall: SW_SESSION_ENDS on target host Host20: status=0
+       swinstall: SWBIS_TARGET_ENDS for @localhost:/tmp/aabb: status=0
+
+        Events have their own status, 0, 1, or 2.  <a href=Zero .html>Zero (0)</a> is always sucess,
+       1 is an error, and 2 may be a warning or error depending on the event
+       and options.
+
+   <a name="Recovery From Hangs and Crashes"><b>Recovery From Hangs and Crashes</b></a>
+       Swbis utilites never hang and never crash and are generally signal
+       safe, that is you can hit ctrl-C and expect a controlled exit of the
+       remote script and utility.  However if a utility really crashes it can
+       leave unwanted processes on the remote host, they may even suck up CPU
+       cycles making the machine slow.  The first step is to kill the
+       management utility:
+
+          killall -9 swinstall  # or whatever the utility was
+
+        Then, to kill the task shells on the remote host:
+
+          swremove --cleansh @ user@Host
+
+        using the same user and host as the crashed invocation.  This will
+       kill all swbis process including other users if allowed by the system.
+
+
+   <a name="Installation"><b>Installation</b></a>
+       Examples
+
+         # Install at /
+           swinstall -s :somepackage-1.1.bin.sw.tar.gz
+
+         # Install to a alternate root, not running control scripts
+           swinstall --no-scripts -vv -s:somepackage-1.1.i386.rpm @ /tmp/foo1
+
+         # Install to a alternate root
+           swinstall -s :somepackage-1.1.bin.sw.tar.gz @ /tmp/xx2
+
+         # Install at /, gaining privilege via ssh
+           swinstall -s :somepackage-1.1.bin.sw.tar.gz @ root@localhost
+
+         # Install from standard input to /
+           swinstall       # if default source directory is stdin or
+           swinstall -s -  # independent of defaults file
+
+         # Install at a remote host
+           swinstall -s :somepackage-1.1.bin.sw.tar.gz @ 192.168.1.1
+
+         # Install to multiple targets, based on a list of one target per line
+           echo 192.168.2.2 | swinstall -t - -s :somepackage-1.1.bin.sw.tar.gz
+
+   <a name="Removal"><b>Removal</b></a>
+          # Remove a package named 'somepackage'
+           swremove somepackage @/
+
+          # Remove everything
+           swremove --allow-ambig \* @ /
+
+          # Remove everything and force (e.g. override a stale lock)
+           swremove --force somepackage @ /
+
+          # Preview what would be removed and do nothing
+           swremove -p -v somepackage @ /
+
+   <a name="Query"><b>Query</b></a>
+          # List all installed packages
+           swlist # -or-
+           swlist --products
+
+          # List an installed package by name
+           swlist somepackage
+
+          # List an installed package by name and version
+           swlist somepackage,r\&gt;1.0
+
+          # List installed packages by name and version from several hosts
+           swlist --verbose --products somepackage,r\&gt;1.0  @ hostA hostB
+
+          # Copy the installed catalog to stdout
+           swlist -c - somepackage @ root@192.168.1.2 | tar tvf -
+
+          # List the installed files from the catalog
+           swlist --files somepackage @ root@192.168.1.2
+
+          # List the installed files as found in the file system
+           swlist --system somepackage @ root@192.168.1.2
+
+          # List the payload of a package
+           swlist --files @- &lt; somepackage-1.0.tar.gz
+
+          # List the payload of a package
+           swinstall @- &lt; somepackage-1.0.tar.gz | tar tvf -
+</pre><h3><a name="CONFIGURATION"><b>CONFIGURATION</b></a></h3><pre>       See <a href=swbis_7.html>swbis(7)</a> for detailed information on configuration and host
+       compatibility strategies.
+</pre><h3><a name="APPLICABLE STANDARDS"><b>APPLICABLE STANDARDS</b></a></h3><pre>       IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999),
+       Open Group CAE C701,
+       <a href="http://www.opengroup.org/publications/catalog/c701.htm">http://www.opengroup.org/publications/catalog/c701.htm</a>
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>        info swbis
+        <a href=sw_5.html>sw(5)</a>, <a href=swbis_7.html>swbis(7)</a>, <a href=swpackage_8.html>swpackage(8)</a>, <a href=swpackage_5.html>swpackage(5)</a>, <a href=swbisparse_1.html>swbisparse(1)</a>, <a href=swign_1.html>swign(1)</a>, <a href=swverify_8.html>swverify(8)</a>,
+        <a href=swcopy_8.html>swcopy(8)</a>, <a href=swconfig_8.html>swconfig(8)</a>, <a href=swlist_8.html>swlist(8)</a>, <a href=swremove_8.html>swremove(8)</a>
+        .../libexec/swbis/lxpsf
+        .../libexec/swbis/arf2arf
+        .../libexec/swbis/swbisparse
+        .../libexec/swbis/swbistar
+       <a href="http://www.gnu.org/software/swbis/sourcesign-1.2/gendocs/manual/index.html">http://www.gnu.org/software/swbis/sourcesign-1.2/gendocs/manual/index.html</a>
+
+
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre>       <b>/var/lib/swbis/catalog</b>/  # The installed software catalog
+       <b>catalog</b>/  # The package meta-data directory
+       <b>swdefaults</b>     # Options configuration file
+       <b>swbisdefaults</b>  # Options configuration file
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        <a href=swbis_1.html>swbis(1)</a>
+        Author: Jim Lowe   Email: jhlowe at acm.org
+        Version: 1.13.1
+        Last Updated: 2010-02-04
+        Copying: GNU Free Documentation License
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       (This section left intensionally blank)
+
+
+
+                                                                      <a href=SWBIS_1.html>SWBIS(1)</a>
+</pre><hr></body></html>

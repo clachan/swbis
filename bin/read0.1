@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Iforgot" |  
+(
+exec  swpackage --sign --gpg-name="Test User" --passphrase-fd=0 -s PSF
+)
+
+

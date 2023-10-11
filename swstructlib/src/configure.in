@@ -1,0 +1,100 @@
+AC_INIT(swmetadata/swpackagefile.h)
+AC_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CPP
+AC_PROG_GCC_TRADITIONAL
+AC_PROG_INSTALL
+
+AC_PROG_AWK
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+
+topincdir=`(cd ../.. && pwd)`/include
+topdir=`pwd`
+
+AC_ARG_WITH(rpm,  --with-rpm   compile RPM decoding and translating program, usewithrpm=yes, usewithrpm=no)
+AC_ARG_WITH(tests,  --with-tests  compile test programs, compile_test_pgms=yes, compile_test_pgms=no)
+
+case "$SWBISNEEDDEBUG" in
+	0) /bin/true
+		;;
+	"") /bin/true
+		;;
+	*)  AC_DEFINE(SWBISNEEDDEBUG) 
+		;;
+esac
+
+case "$SWBISNEEDFAIL" in
+	0) /bin/true
+		;;
+	"") AC_DEFINE(SWBISNEEDFAIL) 
+		;;
+	*) AC_DEFINE(SWBISNEEDFAIL) 
+		;;
+esac
+
+echo "checking compiler for -Wno-unused-parameter"
+gcc -Wno-unused-parameter ../../var/try.c -o /dev/null 2>/dev/null
+if test $? -eq 0; then
+nounusedparameter=no-unused-parameter
+else
+nounusedparameter=no-unused
+fi
+AC_SUBST(nounusedparameter)
+
+if test "$GCC" = yes
+then
+   CFLAGS="-W -Wall -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder $CFLAGS"
+else
+   CFLAGS="$CFLAGS"
+fi  
+
+echo "checking for --with-debugdump configure option"
+if test $usewithdbdump = "yes"; then
+AC_DEFINE(HAVE_WITH_DEBUGDUMP)
+DO_DEBUG=yes
+else
+DO_DEBUG=""
+fi
+
+AC_SUBST(DO_DEBUG)
+AC_SUBST(INCPATH)
+AC_SUBST(LIBMISC)
+AC_SUBST(LIBINTL)
+AC_SUBST(varprefix)
+AC_SUBST(tmpdir)
+AC_SUBST(topincdir)
+AC_SUBST(topdir)
+AC_SUBST(topdirswsupplib)
+AC_SUBST(INTLDEF)
+AC_SUBST(XGETTEXT)
+AC_SUBST(LIBINTL)
+AC_SUBST(LIBS)
+AC_SUBST(PO)
+AC_SUBST(GETTEXTSTUB)
+AC_SUBST(FIXPERMS)
+
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(unsigned short)
+AC_CHECK_SIZEOF(unsigned int)
+AC_CHECK_SIZEOF(unsigned long)
+
+if test -f /usr/include/sys/sysmacros.h; then 
+AC_DEFINE(HAVE_SYSMACROS_H)
+fi
+
+if test -f /usr/include/sys/mkdev.h; then 
+AC_DEFINE(HAVE_SYSMKDEV_H)
+fi
+
+if test "$compile_test_pgms" != "yes"; then 
+SWSTRUCT_DIR_="SWSTRUCT_DIR="
+AC_SUBST(SWSTRUCT_DIR_)
+SWSTRUCTLOADLIB_="SWSTRUCTLOADLIB="
+AC_SUBST(SWSTRUCTLOADLIB_)
+fi
+
+AC_OUTPUT(Makefile Makefile.inc misc/Makefile archive/Makefile swstruct/Makefile  swmetadata/Makefile swexport/Makefile)

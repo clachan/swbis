@@ -1,0 +1,9 @@
+
+f8b38fad0fe0d5d158575bc4476b135d  rpm-3.0.5.tar.gz
+b7610e5704dfc3e06ff7e2e84e0eb57c  rpm-4.2.tar.gz
+
+2004-05-31 rpm-4.2 compiles but it seems to be busted.
+	(i.e ../progs/lxpsf won't work.)
+
+
+

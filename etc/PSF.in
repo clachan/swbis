@@ -1,0 +1,106 @@
+# File: PSF.in  -- Input for swign version 0.480 or later
+#  This file may be copied without restriction.
+#
+#  This file is intended to be processed by 'swign'.
+#  Example:
+#  swign -s PSF.in --show-psf
+#       -or-
+#  swign -s PSF.in -u "GPG Name" @- >../mysignedtarball
+#
+#  All instances of %__keyword PSF.in are replaced by the
+#  value of 'keyword' by the 'swign' program.  'swign'
+#  determines these values from the name of "."
+#  The replaceable keywords are 'revision' and 'tag'
+#  Replacement is called for when a 'sed' filter sees the
+#  special pattern %__keyword.  The replacement string should
+#  be used in the value field.
+
+distribution
+ 
+# Attributes in the distribution are mostly ignored by the utilities
+# although distributor control files that pertain to the
+# distribution as a whole are properly placed here.  Two examples
+# of files that are useful here are:
+
+  AUTHORS < AUTHORS   # This places the file in ./catalog/dfiles
+  COPYING < COPYING   # This places the file in ./catalog/dfiles
+
+# This places the checksig script in ./catalog/dfiles/checksig
+# For a description of the checksig script see the info document for
+# 'swbis', type: info swbis, and the swign and swverify man pages.
+
+  checksig  < bin/checksig.sh
+
+# The vendor object provides attributes to describe
+# the distributor.  At this time, how these attributes
+# are used is not addressed.
+
+vendor
+   the_term_vendor_is_misleading True  # One of: True, False
+   tag your_at_email     # A short organization name or your initials, etc.
+   title Your Name
+   qualifier author
+   description "Maintainer of somepackage"
+
+# Most packages do not need a bundle.  At this point in swbis'
+# development 'bundles' are mostly ignored.  Bundles are meta
+# packages, it is an object that contains other bundles and
+# products whether included in this distribution tarball or not.
+
+bundle
+   tag somepackage
+
+# The product object contains the attributes of common
+# interest such as the description, version and name.
+
+product
+   description "This is the 
+description of your
+package"
+   title "Short one line description"
+   tag %__tag                       # This is the package name
+   revision %__revision             # This is the package version
+   vendor_tag your_at_email
+   control_directory ""   # Empty string, Important
+
+# The fileset object contains the files.  The tag, revision,
+# and description attributes are mostly ignored.
+# At this time swbis supports only one (1) fileset.
+
+fileset
+    tag somepackage-sources
+    control_directory ""   # Empty string, Important
+    title somepackage source code
+    description "The source distribution of somepackage"
+
+# file_permissions:
+# Here is an important policy.  This will cause 'swpackage'
+# to create the tar achive with all files owned by uid and
+# gid zero (0), the user name 'root' will not be included
+# in the uname and gname tar header fields.  This is similar
+# to the effect of GNU tar options --numeric --owner=root
+# --group=root .
+# To use the name and ids of the source files delete the line
+# or reset the file_permissions adding after or changing to:
+#    file_permissions -u 000
+# 
+# NOTE:  Using "file_permissions -o 0 -g 0"  is preferred
+# because it will allow the end user to more easily verify
+# the directory (unpacked) form of the package using standard
+# non-swbis tools. 
+
+#   file_permissions -u 000  # To use ownerships of source files
+    file_permissions -o 0 -g 0
+
+# The following two (2) lines mean include every file in the current
+# directory.
+
+    directory .
+    file *
+
+# You want to exclude the files in ./catalog because it
+# should not be part of the payload section.
+
+    exclude catalog
+
+# End of PSF

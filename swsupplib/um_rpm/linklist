@@ -1,0 +1,8 @@
+swsupplib/um_rpm/header.h
+swsupplib/um_rpm/dbindex.h
+swsupplib/um_rpm/popt.h
+swsupplib/um_rpm/rpmio.h
+swsupplib/um_rpm/self_header.h
+swsupplib/um_rpm/self_rpmio.h
+swsupplib/um_rpm/self_rpmlib.h
+swsupplib/um_rpm/self_rpmts.h

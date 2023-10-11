@@ -1,0 +1,109 @@
+srcdir = @srcdir@
+topdir = @topdir@
+
+# GNU make targets
+#all
+#install
+#install-html
+#install-dvi
+#install-pdf
+#install-ps
+#uninstall
+#install-strip
+#clean
+#distclean
+#mostlyclean
+#maintainer-clean
+#info
+#dvi
+#html
+#pdf
+#ps
+#dist
+#check
+#
+include ../Makefile.inc
+topdir=..
+topincdir=../../../include
+
+DO_DEBUG = @DO_DEBUG@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+SWLIB = misc.a
+
+LIBS=$(SWLIB)
+
+LOADLIBS = 
+
+OUT_PATH = .
+
+LDFLAGS =
+
+ifeq ($(DO_DEBUG),)
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = 
+DO_C_ASSEM = 
+else
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = $(CXX) $(CFLAGS) -S -gstabs+ -Wno-unused $(CPPFLAGS) -c -o $(OUT_PATH)/$*.S $<
+endif
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+.SUFFIXES:
+.SUFFIXES: .cxx .o
+
+.cxx.o:
+	$(CXX) $(CFLAGS) -c -o $(OUT_PATH)/$*.o  $< ; $(DO_CPP_ASSEM)
+
+
+SWOBJS= 	\
+	swattributelist.o \
+	swattributemem.o \
+	swstructiter.o \
+	swparser.o \
+	swselection.o \
+	switer.o \
+	switer_x.o \
+	swstructdef.o
+
+all: $(TARGET)
+
+everything: $(LIBS)
+
+$(SWLIB): $(SWOBJS)
+	ar rc $(SWLIB) $(SWOBJS)
+	ranlib $(SWLIB)
+	cp -p $(SWLIB) ../lib
+install:
+clean:
+	rm -f *.S *.a *.o *~ a.out
+	rm -f lib/*.a ../lib/*.a
+
+distclean: clean
+	rm -f .depend Makefile
+
+atarfile: tarfile
+
+tarfile: NOFILE
+	false
+NOFILE:
+
+depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.cxx > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+
+

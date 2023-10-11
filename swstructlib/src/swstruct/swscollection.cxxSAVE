@@ -1,0 +1,187 @@
+/* swscollection.cxx
+ */
+
+/*
+ * Copyright (C) 1998  James H. Lowe, Jr.  <jhlowe@acm.org>
+ *
+ * COPYING TERMS AND CONDITIONS
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  
+ */
+
+#include "swuser_config.h"
+#include "swscollection.h"
+#include "swstruct.h"
+#include "swsnode.h"
+#include "swstruct_i.h"
+#include "swstructiter.h"
+extern "C" {
+#include "swheaderline.h"
+}
+
+
+swsCollection::swsCollection (swDefinitionFile * swdeffile) {
+  	swdeffile_=swdeffile; 
+	collection_=static_cast<swStruct*>(NULL);
+}
+
+swsCollection::~swsCollection (void) {
+}
+
+inline swDefinitionFile * swsCollection::get_swdeffile(void) {
+	return swdeffile_;
+}
+
+inline swStruct * swsCollection::get_swstruct (void) {
+	return collection_;
+}
+
+int swsCollection::generateStructures(void) {
+	return generate_from_swdefinitionfile(swdeffile_);
+}
+
+int swsCollection::generateStructuresFromParser(void) {
+	return swsCollection::generate_from_parser(swdeffile_);
+}
+
+
+// ------------------ Private ----------------------------
+
+int swsCollection::generate_from_swdefinitionfile(swDefinitionFile * swdeffile) {
+   int retval = 0;
+   swStruct * stack[20]; // tree depth limit is 20
+   collection_ = swsCollection::generate_from_swdefinitionfile_i(swdeffile, stack, &retval);
+   return retval;
+}
+
+int swsCollection::generate_from_parser (swDefinitionFile * swdeffile) {
+   int retval = 0;
+   swStruct * stack[20]; // tree depth limit is 20
+   collection_ = swsCollection::generate_from_deffile_recurse(swdeffile, stack, &retval);
+   return retval;
+}
+
+swStruct * swsCollection::generate_from_deffile_recurse(swDefinitionFile * swdeffile, swStruct ** stack, int * retval) {
+  int newlevel, type, rel_start_level;
+  int offset=swdeffile->get_next_line_offset();
+  char *p=(char*)(swdeffile->get_mem_addr()); 
+  char *parser_line;
+  
+  swDefinition * swdef;
+  swStruct *current_root=NULL, *parent;
+  
+  
+  parser_line = p + offset; 
+  type=swheaderline_get_type(parser_line);
+  if (swMetaData_i::determine_type(type) != swstructdef::sdf_filereference_kw) {
+         fprintf (stderr,"error in swsCollection::generate: missing filereference line in parser output. [%s]\n", parser_line);
+	 (*retval) --;
+         return NULL;
+  } 
+  else {
+         fprintf (stderr,"JL generate_from_deffile_recurse got it. [%s]\n", parser_line);
+  }
+  rel_start_level=swheaderline_get_level(parser_line);
+  
+  
+  while ((offset=swdeffile->get_next_line_offset()) >= 0) {
+         parser_line = p + offset; 
+         newlevel=swheaderline_get_level(parser_line);
+         type=swheaderline_get_type(parser_line);
+         if(newlevel==rel_start_level) {
+            parent=NULL;
+	    stack[0]=new swsNode(); 
+	    current_root = stack[0];
+	 } else {
+            parent = *(stack + newlevel - 2);
+	 }
+	 // Should always be a object keyword here. 
+	 if (swMetaData_i::determine_type(type) == swstructdef::sdf_object_kw) {
+             if (newlevel > 1) {
+	        current_root=swStruct_i::swstructure_factory (swheaderline_get_keyword (parser_line));
+	     }
+             *(stack+newlevel-1) = current_root; 
+             swdef=swdeffile->makeDefinition(parser_line, retval);
+	     current_root->set_swdefinition(swdef); 
+	     if (newlevel > 1) {
+                 parent->add_swstruct(current_root);
+             }
+	 } else if (swMetaData_i::determine_type(type) == swstructdef::sdf_filereference_kw) {
+	    continue;
+            fprintf (stderr,"error in swsCollection:generate filereference found.\n");
+	 } else if (swMetaData_i::determine_type(type) == swstructdef::sdf_extended_kw) {
+	    (*retval) --;
+            fprintf (stderr,"extended definition not supported.\n");
+	    continue;
+	 } else {
+	    (*retval) --;
+            fprintf (stderr,"error in swsCollection:generate\n");
+	    return NULL;
+	 }
+   }
+  return stack[0];
+}
+
+
+swStruct * swsCollection::generate_from_swdefinitionfile_i(swDefinitionFile * swdeffile, swStruct ** stack, int * retval) {
+  int newlevel, type;
+  int index=0;
+  swDefinition * swdef = swdeffile->swdeffile_get_pointer_from_index(index++);
+  int rel_start_level=swdef->get_level();
+  swStruct *current_root=NULL, *parent;
+  
+  
+  while (swdef != static_cast<swDefinition*>(NULL) && *retval == 0) {
+         newlevel=swdef->get_level();
+         type=swdef->get_type();
+         if(newlevel==rel_start_level) {
+            parent=NULL;
+	    stack[0]=new swsNode(); 
+	    current_root = stack[0];
+	 } else {
+            parent = *(stack + newlevel - 2);
+	 }
+	 // Should always be a object keyword here. 
+	 if (type == swstructdef::sdf_object_kw) {
+             if (newlevel > 1) {
+	        current_root=swStruct_i::swstructure_factory (swdef->get_keyword());
+	     }
+             *(stack+newlevel-1) = current_root; 
+	     current_root->set_swdefinition(swdef); 
+	     if (newlevel > 1) {
+                 parent->add_swstruct(current_root);
+             }
+	 } else if (type == swstructdef::sdf_filereference_kw) {
+	    *retval = -1;
+            fprintf (stderr,"error in swsCollection:generate_from_swdefinitionfile.\n");
+	 } else if (type == swstructdef::sdf_extended_kw) {
+	    *retval = -2;
+            fprintf (stderr,"extended definition not supported.\n");
+	 } else {
+	    *retval = -3;
+            fprintf (stderr,"internal error in swsCollection:generate\n");
+	    return NULL;
+	 }
+	swdef = swdeffile->swdeffile_get_pointer_from_index(index++);
+   }
+  return stack[0];
+}
+
+inline int swsCollection::write_debug(int uxfio_fd) {
+    return (static_cast<swStruct_i*>(collection_))->swStruct_i::write_debug(uxfio_fd);
+}
+
+inline int swsCollection::write(int uxfio_fd) {
+    return collection_->write(uxfio_fd);
+}

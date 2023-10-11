@@ -1,0 +1,160 @@
+# File: PSF.bin
+# Example PSF for a binary package.
+# The use of the "end" keyword is optional
+#
+# Since the package is not generally relocatable
+# the PSF must match the ./configure'd directory
+# locations, This PSF Assumes:
+# ./configure --prefix=/usr 
+#             --libexecdir=/usr/lib
+#             --infodir=/usr/share/info
+#             --mandir=/usr/share/man
+#
+
+distribution
+  dfiles dfiles # Optional, dfiles is default
+  pfiles pfiles # Optional, pfiles is default
+  checkdigest <bin/checkdigest.sh
+
+# Vendor definition,  optional.
+# A vendor definition is not required.
+vendor
+    the_term_vendor_is_misleading True  # One of: True, False
+    tag GNU  # Only because swbis is an official GNU project.
+             # You could use your initials, etc., or any
+             # short character string to disambiguate from the
+             # upstream distributor.
+
+    title Jim Lowe
+    qualifier author
+    description "GNU developer"
+end # the end keyword is optional
+
+product
+   tag swbis
+   control_directory ""
+   revision 0.603.20070709
+   architecture i586-pc-linux-gnu  # Used for version disambiguation
+   os_name Linux       # Used for Host compatibility check
+   machine_type i?86   # Used for Host compatibility check
+
+   # Associate this product with a vendor definition  
+   vendor_tag GNU
+
+control_file
+     source bin/postinstall.sh
+     path configure
+ 
+control_file
+     source bin/postinstall.sh
+     path postinstall
+
+fileset
+    tag BIN
+    control_directory ""
+
+    # reset file_permissions
+    file_permissions -u 000
+
+    file_permissions -o 0 -g 0 -m 755
+    directory swprogs /usr/bin
+       file swpackage
+       file swverify
+       file swcopy
+       file swign
+       file swlist
+       file swinstall
+
+    # Make the directory archive member "/usr/lib/swbis"
+    directory . /usr/lib/
+    file_permissions -u 000
+    file_permissions -o 0 -g 0 -m 755
+       file -t d swbis
+
+    directory swsupplib/progs /usr/lib/swbis
+       file swbistar
+       file arf2arf
+       file mtimetouch
+       file epochtime
+       file getopt
+       file lxpsf
+
+    directory swprogs /usr/lib/swbis
+       file swbisparse
+       file fixcatalog.awk
+
+    directory . /usr/lib/swbis
+       file -m 644 bin/checkdigest.sh checkdigest.sh
+       file -m 644 examples/PSF.source.in PSF.source.in
+   
+    directory etc /usr/lib/swbis
+       file swbisdefaults swbisdefaults.new
+       file swdefaults swdefaults.new
+    
+    directory . /usr/share/
+    file_permissions -u 000
+    file_permissions -o 0 -g 0 -m 755
+       file -t d swbis
+
+    file_permissions -u 000
+    file_permissions -o 0 -g 0 -m 644
+    directory . /usr/share/swbis
+	file COPYING
+	file README
+
+    directory doc/html /usr/share/swbis
+        file swign_1.html
+        file rpm2swbis_1.html
+        file swbisparse_1.html
+        file swbis_7.html
+        file swpackage_5.html
+        file swpackage_8.html 
+        file swlist_8.html
+        file swcopy_8.html
+        file swinstall_8.html
+        file swverify_8.html
+        file sw_5.html
+        file lxpsf_1.html
+        file sw.html
+        file swbis.html
+        file swlist.html
+        file swcopy.html
+        file swinstall.html
+        file swpackage.html
+        file swverify.html
+
+    directory doc/man/man1 /usr/share/man/man1
+	file lxpsf.1
+	file swbisparse.1
+	file rpm2swbis.1
+	file swign.1
+
+    directory doc/man/man5 /usr/share/man/man5
+	file sw.5
+	file swpackage.5
+
+    directory doc/man/man7 /usr/share/man/man7
+	file swbis.7
+
+    directory doc/man/man8 /usr/share/man/man8
+	file swpackage.8
+	file swlist.8
+	file swcopy.8
+	file swinstall.8
+	file swverify.8
+
+    directory doc/info /usr/share/info
+	file swbis.info
+	file swbis_swbis.info
+	file swbis_swpackage.info
+	file swbis_swinstall.info
+	file swbis_swverify.info
+	file swbis_sw.info
+	file swbis_swbisparse.info
+	file swbis_swcopy.info
+	file swbis_swlist.info
+	file swbis_swign.info
+	file swbis_lxpsf.info
+	file swbis_rpm2swbis.info
+##end
+#end

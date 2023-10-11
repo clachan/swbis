@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+<TITLE>LXPSF(1)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>LXPSF(1)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<ul><li><a href="#Options"><font size=-1>Options</font></a>
+</ul><li><a href="#HOWTO Use with swpackage">HOWTO Use with swpackage</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       lxpsf - Translate packages to a tar archive with a PSF.
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>lxpsf</b> [options] [package_file]
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>Lxpsf</b>  reads the input package and writes a tar or cpio archive to std-
+       out, depending on the native (or  encapsulated)  format  of  the  input
+       package.   The  output  layout  has  a  single  leading directory named
+       according to the name, version, and release attributes.
+
+       The first regular file is ``PSF'', and is a IEEE  1387.2-1995  (ISO/IEC
+       15068-2:1999)  Product  Specification File containing the package meta-
+       data.  Subsequent files are control data represented as files, and, the
+       files  of  the  distribution.   The output is designed so the <b>swpackage</b>
+       utility is able to form a Posix package from the installed output.
+
+       Currently,  RPM format v3 (both source and binary), Debian Package for-
+       mat,  Slackware  runtime  packages  and  plain vanilla tarballs (with a
+       leading directory path) are supported for translation.
+
+   <a name="Options"><b>Options</b></a>
+       <b>-p</b> <i>,--psf-only</i>
+              Write only the psf file to stdout.
+
+       <b>-A</b> <i>,--psf-form1</i>
+              A PSF form for RPM translation (deprecated).
+
+       <b>-A</b> <i>,--psf-form2</i>
+              A second PSF form for RPM translation (deprecated).
+
+       <b>-A</b> <i>,--psf-form3</i>
+              A third PSF form for RPM translation (current).
+
+
+       <b>-H</b> <i>format</i>
+              Force the specified format.  The  choices  are  currently
+              (only) <i>ustar</i>.
+
+       <b>-x</b> <i>,--use-recursive-fileset</i>
+              Use  &quot;file  *&quot;  instead of individual file definitions in
+              the PSF.
+
+       <b>-r</b> <i>,--no-leading-path</i>
+              use &quot;.&quot; as the leading archive path.
+
+       <b>-o</b> <i>,--info-only</i>
+              Write the INFO file for the rpm archive to stdout.
+
+       <b>-D</b> <i>,debug-level</i>=TYPE
+              Always set to &quot;link&quot;
+</pre><h3><a name="HOWTO Use with swpackage"><b>HOWTO Use with swpackage</b></a></h3><pre>       Either install into file system or use the <b>-W source=-</b> option of
+       GNU <b>swpackage.</b>
+
+         cat your_rpm.rpm |
+         lxpsf --format=ustar --psf-form3 |
+         (mkdir /tmp/swbis; cd /tmp/swbis &amp;&amp; tar xpf -; exit $?) &amp;&amp;
+         (cd /tmp/swbis &amp;&amp; swpackage -s PSF @- ) | tar tvf -
+
+         cat your_rpm.rpm |
+         lxpsf --format=ustar --psf-form3 |
+         swpackage -W source=- -s@PSF @- | tar tvf -
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre><b>RELATED STANDARDS</b>
+       POSIX.1, IEEE 1387.2, XDSA C701
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        The RPM translation program of the swbis project.
+        DATE: 2010-02-22
+        Revision: 1.5
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       <a href=swbisparse_1.html>swbisparse(1)</a>, <a href=swpackage_8.html>swpackage(8)</a>
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       Probably  many. A de-facto conversion policy is intimated in the
+       PSF by this program.
+
+
+
+
+                                                                      <a href=LXPSF_1.html>LXPSF(1)</a>
+</pre><hr></body></html>

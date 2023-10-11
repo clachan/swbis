@@ -1,0 +1,128 @@
+srcdir = @srcdir@
+topdir = @topdir@
+
+# GNU make targets
+#all
+#install
+#install-html
+#install-dvi
+#install-pdf
+#install-ps
+#uninstall
+#install-strip
+#clean
+#distclean
+#mostlyclean
+#maintainer-clean
+#info
+#dvi
+#html
+#pdf
+#ps
+#dist
+#check
+#
+include ../Makefile.inc
+topdir=..
+topincdir=../../../include
+
+DO_DEBUG = @DO_DEBUG@
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+SWLIB = swexport.a
+
+LIBS=$(SWLIB)
+
+LOADLIBS = 
+
+ifeq ($(DO_DEBUG),)
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = 
+DO_C_ASSEM = 
+else
+DEBUGLIBOBJECTS = 
+DO_CPP_ASSEM = $(CXX) $(CFLAGS) -S -gstabs+ -Wno-unused $(CPPFLAGS) -c -o $(OUT_PATH)/$*.S $<
+endif
+
+OUT_PATH = .
+LDFLAGS =
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+.SUFFIXES:
+.SUFFIXES: .cxx .o
+
+.cxx.o:
+	$(CXX) $(CFLAGS) -c -o $(OUT_PATH)/$*.o  $< ; $(DO_CPP_ASSEM)
+
+SWDEBUGOBJS= 	\
+	swobjfiles_i_debug.o \
+	swexstruct_i_debug.o \
+	swexcat_debug.o \
+	swexhost_debug.o \
+	swexdistribution_debug.o \
+	swexfileset_debug.o \
+	swexproduct_debug.o
+
+
+SWOBJS= 	\
+	swobjfiles.o \
+	swobjfiles_i.o \
+	swexstruct_i.o \
+	swixcat.o \
+	swexcat.o \
+	swexhost.o \
+	swexdistribution.o \
+	swexdfiles.o \
+	swexfileset.o \
+	swexpfiles.o \
+	swexproduct.o \
+	swexvendor.o \
+	swexcategory.o \
+	swexbundle.o \
+	swexmedia.o \
+	swexsubproduct.o \
+	swexpsf.o \
+	swexstruct.o
+
+
+all: $(TARGET)
+
+everything: $(LIBS)
+
+$(SWLIB): $(SWOBJS)
+	ar rc $(SWLIB) $(SWOBJS)
+	ranlib $(SWLIB)
+	cp -p $(SWLIB) ../lib
+
+clean:
+	rm -f *.S *.a *.o *~ a.out
+	rm -f lib/*.a ../lib/*.a
+
+distclean: clean
+	rm -f .depend Makefile
+install:
+atarfile: tarfile
+
+tarfile: NOFILE
+	false
+NOFILE:
+
+depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.cxx > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
+
+

@@ -1,0 +1,56 @@
+# 
+
+SGML2TXT = sgml2txt
+SGML2HTML = sgml2html
+MAN2HTML = man2HTML
+DOCBOOK2MAN = docbook-to-man
+
+INSTALLPREFIX=/usr/local
+SGML2TXTFLAGS = -man
+SGML2HTMLFLAGS = -s 1
+MAN2HTMLFLAGS = -ts 4
+
+REVISION=0.89
+
+SWDOC_OBJS_MAN = man/man1/swbisparse.1 \
+                  man/man5/sw.5 
+
+SWDOC_OBJS_HTML = doc/swbisparse_1.html \
+                  doc/sw_5.html 
+
+all: $(SWDOC_OBJS_MAN) $(SWDOC_OBJS_HTML)
+
+man/man1/swbisparse.1: source/swbisparse_1.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+man/man5/sw.5: source/sw_5.sgml
+	$(DOCBOOK2MAN) $< > $@ 2>/dev/null
+
+doc/swbisparse_1.html: man/man1/swbisparse.1
+	nroff -man <  $< | $(MAN2HTML) $(MAN2HTMLFLAGS) > $@
+
+doc/sw_5.html: man/man5/sw.5
+	nroff -man <  $< | $(MAN2HTML) $(MAN2HTMLFLAGS) > $@
+
+install: all
+	install --mode 644 man/man1/swbisparse.1  $(INSTALLPREFIX)/man/man1
+	install --mode 644 man/man5/sw.5  $(INSTALLPREFIX)/man/man5 
+	install --mode 644 doc/swbisparse_1.html $(INSTALLPREFIX)/doc 
+	install --mode 644 doc/sw_5.html $(INSTALLPREFIX)/doc 
+
+clean:
+	rm -f *.1 *.ps *.html *.2 *.man? *.man
+	rm -f core a.out tmp/*
+
+realclean: clean
+	rm -f man/man1/*
+	rm -f man/man5/*
+	rm -f man/man8/*
+
+atarfile: clean
+	make
+	(cd ..; tar cf - swdoc-$(REVISION) | gzip -9 >swdoc-$(REVISION).`date +%Y%m%d%H%M`.tar.gz)
+
+NOFILE:
+
+

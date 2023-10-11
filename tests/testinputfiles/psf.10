@@ -1,0 +1,23 @@
+# File: PSF
+distribution
+  
+  title "swbis - test PSF."
+  tag swbis
+product
+   tag swbis
+   revision 0.0
+   title "swbis - test."
+   control_directory "BIN" 
+
+fileset
+    tag sources
+    control_directory "INST-BIN"
+    title Source Code
+    description "The test fileset."
+directory / /aa/bb
+file /etc/passwd NN
+file -t d -m 700 -o root -g bin /roota 
+directory / /aa/bb
+file -t h /etc/passwd CC 
+file -t s /etc/passwd CCsys
+

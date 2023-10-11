@@ -1,0 +1,31 @@
+README -- July 1997
+
+uxfio - unix extended file i/o module
+
+
+UXFIO provides a set of functions that try to be identical to 
+the Unix Standard File and I/O primitives.  The uxfio function
+has the prefix 'uxfio_' prepended to the standard Unix function
+name.  Function prototypes are the identical to the Unix
+counterpart.
+
+The compelling feature of UXFIO is the ability to seek to
+an extent defined by its file buffer, this is helpful when
+using pipes which cannot be seeked on.
+
+It can also be used to create tmp files, simply set buffer type
+to BUFTYPE_FILE and read to the end of the file.
+
+For simple common usages of read(3), open(3), close(3) it is a
+drop in replacement for contexts except where the uxfio file
+descriptor number must be shared among processes.
+
+To make the interactive test program.
+    make -f Makefile.std tests
+
+Otherwise make just the library uxfio.a
+    make -f Makefile.std
+
+Look at sample.c as a guide to using uxfio, sample.c reverses stdin.
+
+

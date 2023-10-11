@@ -1,0 +1,661 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (C) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man sw_parse_1.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<!DOCTYPE form
+[
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY ID="swign">
+<REFMETA>
+<REFENTRYTITLE>
+swign
+</REFENTRYTITLE>
+<REFMISCINFO>
+swign - Tar archive signing utility for source distributions.
+</REFMISCINFO>
+<MANVOLNUM>1</MANVOLNUM> 
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+swign
+</REFNAME>
+<REFPURPOSE>
+Create a tar archive of a directory with an embedded GPG signature.
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>swign</FUNCTION> <OPTIONAL>options</OPTIONAL> <OPTIONAL>-u gpg-name</OPTIONAL> <OPTIONAL>--homedir=gpg-homedir</OPTIONAL> @- # Write to stdout
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swign</FUNCTION> <OPTIONAL>options</OPTIONAL> <OPTIONAL>-u gpg-name</OPTIONAL> <OPTIONAL>--homedir=gpg-homedir</OPTIONAL> @.  # Sign directory
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swign</FUNCTION> -S <OPTIONAL>options</OPTIONAL> <OPTIONAL>-u gpg-name</OPTIONAL> <OPTIONAL>--homedir=gpg-homedir</OPTIONAL>
+</SYNOPSIS>
+<SYNOPSIS>
+<FUNCTION>swign</FUNCTION> -E <OPTIONAL>options</OPTIONAL> <OPTIONAL>-u gpg-name</OPTIONAL> <OPTIONAL>--homedir=gpg-homedir</OPTIONAL>
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+<REFSECT1 ID="swign">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>swign</FUNCTION>
+reads a PSF (Product Specfication File) to generate and load the package catalog into
+the current directory and then writes the cooresponding archive to stdout.
+The PSF is read from standard input by default.
+To use an internally generated PSF with name and revision attributes
+determined from the name of the current directory use '-s.'.
+</PARA>
+<PARA>
+The PSF is scanned for replacement tokens for
+tag and revision attributes determined from the current directoy name.
+It is expected that the current directory name have the form: 'tag-revision'.
+The replacement string has the form '%__NAME' where NAME is 'tag' or 'revision'.
+The directory derived values can be overridden with the '--revision' or '--name-version'
+options.
+</PARA>
+<PARA>
+<FUNCTION>swign</FUNCTION> by default will remove and re-create the ./catalog/
+meta-data directory, then use GNU tar to write the current directory as a tar archive to
+stdout.  The result is a tar archive written entirely with GNU tar that contains an
+embedded GPG signature in the control file './catalog/dfiles/signature'.
+The contents of './catalog/' are consistent with the POSIX packaging
+standard ISO/IEC 15068-2:1999.  The package layout of the resulting
+archive is unchanged except for the addition of the './catalog' directory.
+</PARA>
+<PARA>
+The contents of the archive is the contents of the current directory ".".
+The pathnames in the archive are prefixed by the base name of ".".
+The owner and group of all the files in the emitted archive are 
+specified by the PSF file and command line options.
+</PARA>
+<PARA>
+In order for the signature to be valid, the file ownerships specified
+in the PSF must be consistent with the 'swign' command.
+<FUNCTION>swign</FUNCTION> will read the PSF to determine these ownerships
+automatically from the 'file_permissions' directive unless the '-o' or '-g' command
+line options are used or if this feature is disabled using the '--no-psf-detect' option
+is given.
+</PARA>
+<PARA>
+The default ownerships for all the files
+are the current user's owner and group.
+If the -o (or -g) option is used with a empty string for the option arg
+then the file ownerships of the source files are used.
+This script assumes GNU tar is installed.
+</PARA>
+<PARA>
+After writing the ./catalog/ file and before writing the archive, the file list stored in ./catalog/dfiles/files is compared 
+to the current directory contents, if any difference is found the 
+archive is not written and error returned.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA>
+<OPTION>--help</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+show help.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--show-psf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+show the PSF to stdout, and then exit.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--no-psf-detect</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Disable automatic detection of the PSF's file ownerships policy.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--no-remove</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Don't remove the ./catalog directory before overwriting.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--file-ownerships</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use the file ownerships and permissions of the source files.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+
+<PARA>
+<OPTION>-u, --local-user name</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Use name as the user ID to sign.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--homedir=DIR</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Set the name of the home directory to DIR.  If not specified
+then use "~/.gnupg".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-s, --source=FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify a PSF file name or one of two special names, '-' for stdin, and '.' for the internally
+generated PSF.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-T, --show-names-only</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+show some info (for help and debugging) and exit.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-t, --run-sanity-check</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Instead of writing stdout, write the archive to ../packageDirName.swigntest.tar.gz and run some sanity tests.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-S, --sign-only</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the ./catalog/ file containing the digest and signature into "." and then exit without
+writing the archive to stdout.   Same as using "." as the target such as 'swign @.'
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-E, --emit-only</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not write the ./catalog/ file containing the digest and signature into "." and then 
+write the archive to stdout.  This does not affect the directory contents.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-D, --with-checkdigest FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Include the checkdigest control script sourced from FILE.
+This is only needed when not supplying a PSF, that is this
+option modifies an internally generated PSF.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-o, --owner OWNER</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify owner.
+Use an empty string "" to specify the source file owner.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-g, --group GROUP</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify group.
+Use an empty string "" to specify the source file group.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>--name-version=NAME-REV</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify a product tag and revision as dash delimited.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-r, --revision REV</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify a product revision.  This will override a revision part
+of the current directory's name.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<OPTION>-x format</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Specify the archive format.
+Must be one of the formats of swpackage.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+
+<PARA>
+<FUNCTION>@-</FUNCTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Target, only supported target is standard output.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+EXTERNAL EFFECTS
+</TITLE>
+<PARA>
+The program will remove and replace a file in "." named ./catalog/. <SBR>
+Nothing outside of './catalog/' is modified. <SBR>
+Standard output is the target for the tar archive. <SBR>
+When using the '-t' option an archive file is written to ../packageDirName.swigntest.tar.gz<SBR>
+</PARA>
+<PARA>
+A copy of the PSF is made in /var/tmp/swign$$.
+It is normally created and erased by the program.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+EXAMPLES
+</TITLE>
+<PARA>
+Show the internally generated PSF to stdout.
+Change directory into the directory to package, then type
+<PROGRAMLISTING>
+<VERB>
+   swign -s. --show-psf
+   #
+   # or specify a owner and group policy
+   swign -s. -o 0 -g 0 --show-psf
+</VERB>
+<PROGRAMLISTING>
+</PARA>
+<PARA>
+Create a signed metadata (i.e. catalog/) directory of a live directory, 
+for example <FILE>/bin</FILE>
+<PROGRAMLISTING>
+<VERB>
+       swign -D $HOME/checkdigest.sh -u "YourGPGNAME" -o "" -g "" @.
+</VERB>
+<PROGRAMLISTING>
+</PARA>
+<PARA>
+Generate the package (and verify it) using a PSF that you supply on
+standard input.
+Change directory into the directory to package, then type
+<PROGRAMLISTING>
+<VERB>
+   swign -o 0 -g 0 --show-psf | swign -s - -u "gpgName" @- | swverify -d @-
+</VERB>
+<PROGRAMLISTING>
+</PARA>
+<PARA>
+Example of directory signing and authentication.
+<PROGRAMLISTING>
+<VERB>
+   swign -u YourGPGName -s. --file-ownerships -D /HOME/checkdigest.sh --sign-only
+   swverify -d @.
+   swign  --file-ownerships -emit-only | swverify -d @-
+</VERB>
+<PROGRAMLISTING>
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+TESTING
+</TITLE>
+<PARA>
+After running successfully with options 
+<OPTION>-S</OPTION>  and 
+<OPTION>-D FILE</OPTION>  the following should be true (report no error).
+<PROGRAMLISTING>
+<VERB>
+          swverify --checksig .   # Deprecated form
+              -or-
+          swverify -d @.     # POSIX syntax
+</VERB>
+<PROGRAMLISTING>
+</PARA>
+<PARA>
+Similarly,
+<PROGRAMLISTING>
+<VERB>
+          swign -u "your GPG Name" @- | swverify --checksig - 
+              -or-
+          swign -u "your GPG Name" @- | swverify -d @-
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+<PARA>
+If a checkdigest script is included then you should unpack the package at a
+new location and run  swverify -d @. in the new location.  The
+<FUNCTION>checkdigest</FUNCTION> script is a vendor extension control file
+that is part of the GPG signed ./catalog directory.  As an implementation
+extension behavior the <FUNCTION>swverify</FUNCTION> program will execute
+this script after verification of the signature.  The script may take any action at
+this point, but the intention is that it be used to verify the contents
+of the package directory using GNU tools such as md5sum, sha1sum,
+and tar. 
+</PARA>
+<PARA>
+If a <FUNCTION>checkdigest</FUNCTION> script is not included, then the package
+user will have to manually execute the commands that would have been
+executed by the script using the file meta-data in an authenticated INFO file.
+When verifying the unpacked directory form of
+a package,  the <FUNCTION>swverify</FUNCTION> program will return an error
+if the <FUNCTION>checkdigest</FUNCTION> script is not present, though, it is not
+required for verification of the tar archive file itself using
+<FUNCTION>swverify</FUNCTION>.
+</PARA>
+<PARA>
+Swign can be used to sign any directory using the file ownerships
+of the source files.  The following commands act as a test
+of swpackage's ability to generate an archive identical to GNU tar.
+(Note: the script checkdigest.sh is found in ./bin of the source distribution.)
+<PROGRAMLISTING>
+<VERB>
+       swign -D $HOME/checkdigest.sh -u "Test User" -o "" -g "" -S;
+       swverify -d @.
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+PSF ATTRIBUTE REPLACEMENT
+</TITLE>
+<PARA>
+A PSF that is provided using the '-s' option will be scanned
+for a special character sequence '%__NAME'  where NAME is 
+either 'tag' or 'revision'.  'tag' is replaced with the
+package name portion of the currrent directory.  'revision' is
+replaced with the version portion.
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+SAMPLE SOURCE PACKAGE PSF
+</TITLE>
+
+<PARA>
+<PROGRAMLISTING><SBR>
+# PSF.in  -- INPUT file to swign
+# This file contains the replacement macros %__tag and %__revision which
+# are only processed by swign.
+
+# The distribution object need not have any attributes.
+distribution
+ 
+# Attributes in the distribution are mostly ignored although
+# distributor control files that pertain to the distribution
+# as a whole are properly placed here.  Two examples of files
+# that are useful here are:
+
+  AUTHORS < AUTHORS   # This places the file in ./catalog/dfiles
+  COPYING < COPYING   # This places the file in ./catalog/dfiles
+
+# This places the checkdigest script in ./catalog/dfiles/checkdigest
+# For a description of the checkdigest script see the info document for
+# 'swbis' or the swverify manual page.
+# The checkdigest script is a verification hook for swverify used when
+# verifying the unpacked tarball (i.e. the package path name
+# prefix directory).
+
+  checkdigest  < bin/checkdigest.sh
+
+# The vendor object provides attributes to describe
+# the distributor.  At this time, how these attributes
+# are used is not addressed.
+
+# The Vendor object is optional
+vendor
+   the_term_vendor_is_misleading True  # One of: True, False
+   tag shortName    # Other vendor tags could be the short name of your
+                         # organization name, or  your initials, etc.
+   title Your Name
+   qualifier author
+   description "Maintainer of somepackage"
+
+# Most packages do not need a bundle.  At this point in swbis'
+# development 'bundles' are mostly ignored.  Bundles are meta
+# packages, it is an object that contains other bundles and
+# products whether included in this distribution tarball or not.
+
+# The Bundle object is optional
+bundle
+   tag somepackage
+
+# The product object contains the attributes of common
+# interest such as the description, version and name.
+
+product
+   description "somepackage description 
+can be mult-line"
+   tag %__tag                       # This is the package name
+   revision %__revision             # This is the package version
+   vendor_tag shortName             # Match vendor.tag above
+   title "somepackage - software"
+   control_directory ""             # Empty string, Important
+
+# The fileset object contains the files.  The tag, revision,
+# and description attributes are mostly ignored.
+# At this time swbis supports only one (1) fileset.
+
+fileset
+    tag sources
+    control_directory ""   # Empty string, Important
+    title somepackage source code
+    description "The source distribution of somepackage"
+
+# file_permissions:
+# Here is an important policy.  This will cause 'swpackage'
+# to create the tar achive with all files owned by uid and
+# gid zero (0), the user name 'root' will not be included
+# in the uname and gname tar header fields.  This is similar
+# to the effect of GNU tar options --numeric --owner=root
+# --group=root .
+# To use the name and ids of the source files delete the line
+# or reset the file_permissions adding after or changing to:
+#    file_permissions -u 000
+# 
+# NOTE:  Using "file_permissions -o 0 -g 0"  is preferred
+# because it will allow the end user to more easily verify
+# the directory (unpacked) form of the package using standard
+# non-swbis tools. 
+
+#   file_permissions -u 000  # To use ownerships of source files
+    file_permissions -o 0 -g 0
+
+# The following two (2) lines mean include every file in the current
+# directory.
+
+    directory .
+    file *
+
+# You want to exclude the files in ./catalog because it
+# should not be part of the paylaod section.  This is
+# mandatory.
+
+   exclude catalog
+
+# You may also want other excludes
+
+   exclude CVS   
+   exclude */CVS
+   # exclude .svn
+   # exclude */.svn
+
+# End of PSF
+</PROGRAMLISTING>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+ENVIRONMENT
+</TITLE>
+<PARA>
+<OPTION>SWPACKAGEPASSFD</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the swpackage <REPLACEABLE>--passphrase-fd</REPLACEABLE> option.  Set the option arg
+to a integer value of the file descriptor, or to "env" to read the passphrase from
+the environment variable SWPACKAGEPASSPHRASE, or to "agent" to cause gpg to use
+gpg-agent, or "tty" to read from the terminal.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>SWPACKAGEPASSPHRASE</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Use the value as the passphrase if swpackage's <REPLACEABLE>--passphrase-fd</REPLACEABLE> is
+set to "env"
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>GNUPGHOME</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the --gpg-home option of swpackage.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>GNUPGNAME</OPTION>
+<GLOSSLIST>
+<GLOSSLIST>
+Sets the --gpg-name option of swpackage, which is turn set the --local-user option of gpg.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+0 on success, non-zero on failure.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<VERB><SBR>
+ \<<REPLACEABLE>path</REPLACEABLE>\>/<FUNCTION>catalog</FUNCTION>/
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+info swbis
+<PARA>
+swpackage(8), gpg
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<PARA>
+<PROGRAMLISTING>
+<VERB>
+ swign(1): The source directory signing utility of the swbis project.
+ Author: J. Lowe jhlowe@acm.org
+<!-- External Entity  --> &version;
+Last Updated: 2008-01
+ Copying: GNU Free Documentation License
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+</REFSECT1>
+<REFSECT1 ID="R1 sw_parse">
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+Symbolic links in a package are problematic for verifying the unpacked form of a
+package since the modification time is not preserved.  They have no affect on
+verification of the tar archive file using 'swverify'.
+</PARA>
+<PARA>
+If a directory is signed using the '-S' option and has a file path greater than
+99 chars in length then it will be unverifiable if the 'ustar0' format and
+GNU tar 1.13.25 was used.
+</PARA>
+<PARA>
+Verification of the directory form of a distribution (i.e. the installed tarball
+path name prefix) such as running 'swverify -d @.' after running 'swign -S' 
+will fail if the order of directory entries is not compatible with
+traditional Unix file system directory entry ordering.  This incompatibility may be present in
+the Ext3, reiserFS, and DarwinOS et.al file systems.
+</PARA>
+<PARA>
+The file ownership policy of the PSF, the checkdigest script (if any) and the command line
+options must agree.
+The default file ownership policies of this program are suited to packaged products
+where file user and group ownerships are not a critical feature.
+</PARA>
+</REFSECT1>
+</REFENTRY>

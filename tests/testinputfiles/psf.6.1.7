@@ -1,0 +1,19 @@
+  distribution
+   layout_version 1.0
+   product
+    tag bc
+    
+    control_file
+     tag postinstall
+     interpreter /bin/sh
+     source bc-1.04-2/postinstall
+    control_file
+     tag unpreinstall
+     interpreter /bin/sh
+     source bc-1.04-2/unpreinstall
+    fileset
+     	tag etc
+	directory  . /usr/tmp/aa
+	file *
+	exclude /etc/skel/.bashrc
+	exclude testpath.10

@@ -1,0 +1,462 @@
+<HTML>
+<HEAD>
+<TITLE>swlist(8)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>swlist(8)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<li><a href="#OPTIONS">OPTIONS</a>
+<li><a href="#IMPLEMENTATION EXTENSIONS">IMPLEMENTATION EXTENSIONS</a>
+<li><a href="#USAGE EXAMPLES">USAGE EXAMPLES</a>
+<ul><li><a href="#List Product from a certain distributor"><font size=-1>List Product from a certain distributor</font></a>
+<li><a href="#List all products"><font size=-1>List all products</font></a>
+<li><a href="#List the files of package foo as they exist in the file system"><font size=-1>List the files of package foo as they exist in the file system</font></a>
+<li><a href="#Test Dependencies"><font size=-1>Test Dependencies</font></a>
+</ul><li><a href="#EXTENDED OPTIONS">EXTENDED OPTIONS</a>
+<ul><li><a href="#POSIX"><font size=-1>POSIX</font></a>
+<li><a href="#Swbis Implementation"><font size=-1>Swbis Implementation</font></a>
+</ul><li><a href="#RETURN VALUE">RETURN VALUE</a>
+<li><a href="#NOTES">NOTES</a>
+<li><a href="#REQUISITE UTILITIES">REQUISITE UTILITIES</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#APPLICABLE STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swlist -- List information about the software
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>swlist</b>  [-d|-r] [-v] [-a <i>attribute</i>] [-l <i>level</i>]  [-t <i>targetfile</i>] \
+       [-c <i>file</i>] [-x <i>option=value</i>]  [-X <i>options</i><b>_</b><i>file</i>]  [-W <i>option</i>] \
+       [software_selections]  [@targets]
+
+       <b>swlist</b> --products [software_selections]  [@targets]
+
+       <b>swlist</b> --files  [@targets]
+
+       <b>swlist</b> --dir [software_selections] [@targets]
+
+       <b>swlist</b> --dependencies [--prerequisites <i>sw</i><b>_</b><i>spec</i>] \
+       [--exrequisites <i>sw</i><b>_</b><i>spec</i>] [@targets]
+
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>swlist</b> lists information about a distribution or installed software.
+       Neither swlist nor any component of swbis is required on the target
+       host, however, the target host must look like a Unix system at the
+       shell and command-line utility level.  Remote network connections are
+       made by ssh.  Ssh is the default but rsh can be selected by a command
+       line option.
+
+       <b>swlist</b> operates on serial archives (e.g. compressed tar archives) or on
+       a file system directory representing installed software.  The default
+       target directory is '/', this default is subject to user configuration.
+</pre><h3><a name="OPTIONS"><b>OPTIONS</b></a></h3><pre>       <b>-a attribute</b>
+
+              Specify an attribute to list.   Only the <b>architecture</b> attribute
+              is supported for installed_software at this time (MAR 2007).
+              The returned value is determined by running GNU <b>config.guess</b> on
+              the target host.
+
+
+       <b>-c FILE</b>
+
+              Write the catalog to FILE. Software selections are applied.  The
+              only supported FILE is '-' causing a dump of the catalog to
+              stdout in tar format.
+
+
+       <b>-d</b>
+
+              Specify the target is a distribution.
+
+
+       <b>-f FILE</b>
+
+              Read the list of software selections from FILE.
+
+
+       <b>-l LEVEL</b>
+
+              Specify a level to list. LEVEL is an enumerated list of objects:
+              bundle, product, fileset, control_file, file (Not yet
+              implemented)
+
+
+       <b>-r</b>
+
+              Indicates that the operation is on installed software at a
+              location indicated by the the target.
+
+
+       <b>-t targetfile</b>
+
+              Specify a file containing a list of targets (one per line).
+
+
+       <b>-v</b>
+
+              List attribute value pairs in INDEX file format according to
+              attibutes specified by the -a option, list all attributes if -a
+              not used; or, increment the verbose level.
+
+                     <b>Note:</b>  <b>This option is overloaded. It means two different</b>
+                     <b>things depending on the context.</b>  <b>If a mode is explicitly</b>
+                     <b>given, then it means increment verbosity, otherwise it</b>
+                     <b>means list in INDEX file format.</b>
+
+
+       <b>-x option=value</b>
+
+              Specify the extended option overriding the defaults file value.
+
+       <b>-X FILE</b>
+
+              Specify the extended options filename, FILE,  overriding the
+              default filenames.  This option may be given more then once. If
+              the resulting specified value is an empty string then reading of
+              any options file is disabled.
+
+       <b>--help</b>
+
+              Show help (Implementation extension)
+
+       <b>-W option[,option,...]</b>
+
+              Specify the implementation extension option.
+              Syntax: -W option[=option_argument[,option...]
+              Options may be separated by a comma.  The implementation
+              extension options may also be given individually using the
+              '--long-option[=option_arg]' syntax.
+
+       <b>--products</b>
+
+              List the product's tag, revision, vendor_tag and location.
+
+       <b>--directory</b>
+
+              List the catalog directory entries.
+
+       <b>--files</b>
+
+              List files as defined in the installed catalog
+
+       <b>--sys</b>
+
+              List files as exists in the file system
+
+       <b>--dependencies</b>
+
+              Run in check dependency mode.  Assert dependencies against
+              installed software catalog. Dependencies are software specs
+              given by the --prerequisites and --extrequisites options
+
+
+       <b>--prerequisites=SW_SPEC</b>
+
+              Specify depencency to check, may be used multiple times.
+              Prerequisites packages are required to be installed.
+
+
+       <b>--exrequisites=SW_SPEC</b>
+
+              Specify depencency to check, may be used multiple times.
+              Exrequisites packages are required not to be installed.
+
+
+       <b>-W remote-shell=SHELL</b>
+
+              Defaults File Option: <b>swbis_remote_shell_client</b>
+              Supported shells are &quot;ssh&quot; and &quot;rsh&quot;, ssh is the default.
+
+       <b>-W show-options-files</b>
+              Show the complete list of options files and if they are found.
+
+       <b>-W show-options</b>
+              Show the options after reading the files and parsing the command
+              line options.
+
+       <b>-W pax-command={tar|pax|star|gtar}</b>
+              Set the portable archive command for all operations.  The
+              default is &quot;pax&quot;.
+
+       <b>-W pax-read-command={tar|pax|star|gtar}</b>
+              Set the read command for local and remote hosts.
+
+       <b>-W remote-pax-read-command={tar|pax|star|gtar}</b>
+              Defaults File Option: <b>swbis_remote_pax_read_command</b>
+              Set the read command for remote hosts.  This is the command that
+              runs on the target (e.g. pax -r, tar xpf -).  The default is
+              &quot;pax&quot;.
+
+       <b>-W local-pax-read-command={tar|pax|star|gtar}</b>
+              Defaults File Option: <b>swbis_local_pax_read_command</b>
+              Set the read command for local hosts.  This is the command that
+              runs on the target (e.g. pax -r, tar xpf -).  The default is
+              &quot;pax&quot;.
+
+       <b>-W pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Set the write command for local and remote hosts.  This is the
+              command that runs on the target (e.g. pax -w, tar cf -).
+
+       <b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_remote_pax_write_command</b>
+              Set the write command for remote hosts.
+
+       <b>-W local-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_local_pax_write_command</b>
+              Set the portable archive write command for local host
+              operations.  This is the command that runs on the source (e.g.
+              pax -w, tar cf -).  The default is &quot;pax&quot;.
+
+       <b>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</b>
+              Defaults File Option: <b>swbis_remote_pax_write_command</b>
+              Set the portable archive write command for remote host
+              operations.  This is the command that runs on the source (e.g.
+              pax -w, tar cf -).  The default is &quot;pax&quot;.
+
+       <b>-W no-defaults</b>
+              Do not read any defaults files.
+
+       <b>-W no-getconf</b>
+              Defaults File Option: <b>swbis_no_getconf</b>
+              Makes the remote command be '/bin/sh -s' instead of the default
+              'PATH=`getconf PATH` sh -s'.
+
+       <b>-W shell-command=NAME</b>
+              Defaults File Option: <b>swbis_shell_command</b>
+              NAME may be one of &quot;detect&quot; &quot;bash&quot;, &quot;sh&quot; or &quot;posix&quot; and
+              specifies the remote command run by the remote shell.  &quot;posix&quot;
+              is 'PATH=`getconf PATH` sh -s', &quot;bash&quot; is &quot;/bin/bash -s&quot;, &quot;sh&quot;
+              is &quot;/bin/sh -s&quot;, and &quot;ksh&quot; is &quot;ksh -s&quot;.  The default is &quot;posix&quot;.
+
+       <b>-W use-getconf</b>
+              Opposite of --no-getconf.
+
+
+       <b>-W source-script-name=NAME</b>
+              Write the script that is written into the remote shell's stdin
+              to NAME.  This is useful for debugging.
+
+       <b>-W target-script-name=NAME</b>
+              Write the script that is written into the remote shell's stdin
+              to NAME.  This is useful for debugging.
+
+       <b>software_selections</b>
+
+              Refer to the software objects (products, filesets) using
+              software spec syntax. (See <a href=sw_5.html>sw(5)</a> for syntax).
+
+
+       <b>target</b>
+
+              Refers to the software_collection where the software selections
+              are to be applied.  Allows specification of host and pathname
+              where the software collection is located.  A target that
+              contains only one part is assumed to be a hostname.  To force
+              interpretation as a path, use a absolute path or prefix with
+              ':'.
+
+
+       Source and Target Specification and Logic
+
+            Synopsis:
+                 Posix:
+                      host[:path]
+                      host
+                      host:
+                      /path  # Absolute path
+
+                 Swbis Extension:
+                      [user@]host[:path]
+                      [user@]host_port[:path]
+                      :path
+
+                 Swbis Multi-hop Target Extension:
+                      # ':' is the target delimiter
+                   # '_' delimits a port number in the host field
+
+                      [user@]host[@@[user@]host[@@...]][:file]
+                      [user@]host_port[@@[user@]host[@@...]][:file]
+
+                      # Using ':', a trailing colon is used to
+                      # disambiguate between a host and file.
+                   # For Example,
+                      :file
+                      host:
+                      host
+                      host:file
+                      host:host:
+                      host_port:host_port:
+                      host:host:file
+                      user@host:user@host:
+                      user@host:user@host:host:
+                      user@host:user@host:file
+
+            A more formal description:
+
+            target : HOST_CHARACTER_STRING ':' PATHNAME_CHARACTER_STRING
+                   | HOST_CHARACTER_STRING ':'
+                   | HOST_CHARACTER_STRING
+                   | PATHNAME_CHARACTER_STRING
+                   | ':' PATHNAME_CHARACTER_STRING   # Impl extension
+                   ;
+
+              PATHNAME_CHARACTER_STRING must be an absolute path unless
+                              a HOST_CHARACTER_STRING is given.  Allowing
+                              a relative path is a feature of the swbis
+                              implementation.
+
+                       NOTE: A '.' as a target is an implementation
+                             extension and means extract in current
+                             directory.
+
+                       NOTE: A '-' indicating stdout/stdin is an
+                             implementation extension.
+
+                       NOTE: A ':' in the first character indicates a filename.
+                             This is an implementation extension.
+
+              HOST_CHARACTER_STRING is an IP or hostname.
+
+           Examples:
+              Copy the  distribution /var/tmp/foo.tar.gz at 192.168.1.10
+                     swcopy -s /var/tmp/foo.tar.gz @192.168.1.10:/root
+
+
+       Implementation Extension Syntax (multi ssh-hop) :
+           Syntax:
+           %start   wtarget    # the Implementation Extension Target
+                               # Note: a trailing ':' forces interpretation
+                               # as a host, not a file.
+           wtarget   : wtarget DELIM sshtarget
+                     | sshtarget
+                     | sshtarget DELIM
+                     ;
+           sshtarget : user '@' target # Note: only the last target
+                     | target          # may have a PATHNAME, and only a host
+                     ;                 * may have a user
+           target   : HOST_CHARACTER_STRING
+                    | PATHNAME_CHARACTER_STRING
+                    ;
+           user     : PORTABLE_CHARACTER_STRING  # The user name
+
+           DELIM    : ':'   # The multi-hop delimiter.
+                    ;
+</pre><h3><a name="IMPLEMENTATION EXTENSIONS"><b>IMPLEMENTATION EXTENSIONS</b></a></h3><pre>       The <b>--dependencies</b>, <b>--products</b>, and <b>--files</b> are implementation
+       extension modes.
+
+</pre><h3><a name="USAGE EXAMPLES"><b>USAGE EXAMPLES</b></a></h3><pre>   <b>Show the path of the installed software catalog.</b>
+         swlist --show-options | grep installed_
+
+   <a name="List Product from a certain distributor"><b>List Product from a certain distributor</b></a>
+        List products from a certain distributor, foo (Note:  this requires
+       that the <i>foo</i> vendor uses foo_something_ as the product vendor_tag in
+       their distributions.
+
+         swlist v=&quot;foo*&quot;
+
+   <a name="List all products"><b>List all products</b></a>
+         swlist @/   # If distribution_target_directory=/ then &quot;swlist&quot; alone
+                     # will suffice.
+
+   <b>List products installed at alternate root</b>  <b>/mnt/test</b>
+         swlist @/mnt/test
+
+   <a name="List the files of package foo as they exist in the file system"><b>List the files of package foo as they exist in the file system</b></a>
+       swlist -vv --files --sys foo @ root@localhost
+
+   <b>List products according to a name pattern and revision, and distributor</b>
+         swlist emacs&quot;*&quot;,&quot;r&gt;20&quot;,v=rh&quot;*&quot; @/
+
+   <a name="Test Dependencies"><b>Test Dependencies</b></a>
+       Check if a given dependency passes against a given installed catalog on
+       a host
+
+         swlist -x verbose=3 --depend --pre=&quot;foo*,r&gt;=1.0,r&lt;2&quot; @192.168.3.1:/; echo $?
+</pre><h3><a name="EXTENDED OPTIONS"><b>EXTENDED OPTIONS</b></a></h3><pre>       Extended options can be specified on the command line using the -x
+       option or from the defaults file, swdefaults.  Shown below is an actual
+       portion of a defaults file which show default values.
+
+   <a name="POSIX"><b>POSIX</b></a>
+       These options are set in the /usr/lib/swbis/swdefaults or the
+       ~/.swdefaults on the local (management host, host where swlist
+       invoked).  These files on the target host are not used.
+
+          distribution_target_directory  = /
+          installed_software_catalog  = var/lib/swbis/catalog/
+          one_liner                   = files|products   # Mode when -v not given
+          select_local                = false      # Not Implemented
+          verbose                     = 1
+
+   <a name="Swbis Implementation"><b>Swbis Implementation</b></a>
+       These options are set in the /usr/lib/swbis/swbisdefaults or the
+       ~/.swbis/swbisdefaults file.
+
+         swlist.swbis_no_getconf = true # true or false
+         swlist.swbis_shell_command = detect # {detect|sh|bash|posix|ksh}
+         swlist.swbis_no_remote_kill = false # true or false
+         swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+         swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+         swlist.swbis_local_pax_read_command=tar #{pax|tar|gtar|star}
+         swlist.swbis_remote_pax_read_command=tar #{pax|tar|gtar|star}
+         swlist.swbis_remote_shell_client=ssh
+         swlist.swbis_forward_agent=True
+</pre><h3><a name="RETURN VALUE"><b>RETURN VALUE</b></a></h3><pre>       0 if all targets succeeded, 1 if all targets failed or internal error,
+       2 if some targets failed and some succeeded.  When checking
+       dependencies, 3 if the given sw_specs failed as dependencies, 0 if
+       succeeded.
+</pre><h3><a name="NOTES"><b>NOTES</b></a></h3><pre>        Multiple ssh-hops is an implementation extension.
+</pre><h3><a name="REQUISITE UTILITIES"><b>REQUISITE UTILITIES</b></a></h3><pre>       The swbis distributed utilities require <b>bash</b>, public domain <b>ksh</b>, or
+       Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+       <b>swbis_shell_command</b> extended option is set to 'detect' you don't have
+       to know which one is present, otherwise you may specify one explicitly.
+
+       A POSIX <b>awk</b> is required, and with the ability to specify several
+       thousand bytes of program text as a command argument.  GNU awk  works,
+       as does the ATT Awk book awk, and the awk on BSD systems.  See the
+       INSTALL file for further details regarding a small issue with the
+       OpenSolaris (c.2006) awk.
+
+       Tar or pax is used for internally for data transfer.  You may specify
+       which one.  <b>swlist</b> and <b>swverify</b> require either GNU tar or pax be
+       present on a host.  You may set auto detection for this requirement
+
+       swlist.swbis_local_pax_write_command=detect #{pax|tar|gtar|detect}
+       swlist.swbis_remote_pax_write_command=detect #{pax|tar|gtar|detect}
+
+       GNU Privacy Guard, gpg is required for verification of package
+       signatures.
+</pre><h3><a name="FILES"><b>FILES</b></a></h3><pre>       /var/lib/swbis/catalog # Location of installed catalog
+       /usr/lib/swbis/swdefaults
+       /usr/lib/swbis/swbisdefaults
+       $HOME/.swbis/swdefaults
+       $HOME/.swbis/swbisdefaults
+</pre><h3><a name="APPLICABLE STANDARDS"><b>APPLICABLE STANDARDS</b></a></h3><pre>       ISO/IEC 15068-2:1999, Open Group CAE C701
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       info swbis
+
+       <a href=swbis_7.html>swbis(7)</a>, <a href=sw_5.html>sw(5)</a>, <a href=swbisparse_1.html>swbisparse(1)</a>, <a href=swign_1.html>swign(1)</a>, <a href=swverify_8.html>swverify(8)</a>
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        <a href=swlist_8.html>swlist(8)</a>: The query/listing utility of the swbis project.
+        Author: Jim Lowe   Email: jhlowe at acm.org
+        Version: 1.13.1
+        Last Updated: 2006-07
+        Copying: GNU Free Documentation License
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       swlist is subject to breakage if a user's account on an intermediate
+       (or terminal) host in a target spec is not configured to use a Bourne
+       compatible shell. (This breakage may be eliminated by use of the --no-
+       getconf option as explained above.)
+
+       swlist does not currently implement the -v,-a options.  Listing
+       products in a distribution is not supported.  Operating on a
+       distribution in directory form is not supported.  The catalog query
+       funtions are implemented in awk and subject to its bugs.
+
+
+
+                                                                     <a href=swlist_8.html>swlist(8)</a>
+</pre><hr></body></html>

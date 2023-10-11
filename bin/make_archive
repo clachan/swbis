@@ -1,0 +1,583 @@
+#!/bin/sh
+# This file may be copied without restriction.
+
+if [ $# -lt 1 ]; then
+	echo "Usage $0 {--snap-shot|--release|--test-release}" 1>&2
+	exit 1
+fi
+
+PATH=`pwd`/swprogs:`pwd`/swsupplib/progs:$PATH
+PASSFILE=var/gnupg/passphrase
+opt_format=ustar
+GNUTAR_FORMAT_OPTIONS=""
+SWPACKAGE_FORMAT_OPTIONS=""
+TEST_USER_NAME="Test User"
+
+
+missing_which() {
+	pgm="$1"
+	xxname=`which $pgm`
+	test -n "$xxname"
+	case "$?" in
+		0)
+			echo "$xxname"
+			return 0
+			;;
+		*)
+			echo "Missing $pgm"; 1>&2
+			echo "X"
+			return 1
+			;;
+	esac
+}
+arg1="$1"
+run_mode=""
+
+if [ "$arg1" != "--snap-shot" ]; then
+ARF2ARF=`missing_which arf2arf 2>/dev/null` || \
+ARF2ARF=`PATH=/bin:/usr/bin:/usr/libexec/swbis:/usr/lib/swbis:/usr/local/libexec/swbis; which arf2arf` || exit 4
+SWPACKAGE=`missing_which swpackage` || exit 4
+
+if [ -z "$SWPACKAGE" -o -z "$ARF2ARF" ]; then
+	echo "Missing utilities arf2arf or swpackage" 1>&2
+	echo "swpackage = [$SWPACKAGE]" 1>&2
+	echo "arf2arf = [$ARF2ARF]" 1>&2
+	exit 2
+fi
+fi
+
+GPG=`missing_which gpg` || exit 4
+DIFF=`missing_which diff` || exit 4
+TEE=`missing_which tee` || exit 4
+TAR=`missing_which tar` || exit 4
+GZIP=`missing_which gzip` || exit 4
+SED=`missing_which sed` || exit 4
+SORT=`missing_which sort` || exit 4
+RM=`missing_which rm` || exit 4
+FIND=`missing_which find` || exit 4
+WC=`missing_which wc` || exit 4
+CAT=`missing_which cat` || exit 4
+GREP=`missing_which grep` || exit 4
+MKDIR=`missing_which mkdir` || exit 4
+CHMOD=`missing_which chmod` || exit 4
+CP=`missing_which cp` || exit 4
+TOUCH=`missing_which touch` || exit 4
+AWK=`missing_which awk` || exit 1
+HEAD=`missing_which head` || exit 1
+
+bin/testforgnutar.sh || exit 5
+
+do_release=""
+
+check_for_gnu_tar()
+{
+	gnu_tar_version="`$TAR --version 2>&1 | $GREP GNU | $HEAD -1 | $AWK '{print $NF}'`"
+	case "$gnu_tar_version" in 
+		2.[0-9].*)
+			echo 1>/dev/null
+		;;
+		1.14*)
+			echo GNU tar version 1.13.17, 1.13.25 or 1.15.x is required for this test. 1>&2
+			echo You have tar [$gnu_tar_version]. 1>&2
+			return 1
+		;;
+		1.15*|1.13.17|1.13.25)
+			echo 1>/dev/null
+			#echo "It looks like you have a suitable version of GNU tar [$gnu_tar_version]." 1>&2
+		;;
+		*)
+		echo GNU tar version 1.13.17 or 1.13.25 is required for this test. 1>&2
+		echo You have tar [$gnu_tar_version]. 1>&2
+		return 1
+		;;
+	esac
+	return 0
+}
+
+make_format_option()
+{
+	case "$gnu_tar_version" in 
+		1.15*)
+			case "$opt_format" in
+				gnu)
+					GNUTAR_FORMAT_OPTIONS="--format=gnu"
+					SWPACKAGE_FORMAT_OPTIONS="--format=gnu"
+					;;
+				gnutar|oldgnu)
+					GNUTAR_FORMAT_OPTIONS="--format=oldgnu"
+					SWPACKAGE_FORMAT_OPTIONS="--format=oldgnu"
+					;;
+				ustar)
+					GNUTAR_FORMAT_OPTIONS="--format=ustar"
+					SWPACKAGE_FORMAT_OPTIONS="--format=ustar"
+					;;
+			esac
+		;;
+		1.13.*)
+			case "$opt_format" in
+				gnu)
+					echo "gnu format not supported by swign for GNU tar $gnu_tar_version" 1>&2 
+					return 1
+					;;
+				gnutar|oldgnu)
+					GNUTAR_FORMAT_OPTIONS=""
+					SWPACKAGE_FORMAT_OPTIONS="--format=oldgnu"
+					;;
+				ustar)
+					GNUTAR_FORMAT_OPTIONS="--posix"
+					SWPACKAGE_FORMAT_OPTIONS="--format=ustar0"
+					;;
+			esac
+		;;
+		*)
+			GNUTAR_FORMAT_OPTIONS=""
+			echo internal error in make_format_options 1>&2
+			return 1
+		;;
+	esac
+	return 0
+}
+
+RC=""
+if [ "$arg1" = "--test-release" ]; then
+	run_mode="test-release"
+	arg1="test-release"
+	do_release=""
+elif [ "$arg1" = "--releaseC" ]; then
+	run_mode="test-release"
+	arg1="test-release"
+	do_release="1"
+	RC="RC"
+elif [ "$arg1" = "--release" ]; then
+	run_mode="test-release"
+	arg1="test-release"
+	do_release="1"
+elif [ "$arg1" = "--snap-shot" ]; then
+	run_mode="snapshot"
+else
+	echo "invalid arg : $arg1" 1>&2			
+fi
+
+if [ "$run_mode" = "test-release" ]; then
+
+	MD5SUM=`missing_which md5sum` || exit 4
+	echo
+	echo "Running Test: $run_mode"
+	echo "Using: $SWPACKAGE"
+	echo "Using: $ARF2ARF"
+	echo
+
+	SUFF=".test"
+	if [ -z "$do_release" ]; then
+		AUTHOR="$TEST_USER_NAME"
+		PASSPHRASE="Iforgot"
+	else
+		gpg_homedir="~/.gnupg"
+		echo "Your Identity: $AUTHOR"
+		echo "Your GPG homedir : $gpg_homedir"
+	fi
+
+	if [ -x bin/check_release.sh ]; then
+		bin/check_release.sh 1>/dev/null	
+		case $? in
+			0)
+				;;
+			*)
+				echo "Release number mismatch, Edit swprog_versions.h to fix." 1>&2
+				exit 3
+				;;
+		esac
+	fi
+
+	DFILES=dfiles
+	PSF=PSF
+
+	create_date=`date`
+	create_time=`date -d "$create_date" +%s`
+
+	pdir=`pwd`
+	REVISION="`echo $pdir | ${SED} -e 's@^.*-\([^-]*\)@\1@'`"
+	export REVISION
+
+	PACKAGEDIR="swbis-${REVISION}"
+
+	cd ..
+	if [ ! -d "${PACKAGEDIR}" ]; then
+		echo "script failed : dir ${PACKAGEDIR} not found." 1>&2
+		exit 2
+	fi
+	
+	cd "${PACKAGEDIR}"
+	case $? in
+		0)
+			;;
+		*)
+			echo "script error" 1>&2
+			exit 3
+			;;
+	esac
+
+	${RM} -fr catalog
+	case $? in
+		0)
+			;;
+		*)
+			echo "script error /bin/rm failed." 1>&2
+			exit 4
+			;;
+	esac
+
+	TMPGNUPGDIR=/usr/tmp/swbis-test-user/gnupg
+
+	if [ -z "$do_release" ]; then
+		${RM} -fr "$TMPGNUPGDIR"
+		${MKDIR} -p "$TMPGNUPGDIR"
+		${CHMOD} 700 "$TMPGNUPGDIR"
+		${CP} -p var/gnupg/* "$TMPGNUPGDIR"	
+		gpg_homedir="$TMPGNUPGDIR"
+		echo "Your Identity: $AUTHOR"
+		echo "Your GPG homedir : $gpg_homedir"
+		echo "Your passphrase is :  $PASSPHRASE"
+		echo
+	fi
+
+	#
+	# Here, in this usage just install the catalog section, then use swpackage to generate
+	# the file list and use as input into GNU tar.
+	#
+	serial_archive=../swbis-"${REVISION}${SUFF}".tar.gz
+	echo "Generating catalog using swpackage and installing with tar ...   " 1>&2
+	echo	
+	if [ -z "$do_release" ]; then
+		echo "Don't forget your passphrase"
+		echo "Your passphrase is :  $PASSPHRASE"
+		echo
+	fi
+	echo
+
+
+	if [ "$do_release" ]; then
+		if [ -z "$AUTHOR" ]; then
+			arg_name="--noop"
+		else
+			arg_name="-Wgpg-name=$AUTHOR"
+		fi
+
+		if [ -z "$GNUPGHOME" ]; then
+			arg_dir="--noop"
+		else
+			arg_dir="-Wgpg-path=${GNUPGHOME}"
+		fi
+	else
+		arg_dir="-Wgpg-path=${gpg_homedir}"
+		arg_name="-Wgpg-name=$AUTHOR"
+	fi
+
+	passfileopt="--noop"
+	echo "$AUTHOR" | grep "$TEST_USER_NAME" 1>/dev/null
+	case "$?" in
+		0)
+			passfileopt="-Wpassfile=var/gnupg/passphrase"
+			;;
+	esac
+
+	check_for_gnu_tar
+	case $? in
+		0)
+			;;
+		*)
+			echo "looking for gtar" 1>&2
+			TAR=`missing_which gtar` || exit 1
+			check_for_gnu_tar || exit 1
+			;;	
+	esac
+	make_format_option
+
+	swign -s PSF.in --show-psf |
+	${SWPACKAGE} -s - \
+			${SWPACKAGE_FORMAT_OPTIONS} \
+			-W dir-owner=0 \
+			-W dir-group=0 \
+			-W sign \
+			-W digests \
+			-W files \
+			-W create-time="${create_time}" \
+			-W dir="${PACKAGEDIR}" \
+			"$passfileopt" \
+			"$arg_name" \
+			"$arg_dir" \
+			@- | (cd ..; ${TAR} xpvf - "${PACKAGEDIR}"/catalog ) 
+	case $? in
+		0)
+			;;
+		*)
+			echo "script error tar failed." 1>&2
+			exit 5
+			;;
+	esac
+
+	
+	${TOUCH} -d "$create_date" .
+	echo
+
+	echo "Generating ${serial_archive} using tar ...     " 1>&2
+	echo
+	#
+	# Here use swpackage to make a list of files using the '-p' option.
+	#
+	swign -s PSF.in --show-psf |
+	${SWPACKAGE} -s - -x verbose=2 -p 	\
+				${SWPACKAGE_FORMAT_OPTIONS} \
+				-W dir-owner=0 \
+				-W dir-group=0 \
+				-W sign \
+				-W digests \
+				-W files \
+				-W create-time="${create_time}" \
+				-W dir="${PACKAGEDIR}" \
+				"$passfileopt" \
+				"$arg_name" \
+				"$arg_dir" \
+				@- |
+	(cd ..; \
+		${TAR} cvf - $GNUTAR_FORMAT_OPTIONS -b1 --no-recursion --numeric-owner --owner=0 --group=0 --files-from=- 2>tarlist.eraseme \
+	) |
+	${GZIP} -n >"${serial_archive}"
+	echo
+	echo "${serial_archive} Written"
+	
+	#
+	# now check that the file list from swpackage is correct.
+	#
+	echo
+	printf "Checking file list generated by swpackage ... "
+	(cd ..;  ${CAT} "${PACKAGEDIR}"/catalog/${DFILES}/files | ${SED} -e 's@/$@@' | ${SORT} >listcheck.eraseme.sorted)
+	(cd ..; ${FIND} "${PACKAGEDIR}") | ${SORT} |  ${DIFF} - ../listcheck.eraseme.sorted
+	case $? in
+		0)
+			echo "file list OK"
+			;;
+		*)
+			echo "file list FAILED."
+			exit 3
+			;;
+	esac
+	echo
+
+	#
+	# now check that the tar stderr output has all the files in it.
+	#
+
+	printf "Checking tar list against current directory content ... "
+	(cd ..; $CAT tarlist.eraseme | ${SED} -e 's@/$@@' | ${SORT}  >tarlist.eraseme.sorted)
+	(cd ..; ${FIND} "${PACKAGEDIR}" -print) | ${SORT} |  diff - ../tarlist.eraseme.sorted
+	case $? in
+		0)
+			echo " tar file list OK"
+			;;
+		*)
+			echo " tar file list FAILED."
+			exit 3
+			;;
+	esac
+
+	${RM} -f ../erasemelater
+
+	echo "Digests and signature will now be verified :"
+	echo "${serial_archive}"
+	echo
+	
+
+	${RM} -f /tmp/md5.tmp
+	echo "Checking md5sum ..."
+	m1=`(${ARF2ARF} -d -S <${serial_archive} | ${MD5SUM}) 2>/tmp/md5.tmp | \
+		${SED} -e 's/ .*$//'`
+	m2=`cat /tmp/md5.tmp`
+	echo "$m1"
+	echo "$m2"
+	count=`( echo $m1; echo $m2 ) |  ${SORT} -u | ${WC} -c`
+	if [ $count -eq 33 ]; then
+		echo "                                  PASS"
+	else
+		echo "md5sum  failed." 1>&2
+		exit 2
+	fi
+
+	${RM} -f /tmp/md5.tmp
+	echo "Checking adjunct_md5sum ..."
+	m1=`(${ARF2ARF} -d -s <${serial_archive} | ${MD5SUM}) 2>/tmp/md5.tmp | \
+		${SED} -e 's/ .*$//'`
+	m2=`cat /tmp/md5.tmp`
+	echo "$m1"
+	echo "$m2"
+	count=`( echo $m1; echo $m2 ) |  ${SORT} -u | $WC -c`
+	if [ $count -eq 33 ]; then
+		echo "                                  PASS"
+	else
+		echo "adjunct_md5sum  failed." 1>&2
+		exit 2
+	fi
+	
+
+	"${ARF2ARF}" -C -d <"${serial_archive}" 2>../erasemelater 1>/dev/null 
+	echo
+	"${ARF2ARF}" -C <"${serial_archive}" | ${GPG} --verify --homedir="$gpg_homedir" ../erasemelater -
+	ret=$?	
+
+	echo
+	echo
+	echo "Now check the ability of GNU tar to generate the signed file from"
+	echo "the directory.  You should see two identical md5sums."
+
+
+	echo "running ${ARF2ARF} -C \<${serial_archive} \| md5sum"
+	echo "${TAR} cf - ${PACKAGEDIR}/catalog --numeric-owner $GNUTAR_FORMAT_OPTIONS -b1 --owner=0 --group=0 "
+	echo "              --exclude=${PACKAGEDIR}/catalog/$DFILES/signature \| ${MD5SUM}"
+
+	"${ARF2ARF}" -C <"${serial_archive}" | ${MD5SUM}
+	(cd ..; \
+		${TAR} cf - $GNUTAR_FORMAT_OPTIONS -b1 --numeric-owner --owner=0 --group=0 \
+			--exclude="${PACKAGEDIR}"/catalog/$DFILES/signature "${PACKAGEDIR}"/catalog \
+	) \
+	| ${MD5SUM}
+
+	echo
+	echo "Now use swpackage instead of GNU tar to generate the archive."
+	echo "The Digests of the two packages should be identical"
+	echo
+
+
+	if [ -z "$do_release" ]; then
+		echo "Don't forget your passphrase"
+		echo "Your passphrase is :  $PASSPHRASE"
+		echo
+	fi
+
+	serial_archive=../swbis-"${REVISION}${SUFF}".tar.gz.R0
+	echo "Generating ${serial_archive} using swpackage ...     " 1>&2
+	echo
+
+	swign -s PSF.in --show-psf |
+	${SWPACKAGE} -s - \
+			${SWPACKAGE_FORMAT_OPTIONS} \
+			-W dir-owner=0 \
+			-W dir-group=0 \
+			-W sign \
+			-W files \
+			-W digests \
+			-W dir="${PACKAGEDIR}" \
+			-W create-time="${create_time}" \
+			"$passfileopt" \
+			"$arg_name" \
+			"$arg_dir" \
+			 @- | dd | ${GZIP} -n>"${serial_archive}"
+
+	ls -l "${serial_archive}"
+	${RM} -f ../erasemelater
+	echo "Digests and signature will now be verified :"
+	echo "${serial_archive}"
+	echo
+
+	${RM} -f /tmp/md5.tmp
+	echo "Checking md5sum ..."
+	m1=`(${ARF2ARF} -d -S <${serial_archive} | ${MD5SUM}) 2>/tmp/md5.tmp | \
+		${SED} -e 's/ .*$//'`
+	m2=`cat /tmp/md5.tmp`
+	echo "$m1"
+	echo "$m2"
+	count=`( echo $m1; echo $m2 ) |  ${SORT} -u | wc -c`
+	if [ $count -eq 33 ]; then
+		echo "                                  PASS"
+	else
+		echo "md5sum  failed." 1>&2
+		exit 2
+	fi
+
+	${RM} -f /tmp/md5.tmp
+	echo "Checking adjunct_md5sum ..."
+	m1=`(${ARF2ARF} -d -s <${serial_archive} | ${MD5SUM}) 2>/tmp/md5.tmp | \
+		${SED} -e 's/ .*$//'`
+	m2=`cat /tmp/md5.tmp`
+	echo "$m1"
+	echo "$m2"
+	count=`( echo $m1; echo $m2 ) |  ${SORT} -u | wc -c`
+	if [ $count -eq 33 ]; then
+		echo "                                  PASS"
+	else
+		echo "md5sum  failed." 1>&2
+		exit 2
+	fi
+
+	${RM} -f /tmp/md5.tmp
+
+	"${ARF2ARF}" -C -d <"${serial_archive}" 2>../erasemelater 1>/dev/null 
+	echo
+	"${ARF2ARF}" -C <"${serial_archive}" | ${GPG} --verify --homedir="$gpg_homedir" ../erasemelater -
+
+	ret=$?
+	if [ -z "$do_release" ]; then
+		${RM} -fr "$TMPGNUPGDIR"
+	fi
+	echo
+	serial_archive=../swbis-"${REVISION}${SUFF}".tar.gz.R1
+	echo "Re-writing ${serial_archive} using swign"
+	passfileopt="--noop"
+	echo "$AUTHOR" | grep "$TEST_USER_NAME" 1>/dev/null
+	case "$?" in
+		0)
+			#
+			# Use the test user keys and the public passphrase
+			#
+			(
+				export SWPACKAGEPASSFD=3
+				exec 3<$PASSFILE swign -s PSF.in -u "$AUTHOR" @-
+			) | dd | ${GZIP} -n>"${serial_archive}"
+			;;
+		*)
+			(
+				swign -s PSF.in -u "$AUTHOR" @-
+			) | dd | ${GZIP} -n>"${serial_archive}"
+			;;
+	esac
+
+	ls -l "${serial_archive}"
+	echo "${serial_archive} Written"
+	canon_name="$serial_archive"
+
+	if [ "$do_release" ]; then
+	case $ret in
+		0)
+			echo cp -pi $canon_name ../swbis-"${REVISION}".tar.gz${RC}
+			/bin/cp -pi $canon_name ../swbis-"${REVISION}".tar.gz${RC}
+			echo "$AUTHOR" | egrep -i -e "Test User" -e "Jim Lowe" 1>/dev/null
+			case "$?" in
+			0)
+				if [ -d /home/project/sw/swbis -a "$RC" = "" ]; then
+					echo cp -pi ../swbis-"${REVISION}".tar.gz${RC} /home/project/sw/swbis
+					/bin/cp -pi ../swbis-"${REVISION}".tar.gz${RC} /home/project/sw/swbis
+				fi
+				;;
+			esac
+			;;
+	esac
+	fi
+	echo "exiting with status $ret"
+	exit $ret
+fi
+
+if [ "$run_mode" = "snapshot" ]; then
+	pdir=`pwd`
+	REVISION="`echo $pdir | ${SED} -e 's@^.*-\([^-]*\)@\1@'`"
+	REVISION=""
+	export REVISION
+	(
+	cd ..
+	${FIND} swbis${REVISION} |
+	tar cf - --no-recursion --files-from=- |
+	gzip -9 >swbis${REVISION}.`date -u +%Y%m%d"T"%H%M"Z"`.tar.gz
+	)
+	exit 0
+fi
+
+echo "Usage $0 {--snap-shot|--release|--test-release}" 1>&2
+exit 1

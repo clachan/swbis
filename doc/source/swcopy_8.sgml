@@ -1,0 +1,879 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+Copyright (c) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document 
+under the terms of the GNU Free Documentation License, Version 1.1 or any 
+later version published by the Free Software Foundation; with no Invariant 
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+     Formatting Instructions: 
+      $ docbook-to-man swcopy_8.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented sites.
+-- >
+<!DOCTYPE form
+[
+<!ENTITY swtarget SYSTEM "target.sgml">
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY>
+<REFMETA>
+<REFENTRYTITLE>
+swcopy
+</REFENTRYTITLE>
+<MANVOLNUM>8</MANVOLNUM> 
+<REFMISCINFO>
+swcopy - Software Administration
+</REFMISCINFO>
+</REFMETA>
+
+<REFNAMEDIV>
+<REFNAME>
+swcopy
+</REFNAME>
+<REFPURPOSE>
+Copy POSIX and RPM packages.
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+<FUNCTION>swcopy</FUNCTION> <OPTIONAL>-p</OPTIONAL> <OPTIONAL>-s <REPLACEABLE>source_file</REPLACEABLE></OPTIONAL> <OPTIONAL>-f <REPLACEABLE>file</REPLACEABLE></OPTIONAL> <OPTIONAL>-t <REPLACEABLE>targetfile</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>-x <REPLACEABLE>option=value</REPLACEABLE></OPTIONAL> <OPTIONAL>-X <REPLACEABLE>options_file</REPLACEABLE></OPTIONAL> <OPTIONAL>-W <REPLACEABLE>option</REPLACEABLE></OPTIONAL> \\
+<OPTIONAL>software_selections</OPTIONAL> <OPTIONAL>@target [target1...]</OPTIONAL> 
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+
+<REFSECT1 ID="R1 swcopy">
+<TITLE>
+DESCRIPTION
+</TITLE>
+<PARA>
+<FUNCTION>swcopy</FUNCTION>
+copies a POSIX distribution from a source archive or directory to a target
+archive directory.  Neither swcopy nor any component of swbis is required
+on the target host, however, the target host must look like a Unix system at
+the shell and command-line utility level.  Remote network connections are made
+by ssh.  Ssh is the default but rsh can be selected by a command line
+option.
+</PARA>
+<PARA>
+Before and during data transfer to the target, the distribution is audited.
+Package auditing includes parsing the INDEX and INFO meta-data files. 
+The package pathnames are checked for consistency with a valid layout. 
+<FUNCTION>swcopy</FUNCTION> can be made to operate on arbitrary data or
+archives not in POSIX format by using the \-\-no-audit option.
+By default and with no external influences (i.e. swdefaults file) swcopy
+will read a archive on stdin and write an audited archive on stdout.
+The uncompressed audited output file will be identical to the uncompressed
+input file unless an error occurs.  Compressed archives that are audited will
+be re-compressed in the same format, however, the resulting file may
+not be identical to the input file (i.e. date, filename, and other stored data
+in the compressed format will be different).
+</PARA>
+<PARA>
+<FUNCTION>swcopy</FUNCTION>
+operates on serial archives (e.g. compressed tar archives) or on file system
+directories.  It will attempt to preserve the form (archive or directory) and
+compression state of the source object.  An exception is "." as a target
+(See Implementation Extensions below).
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+OPTIONS
+</TITLE>
+<PARA>
+<GLOSSLIST>
+<GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>-f FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Reads software_selections from FILE. (Not implemented).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-p</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Preview the operation. Information is written to stdout.
+The target is not written and no remote connections are established.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>-s SOURCE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the source file SOURCE, "-" is standard input.
+The syntax is the same as for a target.
+SOURCE may be a directory or archive file.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-t targetfile</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify a file containing a list of targets (one per line).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-x option=value</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended option overriding the defaults file value.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-X FILE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the extended options filename, FILE,  overriding the default filenames.
+This option may be given more then once. If the resulting specified value is an empty string
+then reading of any options file is disabled.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-v</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Given one time it is identical to -x verbose=2.
+This option can be given multiple times with increasing effect.
+(Implementation extension option).
+<VERB><SBR>
+-v  is level 2, -vv is level 3,... etc.<SBR>
+    level 0: silent on stdout and stderr.<SBR>
+    level 1: fatal and warning messages to stderr.<SBR>
+-v  level 2: level 1 plus a progress bar.<SBR>
+-vv level 3: level 2 plus script stderr.<SBR>
+-vvv level 4: level 3 plus events.<SBR>
+-vvvv level 5: level 4 plus events.<SBR>
+-vvvvv level 6: level 5 plus set shell -vx option.<SBR>
+-vvvvvv level 7 and higher: level 6 plus debugging messages.<SBR>
+</VERB>
+The progress meter is suppressed if swcopy is using stdout for data.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-b SIZE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Set block size, same as \-\-block-size=N (Implementation extension option).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-version, -V</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Show version (Implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>\-\-help</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Show help (Implementation extension)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W option[,option,...]</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Specify the implementation extension option.<SBR>
+Syntax: -W option[=option_argument[,option...]<SBR>
+Options may be separated by a comma.  The implementation extension
+options may also be given individually using the '\-\-long-option[=option_arg]' syntax.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-audit</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Defaults File Option: <OPTION>swbis_no_audit</OPTION><SBR>
+Do not audit the transferred file.  This allows copying of arbitrary data.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W audit</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Do audit the transferred file.  Useful for overriding swbisdefaults file.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W block-size=SIZE</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+SIZE is number of octets.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W login</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Establishes a interactive shell on the (remote) target host.  Intended for debugging/verifying ssh operation.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W gzip</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Compress output using gzip.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W bzip</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Compress output using bzip2.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W extract</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Install the source using the archive reading utility at the target.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W create</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Force copy as a tar archive
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-extract</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+For installation to a file, not as a tar archive to be extracted.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pty</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Do use pseudo-tty.  The system Ptys are only used for the --login feature.
+A warning is emitted to stderr which says that the usage may be insecure.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-pty</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Do not use pseudo-tty.  The system Ptys are only used by default for the --login feature, otherwise they
+are not used and this option would have no effect.
+If ptys are used a warning is emitted to stderr which says that the usage may be insecure.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W uncompress</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Write output archive that is uncompressed.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-shell=SHELL</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+Defaults File Option: <OPTION>swbis_remote_shell_client</OPTION><SBR>
+Supported shells are "ssh" and "rsh", ssh is the default.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W quiet-progress</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Defaults File Option: <OPTION>swbis_quiet_progress_bar</OPTION><SBR>
+Disable progress bar, which is active for verbose levels 2 and higher (i.e. -v).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-progress</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Enables progress bar.(i.e. -v).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options-files</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Show the complete list of options files and if they are found.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W show-options</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Show the options after reading the files and parsing the command line options.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-command={tar|pax|star|gtar}</OPTION><SBR>
+<GLOSSLIST>
+<GLOSSLIST>
+Set the portable archive command for all operations.
+The default is "pax".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for local and remote hosts.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_read_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for remote hosts.
+This is the command that runs on the target (e.g. pax -r, tar xpf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W local-pax-read-command={tar|pax|star|gtar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_local_pax_read_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the read command for local hosts.
+This is the command that runs on the target (e.g. pax -r, tar xpf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W pax-write-command={tar|pax|star|gtar|swbistar}</OPTION><SBR>
+<GLOSSLIST><GLOSSLIST>
+Set the write command for local and remote hosts.
+This is the command that runs on the target (e.g. pax -w, tar cf -).
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION><SBR>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the write command for remote hosts.
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W local-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_local_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the portable archive write command for local host operations.
+This is the command that runs on the source (e.g. pax -w, tar cf -).
+The default is "pax".
+</GLOSSLIST></GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W remote-pax-write-command={tar|pax|star|gtar|swbistar}</OPTION>
+<GLOSSLIST><GLOSSLIST>
+Defaults File Option: <OPTION>swbis_remote_pax_write_command</OPTION>
+</GLOSSLIST></GLOSSLIST>
+<GLOSSLIST><GLOSSLIST>
+Set the portable archive write command for remote host operations.
+This is the command that runs on the source (e.g. pax -w, tar cf -).
+The default is "pax".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-defaults</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Do not read any defaults files.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-remote-kill</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_no_remote_kill</OPTION><SBR>
+Disables the use of a second remote connection to tear down the first in
+the event of SIGINT or SIGTERM or SIGPIPE.
+Only has effect if the number of ssh hops is greater than 1.
+A single host remote connection (ssh hop = 1) never uses a
+second remote connection.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W no-getconf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_no_getconf</OPTION><SBR>
+Makes the remote command be '/bin/sh -s' instead of the default
+'PATH=`getconf PATH` sh -s'. 
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W shell-command=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_shell_command</OPTION><SBR>
+NAME may be one of "detect" "bash", "sh" or "posix" and specifies the
+command run by the remote shell.
+The default is "detect".
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W use-getconf</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Opposite of \-\-no-getconf.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W allow-rpm</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Defaults File Option: <OPTION>swbis_allow_rpm</OPTION><SBR>
+Allows detection and translation of RPMs.  (\-\-audit must also be set.)
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W unrpm</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Turns on options \-\-allow-rpm and \-\-audit.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W source-script-name=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the script that is written into the remote shell's stdin to NAME.
+This is useful for debugging.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-W target-script-name=NAME</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST>
+Write the script that is written into the remote shell's stdin to NAME.
+This is useful for debugging.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>software_selections</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Refer to the software objects (products, filesets)
+on which to be operated. (Not implemented). 
+The implementation defined behavior for no selections is to operate on
+the entire distribution. 
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+<PARA>
+<OPTION>target</OPTION>
+<GLOSSLIST>
+<GLOSSLIST> 
+Refers to the software_collection where the software
+selections are to be applied.  Allows specification of host and pathname where the software collection is located.
+A target that contains only one part is assumed to be a hostname.
+To force interpretation as a path, use a absolute path or prefix with ':'.
+</GLOSSLIST>
+</GLOSSLIST> 
+</PARA>
+&swtarget; 
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+TARGET COPYING RULES
+</TITLE>
+<REFSECT2>
+<TITLE>
+Rules
+</TITLE>
+<PARA>
+If a target directory on the host does not exist it will be created using
+mkdir -p using the file creation mask of the originating swcopy process.
+A trailing slash in the target spec signifies
+that the last path component should be a directory.
+A source spec that is a directory will be created on the target as a
+directory with the same name in the target directory.
+If the source spec is stdin then the existence of directories in the
+target spec and a trailing slash in the target spec path determines
+whether the created file will be a regular file or directory,
+that is, stdin will be copied as a file unless the last target path
+component is a directory or ends in a slash '/'.  If the source spec is a
+regular file, the source basename will be used as the basename in the
+target if the last target path component is a directory or ends in
+a slash '/', otherwise,
+the target basename is the last path component of the target spec.
+The implementation option \-\-extract biases these rules to install using
+the archive reading command (e.g.  pax -r).
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Examples
+</TITLE>
+<GLOSSLIST>
+<GLOSSLIST> 
+Copy a regular file via tar archive creation and extraction.
+This will preserve the permissions of the file to the extent
+tar can preserve them.
+<PROGRAMLISTING>
+  swcopy \-\-no-audit --create --extract -s :README @ HostA
+</PROGRAMLISTING>
+Copy a directory to another host
+<PROGRAMLISTING>
+  swcopy \-\-no-audit  -s /usr @ HostA:/usr/local/tmp/HostA/
+</PROGRAMLISTING>
+Copy several directories to another host as a compressed archive file.
+<PROGRAMLISTING>
+    swcopy \-\-no-audit --no-extract \\
+             -s /usr -s /etc @ HostA:/tmp/usr-etc.tar.bz2
+</PROGRAMLISTING>
+Install a tarball in the current directory:
+Note: Must use stdin as source and "." as the target.
+<PROGRAMLISTING>
+     swcopy \-\-no-audit -s - @. < foo.tar.gz
+</PROGRAMLISTING>
+Copy thru a firewall:
+<PROGRAMLISTING>
+            swcopy -s /var/tmp/foo.tar.gz \\
+                 @root@host1:root@host2:/var/tmp
+</PROGRAMLISTING>
+Copy Stdin to a remote host:<SBR>
+<PROGRAMLISTING>
+    Unpack the archive on stdin in the directory
+    /a/b/c if 'c' is a directory, otherwise copy
+    the archive file to a file named 'c' in
+    directory /a/b creating it if possible and
+    overwriting if required. 
+        swcopy -s - @host1:/a/b/c
+</PROGRAMLISTING>
+Copy Stdin to a remote host:<SBR>
+<PROGRAMLISTING>
+       Unpack the serial archive on stdin in the
+       directory /a/b/c if 'c' is a directory,
+       otherwise make the directory 'c' but fail if
+       directory 'c' cannot be created.
+           swcopy -s - @host1:/a/b/c/
+                     # Note trailing slash.
+</PROGRAMLISTING>
+Copy a regular file:<SBR>
+<PROGRAMLISTING>
+   Copy file yy to directory /aa/bb/cc/ on the
+   remote host, creating it if required and possible.
+   If cc is a regular file then fail.
+      swcopy -s /xx/yy @host1:/aa/bb/cc/
+</PROGRAMLISTING>
+Copy a regular file thru intermediate host 'fw':<SBR>
+<PROGRAMLISTING>
+       Copy file yy to home directory of user1 on host1
+       thru a an intermediate host fw,
+           swcopy -s /xx/yy @ fw:user1@host1:.
+</PROGRAMLISTING>
+Copy a directory from one host to another
+<PROGRAMLISTING>
+       Copy directory yy into directory cc if cc exists,
+       otherwise create cc and copy yy into it. If cc
+       is and copy as yy.
+           swcopy -s /xx/yy @host1:/aa/bb/cc
+</PROGRAMLISTING>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IMPLEMENTATION EXTENSIONS
+</TITLE>
+<REFSECT2>
+<TITLE>
+Software Specification Targets
+</TITLE>
+<PARA>
+A dash '-' is supported and means stdout or stdin.
+Operations with stdout and stdin on a remote host is not supported.
+</PARA>
+<PARA>
+A decimal '.' is supported and means the current directory.
+This is supported for remote and non-remote targets.
+If the source is standard input, the distribution will be unpacked
+(e.g. pax -r) in the directory '.'.
+If the source is a regular file then a regular file in '.' will be created
+with the same name.
+</PARA>
+<PARA>
+Thus,
+<PROGRAMLISTING>
+           # swcopy -s `pwd`/myarchive.tgz @.  # Do NOT do this even 
+                                               # though in most cases 
+                                               # swcopy is a coward.
+</PROGRAMLISTING>
+will destroy the source file <FILE>myarchive.tgz</FILE>, whereas<br>
+<PROGRAMLISTING>
+           # swcopy -s - @. <`pwd`/myarchive.tgz
+</PROGRAMLISTING>
+will install it with the configured archive reading utility.
+</PARA>
+</REFSECT2>
+</PARA>
+
+<REFSECT2>
+<TITLE>
+RPM Translation
+</TITLE>
+<PARA>
+RPM (RedHat Package Manager) format packages are copied by first translating to
+an equivalent ISO/IEEE file layout in POSIX tar format and then copying as
+a POSIX package.
+The RPM detection and translation occurs if the ''\-\-allow-rpm'' option is
+on (either by the command line args or defaults file) and the ''--audit'' option
+is on.  If the ''--allow-rpm'' option is not set an error occurs.
+If the ''--audit'' is not set, the RPM is copied as arbitrary data and translation
+does not occur.
+</PARA>
+<PARA>
+Since translation is done on the local (management) host, RPM is not reqired on
+the remote (target) host.
+</PARA>
+<PARA>
+The translation is (internally) equivalent to :
+<VERB>
+<PROGRAMLISTING>
+   cat your-poor-poor-0.0.bin.rpm | 
+   /usr/lib/swbis/lxpsf --psf-form2 -H ustar |
+   swpackage -Wsource=- -s@PSF
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+EXTENDED OPTIONS
+</TITLE>
+<PARA>
+Extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults.  Shown below is an actual portion of
+a defaults file which show default values.
+</PARA>
+<REFSECT2>
+<TITLE>
+Posix
+</TITLE>
+<PARA>
+These options are set in the /usr/lib/swbis/swdefaults or the ~/.swdefaults
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+   autoselect_dependencies     = false      # Not Implemented
+   compress_files              = false      # Not Implemented
+   compression_type            = none       # Not Implemented
+   distribution_source_directory   = -
+   distribution_target_directory   = -
+   enforce_dependencies        = false       # Not Implemented
+   enforce_dsa                 = false       # Not Implemented
+   logfile                     = /var/lib/sw/swcopy.log #Not Implemented
+   loglevel                    = 1          # Not Implemented
+   recopy                      = false      # Not Implemented
+   select_local         = false      # Not Implemented
+   uncompress_files             = false     # Not Implemented
+   verbose                      = 1
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Swbis Implementation
+</TITLE>
+<PARA>
+These options are set in the /usr/lib/swbis/swbisdefaults or the ~/.swbis/swbisdefaults
+file. 
+</PARA>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+  swcopy.swbis_no_getconf = true # true or false
+  swcopy.swbis_shell_command = detect # {detect|sh|bash|posix|ksh}
+  swcopy.swbis_no_remote_kill = false # true or false
+  swcopy.swbis_no_audit = false # true or false
+  swcopy.swbis_quiet_progress_bar = false # true or false
+  swcopy.swbis_local_pax_write_command=pax #{pax|tar|star|gtar}
+  swcopy.swbis_remote_pax_write_command=pax #{pax|tar|star|gtar}
+  swcopy.swbis_local_pax_read_command=pax #{pax|tar|gtar|star}
+  swcopy.swbis_remote_pax_read_command=pax #{pax|tar|gtar|star}
+  swcopy.swbis_allow_rpm = false  # true or false
+  swcopy.swbis_remote_shell_client=ssh
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+RETURN VALUE
+</TITLE>
+<PARA>
+0 if all targets succeeded, 1 if all targets failed, 2 if some targets failed and some succeeded.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+NOTES
+</TITLE>
+Multiple ssh-hops is an implementation extension.<SBR>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+REQUISITE UTILITIES
+</TITLE>
+<PARA>
+The swbis distributed utilities require
+<FUNCTION>bash</FUNCTION>, public domain <FUNCTION>ksh</FUNCTION>, or 
+Sun's /usr/xpg4/bin/sh to be present on the target host.  If the
+<FUNCTION>swbis_shell_command</FUNCTION> extended option is set to 'detect'
+you don't have to know which one is present, otherwise you may specify one explicitly.
+</PARA>
+<PARA>
+A POSIX <FILENAME>awk</FILENAME> is required, and with the ability to
+specify several thousand bytes of program text as a command argument.
+GNU awk  works, as does the ATT Awk book awk, and the awk on BSD systems.
+See the INSTALL file for further details regarding a small issue with the
+OpenSolaris (c.2006) awk.
+</PARA>
+<PARA>
+Tar or pax is used for archive transfer.  You may specify which one.  
+<VERB>
+<PROGRAMLISTING>
+swcopy.swbis_local_pax_write_command=tar #{pax|tar|gtar}
+swcopy.swbis_remote_pax_write_command=tar #{pax|tar|gtar}
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+FILES
+</TITLE>
+<PARA>
+<VERB>
+<PROGRAMLISTING>
+/usr/lib/swbis/swdefaults
+/usr/lib/swbis/swbisdefaults
+$HOME/.swbis/swdefaults
+$HOME/.swbis/swbisdefaults
+</PROGRAMLISTING>
+</VERB>
+</PARA>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+ISO/IEC 15068-2:1999, Open Group CAE C701
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<PARA>
+info swbis
+</PARA>
+<PARA>
+sw(5), swbis(7), swbisparse(1), swign(1), swverify(8) 
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<VERB>
+ swcopy(8): The archive copying utility of the swbis project.
+ Author: Jim Lowe   Email: jhlowe at acm.org
+<!-- External Entity  --> &version;
+Last Updated: 2006-07
+ Copying: GNU Free Documentation License
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+Swcopy is subject to breakage if a user's account on an intermediate
+(or terminal) host in a target spec is not configured to use a Bourne
+compatible shell. (This breakage may be eliminated by use of the 
+--no-getconf option as explained above.)
+</PARA>
+<PARA>
+A multiple ssh hop source spec  (more than 1 remote host involved in the
+source transfer) upon a SIGINT may result in sshd and ssh processes
+being left on on the intermediate host(s), this despite, swcopy's action of
+sending a SIGTERM to the remote script's parent process.
+</PARA>
+<PARA>
+Swcopy does not currently implement Software Selections nor the events of the 
+Selection and Analysis Phases nor dependency copying nor fileset state
+transitions.  The Execution (copying) phase is done on the entire
+distribution by the utility selected in .../swbisdefaults which is pax(1) by
+default.  Pax is not found on all GNU/Linux systems.
+Also, the pax version shipped with some (older) GNU/Linux systems mangles the pathname 
+of files whose pathname is exactly 100 octets long.
+Despite this pax is the the builtin default.
+GNU tar is widely used and trusted but creates non-standard archives for long
+pathnames.  Perhaps the best compromise is to use star (with -H ustar header
+option)  for archive creation and (GNU) tar for archive reading.
+If your environment is 100% GNU/Linux using GNU tar is safe (GNU tar 1.13.25 is
+recommended).
+Swcopy does not support using the cpio utility since its archive writing
+interface is unlike pax and tar, although, future support is possible for
+archive reading.
+</PARA>
+</REFSECT1>
+</REFENTRY>

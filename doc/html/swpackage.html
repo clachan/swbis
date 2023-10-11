@@ -1,0 +1,3057 @@
+<html lang="en">
+<head>
+<title>Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+\. 
+<!-- TROFF INPUT: .fl			\" force out current output buffer -->
+<!-- .fl			\" force out current output buffer -->
+\\!%PB
+\\!/showpage{}def
+<!-- TROFF INPUT: ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+<!-- ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+\\!/tempdict 200 dict def tempdict begin
+<!-- TROFF INPUT: .fl			\" prolog -->
+<!-- .fl			\" prolog -->
+<!-- TROFF INPUT: .sy cat \\$1\" bring in postscript file -->
+<!-- .sy cat \\$1\" bring in postscript file -->
+<!-- TROFF INPUT: ...\" the following line matches the tempdict above -->
+<!-- ...\" the following line matches the tempdict above -->
+\\!end % tempdict %
+\\!PE
+\\!. 
+<!-- TROFF INPUT: .sp \\$2u	\" move below the image -->
+<!-- .sp \\$2u	\" move below the image -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de pF -->
+<!-- .de pF -->
+<!-- TROFF INPUT: .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- TROFF INPUT: .el .tm ? font overflow -->
+<!-- .el .tm ? font overflow -->
+<!-- TROFF INPUT: .ft \\$1 -->
+<!-- .ft \\$1 -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de fP -->
+<!-- .de fP -->
+<!-- TROFF INPUT: .ie     !\\*(f4 \{\ -->
+<!-- .ie     !\\*(f4 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f4 -->
+<!-- .	ft \\*(f4 -->
+<!-- TROFF INPUT: .	ds f4\" -->
+<!-- .	ds f4\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f3 \{\ -->
+<!-- .el .ie !\\*(f3 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f3 -->
+<!-- .	ft \\*(f3 -->
+<!-- TROFF INPUT: .	ds f3\" -->
+<!-- .	ds f3\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f2 \{\ -->
+<!-- .el .ie !\\*(f2 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f2 -->
+<!-- .	ft \\*(f2 -->
+<!-- TROFF INPUT: .	ds f2\" -->
+<!-- .	ds f2\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f1 \{\ -->
+<!-- .el .ie !\\*(f1 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f1 -->
+<!-- .	ft \\*(f1 -->
+<!-- TROFF INPUT: .	ds f1\" -->
+<!-- .	ds f1\" -->
+'	br \}
+<!-- TROFF INPUT: .el .tm ? font underflow -->
+<!-- .el .tm ? font underflow -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .ds f1\" -->
+
+<!-- WARNING: man/man8/swpackage.8:49:%%unrecognized define-string command: [.ds f1\"] -->
+<!-- TROFF INPUT: .ds f2\" -->
+<!-- WARNING: man/man8/swpackage.8:50:%%unrecognized define-string command: [.ds f2\"] -->
+<!-- TROFF INPUT: .ds f3\" -->
+<!-- WARNING: man/man8/swpackage.8:51:%%unrecognized define-string command: [.ds f3\"] -->
+<!-- TROFF INPUT: .ds f4\" -->
+<!-- WARNING: man/man8/swpackage.8:52:%%unrecognized define-string command: [.ds f4\"] -->
+<!-- TROFF INPUT: .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- TROFF INPUT: .TH "swpackage" "8" -->
+<div class="node">
+<a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<h2 class="chapter">1 swpackage" "8</h2>
+
+<!-- TROFF INPUT: .hy 0 -->
+<!-- .hy 0 -->
+<!-- TROFF INPUT: .if n .na -->
+<!-- .if n .na -->
+<!-- TROFF INPUT: .SH "NAME" -->
+<!-- DEBUG: print_menu("Top") -->
+<ul class="menu">
+<li><a accesskey="1" href="#NAME">NAME</a>
+<li><a accesskey="2" href="#SYNOPSIS">SYNOPSIS</a>
+<li><a accesskey="3" href="#DESCRIPTION">DESCRIPTION</a>
+<li><a accesskey="4" href="#OPTIONS">OPTIONS</a>
+<li><a accesskey="5" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+<li><a accesskey="6" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+<li><a accesskey="7" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>
+<li><a accesskey="8" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>
+<li><a accesskey="9" href="#SWPACKAGE-OUTPUT-FORMAT">SWPACKAGE OUTPUT FORMAT</a>
+<li><a href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+<li><a href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>
+<li><a href="#RETURN-VALUE">RETURN VALUE</a>
+<li><a href="#SIDE-EFFECTS">SIDE EFFECTS</a>
+<li><a href="#ENVIRONMENT">ENVIRONMENT</a>
+<li><a href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE-ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="NAME"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SYNOPSIS">SYNOPSIS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.1 NAME</h3>
+
+<p>swpackage <span class="roman">&mdash;</span> Package a software distribution. 
+<!-- TROFF INPUT: .SH "SYNOPSIS" -->
+<!-- DEBUG: print_menu("NAME") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SYNOPSIS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DESCRIPTION">DESCRIPTION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.2 SYNOPSIS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage</b>    # Filter: read PSF on stdin, write a tar archive to stdout
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage -s- @-</b>  # Absolutely explicit, same as above
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage @FILE </b>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage</b>  [-p]  [-s <i>psf</i><tt>_</tt><i>file</i>]  [-f <i>file</i>] [-x <i>option=value</i>] \\
+     [-X <i>options</i><tt>_</tt><i>file</i>] [-W <i>option</i>] [software<tt>_</tt>selections] [@targets]
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage &ndash;help</b> # more authoritative documentation
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage</b>  [options] &ndash;to-swbis [-s package<tt>_</tt>file]   # format translator
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     <b>swpackage</b>  [options] &ndash;resign [-s package<tt>_</tt>file]   # modify signatures
+     <b>swpackage</b>  [options] &ndash;remove-signature=N [-s package<tt>_</tt>file]
+     <b>swpackage</b>  [options] &ndash;replace-signature=N [-s package<tt>_</tt>file]
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .SH "DESCRIPTION" -->
+<!-- DEBUG: print_menu("SYNOPSIS") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="DESCRIPTION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OPTIONS">OPTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SYNOPSIS">SYNOPSIS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.3 DESCRIPTION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>swpackage</b> reads a Product Specification File (PSF) and writes a distribution
+to the specified target.  If no options are given a PSF is read on stdin
+and a distribution is written to the default target either a directory, device,
+or standard output.  To specify standard output use a dash '-' as the target. 
+<!-- TROFF INPUT: .SH "OPTIONS" -->
+<!-- DEBUG: print_menu("DESCRIPTION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="OPTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DESCRIPTION">DESCRIPTION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.4 OPTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>software</b><tt>_</tt><b>selections</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Refer to the software objects (products, filesets)
+on which to be operated. (Not yet implemented)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>targets</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Refers to the software<tt>_</tt>collection where the software
+selections are to be applied.  To specify standard output
+use a  dash '-', this overrides media<tt>_</tt>type setting to 'serial'. 
+Target may be a file, or device file or '-'
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-f FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Reads software<tt>_</tt>selections from FILE. (Not implemented). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-p</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Preview the package.  Perform all the packaging operations except
+writing the target.  In verbose level 1, nothing is written.  Higher
+verbose levels write information on stdout.  Error and warning messages
+are written to stderr for verbose levels 1 and higher. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-s PSF</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Specify the PSF file, "-" is standard input. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-x option=value</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Specify the extended option overriding the defaults file value. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-X FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Specify the extended options filename, FILE,  overriding the default filenames. 
+This option may be given more then once. If the resulting specified value is an empty string
+then reading of any options file is disabled. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-v</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+(Implementation extension.) Given one time it is identical to -x verbose=2. 
+This option can be given multiple times with increasing effect. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+     level 0: silent on stdout and stderr (not implemented). 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+     level 1: fatal and warning messages. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-v   level 2: level 1 plus file list and trailer message. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vv  level 3: level 2 verbose tar-like listing. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+-vvv level 4: level 3 extra verbose tar listing. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-b BYTES</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set blocksize to BYTES number of bytes (octets).  The default is 10240. 
+(implementation extension)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>&minus;&minus;version, -V</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Show version. (Implementation extension)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>&minus;&minus;help</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Show help (Implementation extension)
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W option[,option,...]</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Specify the implementation extension option. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Syntax: -W option[=option<tt>_</tt>argument[,option...] 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Options may be separated by a comma.  The implementation extension
+options may also be given individually using the '&ndash;long-option[=option<tt>_</tt>arg]' syntax. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W cksum</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Compute POSIX cksum of the individual files. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W file-digests</b>
+<b>-W digests</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Compute md5 digests of the individual files. 
+(-W digests is deprecated, use -W file-digests). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W files</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Store the distribution file list in .../dfiles/files. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W dir=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Use NAME as the path name prefix of a distribution and also
+as the value of the distribution.control<tt>_</tt>directory and
+distribution.tag attribute (if not set).  May be set to an
+empty string to eliminate stray leading "./". 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W sign</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Compute the
+md5sum, sha1sum and adjunct<tt>_</tt>md5sum digests
+and sign the package. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W dummy-sign</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Same as -W sign except use a dummy signature. 
+The signer program is not run and no password is required. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W signer-pgm=SIGNER</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Recognized SIGNERs are GPG, PGP2.6, and PGP5. 
+swverify only supports GPG, however, other types can
+be verified manually using the options of swverify and
+command line utilities. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W archive-digests</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Compute the md5sum, sha1sum and adjunct<tt>_</tt>md5sum digests. 
+See sw(5) for info on the digest and signed data input files. 
+The sha1sum and md5sum attributes have identical input streams. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-sha1</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Do not compute the sha1 digest even if directed to by other options. 
+(Deprecated: There is limited reason to use this option). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W signed-file</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Write only the signed data to the specified target but do not sign. 
+(Deprecated: There is limited reason to use this option). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W gpg-name=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Use NAME as the user ID to sign.  NAME becomes the option arg of the gpg &minus;&minus;local-user option. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W gpg-path=PATH</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Use PATH as the gpg homedir. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W gzip</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+compress output with file system gzip utilty
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W bzip2</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+compress output with file system bzip2 utility
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>-W lzma</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+compress output with file system lzma utility
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>-W symmetric</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+encrypt output with file system gpg utility
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>-W encrypt-for-recipient=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+encrypt with NAME's public key using file system gpg utility
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W source=FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Use serial archive located at FILE as the source instead of the
+file system.  The files referred by the PSF are taken from the serial
+archive and not the file system. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W numeric-owner</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Same as GNU tar option.  Emitted archive has only uid and gids. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W absolute-names</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Same as GNU tar option.  Leading slash '/' are always stripped unless
+this option is given. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W format=FORMAT</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+The default format is 'pax'.  The pax format will only generate extended headers if needed. 
+FORMAT is one of:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      ustar   is the POSIX.1 tar format capable of storing
+              pathnames up to 255 characters in length.
+              Identical to GNU tar 1.15.1 &ndash;format=ustar
+      ustar0  is a different POSIX.1 tar personality.
+              Identical to GNU tar 1.13.25 &ndash;posix -b1 for 99 char pathnames
+              Has different rendering of device numbers for non-device files,
+              but otherwise identical to 'ustar'
+      gnu     Identical to GNU tar version 1.15.1 &ndash;format=gnu
+      oldgnu  Identical to GNU tar version 1.13 and later with
+                  block size set to 1. i.e. with option -b1.
+              Also identical to GNU tar 1.15.1 &ndash;format=oldgnu
+      gnutar  same as oldgnu, oldgnu preferred.
+      pax     Extended header tar (Default)
+      odc     Posix.1 cpio (magic 070707).
+      newc    cpio format (magic 070701).
+      crc     cpio format (magic 070702).
+      bsdpax3 Identical to pax v3.0, ustar format with option -b 512.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .RE -->
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:338:%%new font B started without closing previous font R -->
+<p></span><b>-W pax-header-pid=NUMBER</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Sets the number used in any pax header naming scheme to NUMBER. 
+You must use this option to make archive identical
+in subsequent (back-to-back) invocations. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W uuid=STRING</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Sets the uuid string to STRING instead of calling uuid(1)
+You must use this option to make the catalog directory identical
+in subsequent (back-to-back) invocations. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W create-time=TIME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Applies to catalog files and the create<tt>_</tt>time attribute. 
+TIME is the seconds since the Unix Epoch. 
+You must use this option to make the catalog directory identical
+in subsequent (back-to-back) invocations. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W list-psf</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Write the PSF to stdout after having processed the extended
+definitions. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W to-swbis</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Read a package on standard input and write a POSIX
+package on standard output.  Requires the
+<!-- .../libexec/swbis/lxpsf program. -->
+Supported formats are any supported format of lxpsf. 
+Identical to:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+/swbis/lxpsf &ndash;psf-form3 -H ustar | swpackage -Wsource=- -s@PSF
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W passphrase-fd=N</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Read the passphrase on file descriptor N. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W passfile=FILE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Read the passphrase from FILE in the file system.  Setting FILE to
+/dev/tty resets (i.e unsets) all passphrase directives, thus establishing
+the default action, reading from the terminal. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W dir-owner=OWNER</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the owner of the leading directory archive member to OWNER. 
+If the option arg is "", then the owner is the owner of the current directory. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W dir-group=OWNER</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the group of the leading directory archive member to OWNER. 
+If the option arg is "", then the owner is the owner of the current directory. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W dir-modep=MODE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the file permissions mode of the leading directory archive member to MODE. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W catalog-owner=OWNER</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the owner of the catalog section to OWNER. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W catalog-group=GROUP</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Set the group of the catalog section to GROUP. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W files-from=NAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Read a list of files from file NAME.  Directories are not descended recursively. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W show-options-files</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Show the complete list of options files and if they are found. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W show-options</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Show the options after reading the files and parsing the command line options. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-catalog</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Do not write the catalog section. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-W no-front-dir</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Do not write the directory archive members that preceed the catalog section. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Signature Modification Options.  The source file via '-s' option
+is a previously signed archive file.
+
+<p><b>&ndash;addsign</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Same as &ndash;add-signature-first
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;delsign</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Opposite of &ndash;addsign,  Same as &ndash;remove-signature=1
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;add-signature-first</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Add signature first in the list of package signatures. 
+The last signature, by convention, is the primary signature. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;add-signature-last</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Add signature last in the list of package signatures. 
+The last signature, by convention, is the primary signature. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;replace-signature=N</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Replace Nth signature, 0 means last signature. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;remove-signature=N</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Remove Nth signature, 0 means last signature. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;resign</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Same as &ndash;replace-signature=0
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;resign-test, &ndash;zfilter</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Alternate Mode</b>:
+Copy from source to target without altering. Does not generate a signature. 
+The output should be identical to the input.   Also has unintended use
+of accessing the compression pipeline function of swpackage. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;recompress</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Modifier to alternate Mode</b>:
+Applies when modifying signature.  The compression methods of the input file are
+detected and the output is compressed to match. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<p><b>&ndash;overwrite</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+<b>Modifier to alternate Mode</b>:
+Overwrites file specified as the source name (by the -s FILE option). 
+Will likely do so safely. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SH "EXTENDED OPTIONS" -->
+<!-- DEBUG: print_menu("OPTIONS") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="EXTENDED-OPTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OPTIONS">OPTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.5 EXTENDED OPTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>These extended options can be specified on the command line using the -x option
+or from the defaults file, swdefaults. 
+<!-- TROFF INPUT: .SS "Posix" -->
+<!-- DEBUG: print_menu("EXTENDED OPTIONS") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Posix">Posix</a>
+<li><a accesskey="2" href="#Swbis-Implementation">Swbis Implementation</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Posix"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Swbis-Implementation">Swbis Implementation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.5.1 Posix</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Shown below is an actual portion of a defaults file which show default values. 
+These options are set in the /usr/lib/swbis/swdefaults or the ~/.swdefaults
+file. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swpackage.distribution<tt>_</tt>target<tt>_</tt>directory  = /var/spool/sw   # Not used
+     swpackage.distribution<tt>_</tt>target<tt>_</tt>serial     = -        # Not used
+     swpackage.enforce<tt>_</tt>dsa                    = false    # Not used
+     swpackage.follow<tt>_</tt>symlinks                = false    # Not used
+     swpackage.logfile          = /var/lib/swbis/swpackage.log   # Not used
+     swpackage.loglevel                       = 1         # Not used
+     swpackage.media<tt>_</tt>capacity                 = 0         # Not used
+     swpackage.media<tt>_</tt>type                     = serial    # Not used
+     swpackage.psf<tt>_</tt>source<tt>_</tt>file                = -         # Not used
+     swpackage.software                       =           # Not used
+     swpackage.verbose                        = 1         # May be 1 2 or 3<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Swbis Implementation" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="Swbis-Implementation"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Posix">Posix</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.5.2 Swbis Implementation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>These extended options can be specified on the command line using -Woption=optionarg
+or &ndash;option=optionarg syntax. 
+<!-- TROFF INPUT: .PP -->
+
+<p>These options are set in the /usr/lib/swbis/swbisdefaults or the ~/.swbis/swbisdefaults
+file. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swpackage.swbis<tt>_</tt>cksum                    = "false"   # true or false
+     swpackage.swbis<tt>_</tt>file<tt>_</tt>digests             = "false"   # true or false
+     swpackage.swbis<tt>_</tt>file<tt>_</tt>digests<tt>_</tt>sha2        = "false"   # true or false
+     swpackage.swbis<tt>_</tt>files                    = "false"   # true or false
+     swpackage.swbis<tt>_</tt>sign                     = "false"   # true or false
+     swpackage.swbis<tt>_</tt>archive<tt>_</tt>digests          = "false"   # true or false
+     swpackage.swbis<tt>_</tt>archive<tt>_</tt>digests<tt>_</tt>sha2     = "false"   # true or false
+     swpackage.swbis<tt>_</tt>gpg<tt>_</tt>name                 = ""
+     swpackage.swbis<tt>_</tt>gpg<tt>_</tt>path                 = "~/.gnupg"
+     swpackage.swbis<tt>_</tt>gzip                     = "false"   # true or false
+     swpackage.swbis<tt>_</tt>bzip2                    = "false"   # true or false
+     swpackage.swbis<tt>_</tt>numeric<tt>_</tt>owner            = "false"   # true or false
+     swpackage.swbis<tt>_</tt>absolute<tt>_</tt>names           = "false"   # true or false
+     swpackage.swbis<tt>_</tt>format                   = "ustar"  # gnutar or ustar
+     
+     <!-- WARNING: man/man8/swpackage.8:557:%%new font R started without closing previous font R -->
+     
+     swpackage.swbis<tt>_</tt>signer<tt>_</tt>pgm               = "GPG" # GPG or PGP5 or PGP2.6
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "USAGE EXAMPLES" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="USAGE-EXAMPLES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#EXTENDED-OPTIONS">EXTENDED OPTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.6 USAGE EXAMPLES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Here are some commonly used options. 
+<!-- TROFF INPUT: .SS "Options and Option Files" -->
+<!-- DEBUG: print_menu("USAGE EXAMPLES") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Options-and-Option-Files">Options and Option Files</a>
+<li><a accesskey="2" href="#Preview-the-output">Preview the output</a>
+<li><a accesskey="3" href="#Create-a-signed-package">Create a signed package</a>
+<li><a accesskey="4" href="#Resign-a-package">Resign a package</a>
+<li><a accesskey="5" href="#Idempotent-Invocation">Idempotent Invocation</a>
+<li><a accesskey="6" href="#ALternative-Format-Translation">ALternative Format Translation</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Options-and-Option-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Preview-the-output">Preview the output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.1 Options and Option Files</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Show the option file options and the option files that determine the default
+values. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     	swpackage &ndash;show-options
+     		# and
+     	swpackage &ndash;show-options-files<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Preview the output" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="Preview-the-output"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Create-a-signed-package">Create a signed package</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Options-and-Option-Files">Options and Option Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.2 Preview the output</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Show a verbose tar-like file listing on stdout
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     	swpackage -pv
+                # or
+     
+     <!-- WARNING: man/man8/swpackage.8:583:%%new font R started without closing previous font R -->
+     
+     	swpackage -pvv 
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Create a signed package" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Create-a-signed-package"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Resign-a-package">Resign a package</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Preview-the-output">Preview the output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.3 Create a signed package</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Read the PSF on standard input, sign using 'admin' key using the gpg-agent. 
+Include sha2 digests for the files and archive. Include the file list,
+compress the output using xz writing to standard output. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     	swpackage -s - &ndash;sign &ndash;use-agent &ndash;gpg-name=admin &ndash;files \\
+     		&ndash;sha1 &ndash;sha2 &ndash;xz @-<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Resign a package" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="Resign-a-package"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Idempotent-Invocation">Idempotent Invocation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Create-a-signed-package">Create a signed package</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.4 Resign a package</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Resign a previously signed package, overwriting the original file
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man8/swpackage.8:604:%%new font R started without closing previous font R -->
+     
+     	swpackage &ndash;resign -s foo.tar.gz &ndash;overwrite &ndash;recompress
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Idempotent Invocation" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Idempotent-Invocation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#ALternative-Format-Translation">ALternative Format Translation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Resign-a-package">Resign a package</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.5 Idempotent Invocation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Use special options to obtain an identical package two or more times
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     	swpackage &ndash;create-time=1406254892 \\
+     		&ndash;uuid=ed3b9432-3ba1-4c01-a125-e22fb94588e2 \\
+     		&ndash;pax-header-pid=1001<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "ALternative Format Translation" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="ALternative-Format-Translation"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Idempotent-Invocation">Idempotent Invocation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>
+
+</div>
+
+<h4 class="subsection">1.6.6 ALternative Format Translation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Execute the internally generated pipeline for format translation manually
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     	# the following is equivalent to  'swpackage &ndash;to-swbis'
+     
+               /usr/local/libexec/swbis/lxpsf &ndash;psf-form3 \\
+     
+     <!-- WARNING: man/man8/swpackage.8:628:%%new font R started without closing previous font R -->
+     
+                      -H ustar | swpackage -Wsource=- -s@PSF
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "PACKAGE SIGNING" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="PACKAGE-SIGNING"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#USAGE-EXAMPLES">USAGE EXAMPLES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.7 PACKAGE SIGNING</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Support for embedded cryptographic signature
+<!-- TROFF INPUT: .SS "Description" -->
+<!-- DEBUG: print_menu("PACKAGE SIGNING") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Description">Description</a>
+<li><a accesskey="2" href="#Signature-Generation">Signature Generation</a>
+<li><a accesskey="3" href="#Passphrase-Handling">Passphrase Handling</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Description"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Signature-Generation">Signature Generation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>
+
+</div>
+
+<h4 class="subsection">1.7.1 Description</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Package signing is accomplished by including, as a package attribute, a detached signature
+in the package metadata (the catalog section of the package). 
+The signed data is the catalog section of the package (see sw(5) for a description) excluding the
+signature files archive header and data.  The package leading directory that does not contain
+the /catalog/ directory in its name is not included in the signed stream. 
+The signed stream is terminated by two (2) null tar blocks (which are not in the
+actual package file). 
+The storage section (or payload) of the package is included in the signed data by
+computing its md5 and sha1 message digests and storing these as attributes in the catalog section. 
+<!-- TROFF INPUT: .SS "Signature Generation" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Signature-Generation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Passphrase-Handling">Passphrase Handling</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Description">Description</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>
+
+</div>
+
+<h4 class="subsection">1.7.2 Signature Generation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The signature is generated by the file system signing utility.  Currently, swpackage supports
+GPG PGP-2.6 and PGP-5.  The default is GPG but can be selected using the
+<b>-Wsigner-pgm</b> command line option and the
+<b>swpackage.swbis</b><tt>_</tt><b>signer</b><tt>_</tt><b>pgm</b> defaults file option.  The options and program can the displayed with the
+<b>-Wshow-signer-pgm</b> option. 
+The options in each case produce a detached ascii-armored signature.  The maximum
+length for the ascii armored file is 1023 bytes. 
+<!-- TROFF INPUT: .SS "Passphrase Handling" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Passphrase-Handling"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Signature-Generation">Signature Generation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>
+
+</div>
+
+<h4 class="subsection">1.7.3 Passphrase Handling</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The passphrase can be read from the tty, a file descriptor, and environment variable or
+the GNUpg passphrase agent.  These are controlled by the options or the environment
+variables SWPACKAGEPASSFD and SWPACKAGEPASSPHRASE.  Placing your passphrase in an
+environment variable is insecure but may be usefull to sign packages with a test key
+and later replace it [when on a different host for example]. 
+<!-- TROFF INPUT: .SH "SIGNATURE VERIFICATION" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SIGNATURE-VERIFICATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SWPACKAGE-OUTPUT-FORMAT">SWPACKAGE OUTPUT FORMAT</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#PACKAGE-SIGNING">PACKAGE SIGNING</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.8 SIGNATURE VERIFICATION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>swpackage does not perform verification of the embedded
+cryptographic signature, although, a description is included here
+for completness. 
+<!-- TROFF INPUT: .SS "Overview" -->
+<!-- DEBUG: print_menu("SIGNATURE VERIFICATION") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Overview">Overview</a>
+<li><a accesskey="2" href="#Manual-Verification">Manual Verification</a>
+<li><a accesskey="3" href="#Manual-Verification-Using-Standard-Tools">Manual Verification Using Standard Tools</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Overview"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Manual-Verification">Manual Verification</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>
+
+</div>
+
+<h4 class="subsection">1.8.1 Overview</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Verification requires verifying the payload section md5 and sha1 message digests and then verifying the
+signature.  Naturally, it is required that the signed data include the payload messages digests. 
+See
+swverify. 
+<!-- TROFF INPUT: .SS "Manual Verification" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Manual-Verification"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Manual-Verification-Using-Standard-Tools">Manual Verification Using Standard Tools</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Overview">Overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>
+
+</div>
+
+<h4 class="subsection">1.8.2 Manual Verification</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Verification requires re-creating the signed and digested byte streams from the archive file. 
+This is not possible using any known extant tar reading utility because of a lack of ability to
+write selected archive members to stdout instead of installing in the file system; however, the
+swverify utility can be used to write these bytes streams to stdout
+allowing manual inspection and verification. 
+See
+swverify. 
+<!-- TROFF INPUT: .SS "Manual Verification Using Standard Tools" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Manual-Verification-Using-Standard-Tools"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Manual-Verification">Manual Verification</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>
+
+</div>
+
+<h4 class="subsection">1.8.3 Manual Verification Using Standard Tools</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Verification using standard GNU/Linux tools is possible if the archive is installed in the file system. 
+Success depends on the following factors:
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     1) The tar utility preserves modification times
+        (e.g. not GNU tar 1.3.19).
+     2) The archive does not contain Symbolic Links
+        (see sw(5) for explanation).
+     3) The file system is a Unix file system (e.g. ext2).
+     4) The package was created using -Wformat=gnutar or, -Wformat=ustar
+        with no file name longer than 99 octets.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Recreating the signed and digested byte streams is then accomplished using GNU tar and the file list stored in
+
+<!-- WARNING: man/man8/swpackage.8:699:%%new font I started without closing previous font R -->
+<p>the \&lt;</span><i>path</i>\&gt;/catalog/dfiles/files attribute file as follows:
+<!-- TROFF INPUT: .PP -->
+
+<p>In this example, the package has a single path name prefix called, <b>namedir</b> and
+the file owner/group are root.  These restrictions are suited to source packages. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Verify the signature:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       #!/bin/sh
+       tar cf - -b1 &ndash;owner=root &ndash;group=root \\
+       &ndash;exclude=namedir/catalog/dfiles/signature  \\
+       namedir/catalog | gpg &ndash;verify namedir/catalog/dfiles/signature -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>If this fails try using GNU tar option &ndash;posix. 
+If this fails then you are out of luck as nothing in the catalog section can be trusted. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Verify the payload digests:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       #!/bin/sh
+       grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+       tar cf - -b1 &ndash;owner=root &ndash;group=root \\
+       &ndash;no-recursion &ndash;files-from=- | md5sum
+     
+     <!-- WARNING: man/man8/swpackage.8:723:%%new font R started without closing previous font R -->
+     
+       cat namedir/catalog/dfiles/md5sum</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Likewise for the sha1 digest. 
+<!-- TROFF INPUT: .PP -->
+
+<p>If the package has symbolic links, Verify the adjunct<tt>_</tt>md5sum:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       #!/bin/sh
+       grep -v namedir/catalog  namedir/catalog/dfiles/files | \\
+       ( while read file; do if [ ! -h $file ]; then echo $file; fi done; )|\\
+       tar cf - -b1 &ndash;owner=root &ndash;group=root \\
+       &ndash;no-recursion &ndash;files-from=- | md5sum
+       cat namedir/catalog/dfiles/adjunct<tt>_</tt>md5sum<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>The symbolic link files must be verified manually by comparing to the INFO file
+information. 
+<!-- TROFF INPUT: .SH "SWPACKAGE OUTPUT FORMAT" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="SWPACKAGE-OUTPUT-FORMAT"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SIGNATURE-VERIFICATION">SIGNATURE VERIFICATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.9 SWPACKAGE OUTPUT FORMAT</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The output format is either one of two formats specified in POSIX.1 (ISO/IEC 9945-1)
+which are tar (header magic=ustar) or cpio (header magic=070707). 
+The default format of the swbis implementation is "ustar". 
+The POSIX spec under specifies definitions for some of the ustar header fields. 
+The personality of the default swbis ustar format mimics GNU tar 1.15.1 and is designed
+to be compliant to POSIX.1. 
+The personality of the "ustar0" format mimics, for pathnames less than
+99 octets,  GNU tar 1.13.25 using the "-b1 &ndash;posix" options. 
+This bit-for-bit sameness does not exist for pathnames greater than 99 chars as swbis
+follows the POSIX spec and GNU tar 1.13.25 does not.  The "ustar0" ustar personality is
+deprecated.  It is only slightly different from 'ustar' in how device number fields are
+filled (with spaces, zeros or NULs) for non-device files. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>In addition the swbis implementation
+supports several other tar variants including bit-for-bit mimicry of GNU tar (1.13.25) default
+format which uses a non-standard name split and file type (type 'L').  This format is known as '&ndash;format=oldgnu'. 
+Also supported is the gnu format of GNU tar 1.15.1 specified by '&ndash;format=gnu'
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The defacto cpio formats are also supported. 
+"new ASCII" (sometimes called SVR4 cpio) and "crc" cpio formats with header magic "070701" and "070702"
+respectively. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>Support for "pax Interchange Format" (Extended header tar) described in IEEE 1003.1-2001
+under the "pax" manual page has been implemented for POSIX file attributes as of release 1.12 (c Aug2014). 
+The 'swpackage' utility will generate extended headers on an as needed basis when the &ndash;format=pax is used. 
+Support for POSIX ACL and SELinux attributes is planned. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The entirety of the output byte stream is a single valid file of one the formats mentioned above. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The swbis implementation writes its output to stdout.  The default output block size is 10240 bytes. 
+The last block is not padded and therefore the last write(2) may be a short write. 
+The selected block size does not affect the output file contents. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The swbis implementation is biased, in terms of capability and default settings, to the tar format. 
+Package signing is only supported in tar format. 
+<!-- TROFF INPUT: .SH "SWPACKAGE INPUT FILE FORMAT" -->
+<!-- DEBUG: print_menu("SWPACKAGE OUTPUT FORMAT") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SWPACKAGE-INPUT-FILE-FORMAT"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SWPACKAGE-OUTPUT-FORMAT">SWPACKAGE OUTPUT FORMAT</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.10 SWPACKAGE INPUT FILE FORMAT</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>The input file is called a product specification file or PSF.  It contains information to
+direct swpackage and information that is package meta-data [that is merely transferred unchanged
+into the global INDEX file]. 
+<!-- TROFF INPUT: .PP -->
+
+<p>A PSF may contain object keywords, attributes (keyword/value pairs) and Extended Definitions (described below). 
+An object keyword connotes a logical object (i.e. software structure) supported by the standard.  An object keyword
+does not have a value field after it, as it contains Attributes and Extended Definitions. 
+An attribute keyword conotes an attribute which is always in the form of a keyword/value pair. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Attribute keywords not recognized by the standard are allowed and are transferred into the INDEX file. 
+Object keywords not recognized by the standard are not allowed and will generate an error. 
+Extended Definitions may only appear in a PSF (never in a INDEX or INFO created by swpackage). 
+Extended Definitions are translated [by swpackage] into object keywords (objects) and
+attributes recognized by the standard. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Comments in a PSF are not transferred into the INDEX file by the swbis implementation of swpackage. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- WARNING: man/man8/swpackage.8:806:%%new font B started without closing previous font R -->
+<p>The file syntax is the same as a <b>INDEX</b>, or <b>INFO</b> file. 
+A PSF may contain all objects defined by the standard as well as extended definitions. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+
+<p>For additional information see
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm, or
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+sw manual page. 
+<!-- TROFF INPUT: .SS "EXTENDED DEFINITIONS" -->
+<!-- DEBUG: print_menu("SWPACKAGE INPUT FILE FORMAT") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#EXTENDED-DEFINITIONS">EXTENDED DEFINITIONS</a>
+<li><a accesskey="2" href="#o-Extended-Control-File-Definitions">o Extended Control File Definitions</a>
+<li><a accesskey="3" href="#o-Directory-Mapping">o Directory Mapping</a>
+<li><a accesskey="4" href="#o-Recursive-File-Definition">o Recursive File Definition</a>
+<li><a accesskey="5" href="#o-Explicit-File-Definition">o Explicit File Definition</a>
+<li><a accesskey="6" href="#o-Default-Permission-Definition">o Default Permission Definition</a>
+<li><a accesskey="7" href="#o-Excluding-Files">o Excluding Files</a>
+<li><a accesskey="8" href="#o-Including-Files">o Including Files</a>
+<li><a accesskey="9" href="#SWBIS-PSF-CONVENTIONS">SWBIS PSF CONVENTIONS</a>
+<li><a href="#o-Distribution-Attributes">o Distribution Attributes</a>
+<li><a href="#o-Bundle-Attributes">o Bundle Attributes</a>
+<li><a href="#o-Product-Attributes">o Product Attributes</a>
+<li><a href="#o-Fileset-Attributes">o Fileset Attributes</a>
+<li><a href="#o-Example-Source-Package-PSF">o Example Source Package PSF</a>
+<li><a href="#o-Example-Runtime-_0028Binary_0029-Package-PSF">o Example Runtime (Binary) Package PSF</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="EXTENDED-DEFINITIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Extended-Control-File-Definitions">o Extended Control File Definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.1 EXTENDED DEFINITIONS</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>A Product Specification File (PSF) can contain Extended Definitions in the
+<b>fileset</b>, <b>product</b> or <b>bundle</b> software definitions.  They would have the same level or containment
+relationship as a
+<b>file</b> or
+<b>control</b><tt>_</tt><b>file</b> definition in the same contaning object. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Extended Definitions represent a minimal, expressive form for specifying files and file attributes. 
+Their use in a PSF is optional in that an equivalent PSF can be constructed without using them,
+however, their use is encouraged for the sake of brevity and orthogonality. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The swbis implementation requires that no [ordinary] attributes appear after Extended Definitions
+in the containing object, and, requires that Extended Definitions appear before logically contained objects. 
+That is, the parser uses the next object keyword to syntacticly and logically terminate the
+current object even if the current object has logically contained objects. 
+<!-- TROFF INPUT: .SS "o  Extended Control File Definitions" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Extended-Control-File-Definitions"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Directory-Mapping">o Directory Mapping</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#EXTENDED-DEFINITIONS">EXTENDED DEFINITIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.2 o  Extended Control File Definitions</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+          checkinstall  <i>source</i>  [<i>path</i>]
+          preinstall    <i>source</i>  [<i>path</i>]
+          postinstall   <i>source</i>  [<i>path</i>]
+          verify        <i>source</i>  [<i>path</i>]
+          fix           <i>source</i>  [<i>path</i>]
+          checkremove   <i>source</i>  [<i>path</i>]
+          preremove     <i>source</i>  [<i>path</i>]
+          postremove    <i>source</i>  [<i>path</i>]
+          configure     <i>source</i>  [<i>path</i>]
+          unconfigure   <i>source</i>  [<i>path</i>]
+          request       <i>source</i>  [<i>path</i>]
+          unpreinstall  <i>source</i>  [<i>path</i>]
+          unpostinstall <i>source</i>  [<i>path</i>]
+          space         <i>source</i>  [<i>path</i>]
+          control<tt>_</tt>file  <i>source</i>  [<i>path</i>]<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:855:%%new font I started without closing previous font R -->
+<p>The </span><i>source</i> attribute defines the location in distributors's development system
+where the swpackage utility will find the script.  The keyword is the value of the
+<i>tag</i> attribute
+and tells the utilities when to execute the script. 
+The <i>path</i> attribute is optional and specifies the file name in the packages distribution
+relative to the control<tt>_</tt>directory for software containing the script. If not given the
+<i>tag</i> value is used as the filename. 
+<!-- TROFF INPUT: .SS "o  Directory Mapping" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Directory-Mapping"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Recursive-File-Definition">o Recursive File Definition</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Extended-Control-File-Definitions">o Extended Control File Definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.3 o  Directory Mapping</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+        directory  <i>source</i>  [<i>destination</i>]
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:873:%%new font I started without closing previous font R -->
+<p>Applies the </span><i>source</i> attribute as the directory under which
+the subsequently listed files are located.  If
+<i>destination</i> is defined it will be used as a prefix to the
+<i>path</i> (implied) file definition. 
+<i>source</i> is typically a temporary or build
+location and
+<i>dest</i> is its unrealized absolute pathname destination. 
+<!-- TROFF INPUT: .SS "o  Recursive File Definition" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Recursive-File-Definition"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Explicit-File-Definition">o Explicit File Definition</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Directory-Mapping">o Directory Mapping</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.4 o  Recursive File Definition</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+       file *
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Specifies every file in current source directory.
+
+<!-- WARNING: man/man8/swpackage.8:892:%%new font I started without closing previous font R -->
+<p>The </span><i>directory</i> extended definition must be used before the recursive specification. 
+<!-- TROFF INPUT: .SS "o  Explicit File Definition" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Explicit-File-Definition"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Default-Permission-Definition">o Default Permission Definition</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Recursive-File-Definition">o Recursive File Definition</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.5 o  Explicit File Definition</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+       file [-t <i>type</i>] [-m <i>mode</i>] [-o <i>owner</i>[,<i>uid</i>]] [-g <i>group</i>[,<i>gid</i>]] [-n] [-v] source [<i>path</i>]
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:904:%%new font B started without closing previous font R -->
+<p></span><b>source</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<!-- TROFF INPUT: .PP -->
+<p><i>source</i> defines the pathname of the file to be used as the source of file data
+and/or attributes. 
+If it is a relative path, then swpackage searches for this file relative to the
+the source argument of the <b>directory</b> keyword, if set. 
+If <b>directory</b> keyword is not set then the search is relative to the
+current working directory of the swpackage utility's invocation. 
+<!-- TROFF INPUT: .PP -->
+
+<p>All attributes for the destination file are taken from the source file, unless a
+<b>file</b><tt>_</tt><b>permissions</b> keyword is active, or the -m, -o, or -g options are also
+included in the file specification. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>path</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>path</i> defines the destination path where the file will be created or installed. 
+If it is a relative path, then the destination path of the of the
+<b>directory</b> keyword must be active and will be used as the path prefix. 
+If path is not specified then
+<i>source</i> is used as the value of path and directory mapping applied (if active). 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-t type</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>type</i> may one of 'd' (directory), or  'h' (hard link), or 's' (symbolic link). 
+<!-- TROFF INPUT: .PP -->
+
+<p>-t d  Create a directory. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+If <i>path</i> is not specified
+<i>source</i> is used as the path attribute. 
+<!-- TROFF INPUT: .PP -->
+
+<p>-t h  Create a hard link. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<i>path</i> and <i>source</i> are specified. 
+<i>source</i> is used as the value of the
+<i>link</i><tt>_</tt><i>source</i> attribute, and
+<i>path</i> is the value of the path attribute. 
+<!-- TROFF INPUT: .PP -->
+
+<p>-t s  Create a symbolic link. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<i>path</i> and <i>source</i> are specified. 
+<i>source</i> is used as the value of the
+<i>link</i><tt>_</tt><i>source</i> attribute, and
+<i>path</i> is the value of the path attribute. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>-m mode</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>mode</i> defines the octal mode for the file. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SS "o  Default Permission Definition" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Default-Permission-Definition"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Excluding-Files">o Excluding Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Explicit-File-Definition">o Explicit File Definition</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.6 o  Default Permission Definition</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+       file<tt>_</tt>permissions [-m <i>mode</i>] [-u <i>umask</i>] [-o [<i>owner</i>[,]][<i>uid</i>]] [-g [<i>group</i>[,]][<i>gid</i>]]
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Applies to subsequently listed file definitions in a fileset. 
+These attributes will apply where the file attributes were not specified explicitly in a
+file definition.
+
+<!-- WARNING: man/man8/swpackage.8:974:%%new font B started without closing previous font R -->
+<p>Subsequent </span><b>file</b><tt>_</tt><b>permissions</b> definitions
+simply replace previous definitions (resetting all the options). 
+<!-- TROFF INPUT: .PP -->
+
+<p>To reset the file<tt>_</tt>permission state (i.e. turn it off) use one of the following:
+    file<tt>_</tt>permissions ""
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+	or the preferred way is
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+    file<tt>_</tt>permissions -u 000
+<!-- TROFF INPUT: .SS "o  Excluding Files" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Excluding-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Including-Files">o Including Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Default-Permission-Definition">o Default Permission Definition</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.7 o  Excluding Files</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+        exclude source
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>Excludes a previously included file or an entire directory. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SS "o  Including Files" -->
+<!-- MAN2TEXI: EON -->
+
+<p></span><div class="node">
+<a name="o-Including-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SWBIS-PSF-CONVENTIONS">SWBIS PSF CONVENTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Excluding-Files">o Excluding Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.8 o  Including Files</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     
+     <!-- WARNING: man/man8/swpackage.8:1001:%%new font I started without closing previous font R -->
+     
+        include &lt;<i>filename</i>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:1007:%%new font I started without closing previous font R -->
+<p>The contents of </span><i>filename</i> may be more definitions for files. 
+The syntax of the included file is PSF syntax. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+
+<!-- TROFF INPUT: .SS "SWBIS PSF CONVENTIONS" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="SWBIS-PSF-CONVENTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Distribution-Attributes">o Distribution Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Including-Files">o Including Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.9 SWBIS PSF CONVENTIONS</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>This section describes attribute usage and conventions imposed by the swbis implementation. 
+Not all attributes are listed here.  Those that are have important effects or
+particular interest. 
+<!-- TROFF INPUT: .SS "o Distribution Attributes" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="o-Distribution-Attributes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Bundle-Attributes">o Bundle Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SWBIS-PSF-CONVENTIONS">SWBIS PSF CONVENTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.10 o Distribution Attributes</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The standard defines a limited set of attributes for the distribution object. 
+An expanded set is suggested by the informative annex however a conforming
+implementation is not required act on them.  The reason for this is a
+distribution may be acted upon by a conforming utility in such a way that attributes
+of the <b>distribution</b> become invalid. 
+For this reason, some attributes that refer to an entire "package" [in other package managers]
+are referred from the product object and attain their broadened scope by the distributor's
+convention that their distribution contains just one
+<b>product</b>. 
+<!-- TROFF INPUT: .PP -->
+
+<p>For example, the package NAME and VERSION are referred from the product tag and revision,
+not the distribution's.  This convention supports multiple products in a distribution and
+is consistent with the standard. 
+<!-- TROFF INPUT: .PP -->
+
+<p><b>tag</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>tag</i> is the short, file system friendly, name of the distribution. 
+Providing a distribution tag is optional.  The swbis implementation will use this as the
+[single] path name prefix if there is no distribution.control<tt>_</tt>directory attribute. 
+A distribution tag attribute and swpackage's response to it is an implementation extension. 
+The leading package path can also be controlled with the &rdquo;-W dir&rdquo; option. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>control</b><tt>_</tt><b>directory</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>control</i><tt>_</tt><i>directory</i>, in a distribution object, is the constant leading package path. 
+Providing this attribute is optional. 
+A distribution control<tt>_</tt>directory attribute and swpackage's response to it is an implementation extension. 
+The leading package path can also be controlled with the &rdquo;-W dir&rdquo; option.  This attribute will be
+generated by swpackage if not set in a PSF. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SS "o Bundle Attributes" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Bundle-Attributes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Product-Attributes">o Product Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Distribution-Attributes">o Distribution Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.11 o Bundle Attributes</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>A <b>bundle</b> defines a collection of products whether or not
+the distribution has all the products present. 
+<!-- TROFF INPUT: .PP -->
+
+<p><b>tag</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>tag</i> is the short, file system friendly, name of the bundle. 
+This value is used by the swbis implementation as a path name component in the
+installed software catalog.  If it is not present the product tag is used. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SS "o Product Attributes" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Product-Attributes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Fileset-Attributes">o Fileset Attributes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Bundle-Attributes">o Bundle Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.12 o Product Attributes</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>A <b>product</b> defines the software product. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<p><b>tag</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>tag</i> is the short, file system friendly, name of the product. 
+This value is used by the swbis implementation as a path name component in the
+installed software catalog.  It is required.  The swbis implementation uses it in a way
+that is analogous to the RPMTAG<tt>_</tt>NAME attribute, namely as the public recognizable name of
+the package. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>control</b><tt>_</tt><b>directory</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Is the directory name in the distribution under which the product contents are located. 
+This value has no affect on the installed software catalog.  If it is not given in a PSF
+then the
+<i>tag</i> is used. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>revision</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Is the product revision.  It should not contain a "RELEASE" attribute part or other
+version suffix modifiers. 
+This value is used by the swbis implementation as a path name component in the
+installed software catalog.  It is required by swinstall. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>vendor</b><tt>_</tt><b>tag</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>This is a short identifying name of the distributor that supplied the product and
+may associate (refer to) a <b>vendor</b> object from the INDEX file that
+has a matching tag attribute. 
+This attribute is optional. 
+This attribute value should strive to be unique among all distributors. The swbis implementation
+modifies the intended usage slightly as a string that strives to be globally unique for a given
+product.<b>tag</b> and product.<b>revision</b>. 
+In this capacity it serves to distinguish products with the same revision and tag from the same or
+different distributor.  It most closely maps to the RPMTAG<tt>_</tt>RELEASE or "debian<tt>_</tt>revision" attributes. 
+It is one of the version distinguishing attributes of a product specified by the standard. 
+It is transfered into the installed<tt>_</tt>software catalog (not as a path name component) by swinstall. 
+If this attribute exists there should also be a
+<b>vendor</b> object in the PSF in the distribution object that has this tag. 
+This attribute is assigned the value of RPMTAG<tt>_</tt>RELEASE by
+swpackage when translating an RPM. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>architecture</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>This string is one of the version attributes.  It is used to disambiguate
+products that have the same <b>tag</b>, <b>revision</b> and <b>vendor</b><tt>_</tt><b>tag</b>.  It is not used for determining a products
+compatibility with a host. 
+The form is implementation defined. 
+swbis uses the output of GNU <b>config.guess</b> as the value of
+this string.  A wildcard pattern should not be used. 
+The canonical swbis architecture string can be
+listed with <b>swlist</b>. For example
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     swlist -a architecture @ localhost<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Here are some example outputs from real systems. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         System      `uname -srm`              architecture
+     Red Hat 8.0:  Linux 2.4.18 i686        i686-pc-linux-gnu
+     OpenSolaris:  SunOS 5.11 i86pc         i386-pc-solaris2.11
+     NetBSD 3.1:   NetBSD 3.1 i386          i386-unknown-netbsdelf3.1
+     Red Hat 4.1:  Linux 2.0.36 i586        i586-pc-linux-gnulibc1
+     
+     <!-- WARNING: man/man8/swpackage.8:1148:%%new font R started without closing previous font R -->
+     
+     Debian 3.1:   Linux 2.6.8-2-386 i686   i686-pc-linux-gnu</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .RE -->
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>os</b><tt>_</tt><b>name</b>
+<b>os</b><tt>_</tt><b>release</b>
+<b>os</b><tt>_</tt><b>version</b>
+<b>machine</b><tt>_</tt><b>type</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>These attributes are used to determine compatibility with a host. 
+They correspond to the <b>uname</b> attributes defined by POSIX.1. 
+If an value is nil or non-existent it is assumed to match the host. 
+All attributes must match for there to be compatibility.  Distributors may
+wish to make these values a shell pattern in their PSF's so to match
+the intended collection of hosts. 
+swbis uses <b>fnmatch</b> (with FLAGS=0) to determine a match. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SS "o Fileset Attributes" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Fileset-Attributes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Example-Source-Package-PSF">o Example Source Package PSF</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Product-Attributes">o Product Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.13 o Fileset Attributes</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>A <b>fileset</b> defines the fileset. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+
+<p><b>tag</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p><i>tag</i> is the short, file system friendly, name of the fileset. 
+It is required although selection of filesets is  not yet supported therefore the end user
+will have little to do with the fileset tag. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>control</b><tt>_</tt><b>directory</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+
+<p>Is the directory name in the product under which the fileset contents are located. 
+This value has no affect on the installed software catalog.  If it is not given in a PSF
+then the
+<i>tag</i> is used. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SS "o Example Source Package PSF" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Example-Source-Package-PSF"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Example-Runtime-_0028Binary_0029-Package-PSF">o Example Runtime (Binary) Package PSF</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Fileset-Attributes">o Fileset Attributes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.14 o Example Source Package PSF</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>This PSF packages every file is current directory. It uses nil control directories
+so the package structure does not change relative to a vanilla tarball. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      distribution
+        description "fooit - a program from fooware
+     that does everything."
+        title "fooit - a really cool program"
+        COPYING &lt; /usr/local/fooware/legalstuff/COPYING
+      vendor
+        the<tt>_</tt>term<tt>_</tt>vendor<tt>_</tt>is<tt>_</tt>misleading false
+        tag fooware
+        title fooware Consultancy Services, Inc.
+        description ""
+      vendor
+        the<tt>_</tt>term<tt>_</tt>vendor<tt>_</tt>is<tt>_</tt>misleading true
+        tag myfixes1
+        title Bug fixes, Set 1
+        description "a place for more detailed description"
+      product
+        tag fooit
+        control<tt>_</tt>directory ""
+        revision 1.0
+        vendor<tt>_</tt>tag myfixes1  # Matches the vendor object above
+      fileset
+         tag fooit-SOURCE
+         control<tt>_</tt>directory ""
+         directory .
+         file *
+         exclude catalog<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "o Example Runtime (Binary) Package PSF" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="o-Example-Runtime-(Binary)-Package-PSF"></a>
+<a name="o-Example-Runtime-_0028Binary_0029-Package-PSF"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Example-Source-Package-PSF">o Example Source Package PSF</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>
+
+</div>
+
+<h4 class="subsection">1.10.15 o Example Runtime (Binary) Package PSF</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>This is a sample PSF for a runtime package.  It implies multiple products (e.g. sub-packages)
+using the bundle.contents attribute.  Since the bundle and product tags exist in a un-regulated
+namespace and are seen by end users they should be carefully chosen.   Note that the bundle
+and product have the same tag which may force downstream users to disambiguate using software
+selection syntax such as fooit,bv=* or fooit,pv=* . 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      distribution
+        description "fooit - a program from fooware
+     that does everything."
+        title "fooit - a really cool program"
+        COPYING &lt; /usr/local/fooware/legalstuff/COPYING
+     
+          vendor
+             the<tt>_</tt>term<tt>_</tt>vendor<tt>_</tt>is<tt>_</tt>misleading false
+             tag fooware
+             title fooware Consultancy Services, Inc.
+             description "Provider of the programs
+      that do everything"
+     
+          vendor
+             the<tt>_</tt>term<tt>_</tt>vendor<tt>_</tt>is<tt>_</tt>misleading true
+              tag fw0
+              title fooware fixes
+              description "More fixes from the fooware users"
+     
+     #  Bundle definition:  Use a bundle
+          bundle
+              tag fooit
+              vendor<tt>_</tt>tag fooware
+              contents fooit,v=fw0 fooit-devel fooit-doc
+     
+     #  Product definition:
+          product
+              tag fooit   # This is the package name
+              revision 1.0 # This is the package version
+              vendor<tt>_</tt>tag fw0 # This is a release name e.g. RPMTAG<tt>_</tt>RELEASE
+              postinstall scripts/postinstall
+          fileset
+               tag fooit-RUN
+               file doc/man/man1/fooit.1 /usr/man/man1/fooit.1
+     
+     <!-- WARNING: man/man8/swpackage.8:1272:%%new font R started without closing previous font R -->
+     
+               file src/fooit /usr/bin/fooit
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "SAMPLE PRODUCT SPEC FILES " -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="SAMPLE-PRODUCT-SPEC-FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#RETURN-VALUE">RETURN VALUE</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SWPACKAGE-INPUT-FILE-FORMAT">SWPACKAGE INPUT FILE FORMAT</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.11 SAMPLE PRODUCT SPEC FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>This section shows several example PSF files. 
+<!-- TROFF INPUT: .SS "o   A minimal PSF to package all files in current directory\&." -->
+<!-- DEBUG: print_menu("SAMPLE PRODUCT SPEC FILES") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#o-A-minimal-PSF-to-package-all-files-in-current-directory">o A minimal PSF to package all files in current directory </a>
+<li><a accesskey="2" href="#o-A-PSF-that-uses-directory-mapping">o A PSF that uses directory mapping </a>
+<li><a accesskey="3" href="#o-Create-a-PSF-from-a-list-of-files">o Create a PSF from a list of files </a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-A-minimal-PSF-to-package-all-files-in-current-directory"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-A-PSF-that-uses-directory-mapping">o A PSF that uses directory mapping</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>
+
+</div>
+
+<h4 class="subsection">1.11.1 o   A minimal PSF to package all files in current directory.</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      distribution
+      product
+        tag prod
+        control<tt>_</tt>directory ""
+        revision 1.0
+      fileset
+         tag files
+         control<tt>_</tt>directory ""
+         directory .
+         file *<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "o   A PSF that uses directory mapping\&." -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="o-A-PSF-that-uses-directory-mapping"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Create-a-PSF-from-a-list-of-files">o Create a PSF from a list of files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-A-minimal-PSF-to-package-all-files-in-current-directory">o A minimal PSF to package all files in current directory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>
+
+</div>
+
+<h4 class="subsection">1.11.2 o   A PSF that uses directory mapping.</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>This PSF creates a package with live system paths from source that is installed
+in non-live temporary locations. It is modeled on the swbis source package. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      distribution
+      product
+        tag somepackage  # this is the package name
+        control<tt>_</tt>directory ""
+        revision 1.0  # this is the package revision
+      fileset
+         tag files
+         control<tt>_</tt>directory ""
+     
+         file<tt>_</tt>permissions -o root -g root
+         directory swprogs /usr/bin
+         file swpackage
+         file swinstall
+         file swverify
+     
+         file -m 755 -o root -g root / /usr/libexec/swbis
+     
+         directory swprogs /usr/libexec/swbis
+         file swbisparse
+     
+         directory swsupplib/progs /usr/libexec/swbis
+         file swbistar
+     
+         file -m 755 -o root -g root / /usr/share/doc/swbis
+         directory . /usr/share/doc/swbis
+         file -m 444 ./README
+     
+     <!-- WARNING: man/man8/swpackage.8:1327:%%new font R started without closing previous font R -->
+     
+         file -m 444 CHANGES
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>When this PSF is processed by the command:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">                 swpackage -Wsign -s - @- | tar tvf -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>It produces the following:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      drwxr-x&mdash; root/root      0 2003-06-03 ... catalog/
+      -rw-r&mdash;&mdash; root/root    307 2003-06-03 ... catalog/INDEX
+      drwxr-x&mdash; root/root      0 2003-06-03 ... catalog/dfiles/
+      -rw-r&mdash;&mdash; root/root     65 2003-06-03 ... catalog/dfiles/INFO
+      -rw-r&mdash;&mdash; root/root     33 2003-06-03 ... catalog/dfiles/md5sum
+      -rw-r&mdash;&mdash; root/root     41 2003-06-03 ... catalog/dfiles/sha1sum
+      -rw-r&mdash;&mdash; root/root     33 2003-06-03 ... catalog/dfiles/adjunct</span><tt>_</tt><span class="roman">md5sum
+      -rw-r&mdash;&mdash; root/root    512 2003-06-03 ... catalog/dfiles/sig</span><tt>_</tt><span class="roman">header
+      -rw-r&mdash;&mdash; root/root   1024 2003-06-03 ... catalog/dfiles/signature
+      drwxr-x&mdash; root/root      0 2003-06-03 ... catalog/pfiles/
+      -rw-r&mdash;&mdash; root/root     65 2003-06-03 ... catalog/pfiles/INFO
+      -rw-r&mdash;&mdash; root/root   1503 2003-06-03 ... catalog/INFO
+      -rwxr-xr-x root/root 510787 2003-06-03 ... usr/bin/swpackage
+      -rwxr-xr-x root/root 301255 2003-06-03 ... usr/bin/swinstall
+      -rwxr-xr-x root/root   4105 2003-06-03 ... usr/bin/swverify
+      drwxr-xr-x root/root      0 2003-06-03 ... usr/libexec/swbis/
+      -rwxr-xr-x root/root 365105 2003-06-03 ... usr/libexec/swbis/swbisparse
+      -rwxr-xr-x root/root 243190 2003-06-03 ... usr/libexec/swbis/swbistar
+      drwxr-xr-x root/root      0 2003-06-03 ... usr/share/doc/swbis/
+      -r&ndash;r&ndash;r&ndash; root/root   8654 2003-05-27 ... usr/share/doc/swbis/README
+     
+     <!-- WARNING: man/man8/swpackage.8:1359:%%new font R started without closing previous font R -->
+     
+      -r&ndash;r&ndash;r&ndash; root/root  10952 2003-06-03 ... usr/share/doc/swbis/CHANGES</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "o   Create a PSF from a list of files\&." -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Create-a-PSF-from-a-list-of-files"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-A-PSF-that-uses-directory-mapping">o A PSF that uses directory mapping</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>
+
+</div>
+
+<h4 class="subsection">1.11.3 o   Create a PSF from a list of files.</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">                find . -print |  swpackage -Wfiles-from=- -Wlist-psf<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "RETURN VALUE" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="RETURN-VALUE"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SIDE-EFFECTS">SIDE EFFECTS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SAMPLE-PRODUCT-SPEC-FILES">SAMPLE PRODUCT SPEC FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.12 RETURN VALUE</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>0 on success, 1 on error and target medium not modified, 2 on error if
+target medium modified. 
+<!-- TROFF INPUT: .SH "SIDE EFFECTS" -->
+<!-- DEBUG: print_menu("RETURN VALUE") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SIDE-EFFECTS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#ENVIRONMENT">ENVIRONMENT</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#RETURN-VALUE">RETURN VALUE</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.13 SIDE EFFECTS</h3>
+
+<p>No temporary files are used in the package generation process. 
+When using the default target of stdout (directed to /dev/null), there
+are no file system side effects from swpackage.  GNU Privacy Guard (gpg)
+may alter its keys when invoked for package signing. 
+<!-- TROFF INPUT: .SH "ENVIRONMENT" -->
+<!-- DEBUG: print_menu("SIDE EFFECTS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="ENVIRONMENT"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SIDE-EFFECTS">SIDE EFFECTS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.14 ENVIRONMENT</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man8/swpackage.8:1380:%%new font B started without closing previous font R -->
+<p><b>SWPACKAGEPASSFD</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Sets the <i>&ndash;passphrase-fd</i> option.  Set the option arg
+to a integer value of the file descriptor, or to "env" to read the passphrase from
+the environment variable SWPACKAGEPASSPHRASE, or to "agent" to cause gpg to use
+gpg-agent, or to "tty" to restore default behavoir to reading passphrase from the terminal. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>SWPACKAGEPASSPHRASE</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Use the value as the passphrase if <i>&ndash;passphrase-fd</i> is
+set to "env"
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>GNUPGHOME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Sets the &ndash;gpg-home option. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p><b>GNUPGNAME</b>
+<!-- TROFF INPUT: .RS -->
+
+<!--  -->
+<blockquote>
+Sets the &ndash;gpg-name option, which is turn set the &ndash;local-user option of gpg. 
+<!-- TROFF INPUT: .RE -->
+
+</blockquote>
+
+<!--  -->
+<!-- TROFF INPUT: .SH "REQUISITE UTILITIES" -->
+<!-- DEBUG: print_menu("ENVIRONMENT") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="REQUISITE-UTILITIES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#FILES">FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#ENVIRONMENT">ENVIRONMENT</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.15 REQUISITE UTILITIES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Swpackage does not use any archive writing utilities, it has its own code to
+generate archives. 
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Package signing uses one of the following:
+ /usr/bin/gpg
+ /usr/bin/pgp   (PGP 2.6.x)
+ /usr/bin/pgps  (PGP 5)
+<!-- TROFF INPUT: .PP -->
+
+<p>Swpackage will use /usr/bin/uuidgen if present to create the uuid. 
+<!-- TROFF INPUT: .SH "FILES" -->
+<!-- DEBUG: print_menu("REQUISITE UTILITIES") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#REQUISITE-UTILITIES">REQUISITE UTILITIES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.16 FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     libdir/swbis/swdefaults
+     libbir/swbis/swbisdefaults
+     $HOME/.swbis/swdefaults
+     $HOME/.swbis/swbisdefaults<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "APPLICABLE STANDARDS" -->
+<!-- DEBUG: print_menu("FILES") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="APPLICABLE-STANDARDS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SEE-ALSO">SEE ALSO</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#FILES">FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.17 APPLICABLE STANDARDS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>ISO/IEC 15068-2:1999, Open Group CAE C701. 
+<!-- TROFF INPUT: .SH "SEE ALSO" -->
+<!-- DEBUG: print_menu("APPLICABLE STANDARDS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SEE-ALSO"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.18 SEE ALSO</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>info swbis
+<!-- TROFF INPUT: .PP -->
+
+<p>sw(5), swbis(1), swpackage(5), swbisparse(1), swign(1), swverify(8)
+<!-- TROFF INPUT: .SH "IDENTIFICATION" -->
+<!-- DEBUG: print_menu("SEE ALSO") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="IDENTIFICATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#BUGS">BUGS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SEE-ALSO">SEE ALSO</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.19 IDENTIFICATION</h3>
+
+<p>swpackage(8): The packaging utility of the swbis project. 
+ Author: Jim Lowe   Email: jhlowe at acm.org
+ Version: 1.13.1
+ Last Updated: 2014-07-15
+ Copying: GNU Free Documentation License
+<!-- TROFF INPUT: .SH "BUGS" -->
+<!-- DEBUG: print_menu("IDENTIFICATION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="BUGS"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.20 BUGS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>A comment after an object keyword is wrongly not allowed by this PSF parser. 
+The &ndash;dir="" does not do what one would expect sometimes. 
+The output stream content is unaffected by the blocksize, that is the last write
+may be short write. 
+Signing is broken for cpio format archives. 
+<!-- created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39 -->
+
+</body></html>
+

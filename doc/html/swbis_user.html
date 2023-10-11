@@ -1,0 +1,1491 @@
+<html lang="en">
+<head>
+<title>Untitled</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Untitled">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+\. 
+<!-- TROFF INPUT: .fl			\" force out current output buffer -->
+<!-- .fl			\" force out current output buffer -->
+\\!%PB
+\\!/showpage{}def
+<!-- TROFF INPUT: ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+<!-- ...\" the following is from Ken Flowers - it prevents dictionary overflows -->
+\\!/tempdict 200 dict def tempdict begin
+<!-- TROFF INPUT: .fl			\" prolog -->
+<!-- .fl			\" prolog -->
+<!-- TROFF INPUT: .sy cat \\$1\" bring in postscript file -->
+<!-- .sy cat \\$1\" bring in postscript file -->
+<!-- TROFF INPUT: ...\" the following line matches the tempdict above -->
+<!-- ...\" the following line matches the tempdict above -->
+\\!end % tempdict %
+\\!PE
+\\!. 
+<!-- TROFF INPUT: .sp \\$2u	\" move below the image -->
+<!-- .sp \\$2u	\" move below the image -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de pF -->
+<!-- .de pF -->
+<!-- TROFF INPUT: .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- .ie     \\*(f1 .ds f1 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- .el .ie \\*(f2 .ds f2 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- .el .ie \\*(f3 .ds f3 \\n(.f -->
+<!-- TROFF INPUT: .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- .el .ie \\*(f4 .ds f4 \\n(.f -->
+<!-- TROFF INPUT: .el .tm ? font overflow -->
+<!-- .el .tm ? font overflow -->
+<!-- TROFF INPUT: .ft \\$1 -->
+<!-- .ft \\$1 -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .de fP -->
+<!-- .de fP -->
+<!-- TROFF INPUT: .ie     !\\*(f4 \{\ -->
+<!-- .ie     !\\*(f4 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f4 -->
+<!-- .	ft \\*(f4 -->
+<!-- TROFF INPUT: .	ds f4\" -->
+<!-- .	ds f4\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f3 \{\ -->
+<!-- .el .ie !\\*(f3 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f3 -->
+<!-- .	ft \\*(f3 -->
+<!-- TROFF INPUT: .	ds f3\" -->
+<!-- .	ds f3\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f2 \{\ -->
+<!-- .el .ie !\\*(f2 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f2 -->
+<!-- .	ft \\*(f2 -->
+<!-- TROFF INPUT: .	ds f2\" -->
+<!-- .	ds f2\" -->
+'	br \}
+<!-- TROFF INPUT: .el .ie !\\*(f1 \{\ -->
+<!-- .el .ie !\\*(f1 \@{\ -->
+<!-- TROFF INPUT: .	ft \\*(f1 -->
+<!-- .	ft \\*(f1 -->
+<!-- TROFF INPUT: .	ds f1\" -->
+<!-- .	ds f1\" -->
+'	br \}
+<!-- TROFF INPUT: .el .tm ? font underflow -->
+<!-- .el .tm ? font underflow -->
+<!-- TROFF INPUT: .. -->
+<!-- .. -->
+<!-- TROFF INPUT: .ds f1\" -->
+
+<!-- WARNING: man/man1/swbis.1:49:%%unrecognized define-string command: [.ds f1\"] -->
+<!-- TROFF INPUT: .ds f2\" -->
+<!-- WARNING: man/man1/swbis.1:50:%%unrecognized define-string command: [.ds f2\"] -->
+<!-- TROFF INPUT: .ds f3\" -->
+<!-- WARNING: man/man1/swbis.1:51:%%unrecognized define-string command: [.ds f3\"] -->
+<!-- TROFF INPUT: .ds f4\" -->
+<!-- WARNING: man/man1/swbis.1:52:%%unrecognized define-string command: [.ds f4\"] -->
+<!-- TROFF INPUT: .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- .ta 8n 16n 24n 32n 40n 48n 56n 64n 72n -->
+<!-- TROFF INPUT: .TH "SWBIS" "1" -->
+<div class="node">
+<a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#dir">(dir)</a>
+
+</div>
+
+<h2 class="chapter">1 SWBIS" "1</h2>
+
+<!-- TROFF INPUT: .hy 0 -->
+<!-- .hy 0 -->
+<!-- TROFF INPUT: .if n .na -->
+<!-- .if n .na -->
+<!-- TROFF INPUT: .SH "NAME" -->
+<!-- DEBUG: print_menu("Top") -->
+<ul class="menu">
+<li><a accesskey="1" href="#NAME">NAME</a>
+<li><a accesskey="2" href="#SYNOPSIS">SYNOPSIS</a>
+<li><a accesskey="3" href="#INTRODUCTION">INTRODUCTION</a>
+<li><a accesskey="4" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+<li><a accesskey="5" href="#MAKING-ARCHIVES">MAKING ARCHIVES</a>
+<li><a accesskey="6" href="#VERIFYING-ARCHIVES">VERIFYING ARCHIVES</a>
+<li><a accesskey="7" href="#TRANSLATING-OTHER-FORMATS">TRANSLATING OTHER FORMATS</a>
+<li><a accesskey="8" href="#SECURING-FILE-SYSTEM-DIRECTORIES">SECURING FILE SYSTEM DIRECTORIES</a>
+<li><a accesskey="9" href="#SECURING-CVS-REPOSITORIES">SECURING CVS REPOSITORIES</a>
+<li><a href="#COPYING-FILES">COPYING FILES</a>
+<li><a href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+<li><a href="#CONFIGURATION">CONFIGURATION</a>
+<li><a href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE-ALSO">SEE ALSO</a>
+<li><a href="#FILES">FILES</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="NAME"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SYNOPSIS">SYNOPSIS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.1 NAME</h3>
+
+<p>swbis <span class="roman">&mdash;</span> Software Administration User Manual
+
+<!-- TROFF INPUT: .SH "SYNOPSIS" -->
+<!-- DEBUG: print_menu("NAME") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="SYNOPSIS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#INTRODUCTION">INTRODUCTION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#NAME">NAME</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.2 SYNOPSIS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     Introduction
+     Making a Package Specification File (PSF)
+     Making Archives
+     Verifying Archives
+     Translating Other Formats
+     Securing File System Directories
+     Securing CVS Repositories
+     Copying Files
+     Package Management Functions
+     Configuration
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .SH "INTRODUCTION" -->
+<!-- DEBUG: print_menu("SYNOPSIS") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="INTRODUCTION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SYNOPSIS">SYNOPSIS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.3 INTRODUCTION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>This manual page is a very short user manual. It provides basic examples for using the swbis utilities. 
+For detailed description of format, syntax, and internal structures see the swbis Info document
+(run 'info swbis' or 'info -f doc/info/swbis.info' from within the source package) or
+other manual pages: sw(5), swpackage(5), swbis(7). 
+Each utility has its own manual page, see swverify(8), swlist(8), swcopy(8), swinstall(8) and swpackage(8). 
+For configuration help and host compatibility issues see swbis(7). 
+<!-- TROFF INPUT: .PP -->
+
+<p>swbis is a software administration system for GNU/Linux systems and systems that are UNIX system-like. 
+It implements the Open Group's CAE Spec C701 (XDSA) Distributed Software Administration. 
+This spec closely follows ISO/IEC 15068-2:1999 (now withdrawn) which was identical to IEEE 1387.2:1995. 
+The scope of the implementation includes a package format, meta-data file format, and utilities
+for package creation, installation, query, listing, and verification.  The package management utilities
+are network transparent via direct use of ssh(1).  They provide remote package management functions
+to any UNIX-like remote host with a zero footprint regardless if swbis is installed on the remote host. 
+<!-- TROFF INPUT: .PP -->
+
+<p>While the swbis system has features comparable with package managers, it has features that are of
+general purpose usefulness to system administrators and developers. 
+These include host-to-host copying of file system directories, advanced tarball creation methods,
+backward compatibility with uses of plain tarballs, and the ability to act as a
+directory content integrity checker and SCM security tool. 
+<!-- TROFF INPUT: .PP -->
+
+<p>All sections of this manual page, except the last two, describe security related application of
+<b>swpackage</b> that integrate GNU utilities and the file system. 
+These applications along with the <b>swign</b> utility are unique to swbis. 
+The last section, Package Management, represents the intended focus of the spec. 
+<!-- TROFF INPUT: .SH "MAKING A PACKAGE SPECIFICATION FILE (PSF)" -->
+<!-- DEBUG: print_menu("INTRODUCTION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="MAKING-A-PACKAGE-SPECIFICATION-FILE-(PSF)"></a>
+<a name="MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MAKING-ARCHIVES">MAKING ARCHIVES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#INTRODUCTION">INTRODUCTION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.4 MAKING A PACKAGE SPECIFICATION FILE (PSF)</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>A PSF is a simple text file that directs <b>swpackage</b> on what to package. It is not included in
+the package unless it lists itself as a file to include. 
+It can contain extra attributes (that swbis would not recognize).  These end up in the
+main meta-data file named <b>catalog/INDEX</b>.  A PSF consists of sections that
+contain keyword/value pairs.  The same keywords may appear in different sections and are indeed different
+and separate attributes but they have the same definition/usage.  The sections are delimited by the
+section keyword (which is recognized because it has no value) and the next section keyword. 
+The sections are properly called objects and the keyword is the object keyword. 
+Some sections contain other sections.  The parser knows and enforces the hierarchy. 
+<!-- TROFF INPUT: .PP -->
+
+<p>White space in the PSF is not significant. A comment begins with a pound '#'. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Simple PSF's can be generated with <b>swign</b>. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     # Generate some generic sample PSFs
+     swign &ndash;show-psf -s.
+     swign &ndash;show-psf -s. &ndash;revision 1.1
+     swign &ndash;show-psf -s. -o root -g root
+     swign &ndash;show-psf -s. -o "" -g ""
+     swign &ndash;show-psf -s. -o 0 -g 0<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Perform a test process on your PSF using the preview option
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:130:%%new font R started without closing previous font R -->
+     
+     swign &ndash;show-psf -s.  | swpackage -p -v -s -</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "PSFs By Example" -->
+<!-- DEBUG: print_menu("MAKING A PACKAGE SPECIFICATION FILE (PSF)") -->
+<ul class="menu">
+<li><a accesskey="1" href="#PSFs-By-Example">PSFs By Example</a>
+<li><a accesskey="2" href="#o-Package-an-entire-directory">o Package an entire directory</a>
+<li><a accesskey="3" href="#o-Package-Explicit-Files">o Package Explicit Files</a>
+<li><a accesskey="4" href="#o-Package-A-Directory-that-does-not-already-exist">o Package A Directory that does not already exist</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="PSFs-By-Example"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Package-an-entire-directory">o Package an entire directory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+
+</div>
+
+<h4 class="subsection">1.4.1 PSFs By Example</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>To test or preview the following examples use swpackage as follows:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     # Example commands that read a PSF from stdin
+     swpackage -p -v  # -or-
+     swpackage -p -vv  # -or-
+     swpackage -p &ndash;files -vv  # -or-
+     swpackage -p &ndash;files &ndash;dir=pathPrefix -vv <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>then to make the package for real, remove the '-p' option, such as:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:149:%%new font R started without closing previous font R -->
+     
+     	cat yourPSF | swpackage -s - @-  | tar tvf -</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SS "o  Package an entire directory" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Package-an-entire-directory"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Package-Explicit-Files">o Package Explicit Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#PSFs-By-Example">PSFs By Example</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+
+</div>
+
+<h4 class="subsection">1.4.2 o  Package an entire directory</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     distribution
+     product
+     tag packageName
+     control<tt>_</tt>directory ""
+     revision 1.0
+     fileset
+     tag files
+     control<tt>_</tt>directory ""
+     directory .
+     file *
+     # exclude fileName
+     # exclude fileName2
+     # exclude fileName2 # ...<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SS "o   Package Explicit Files" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="o-Package-Explicit-Files"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#o-Package-A-Directory-that-does-not-already-exist">o Package A Directory that does not already exist</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Package-an-entire-directory">o Package an entire directory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+
+</div>
+
+<h4 class="subsection">1.4.3 o   Package Explicit Files</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     distribution
+     # owner root  # ownership of catalog
+     # groupt root  # ownership of catalog
+     product
+     tag packageName
+     control<tt>_</tt>directory ""
+     revision 1.0
+     fileset
+     tag files
+     control<tt>_</tt>directory ""
+     file -m 755 -o 0 -g 0 /etc/passwd /mypasswd
+     
+     <!-- WARNING: man/man1/swbis.1:188:%%new font R started without closing previous font R -->
+     
+     file -m 666 -o 0 -g 0 /dev/null  /mynull
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "o   Package A Directory that does not already exist" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="o-Package-A-Directory-that-does-not-already-exist"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#o-Package-Explicit-Files">o Package Explicit Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>
+
+</div>
+
+<h4 class="subsection">1.4.4 o   Package A Directory that does not already exist</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     distribution
+     product
+     tag mydir
+     revision 0.001
+     fileset
+     tag bin
+     directory / /
+     file -o root -g bin -m 700 -t d /BB<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>As a point of instruction, show the actual payload of this package
+with the following command:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:210:%%new font R started without closing previous font R -->
+     
+        swpackage  | swinstall @- | tar tvf -</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "MAKING ARCHIVES" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="MAKING-ARCHIVES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#VERIFYING-ARCHIVES">VERIFYING ARCHIVES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MAKING-A-PACKAGE-SPECIFICATION-FILE-_0028PSF_0029">MAKING A PACKAGE SPECIFICATION FILE (PSF)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.5 MAKING ARCHIVES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>swbis provide two programs to make a package: <b>swpackage</b> and <b>swign</b> To make a package, take your PSF that you created and use it as input to these programs.  Be aware that
+both write to standard output by default. 
+<!-- TROFF INPUT: .SS "Using swpackage" -->
+<!-- DEBUG: print_menu("MAKING ARCHIVES") -->
+
+<ul class="menu">
+<li><a accesskey="1" href="#Using-swpackage">Using swpackage</a>
+<li><a accesskey="2" href="#Using-swign">Using swign</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Using-swpackage"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Using-swign">Using swign</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-ARCHIVES">MAKING ARCHIVES</a>
+
+</div>
+
+<h4 class="subsection">1.5.1 Using swpackage</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p><b>swpackage</b> is a self-contained tar writing utility, that is it writes a
+tar archive without using /bin/tar. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Here is the command to read a PSF from stdin and write a tar archive on stdout and list
+the resulting package with tar. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swpackage -s - @- | tar tvf -
+        swpackage &ndash;gzip -s - @- | tar ztvf -
+        swpackage &ndash;bzip2 -s - @- | tar jtvf -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>Here are the options to use to include security attributes.  These can be set in your
+defaults file (~/.swbis/swbisdefaults). 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:236:%%new font R started without closing previous font R -->
+     
+        swpackage -s - &ndash;archive-digests &ndash;file-digests &ndash;files @-</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The default digests for these options are md5 and sha1.  To add sha512 digests do
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swpackage -s - &ndash;archive-sha512 &ndash;archive-digests \\
+     	&ndash;file-digests &ndash;file-sha512 &ndash;files @-<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>To sign the package, that is, include an embedded GPG signature just
+add the '&ndash;sign' option, along with other options.  '&ndash;sign' turns on '&ndash;archive-digest'
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swpackage \\
+           &ndash;archive-digests &ndash;file-digests &ndash;files \\
+     
+     <!-- WARNING: man/man1/swbis.1:255:%%new font R started without closing previous font R -->
+     
+           &ndash;gpg-name=yourId &ndash;gpg-path=~/.gnupg &ndash;sign</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>When swpackage asks for a passphrase it is really swpackage. 
+Although care is taken to handle the passphrase correctly, you can avoid having
+swpackage handle your passphrase all together by using the gpg agent. 
+<!-- TROFF INPUT: .PP -->
+
+<p>To use the agent, it must be running and the location must be set as the environment
+variable <b>GPG</b><tt>_</tt><b>AGENT</b><tt>_</tt><b>INFO</b>. To verify this try:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        env | grep GPG<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- WARNING: man/man1/swbis.1:272:%%new font B started without closing previous font R -->
+<p>Now, just add the option </span><b>&ndash;passphrase-fd=agent</b> to the swpackage invocation
+or set and export the environment variable SWPACKAGEPASSFD=agent.  The result should be that
+swpacakge completes without asking for a passphrase at the terminal. 
+<!-- TROFF INPUT: .SS "Using swign" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Using-swign"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Using-swpackage">Using swpackage</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#MAKING-ARCHIVES">MAKING ARCHIVES</a>
+
+</div>
+
+<h4 class="subsection">1.5.2 Using swign</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>The <b>swign</b> utility is designed to make a package directly from
+the contents of the current directory.  It combines usage of GNU tar and swpackage such
+that the archive it creates is written entirely by GNU tar using the
+file list, <b>catalog/dfiles/files</b>, generated by swpackage.  In this
+way it provides more assurance against unseen data corruption, which is important when
+creating signed packages. 
+<!-- TROFF INPUT: .PP -->
+
+<p>For directories whose name has the form <b>Name-Version</b>, swign will
+properly generate its own PSF with attributes based on the directory name.  The
+name '.' is the special name for the internally generated PSF. By default, swign will
+read a PSF from standard input. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        cd somepackage-1.1
+        swign -s. -u yourIdName @- | tar tvf -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The result is a package that looks like this
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     somepackage-1.1/
+     somepackage-1.1/catalog/
+     somepackage-1.1/catalog/INDEX
+     somepackage-1.1/catalog/dfiles/
+     somepackage-1.1/catalog/dfiles/INFO
+     somepackage-1.1/catalog/dfiles/md5sum
+     somepackage-1.1/catalog/dfiles/sha1sum
+     somepackage-1.1/catalog/dfiles/adjunct</span><tt>_</tt><span class="roman">md5sum
+     somepackage-1.1/catalog/dfiles/size
+     somepackage-1.1/catalog/dfiles/files
+     somepackage-1.1/catalog/dfiles/sig</span><tt>_</tt><span class="roman">header
+     somepackage-1.1/catalog/dfiles/signature
+     somepackage-1.1/catalog/pfiles/
+     somepackage-1.1/catalog/pfiles/INFO
+     somepackage-1.1/catalog/INFO
+       ...
+     
+     <!-- WARNING: man/man1/swbis.1:314:%%new font R started without closing previous font R -->
+     
+     somepackage-1.1/ ..</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>When making a package with swign, it is beneficial to include the <b>checkdigest</b> control script using this option:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swign -D $HOME/checkdigest.sh -s. -u yourIdName @- | tar tvf -
+     
+         # Aside:
+         # To see how the script is specified in the PSF, try
+         #     swign -D /your<tt>_</tt>secure<tt>_</tt>path/checkdigest.sh -s. &ndash;psf
+         #<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>This script will work unchanged for any package, and is available in the swbis source package. It may
+be copied as a public domain program.  With this script included, a recipient of your signed package can
+
+<!-- WARNING: man/man1/swbis.1:333:%%new font B started without closing previous font R -->
+<p>verify the unpacked directory using </span><b>swverify</b>.
+
+<!-- TROFF INPUT: .SH "VERIFYING ARCHIVES" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="VERIFYING-ARCHIVES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#TRANSLATING-OTHER-FORMATS">TRANSLATING OTHER FORMATS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MAKING-ARCHIVES">MAKING ARCHIVES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.6 VERIFYING ARCHIVES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Packages are verified by <b>swverify</b>
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        # This example verifies standard input
+        swverify -d @- <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>In addition, packages that have a single path prefix (like source packages) and that
+have ownerships reproducible on the local host can be verified in its unpacked form, for example:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        tar zxpf somepackage-1.1.tar.gz
+        cd somepackage-1.1
+     
+     <!-- WARNING: man/man1/swbis.1:352:%%new font R started without closing previous font R -->
+     
+        swverify -d @.</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>Verifying the unpacked form requires the <b>checkdigest</b> implementation
+extension control script.  This script must have been included when the package was created using
+the '-D NAME' option in the <b>swign</b>.
+
+<!-- TROFF INPUT: .SH "TRANSLATING OTHER FORMATS" -->
+<!-- DEBUG: print_menu("VERIFYING ARCHIVES") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="TRANSLATING-OTHER-FORMATS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SECURING-FILE-SYSTEM-DIRECTORIES">SECURING FILE SYSTEM DIRECTORIES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#VERIFYING-ARCHIVES">VERIFYING ARCHIVES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.7 TRANSLATING OTHER FORMATS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>swpackage can translate other package formats: deb, rpm, and slackware, and plain vanilla
+source tarballs with a NAME-VERSION path name prefix.  In the process, the package can be signed. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The converted package is written to stdout.  The input is read from standard input or specified as
+source using the <b>-s FILENAME</b> option.  Slackware packages cannot be read from standard
+input because the revision and name is determined from the .tgz filename itself. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        swpackage &ndash;to-swbis -s somepackage.rpm  # RPM
+        swpackage &ndash;to-swbis -s somepackage.deb  # DEB
+        swpackage &ndash;to-swbis -s somesourcepackage-1.0.tar.gz  # Plain Source Package
+          # or for slackware packages
+        swpackage -s somepackage-1.0-i386.tgz &ndash;to-swbis<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "SECURING FILE SYSTEM DIRECTORIES" -->
+<!-- DEBUG: print_menu("TRANSLATING OTHER FORMATS") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="SECURING-FILE-SYSTEM-DIRECTORIES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SECURING-CVS-REPOSITORIES">SECURING CVS REPOSITORIES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#TRANSLATING-OTHER-FORMATS">TRANSLATING OTHER FORMATS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.8 SECURING FILE SYSTEM DIRECTORIES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man1/swbis.1:381:%%new font B started without closing previous font R -->
+<p>The <b>swign</b> utility can be used as a directory content integrity tool.  After
+processing the current directory with swign, the directory can be verified against changes
+to file contents, ownerships and permissions. 
+<!-- TROFF INPUT: .PP -->
+
+<p>In this capacity, the <b>./catalog/</b> directory is a GPG signed record of
+the directory contents.  It is created this way:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swign -D $HOME/checkdigest.sh -s. -u yourIdName -o "" -g "" @.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>Verification is simply:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:397:%%new font R started without closing previous font R -->
+     
+         swverify -d @.</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "SECURING CVS REPOSITORIES" -->
+<!-- DEBUG: print_menu("SECURING FILE SYSTEM DIRECTORIES") -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="SECURING-CVS-REPOSITORIES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#COPYING-FILES">COPYING FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SECURING-FILE-SYSTEM-DIRECTORIES">SECURING FILE SYSTEM DIRECTORIES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.9 SECURING CVS REPOSITORIES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>Securing CVS (or any Source Code Management repository) is similar to securing a directory with
+the additional step that the <b>./catalog/</b> directory is checked-in or committed
+to the repository just like other ordinary directories in the project. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Slightly different options are used for signing and verification.  These have to do with file
+ownerships which are not tracked and enforced.  Also the default action of removing ./catalog
+is prevented by the <b>&ndash;no-remove</b> option. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swign -D $HOME/checkdigest.sh -s PSF.in &ndash;no-remove &ndash;name-version=somepackage-1.0 @.<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<p>The exported directory (without the SCM control files) can be verified.  Since
+ownerships, time stamps, and permissions are probably not preserved, use a special
+option to swverify, &ndash;scm. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:422:%%new font R started without closing previous font R -->
+     
+          swverify &ndash;scm -d @.</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .PP -->
+<p>The PSF.in for this usage is specialized.  Note the special exclude directives
+and the replacement macros <i>%</i><tt>_</tt><tt>_</tt><i>tag</i> and <i>%</i><tt>_</tt><tt>_</tt><i>revision</i> which allows easy control of the current revision. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Here is a minimal example, the swign(1) manual page for more information. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        # PSF.in &ndash; Input file to swign
+        distribution
+        checkdigest  \&lt; bin/checkdigest.sh
+        product
+        tag %<tt>_</tt><tt>_</tt>tag                # Replaced by swign
+        control<tt>_</tt>directory ""
+        revision %<tt>_</tt><tt>_</tt>revision      # Replaced by swign
+        fileset
+        tag sources
+        control<tt>_</tt>directory ""
+        file<tt>_</tt>permissions -o 0 -g 0
+        directory .
+        file *
+        exclude catalog
+        exclude CVS
+        exclude */CVS
+        # exclude .svn
+        # exclude */.svn<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "COPYING FILES" -->
+<!-- DEBUG: print_menu("SECURING CVS REPOSITORIES") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="COPYING-FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SECURING-CVS-REPOSITORIES">SECURING CVS REPOSITORIES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.10 COPYING FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man1/swbis.1:456:%%new font B started without closing previous font R -->
+<p><b>swcopy</b> can be used to copy arbitrary files or data streams from host to host. 
+Here are a few examples.  See the manual page swcopy(8) for more. 
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     # Copy a file in the current directory to your home directory on HostA
+        swcopy &ndash;no-audit -s :file1 @ HostA
+     
+     # Copy the data stream from a device on a remote host
+        swcopy &ndash;no-audit -s 192.168.1.1:/dev/tape @- | tar tvf -
+     
+     # Show your network speed in real time
+        swcopy &ndash;no-audit -s 192.168.1.1:/dev/zero &ndash;show-progress @ /dev/null
+     
+     # Read the entire file system on a remote host
+        swcopy &ndash;no-audit -s 192.168.1.1:/ @- | tar tvf -<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "PACKAGE MANAGEMENT FUNCTIONS" -->
+<!-- DEBUG: print_menu("COPYING FILES") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="PACKAGE-MANAGEMENT-FUNCTIONS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#CONFIGURATION">CONFIGURATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#COPYING-FILES">COPYING FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.11 PACKAGE MANAGEMENT FUNCTIONS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>swbis supports typical package management functions for creation, installation,
+listing/query, verification, and removal in a network transparent fashion with
+zero new requirements for the remote host.
+
+<!-- WARNING: man/man1/swbis.1:479:%%new font B started without closing previous font R -->
+<p><b>ssh</b> is used directly for host access and no special
+configuration is required. 
+<!-- TROFF INPUT: .PP -->
+
+<p>The default requirements for the remote host are GNU bash, as <b>/bin/bash</b>,
+and GNU tar as <b>/bin/tar</b>.  Other runtime and compile configurations are
+possible to allow GNU tar to be <b>/bin/gtar</b> and a host to be bash-less. 
+See swbis(7) for information on support for other POSIX shells. 
+<!-- TROFF INPUT: .PP -->
+
+<p>Alternate root operation is supported for all operations, however, only
+cooperatively enforced for control script execution, that is control scripts
+must respect its relative root. 
+<!-- TROFF INPUT: .PP -->
+
+<p>All utilities are similar in their command-line interface:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         sw&lt;<i>utillity</i>&gt; [<i>PKG</i><tt>_</tt><i>NAME</i><tt>_</tt><i>SPEC</i>] @ <i>HOSTNAME</i>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+         sw&lt;<i>utillity</i>&gt; [<i>PKG</i><tt>_</tt><i>NAME</i><tt>_</tt><i>SPEC</i>] @ :<i>FILENAME</i>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+         sw&lt;<i>utillity</i>&gt; [<i>PKG</i><tt>_</tt><i>NAME</i><tt>_</tt><i>SPEC</i>] @ /<i>FILENAME</i>
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Internal operation,  Events, and Errors" -->
+<!-- DEBUG: print_menu("PACKAGE MANAGEMENT FUNCTIONS") -->
+<ul class="menu">
+<li><a accesskey="1" href="#Internal-operation-Events-and-Errors">Internal operation Events and Errors</a>
+<li><a accesskey="2" href="#Recovery-From-Hangs-and-Crashes">Recovery From Hangs and Crashes</a>
+<li><a accesskey="3" href="#Installation">Installation</a>
+<li><a accesskey="4" href="#Removal">Removal</a>
+<li><a accesskey="5" href="#Query">Query</a>
+
+</ul>
+
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="Internal-operation-Events-and-Errors"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Recovery-From-Hangs-and-Crashes">Recovery From Hangs and Crashes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.11.1 Internal operation,  Events, and Errors</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Operation of the distributed utilites consists of a shell script running on the target host
+and the actual utility running on the management host. 
+These hosts may be the same or different. 
+Configuration data (e.g. swbisdefaults and swdefaults files) are read on the
+management host only.  When verifying installed software, gpg is invoked on the management
+host only using public keys from the management host only. 
+<!-- TROFF INPUT: .PP -->
+
+<p>All the distributed utiltities operate as a utility (i.e. C program) and a shell script
+read and executed from the POSIX shell's standard input. 
+The C program and shell script communicate via stdin, stdout and stderr using a connection
+provided by an ordinary rsh or ssh client.  For local operation ssh/rsh is not invoked. 
+The utilities never should be installed setuid root.  Privilege escalation can be accomplished
+via Ssh and a UNIX user account:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:520:%%new font I started without closing previous font R -->
+     
+         sw&lt;<i>utillity</i>&gt; @ root@localhost
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>The shell script is a list of tasks where each task becomes an additional shell reading from stdin. 
+Before the additional task shell is executed,
+a Task Identification Header is read and compared with the expected Task. In addition
+each task has an END event to return its status.  If any error occurs, the error is
+detected by the utility (i.e. the C program on the management host); and, the main
+script [on the target host] falls through with an error.
+
+<!-- TROFF INPUT: .PP -->
+<p>For example, here is how the 'load fileset' task script appears in a UNIX process listing:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     14073 14071  1 20:35  /bin/bash -s </span><tt>_</tt><span class="roman">swbis </span><tt>_</tt><span class="roman">swinstall
+     14453 14073  0 20:35  /bin/bash -s /</span><tt>_</tt><span class="roman">swbis /</span><tt>_</tt><span class="roman">swinstall load fileset
+     14454 14453  0 20:35  dd bs 512 count 6870
+     14455 14453  0 20:35  /bin/bash -s /</span><tt>_</tt><span class="roman">swbis /</span><tt>_</tt><span class="roman">swinstall load fileset
+     
+     <!-- WARNING: man/man1/swbis.1:542:%%new font R started without closing previous font R -->
+     
+     14460 14455  0 20:35  tar xpvf -</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<p>During operation events are generated.  They may be shown by increasing the verbosity level
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">         swinstall -x verbose=3
+             # -or-
+         swinstall -vv<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>For example, the events for installation look like this
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     # swinstall -x reinstall=y &ndash;no-scripts -vv @ localhost:/tmp/aabb
+     swinstall: SWBIS</span><tt>_</tt><span class="roman">TARGET</span><tt>_</tt><span class="roman">BEGINS for @localhost:/tmp/aabb
+     swinstall: SW</span><tt>_</tt><span class="roman">SESSION</span><tt>_</tt><span class="roman">BEGINS on target host Host20:
+     swinstall: SW</span><tt>_</tt><span class="roman">NOT</span><tt>_</tt><span class="roman">LOCATABLE: xorg-x11-Xnest.xorg-x11-Xnest: status=2
+     swinstall: SW</span><tt>_</tt><span class="roman">ANALYSIS</span><tt>_</tt><span class="roman">BEGINS on target host Host20:
+     swinstall: SW</span><tt>_</tt><span class="roman">SAME</span><tt>_</tt><span class="roman">REVISION</span><tt>_</tt><span class="roman">INSTALLED at @localhost:/tmp/aabb: status=0: var/...
+     swinstall: SW</span><tt>_</tt><span class="roman">DEPENDENCY</span><tt>_</tt><span class="roman">NOT</span><tt>_</tt><span class="roman">MET: prerequisite xorg-x11,pr==6.8.2: status=2
+     swinstall: SW</span><tt>_</tt><span class="roman">SOC</span><tt>_</tt><span class="roman">LOCK</span><tt>_</tt><span class="roman">CREATED on target host Host20: lockpath=var/...
+     swinstall: SW</span><tt>_</tt><span class="roman">ANALYSIS</span><tt>_</tt><span class="roman">ENDS on target host Host20: status=0
+     swinstall: SW</span><tt>_</tt><span class="roman">EXECUTION</span><tt>_</tt><span class="roman">BEGINS on target host Host20:
+     swinstall: SW</span><tt>_</tt><span class="roman">SOC</span><tt>_</tt><span class="roman">LOCK</span><tt>_</tt><span class="roman">REMOVED on target host Host20: status=0
+     swinstall: SW</span><tt>_</tt><span class="roman">EXECUTION</span><tt>_</tt><span class="roman">ENDS on target host Host20: status=0
+     swinstall: SW</span><tt>_</tt><span class="roman">SESSION</span><tt>_</tt><span class="roman">ENDS on target host Host20: status=0
+     
+     <!-- WARNING: man/man1/swbis.1:571:%%new font R started without closing previous font R -->
+     
+     swinstall: SWBIS</span><tt>_</tt><span class="roman">TARGET</span><tt>_</tt><span class="roman">ENDS for @localhost:/tmp/aabb: status=0</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Events have their own status, 0, 1, or 2.  Zero (0) is always sucess, 1 is an error, and
+2 may be a warning or error depending on the event and options. 
+<!-- TROFF INPUT: .SS "Recovery From Hangs and Crashes" -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="Recovery-From-Hangs-and-Crashes"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Installation">Installation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Internal-operation-Events-and-Errors">Internal operation Events and Errors</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.11.2 Recovery From Hangs and Crashes</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Swbis utilites never hang and never crash and are generally signal safe, that is you
+can hit ctrl-C and expect a controlled exit of the remote script and utility. 
+However if a utility really crashes it can leave unwanted processes on the remote host, they
+may even suck up CPU cycles making the machine slow. 
+The first step is to kill the management utility:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        killall -9 swinstall  # or whatever the utility was<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>Then, to kill the task shells on the remote host:
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">     
+     <!-- WARNING: man/man1/swbis.1:591:%%new font R started without closing previous font R -->
+     
+        swremove &ndash;cleansh @ user@Host</span>
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<p>using the same user and host as the crashed invocation.  This will kill all swbis process
+including other users if allowed by the system.
+
+<!-- TROFF INPUT: .SS "Installation" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Installation"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Removal">Removal</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Recovery-From-Hangs-and-Crashes">Recovery From Hangs and Crashes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.11.3 Installation</h4>
+
+<!-- TROFF INPUT: .PP -->
+<p>Examples
+<!-- TROFF INPUT: .PP -->
+
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">       # Install at /
+         swinstall -s :somepackage-1.1.bin.sw.tar.gz
+     
+       # Install to a alternate root, not running control scripts
+         swinstall &ndash;no-scripts -vv -s:somepackage-1.1.i386.rpm @ /tmp/foo1
+     
+       # Install to a alternate root
+         swinstall -s :somepackage-1.1.bin.sw.tar.gz @ /tmp/xx2
+     
+       # Install at /, gaining privilege via ssh
+         swinstall -s :somepackage-1.1.bin.sw.tar.gz @ root@localhost
+     
+       # Install from standard input to /
+         swinstall       # if default source directory is stdin or
+         swinstall -s -  # independent of defaults file
+     
+       # Install at a remote host
+         swinstall -s :somepackage-1.1.bin.sw.tar.gz @ 192.168.1.1
+     
+       # Install to multiple targets, based on a list of one target per line
+         echo 192.168.2.2 | swinstall -t - -s :somepackage-1.1.bin.sw.tar.gz<span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Removal" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="Removal"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Query">Query</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Installation">Installation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.11.4 Removal</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        # Remove a package named 'somepackage'
+         swremove somepackage @/
+     
+        # Remove everything
+         swremove &ndash;allow-ambig \\* @ /
+     
+        # Remove everything and force (e.g. override a stale lock)
+         swremove &ndash;force somepackage @ /
+     
+        # Preview what would be removed and do nothing
+     
+     <!-- WARNING: man/man1/swbis.1:639:%%new font R started without closing previous font R -->
+     
+         swremove -p -v somepackage @ /
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SS "Query" -->
+<!-- MAN2TEXI: EON -->
+<div class="node">
+<a name="Query"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Removal">Removal</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>
+
+</div>
+
+<h4 class="subsection">1.11.5 Query</h4>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">        # List all installed packages
+         swlist # -or-
+         swlist &ndash;products
+     
+        # List an installed package by name
+         swlist somepackage
+     
+        # List an installed package by name and version
+         swlist somepackage,r\\&gt;1.0
+     
+        # List installed packages by name and version from several hosts
+         swlist &ndash;verbose &ndash;products somepackage,r\\&gt;1.0  @ hostA hostB
+     
+        # Copy the installed catalog to stdout
+         swlist -c - somepackage @ root@192.168.1.2 | tar tvf -
+     
+        # List the installed files from the catalog
+         swlist &ndash;files somepackage @ root@192.168.1.2
+     
+        # List the installed files as found in the file system
+         swlist &ndash;system somepackage @ root@192.168.1.2
+     
+        # List the payload of a package
+         swlist &ndash;files @- &lt; somepackage-1.0.tar.gz
+     
+        # List the payload of a package
+         swinstall @- &lt; somepackage-1.0.tar.gz | tar tvf -
+     <span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .SH "CONFIGURATION" -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="CONFIGURATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#PACKAGE-MANAGEMENT-FUNCTIONS">PACKAGE MANAGEMENT FUNCTIONS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.12 CONFIGURATION</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>See swbis(7) for detailed information on configuration and host compatibility strategies. 
+<!-- TROFF INPUT: .SH "APPLICABLE STANDARDS" -->
+<!-- DEBUG: print_menu("CONFIGURATION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="APPLICABLE-STANDARDS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#SEE-ALSO">SEE ALSO</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CONFIGURATION">CONFIGURATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.13 APPLICABLE STANDARDS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999),
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+Open Group CAE C701,
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+http://www.opengroup.org/publications/catalog/c701.htm
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "SEE ALSO" -->
+<!-- DEBUG: print_menu("APPLICABLE STANDARDS") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="SEE-ALSO"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#FILES">FILES</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#APPLICABLE-STANDARDS">APPLICABLE STANDARDS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.14 SEE ALSO</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .nf -->
+<!--  -->
+<pre class="display">      info swbis
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      sw(5), swbis(7), swpackage(8), swpackage(5), swbisparse(1), swign(1), swverify(8),
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      swcopy(8), swconfig(8), swlist(8), swremove(8)
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/lxpsf
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/arf2arf
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/swbisparse
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+      .../libexec/swbis/swbistar
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     http://www.gnu.org/software/swbis/sourcesign-1.2/gendocs/manual/index.html
+     <!-- TROFF INPUT: .br -->
+     <!-- .br -->
+     <!-- TROFF INPUT: .PP -->
+     
+     <!-- TROFF INPUT: .nf -->
+     
+     <!--  -->
+     <pre class="display">          
+          <!-- WARNING: man/man1/swbis.1:708:%%new font R started without closing previous font R -->
+          
+          
+          <!-- TROFF INPUT: .fi -->
+          
+</pre>
+     
+     <!--  -->
+     <!-- TROFF INPUT: .PP -->
+     
+     <p><span class="roman">
+     <!-- TROFF INPUT: .fi -->
+     
+</pre>
+<!--  -->
+<!-- TROFF INPUT: .PP -->
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "FILES" -->
+<!-- DEBUG: print_menu("SEE ALSO") -->
+<!-- MAN2TEXI: EON -->
+<p></span><div class="node">
+<a name="FILES"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#SEE-ALSO">SEE ALSO</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.15 FILES</h3>
+
+<!-- TROFF INPUT: .PP -->
+<!-- WARNING: man/man1/swbis.1:717:%%new font B started without closing previous font R -->
+<p><b>/var/lib/swbis/catalog</b>/  # The installed software catalog
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>catalog</b>/  # The package meta-data directory
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>swdefaults</b>     # Options configuration file
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<b>swbisdefaults</b>  # Options configuration file
+<!-- TROFF INPUT: .SH "IDENTIFICATION" -->
+<!-- DEBUG: print_menu("FILES") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="IDENTIFICATION"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#BUGS">BUGS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#FILES">FILES</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.16 IDENTIFICATION</h3>
+
+<p>swbis(1)
+ Author: Jim Lowe   Email: jhlowe at acm.org
+ Version: 1.13.1
+ Last Updated: 2010-02-04
+ Copying: GNU Free Documentation License
+<!-- TROFF INPUT: .br -->
+<!-- .br -->
+<!-- TROFF INPUT: .SH "BUGS" -->
+<!-- DEBUG: print_menu("IDENTIFICATION") -->
+<!-- MAN2TEXI: EON -->
+
+<div class="node">
+<a name="BUGS"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#IDENTIFICATION">IDENTIFICATION</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
+
+<h3 class="section">1.17 BUGS</h3>
+
+<!-- TROFF INPUT: .PP -->
+<p>(This section left intensionally blank)
+<!-- created by instant / docbook-to-man, Fri 02 Nov 2018, 20:39 -->
+
+</body></html>
+

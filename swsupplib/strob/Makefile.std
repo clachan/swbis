@@ -1,0 +1,43 @@
+#
+#
+REVISION=1.01
+SHELL=	/bin/sh
+CC=	gcc
+
+CFLAGS=	 -O2 -Wall -I . -I /usr/local/include -DLINUX_GCC
+OUT_PATH = .
+LDFLAGS=
+
+BIN=$(OUT_PATH)
+LIB = strob.a
+
+
+OBJS= strob.o
+
+all: $(LIB) teststrob
+
+.c.o:
+	$(CC) -c -o $(OUT_PATH)/$*.o  $(CFLAGS) $< 
+
+teststrob: teststrob.o $(LIB) $(LIBS)
+	$(CC)  $(LDFLAGS) teststrob.o $(LIB) $(LIBS) -o teststrob
+
+$(LIB): $(OBJS)
+	ar rcs $(LIB) $(OBJS)
+
+clean:
+	rm -f $(OBJS) teststrob teststrob.o strob.a
+
+install: strob.a
+	cp strob.a /usr/local/lib
+	cp strob.h /usr/local/include
+
+
+tarfile: NOFILE
+	make -s clean
+	(cd ..; tar cf - strob-$(REVISION) | gzip -9 >strob-$(REVISION).`date +%Y%m%d%H%M`.tar.gz)
+
+NOFILE:
+
+
+

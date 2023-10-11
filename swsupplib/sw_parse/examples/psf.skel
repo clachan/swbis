@@ -1,0 +1,211 @@
+# File: psf.skel
+
+host
+	hostname	hostname_A
+	os_name		os_name_A
+	os_release	os_release_A
+	os_version	os_version_A
+	machine_type	machine_type_A
+	rpmversion	rpmversion_A
+
+distribution
+
+	dfiles			_ dfiles 6
+	pfiles			_ pfiles 7
+#	layout_version		_ layout_version 8
+	uuid			_ uuid 9  # not in PSF
+	path			_ path 10  # not in either PSF not INDEX files
+	media
+		sequence_number		_ sequence_number 11
+
+	bundle 
+		tag			_ tag 15
+		architecture 		_ architecture 16
+		location		_ location 17
+		qualifier		_ qualifier 18
+		revision		_ revision 19
+		vendor_tag		_ vendor_tag 20
+		contents		_ contents 21
+		copyright		_ copyright 22
+		create_time		_ create_time 23
+		description		_ description 24
+		directory		_ directory 25
+		instance_id		_ instance_id 26
+		is_locatable		_ is_locatable 27
+		machine_type		_ machine_type 28
+		mod_time		_ mod_time 29
+		number			_ number 30
+		os_name			_ os_name 31
+		os_release		_ os_release 32
+		os_version		_ os_version 33
+		size			_ size 34
+		title			_ title 35
+	
+	vendor
+		tag		_ tag 38
+		title		_ title 39
+		description	_ description 40
+ 
+	
+	
+	
+	product
+		tag 			_ tag 46
+		architecture 		_ architecture 47
+		qualifier		_ qualifier 48
+		revision		_ revision 49
+		vendor_tag		_ vendor_tag 50
+		all_filesets		_ all_filesets 51
+		control_directory	_ control_directory 52
+		copyright		_ copyright 53
+		create_time		_ create_time 54
+		directory		_ directory 55
+		description		_ description 56
+		instance_id		_ instance_id 57
+		is_locatable		_ is_locatable 58
+		postkernel		_ postkernel 59
+		location		_ location 60
+		machine_type		_ machine_type 61
+		mod_time		_ mod_time 62
+		number			_ number 63
+		os_name			_ os_name 64
+		os_release		_ os_release 65
+		os_version		_ os_version 66
+		size			_ size 67
+		title			_ title 68
+
+# product control file
+	control_file	_control_file.sh / 71
+	control_file	_control_file.sh / 72
+	control_file	
+		tag			_ tag 74
+		chksum			_ chksum 75
+		compressed_chksum	_ compressed_chksum 76
+		compressed_size		_ compressed_size 77
+		compression_state	_ compression_state 78
+		compression_type	_ compression_type 79
+		interpreter		_ interpreter 80
+		path			_ path 81
+		revision		_ revision 82
+		size			_ size 83
+		source			_ source 84
+		result			_ result 85
+
+# extended product control files	
+	checkinstall	_ checkinstall / 88
+	preinstall	_ preinstall / 89
+	postinstall	_ postinstall / 90
+	verify		_ verify / 91
+	fix		_ fix / 92
+	checkremove	_ checkremove / 93
+	preremove	_ preremove / 94
+	postremove	_ postremove.sh  / 95
+	configure	_ configure.sh / 96
+	unconfigure	_ unconfigure.sh / 97
+	request		_ request.sh / 98
+	unpreinstall	_ unpreinstall.sh / 99
+	unpostinstall	_ unpostinstall.sh / 100
+	space		_ space.sh / 101
+	control_file	_ control_file.sh / 102
+
+	subproduct
+		tag			_ tag 105
+		contents		_ contents 106
+		create_time		_ create_time 107
+		description		_ description 108 
+		mod_time		_ mod_time 109
+		size			_ size 110
+		title			_ title 111
+
+	fileset
+		tag			_ tag 114
+		control_directory	_ control_directory 115
+		corequisites		_ corequisites 116
+		create_time		_ create_time 117
+		description		_ description 118
+		exrequisites		_ exrequisites 119
+		is_reboot		_ is_reboot 120
+		is_kernel		_ is_kernel 121
+		is_locatable		_ is_locatable 122
+		location		_ location 123
+		media_sequence_number	_ media_sequence_number 124
+		mod_time		_ mod_time 125
+		prerequisites		_ prerequisites 126
+		revision		_ revision 127
+		size			_ size 128
+		state			_ state 129
+		title			_ title 130
+	
+	control_file	
+		tag			_ tag 133
+		chksum			_ chksum 134
+		compressed_chksum	_ compressed_chksum 135
+		compressed_size		_ compressed_size 136
+		compression_state	_ compression_state 137
+		compression_type	_ compression_type 138
+		interpreter		_ interpreter 139
+		path			_ path 140
+		revision		_ revision 141
+		size			_ size 142
+		source			_ source 143
+		result			_ result 144
+
+        file	-t f -m 0777 -o root,0 -g root,0 -n -v  / /
+
+	file
+			path			_ path 149
+			chksum			_ chksum 150
+			compressed_chksum	_ compressed_chksum 151
+			compressed_size		_ compressed_size 152
+			compression_state	_ compression_state 153
+			compression_type	_ compression_type 154
+			gid			_ gid 155
+			group			_ group 156
+			is_volatile		_ is_volatile 156
+			link_source		_ link_source 157
+			major			_ major 158
+			minor			_ minor 159
+			mode			_ mode 160
+			mtime			_ mtime 161
+			owner			_ owner 162
+			revision		_ revision 163
+			size			_ size 164
+			source			_ source 165
+			type			_ type 166
+			uid			_ uid 167
+
+# extended control_file definitions
+	
+	checkinstall	_ checkinstall / 172
+	preinstall	_ preinstall / 173
+	postinstall	_ postinstall / 174
+	verify		_ verify / 175
+	fix		_ fix / 176
+	checkremove	_ checkremove / 177
+	preremove	_ preremove / 178
+	postremove	_ postremove.sh  / 179
+	configure	_ configure.sh / 180
+	unconfigure	_ unconfigure.sh / 181
+	request		_ request.sh / 182
+	unpreinstall	_ unpreinstall.sh / 183
+	unpostinstall	_ unpostinstall.sh / 184
+	space		_ space.sh / 185
+	control_file	_ control_file.sh / 186
+
+# extended file definitions
+	directory 		_ directory  189
+	file_permissions	_ file_permissions 190
+	exclude			_ exclude 191
+	file			< file192
+
+
+
+	fileset
+	directory 		_ directory  197
+	
+	
+	vendor
+		tag		_ tag 201
+		title		_ title 202
+		description	_ description 203
+

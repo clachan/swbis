@@ -1,0 +1,16 @@
+
+
+NOTE;  Autoconfiscation of the system library routines is
+       not done.
+
+Do Include  
+#include "usgetopt.h"  
+	in your main() programs.
+	and use ugetopt and ugetopt_long instead of getopt and getopt_long
+
+Do not include:
+	"ugetopt.h"  
+
+
+
+

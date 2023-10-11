@@ -1,0 +1,242 @@
+<!-- 
+Copyright (C) 2004 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+-->
+<TITLE>
+EXTENDED DEFINITIONS
+</TITLE>
+<PARA>
+A Product Specification File (PSF) can contain Extended Definitions in the
+<FUNCTION>fileset</FUNCTION>, <FUNCTION>product</FUNCTION> or <FUNCTION>bundle</FUNCTION>
+software definitions.  They would have the same level or containment
+relationship as a
+<FUNCTION>file</FUNCTION>
+or
+<FUNCTION>control_file</FUNCTION>
+definition in the same contaning object.
+</PARA>
+<PARA>
+Extended Definitions represent a minimal, expressive form for specifying files and file attributes.
+Their use in a PSF is optional in that an equivalent PSF can be constructed without using them,
+however, their use is encouraged for the sake of brevity and orthogonality.
+</PARA>
+<PARA>
+The swbis implementation requires that no [ordinary] attributes appear after Extended Definitions
+in the containing object, and, requires that Extended Definitions appear before logically contained objects.
+That is, the parser uses the next object keyword to syntacticly and logically terminate the
+current object even if the current object has logically contained objects.
+</PARA>
+<REFSECT3>
+<TITLE>
+o  Extended Control File Definitions
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+     checkinstall  <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     preinstall    <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     postinstall   <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     verify        <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     fix           <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     checkremove   <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     preremove     <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     postremove    <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     configure     <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     unconfigure   <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     request       <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     unpreinstall  <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     unpostinstall <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     space         <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+     control_file  <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>path</REPLACEABLE>]
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>source</REPLACEABLE> attribute defines the location in distributors's development system
+where the swpackage utility will find the script.  The keyword is the value of the 
+<REPLACEABLE>tag</REPLACEABLE> attribute
+and tells the utilities when to execute the script.
+The <REPLACEABLE>path</REPLACEABLE> attribute is optional and specifies the file name in the packages distribution
+relative to the control_directory for software containing the script. If not given the 
+<REPLACEABLE>tag</REPLACEABLE> value is used as the filename.
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Directory Mapping
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+   directory  <REPLACEABLE>source</REPLACEABLE>  [<REPLACEABLE>destination</REPLACEABLE>]
+<SBR>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+Applies the <REPLACEABLE>source</REPLACEABLE>
+attribute as the directory under which
+the subsequently listed files are located.  If 
+<REPLACEABLE>destination</REPLACEABLE>
+is defined it will be used as a prefix to the 
+<REPLACEABLE>path</REPLACEABLE>
+(implied) file definition.  
+<REPLACEABLE>source</REPLACEABLE>
+is typically a temporary or build
+location and 
+<REPLACEABLE>dest</REPLACEABLE>
+is its unrealized absolute pathname destination.
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Recursive File Definition
+</TITLE>
+<PROGRAMLISTING>
+<VERB>
+<SBR>
+  file *
+<SBR>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+Specifies every file in current source directory.
+The <REPLACEABLE>directory</REPLACEABLE> extended definition must be used before the recursive specification.
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Explicit File Definition
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+  file [-t <REPLACEABLE>type</REPLACEABLE>] [-m <REPLACEABLE>mode</REPLACEABLE>] [-o <REPLACEABLE>owner</REPLACEABLE>[,<REPLACEABLE>uid</REPLACEABLE>]] [-g <REPLACEABLE>group</REPLACEABLE>[,<REPLACEABLE>gid</REPLACEABLE>]] [-n] [-v] source [<REPLACEABLE>path</REPLACEABLE>]
+<SBR>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+<OPTION>source</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+<PARA>
+<REPLACEABLE>source</REPLACEABLE> defines the pathname of the file to be used as the source of file data
+and/or attributes.
+If it is a relative path, then swpackage searches for this file relative to the
+the source argument of the <FUNCTION>directory</FUNCTION> keyword, if set.
+If <FUNCTION>directory</FUNCTION> keyword is not set then the search is relative to the
+current working directory of the swpackage utility's invocation.
+</PARA>
+<PARA>
+All attributes for the destination file are taken from the source file, unless a
+<FUNCTION>file_permissions</FUNCTION> keyword is active, or the -m, -o, or -g options are also
+included in the file specification.
+</PARA>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>path</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+<REPLACEABLE>path</REPLACEABLE> defines the destination path where the file will be created or installed.
+If it is a relative path, then the destination path of the of the
+<FUNCTION>directory</FUNCTION> keyword must be active and will be used as the path prefix.
+If path is not specified then 
+<REPLACEABLE>source</REPLACEABLE> is used as the value of path and directory mapping applied (if active).
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-t type</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+<REPLACEABLE>type</REPLACEABLE> may one of 'd' (directory), or  'h' (hard link), or 's' (symbolic link).
+<PARA>
+-t d  Create a directory.<SBR>
+If <REPLACEABLE>path</REPLACEABLE> is not specified
+<REPLACEABLE>source</REPLACEABLE> is used as the path attribute.
+</PARA>
+<PARA>
+-t h  Create a hard link.<SBR>
+<REPLACEABLE>path</REPLACEABLE> and <REPLACEABLE>source</REPLACEABLE> are specified.
+<REPLACEABLE>source</REPLACEABLE> is used as the value of the 
+<REPLACEABLE>link_source</REPLACEABLE> attribute, and
+<REPLACEABLE>path</REPLACEABLE> is the value of the path attribute.
+</PARA>
+<PARA>
+-t s  Create a symbolic link.<SBR>
+<REPLACEABLE>path</REPLACEABLE> and <REPLACEABLE>source</REPLACEABLE> are specified.
+<REPLACEABLE>source</REPLACEABLE> is used as the value of the 
+<REPLACEABLE>link_source</REPLACEABLE> attribute, and
+<REPLACEABLE>path</REPLACEABLE> is the value of the path attribute.
+</PARA>
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+<PARA>
+<OPTION>-m mode</OPTION> 
+<GLOSSLIST>
+<GLOSSLIST> 
+<REPLACEABLE>mode</REPLACEABLE> defines the octal mode for the file.
+</GLOSSLIST>
+</GLOSSLIST>
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Default Permission Definition
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+  file_permissions [-m <REPLACEABLE>mode</REPLACEABLE>] [-u <REPLACEABLE>umask</REPLACEABLE>] [-o [<REPLACEABLE>owner</REPLACEABLE>[,]][<REPLACEABLE>uid</REPLACEABLE>]] [-g [<REPLACEABLE>group</REPLACEABLE>[,]][<REPLACEABLE>gid</REPLACEABLE>]]
+<SBR>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+Applies to subsequently listed file definitions in a fileset.  
+These attributes will apply where the file attributes were not specified explicitly in a 
+file definition.
+Subsequent <FUNCTION>file_permissions</FUNCTION> definitions
+simply replace previous definitions (resetting all the options).
+</PARA>
+<PARA>
+To reset the file_permission state (i.e. turn it off) use one of the following:
+<VERB>
+    file_permissions "" <SBR>
+	or the preferred way is<SBR>
+    file_permissions -u 000
+</VERB>
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Excluding Files
+</TITLE>
+<VERB>
+<PROGRAMLISTING>
+<SBR>
+   exclude source
+<SBR>
+</PROGRAMLISTING>
+</VERB>
+<PARA>
+Excludes a previously included file or an entire directory.
+<SBR>
+</PARA>
+</REFSECT3>
+<REFSECT3>
+<TITLE>
+o  Including Files
+</TITLE>
+<PROGRAMLISTING>
+<VERB>
+<SBR>
+   include <<REPLACEABLE>filename</REPLACEABLE>
+<SBR>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+The contents of <REPLACEABLE>filename</REPLACEABLE> may be more definitions for files.
+The syntax of the included file is PSF syntax.
+<SBR>
+</PARA>
+</REFSECT3>

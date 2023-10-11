@@ -1,0 +1,1381 @@
+<!-- 
+<!DOCTYPE RefEntry PUBLIC "-//Davenport//DTD DocBook V2.4.1//EN">
+
+Copyright (C) 2003 James Lowe, Jr.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or any
+later version published by the Free Software Foundation; with no Invariant
+Sections, with no Front-Cover Texts, and with no Back-Cover Texts.
+
+
+     Formatting Instructions: 
+      $ docbook-to-man sw_5.sgml | nroff -man 
+
+     docbook-to-man is a free, copyrighted tool that can be obtained from
+     many sgml oriented ftp sites.
+-->
+<!DOCTYPE form
+[
+<!ENTITY swextdef SYSTEM "swpackage_extdef.sgml">
+<!ENTITY swconventions SYSTEM "swpackage_conventions.sgml">
+<!ENTITY version SYSTEM "version.sgml">
+]>
+<REFENTRY>
+<REFMETA>
+<REFENTRYTITLE>
+sw
+</REFENTRYTITLE>
+<MANVOLNUM>5</MANVOLNUM> 
+<REFMISCINFO>
+sw - Software Administration
+</REFMISCINFO>
+</REFMETA>
+<REFNAMEDIV>
+<REFNAME>
+sw
+</REFNAME>
+<REFPURPOSE>
+POSIX Software Packaging
+</REFPURPOSE>
+</REFNAMEDIV>
+<REFSYNOPSISDIV>
+<SYNOPSIS>
+Software Packaging Layout
+Software Definitions
+Software Selections
+Extended Definitions
+Distributor Keywords
+Package Security
+Software Definition Files: INFO, INDEX, PSF
+Example Package
+</SYNOPSIS>
+</REFSYNOPSISDIV>
+<REFSECT1>
+<TITLE>
+SOFTWARE PACKAGING LAYOUT
+</TITLE>
+<PARA>
+A package may exist in two forms: as a directory in a file system, or a serial access tar or cpio archive file.
+A package consists of two main sections: 1) the <REPLACEABLE>exported catalog structure</REPLACEABLE>, 
+and, 2) the <REPLACEABLE>software file storage structure</REPLACEABLE>.
+Each section may contain path name components which serve to segregate distribution, product and fileset objects.
+</PARA>
+<PARA>
+Shown below is an example with one (1) product and one (1) fileset.
+</PARA>
+<PROGRAMLISTING>
+<VERB><SBR>
+ <<REPLACEABLE>path</REPLACEABLE>>/ 
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>INDEX</FUNCTION> 
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/...
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>pfiles</REPLACEABLE>>/<FUNCTION>INFO</FUNCTION>  
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>pfiles</REPLACEABLE>>/...
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/<FUNCTION>INFO</FUNCTION> 
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/...
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/<<REPLACEABLE>script</REPLACEABLE>>
+ <<REPLACEABLE>path</REPLACEABLE>>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/<<REPLACEABLE>distribution_files</REPLACEABLE>>
+ <<REPLACEABLE>path</REPLACEABLE>>/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/<<REPLACEABLE>distribution_files</REPLACEABLE>>/...
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+The exported catalog structure consists of the files with pathnames
+that begin <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>.
+Note that <FUNCTION>catalog</FUNCTION> is not a legal <REPLACEABLE>prod_dir</REPLACEABLE> name. Also, "<FUNCTION>dfiles</FUNCTION>", and
+"<FUNCTION>pfiles</FUNCTION>" should not be used as control directory names, they are the default names for
+the Distribution and Product files directories.  The dfiles and pfiles defaults are commonly accepted.
+</PARA>
+<PARA>
+The order of files in a serial access archive is specified and shown above.
+The order of products and filesets within a product is not specified, although
+they must be grouped together.
+Notably, the <FUNCTION>INDEX</FUNCTION> file is the first regular file in the package, followed
+by the <<REPLACEABLE>dfiles</REPLACEABLE>> directory.  For each product, the <<REPLACEABLE>prod_dir</REPLACEABLE>>
+is followed immediately by the 
+<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>pfiles</REPLACEABLE>> directory.
+</PARA>
+<REFSECT2>
+<TITLE>
+Minimal Package Layout
+</TITLE>
+<PARA>
+To support extant usage of tar archives, this implementation supports a minimal package layout.
+The layout is non-intrusive to the current practice of extracting a 'binary' package in the '/' directory where 
+<<REPLACEABLE>path</REPLACEABLE>>/ is nil and,
+likewise to 'source' packages where
+<<REPLACEABLE>path</REPLACEABLE>> is typically the package name and version.  The use of nil control directories
+is not attested to in the POSIX standard.
+</PARA>
+<PROGRAMLISTING>
+<VERB><SBR>
+ <<REPLACEABLE>path</REPLACEABLE>>/ 
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>INDEX</FUNCTION> 
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>dfiles</FUNCTION>/
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>dfiles</FUNCTION>/<FUNCTION>INFO</FUNCTION>  
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>dfiles</FUNCTION>/...
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>pfiles</FUNCTION>/<FUNCTION>INFO</FUNCTION>  
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>pfiles</FUNCTION>/...
+ <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<FUNCTION>INFO</FUNCTION> 
+ <<REPLACEABLE>path</REPLACEABLE>>/<<REPLACEABLE>distribution_files</REPLACEABLE>>/...
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+In this layout a single product and fileset have <REPLACEABLE>control_directory</REPLACEABLE> attributes specified as an empty string.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Distribution Files
+</TITLE>
+<SYNOPSIS>
+catalog/<<REPLACEABLE>dfiles</REPLACEABLE>>/...
+</SYNOPSIS>
+<PARA>
+<<REPLACEABLE>dfiles</REPLACEABLE>> 
+is the value of the <REPLACEABLE>dfiles</REPLACEABLE> attribute and the default value is "dfiles".
+This directory can store an INDEX file or INFO file pertaining to the distribution. 
+It can also store an attribute of
+the distribution as a separate file where file name is the name of the attribute and the file contents the value.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Product Files
+</TITLE>
+<SYNOPSIS>
+catalog/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>pfiles</REPLACEABLE>>/...
+</SYNOPSIS>
+<PARA>
+<<REPLACEABLE>pfiles</REPLACEABLE>> 
+is the value of the <REPLACEABLE>pfiles</REPLACEABLE> attribute and the default value is "pfiles".
+This directory can store an INFO file pertaining to the product control_files,  control scripts defined in the INFO file, and all
+other distributor-defined control_files.
+It can also store an attribute of
+the product as a separate file.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Fileset Files
+</TITLE>
+<SYNOPSIS>
+catalog/<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/...
+</SYNOPSIS>
+<PARA>
+This directory contains information in the same form as does the 
+<FUNCTION>Product Files</FUNCTION>
+although pertaining to the fileset.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Control Directory Names
+</TITLE>
+<PARA>
+The 
+<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>
+names are the values of the <REPLACEABLE>control_directory</REPLACEABLE> attribute for the product and fileset respectively.  The
+default value is the value of the <REPLACEABLE>tag</REPLACEABLE> attribute.
+<<REPLACEABLE>prod_dir</REPLACEABLE>> must be unique within a distribution and
+<<REPLACEABLE>fileset_dir</REPLACEABLE>> must be unique within a product.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+File Storage 
+</TITLE>
+<SYNOPSIS>
+<<REPLACEABLE>prod_dir</REPLACEABLE>>/<<REPLACEABLE>fileset_dir</REPLACEABLE>>/<<REPLACEABLE>distribution_files</REPLACEABLE>>/...
+</SYNOPSIS>
+<PARA>
+The listing of control directories in the exported catalog structure is repeated and files of the 
+distribution appear under these directories in a location determined by the metadata.
+</PARA>
+<PARA>
+The standard does not require that files that are not regular files appear in the storage section.
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SOFTWARE DEFINITIONS
+</TITLE>
+<PARA>
+The Software Definitions are metadata representations of the objects and attributes
+recognized by the standard.
+The right hand column in each definition shows the default attribute value.  The defining standard for each attribute is indicated as a
+comment (leading '#' sign) if it is not IEEE-1387.2,  other defining standards are XDSA C701 (<FUNCTION>C701</FUNCTION>), and, this
+implementation (<FUNCTION>impl.</FUNCTION>).
+</PARA>
+<REFSECT2>
+<TITLE>
+Host Definition
+</TITLE>
+<PROGRAMLISTING>
+ host<SBR>
+   hostname     <REPLACEABLE>hostname</REPLACEABLE>       None
+   os_name      <REPLACEABLE>os_name</REPLACEABLE>        None
+   os_release   <REPLACEABLE>os_release</REPLACEABLE>     None
+   os_version   <REPLACEABLE>os_version</REPLACEABLE>     None
+   machine_type <REPLACEABLE>machine_type</REPLACEABLE>   None
+</PROGRAMLISTING>
+<PARA>
+The host definition was attested to only in the informative annex of the standard.  An implementation
+may chose to define this class.
+</PARA>
+<PARA>
+A host object can contain a <REPLACEABLE>distribution</REPLACEABLE>,
+or <REPLACEABLE>installed_software</REPLACEABLE>
+object.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Distribution Definition
+</TITLE>
+<PROGRAMLISTING>
+ distribution
+   layout_version <REPLACEABLE>layout_version</REPLACEABLE>  <FUNCTION>1.0</FUNCTION>
+
+   path           <REPLACEABLE>path</REPLACEABLE>            Implementation Defined
+   dfiles         <REPLACEABLE>dfiles</REPLACEABLE>          <FUNCTION>dfiles</FUNCTION>
+
+   pfiles         <REPLACEABLE>pfiles</REPLACEABLE>          <FUNCTION>pfiles</FUNCTION>
+
+   uuid           <REPLACEABLE>uuid</REPLACEABLE>            Empty string
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>path</REPLACEABLE> attribute is not in a PSF nor INDEX files.
+A PSF does not contain a <REPLACEABLE>uuid</REPLACEABLE> attribute.
+An INDEX file will contain a <REPLACEABLE>layout_version</REPLACEABLE> attribute as
+the first attribute.
+</PARA>
+<PARA>
+A distribution object can contain <REPLACEABLE>bundles</REPLACEABLE>, <REPLACEABLE>products</REPLACEABLE>,
+and, <REPLACEABLE>media</REPLACEABLE> in the form of software definitions.
+</PARA>
+<PARA>
+The following attributes are recognized as valuable by the Informative Annex of POSIX.7.2.
+</PARA>
+<PROGRAMLISTING>
+   tag                <REPLACEABLE>tag</REPLACEABLE>                Empty string
+   title              <REPLACEABLE>title</REPLACEABLE>              Empty string
+   description        <REPLACEABLE>description</REPLACEABLE>        Empty string
+   revision           <REPLACEABLE>revision</REPLACEABLE>           Empty string
+   media_type         <REPLACEABLE>media_type</REPLACEABLE>         Empty string
+   copyright          <REPLACEABLE>copyright</REPLACEABLE>          Empty string
+   create_time        <REPLACEABLE>create_time</REPLACEABLE>        Empty string
+   number             <REPLACEABLE>number</REPLACEABLE>             Empty string
+   architecture       <REPLACEABLE>architecture</REPLACEABLE>       Empty string
+</PROGRAMLISTING>
+<PARA>
+The following attributes are recognized by this implementation.
+</PARA>
+<PROGRAMLISTING>
+   signature          <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   sig_header   <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   sha1sum            <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   sha512sum           <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   md5sum             <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   adjunct_md5sum     <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>  None   # impl.
+   files              <FUNCTION><</FUNCTION> <REPLACEABLE>pathname</REPLACEABLE>    None  # impl.
+   control_directory  <REPLACEABLE>control_directory</REPLACEABLE>      Empty string   # impl.
+   owner              <REPLACEABLE>name</REPLACEABLE>                           root   # impl.
+   group              <REPLACEABLE>name</REPLACEABLE>                           root   # impl.
+   mode               <REPLACEABLE>mode</REPLACEABLE>                           <FUNCTION>0755</FUNCTION>    # impl.
+   signer_pgm         <REPLACEABLE>utility_name</REPLACEABLE>                   GPG    # impl.
+   signer_pgm_version <REPLACEABLE>version</REPLACEABLE>                        <FUNCTION>1</FUNCTION>    # impl.
+   tar_format_emulation_options <REPLACEABLE>program_options</REPLACEABLE>          # impl.
+   tar_format_emulation_utility <REPLACEABLE>software spec</REPLACEABLE>            # impl.
+
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>url</REPLACEABLE> attribute is the universal record locator of
+the <REPLACEABLE>packager</REPLACEABLE> qualified vendor.
+The <REPLACEABLE>control_directory</REPLACEABLE> attribute in the 
+distribution object appears as the <<REPLACEABLE>path</REPLACEABLE>>
+leading directory path in the a serial archive package.
+The <REPLACEABLE>owner</REPLACEABLE>, <REPLACEABLE>group</REPLACEABLE>, and
+<REPLACEABLE>mode</REPLACEABLE>
+attributes control the file attributes of the single path name prefix.
+The <REPLACEABLE>signature</REPLACEABLE>,
+<REPLACEABLE>sig_header</REPLACEABLE>,
+<REPLACEABLE>md5sum</REPLACEABLE>,
+and <REPLACEABLE>adjunct_md5sum</REPLACEABLE>
+attributes are described below and are stored as separate files in the dfiles
+directory. The <REPLACEABLE>tar_format_emulation_*</REPLACEABLE> options define
+the GNU tar version and format options that the archive file mimics, these
+attributes are used by the 'checkdigest' script.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Installed_software Definition
+</TITLE>
+<PROGRAMLISTING>
+ installed_software
+   layout_version <REPLACEABLE>layout_version</REPLACEABLE>  <FUNCTION>1.0</FUNCTION>
+
+   path           <REPLACEABLE>path</REPLACEABLE>            Implementation Defined
+   dfiles         <REPLACEABLE>dfiles</REPLACEABLE>          <FUNCTION>dfiles</FUNCTION>
+
+   pfiles         <REPLACEABLE>pfiles</REPLACEABLE>          <FUNCTION>dfiles</FUNCTION>
+
+   catalog        <REPLACEABLE>catalog</REPLACEABLE>         Undefined
+   install_time   <REPLACEABLE>install_time</REPLACEABLE>    Undefined       # impl.
+</PROGRAMLISTING>
+<PARA>
+A software object can be listed (written to stdout) in the form of an INDEX
+file by the swlist utility.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Media Definition
+</TITLE>
+<PROGRAMLISTING>
+ media
+   sequence_number <REPLACEABLE>sequence_number</REPLACEABLE>  <FUNCTION>1</FUNCTION>
+
+</PROGRAMLISTING>
+<PARA>
+An INDEX file must contain the <REPLACEABLE>sequence_number</REPLACEABLE> attribute if
+the distribution spans multiple media.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Vendor Definition
+</TITLE>
+<PROGRAMLISTING>
+ vendor
+   the_term_vendor_is_misleading  true                  True or False  #impl
+   tag         <REPLACEABLE>tag</REPLACEABLE>           Empty string
+   title       <REPLACEABLE>title</REPLACEABLE>         Empty string
+   description <REPLACEABLE>description</REPLACEABLE>   Empty string
+   qualifier   <REPLACEABLE>qualifier</REPLACEABLE>     Empty string  # impl.
+   url         <REPLACEABLE>url</REPLACEABLE>           Empty string  # impl.
+   vendor_tag  <REPLACEABLE>tag</REPLACEABLE>           Empty string  # impl.
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>tag</REPLACEABLE> attribute is required.
+The <REPLACEABLE>the_term_vendor_is_misleading</REPLACEABLE> is required in a PSF
+file to avert a (harmless) warning, please use it.  It exists to allow persons, for example,
+who are distributors (of existing free software) to qualify themselves away from the connotations
+of a "vendor" which has specific meaning not applicable to a free software distributor.
+A INDEX and PSF files can contain <FUNCTION>vendor</FUNCTION> definitions.
+The <REPLACEABLE>vendor_tag</REPLACEABLE> attribute contains the vendor.<REPLACEABLE>tag</REPLACEABLE>
+of the upstream distributor.
+The <FUNCTION>qualifier</FUNCTION> attribute value may be one of:
+<FUNCTION>seller</FUNCTION>, 
+<FUNCTION>author</FUNCTION>, 
+<FUNCTION>packager</FUNCTION>, 
+<FUNCTION>maintainer</FUNCTION>.
+A distribution may have more than one vendor definition.  They may form a chain of references from
+the product.<REPLACEABLE>vendor_tag</REPLACEABLE> to the last vendor referred to by the
+vendor.<REPLACEABLE>vendor_tag</REPLACEABLE> attributes.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Bundle Definition
+</TITLE>
+<PROGRAMLISTING>
+ bundle
+   tag          <REPLACEABLE>tag</REPLACEABLE>
+   architecture <REPLACEABLE>architecture</REPLACEABLE>    Empty string
+   location     <REPLACEABLE>location</REPLACEABLE>        <<REPLACEABLE>bundle.directory</REPLACEABLE>>
+   qualifier    <REPLACEABLE>qualifier</REPLACEABLE>       Empty string
+   revision     <REPLACEABLE>revision</REPLACEABLE>        Empty string
+   vendor_tag   <REPLACEABLE>vendor_tag</REPLACEABLE>      Empty string
+   create_time  <REPLACEABLE>create_time</REPLACEABLE>     None
+   description  <REPLACEABLE>description</REPLACEABLE>     Empty string
+   contents     <REPLACEABLE>contents</REPLACEABLE>        Empty string
+   copyright    <REPLACEABLE>copyright</REPLACEABLE>       Empty string
+   directory    <REPLACEABLE>directory</REPLACEABLE>       Empty string
+   instance_id  <REPLACEABLE>instance_id</REPLACEABLE>     <FUNCTION>1</FUNCTION>
+
+   is_locatable <REPLACEABLE>is_locatable</REPLACEABLE>    <FUNCTION>true</FUNCTION>
+
+   layout_version <REPLACEABLE>layoyt_version</REPLACEABLE>  <FUNCTION>1.0</FUNCTION>
+  
+   machine_type <REPLACEABLE>machine_type</REPLACEABLE>    Empty string
+   mod_time     <REPLACEABLE>mod_time</REPLACEABLE>        Empty string
+   number       <REPLACEABLE>number</REPLACEABLE>          Empty string
+   os_name      <REPLACEABLE>os_name</REPLACEABLE>         Empty string
+   os_release   <REPLACEABLE>os_release</REPLACEABLE>      Empty string
+   os_version   <REPLACEABLE>os_version</REPLACEABLE>      Empty string
+   size         <REPLACEABLE>size</REPLACEABLE>            Empty string
+   title        <REPLACEABLE>title</REPLACEABLE>           Empty string
+   category_tag <REPLACEABLE>category_tag</REPLACEABLE>    Empty list or patch  # C701
+   is_patch     <REPLACEABLE>is_patch</REPLACEABLE>        false                # C701
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>tag</REPLACEABLE>
+and <REPLACEABLE>contents</REPLACEABLE>
+attributes are required in INDEX and PSF files.
+The <REPLACEABLE>size</REPLACEABLE>
+attribute is not allowed in either file. The value of <REPLACEABLE>size</REPLACEABLE> is generated dynamically.
+An INDEX file will contain a <REPLACEABLE>instance_id</REPLACEABLE> attribute.
+Bundle definitions for distributions will not contain either the
+<REPLACEABLE>location</REPLACEABLE>
+or
+<REPLACEABLE>qualifier</REPLACEABLE>,
+<REPLACEABLE>installed_software</REPLACEABLE> objects may contain these attributes.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Product Definition
+</TITLE>
+<PROGRAMLISTING>
+ product
+   tag               <REPLACEABLE>tag</REPLACEABLE>               None
+   architecture      <REPLACEABLE>architecture</REPLACEABLE>      Empty string
+   location          <REPLACEABLE>location</REPLACEABLE>          <<REPLACEABLE>product.directory</REPLACEABLE>>
+   qualifier         <REPLACEABLE>qualifier</REPLACEABLE>         Empty string
+   revision          <REPLACEABLE>revision</REPLACEABLE>          Empty string
+   vendor_tag        <REPLACEABLE>vendor_tag</REPLACEABLE>        Empty string
+   all_filesets      <REPLACEABLE>all_filesets</REPLACEABLE>      Empty list
+   control_directory <REPLACEABLE>control_directory</REPLACEABLE> <<REPLACEABLE>product.tag</REPLACEABLE>>
+   copyright         <REPLACEABLE>copyright</REPLACEABLE>         Empty string
+   create_time       <REPLACEABLE>create_time</REPLACEABLE>       None
+   directory         <REPLACEABLE>directory</REPLACEABLE>         <FUNCTION>/</FUNCTION>
+
+   description       <REPLACEABLE>description</REPLACEABLE>       Empty string
+   instance_id       <REPLACEABLE>instance_id</REPLACEABLE>       <FUNCTION>1</FUNCTION>
+
+   is_locatable      <REPLACEABLE>is_locatable</REPLACEABLE>      <FUNCTION>true</FUNCTION>
+   
+   postkernel        <REPLACEABLE>postkernel</REPLACEABLE>        Implemen. defined
+   layout_version    <REPLACEABLE>layout_version</REPLACEABLE>    <FUNCTION>1.0</FUNCTION>
+
+   machine_type      <REPLACEABLE>machine_type</REPLACEABLE>      Empty string
+   number            <REPLACEABLE>number</REPLACEABLE>            Empty string
+   os_name           <REPLACEABLE>os_name</REPLACEABLE>           Empty string
+   os_release        <REPLACEABLE>os_release</REPLACEABLE>        Empty string
+   os_version        <REPLACEABLE>os_version</REPLACEABLE>        Empty string
+   mod_time          <REPLACEABLE>mod_time</REPLACEABLE>          None
+   size              <REPLACEABLE>size</REPLACEABLE>              None
+   title             <REPLACEABLE>title</REPLACEABLE>             title
+   category_tag      <REPLACEABLE>category_tag</REPLACEABLE>      Empty list # C701
+   is_patch          <REPLACEABLE>is_patch</REPLACEABLE>          false      # C701
+   copyrighters      <REPLACEABLE>copyrighters</REPLACEABLE>      None       # impl.
+   build_root        <REPLACEABLE>build_root</REPLACEABLE>        None       # impl.
+   build_host        <REPLACEABLE>build_host</REPLACEABLE>        None       # impl.
+   source_package    <REPLACEABLE>source_package</REPLACEABLE>    None       # impl.
+   source_rpm        <REPLACEABLE>source_rpm</REPLACEABLE>        None       # impl.
+   all_patches       <REPLACEABLE>all_patches</REPLACEABLE>       None       # impl.
+   url               <REPLACEABLE>url</REPLACEABLE>               None       # impl.
+   rpm_provides      <REPLACEABLE>rpm_provides</REPLACEABLE>      None       # impl.
+   change_log        <REPLACEABLE>change_log</REPLACEABLE>        None       # impl.
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>tag</REPLACEABLE>
+and <REPLACEABLE>control_directory</REPLACEABLE>
+attributes are required.
+The 
+<REPLACEABLE>size</REPLACEABLE>
+attribute is not allowed in either file. The value of
+<REPLACEABLE>size</REPLACEABLE> is generated dynamically.
+An INDEX file will contain a <REPLACEABLE>instance_id</REPLACEABLE> attribute.
+A product object can contain 
+<REPLACEABLE>control_files</REPLACEABLE>,
+<REPLACEABLE>files</REPLACEABLE>, and,
+<REPLACEABLE>subproducts</REPLACEABLE> in the form of software definitions.
+</PARA>
+<PARA>
+The product.<REPLACEABLE>vendor_tag</REPLACEABLE> refers to the downstream distributor.  This value is
+be the analogous to the RPMTAG_RELEASE or debian_release attributes.  The original upstream author's package, for example,
+would not use this attribute because that package would not have a release part in its name,
+but could (or should) provide a vendor object in the PSF.
+</PARA>
+<PARA>
+The <REPLACEABLE>architecture</REPLACEABLE> attribute contains an implementation
+defined name describing the architecture.  This attribute may be a pattern. 
+The swbis implementation uses the output of GNU <FILENAME>config.guess</FILENAME>
+(timestamp=2007-01-15) as the string to be matched by this pattern.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Category Definition
+</TITLE>
+<PROGRAMLISTING>
+ category
+   tag           <REPLACEABLE>tag</REPLACEABLE>            None             # C701
+   title         <REPLACEABLE>title</REPLACEABLE>          Empty string     # C701
+   description   <REPLACEABLE>description</REPLACEABLE>    Empty string     # C701
+   revision      <REPLACEABLE>revision</REPLACEABLE>       Empty string     # C701
+</PROGRAMLISTING>
+<PARA>
+The Category definition describes attributes of products and bundles related
+to its category. If <REPLACEABLE>is_patch</REPLACEABLE> is "true" then category.tag
+must equal "patch".
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Subroduct Definition
+</TITLE>
+<PROGRAMLISTING>
+ subproduct
+   tag           <REPLACEABLE>tag</REPLACEABLE>            None
+   create_time   <REPLACEABLE>create_time</REPLACEABLE>    None
+   description   <REPLACEABLE>description</REPLACEABLE>    Empty string
+   mod_time      <REPLACEABLE>mod_time</REPLACEABLE>       None
+   size          <REPLACEABLE>size</REPLACEABLE>           None
+   title         <REPLACEABLE>title</REPLACEABLE>          Empty string
+   contents      <REPLACEABLE>contents</REPLACEABLE>       Empty list
+   category_tag  <REPLACEABLE>category_tag</REPLACEABLE>   Empty list   # C701
+   is_patch      <REPLACEABLE>is_patch</REPLACEABLE>       false        # C701
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>tag</REPLACEABLE>
+and <REPLACEABLE>contents</REPLACEABLE>
+attributes are required.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Fileset Definition
+</TITLE>
+<PROGRAMLISTING>
+ fileset
+   tag               <REPLACEABLE>tag</REPLACEABLE>               None
+   create_time       <REPLACEABLE>create_time</REPLACEABLE>       None
+   mod_time          <REPLACEABLE>mod_time</REPLACEABLE>          None
+   control_directory <REPLACEABLE>control_directory</REPLACEABLE> <<REPLACEABLE>fileset.tag</REPLACEABLE>>
+   corequisites      <REPLACEABLE>corequisites</REPLACEABLE>      Empty list
+   description       <REPLACEABLE>description</REPLACEABLE>       Empty string
+   exrequisites      <REPLACEABLE>exrequisites</REPLACEABLE>      Empty list
+   is_kernel         <REPLACEABLE>is_kernel</REPLACEABLE>         <FUNCTION>false</FUNCTION>
+
+   is_locatable      <REPLACEABLE>is_locatable</REPLACEABLE>      <FUNCTION>true</FUNCTION>
+
+   is_reboot         <REPLACEABLE>is_reboot</REPLACEABLE>         <FUNCTION>false</FUNCTION>
+
+   location          <REPLACEABLE>location</REPLACEABLE>          <<REPLACEABLE>product.directory</REPLACEABLE>>
+   media_sequence_number <REPLACEABLE>media_sequence_number</REPLACEABLE> <FUNCTION>1</FUNCTION>
+
+   prerequisites     <REPLACEABLE>prerequisites</REPLACEABLE>     Empty list
+   revision          <REPLACEABLE>revision</REPLACEABLE>          None
+   size              <REPLACEABLE>size</REPLACEABLE>              None
+   state             <REPLACEABLE>state</REPLACEABLE>             None
+   title             <REPLACEABLE>title</REPLACEABLE>             Empty string
+   is_sparse         <REPLACEABLE>is_sparse</REPLACEABLE>        "false"        # C701
+   is_patch          <REPLACEABLE>is_patch</REPLACEABLE>         "false"        # C701
+   category_tag      <REPLACEABLE>category_tag</REPLACEABLE>      empty list    # C701
+   ancestor          <REPLACEABLE>ancestor</REPLACEABLE>          <<REPLACEABLE>product.tag</REPLACEABLE>>,ver_id # C701
+   applied_patches   <REPLACEABLE>applied_patches</REPLACEABLE>   empty list    # C701
+   patch_state       <REPLACEABLE>patch_state</REPLACEABLE>       applied or,   # C701
+                                           committed or,
+                                             superseded, (no default).
+   saved_files_directory  <REPLACEABLE>saved_files_directory</REPLACEABLE> None # C701
+   supersedes       <REPLACEABLE>supersedes</REPLACEABLE>          None         # C701
+   superseded_by    <REPLACEABLE>superseded_by</REPLACEABLE>       None         # C701
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>tag</REPLACEABLE>
+and <REPLACEABLE>control_directory</REPLACEABLE>
+attributes are required.  A PSF should not contain the
+<REPLACEABLE>location</REPLACEABLE>,
+<REPLACEABLE>media_sequence_number</REPLACEABLE>,
+<REPLACEABLE>size</REPLACEABLE>, or 
+<REPLACEABLE>state</REPLACEABLE> attributes.
+A fileset object can contain 
+<REPLACEABLE>control_files</REPLACEABLE>,
+<REPLACEABLE>files</REPLACEABLE>,
+in the form of software definitions.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+File Definition
+</TITLE>
+<PROGRAMLISTING>
+ file
+   path               <REPLACEABLE>path</REPLACEABLE>               None
+   cksum             <REPLACEABLE>cksum</REPLACEABLE>             None
+   compressed_cksum  <REPLACEABLE>compressed_cksum</REPLACEABLE>  None
+   compressed_size    <REPLACEABLE>compressed_size</REPLACEABLE>    None
+   compression_state  <REPLACEABLE>compression_state</REPLACEABLE>  <FUNCTION>uncompressed</FUNCTION>
+
+   compression_type   <REPLACEABLE>compression_type</REPLACEABLE>   Empty string
+   revision           <REPLACEABLE>revision</REPLACEABLE>           Empty string
+   size               <REPLACEABLE>size</REPLACEABLE>               None
+   source             <REPLACEABLE>source</REPLACEABLE>             None
+   gid                <REPLACEABLE>gid</REPLACEABLE>                Undefined
+   group              <REPLACEABLE>group</REPLACEABLE>              Empty string
+   is_volatile        <REPLACEABLE>is_volatile</REPLACEABLE>        <FUNCTION>false</FUNCTION>
+
+   link_source        <REPLACEABLE>link_source</REPLACEABLE>        None
+   major              <REPLACEABLE>major</REPLACEABLE>              None
+   minor              <REPLACEABLE>minor</REPLACEABLE>              None
+   mode               <REPLACEABLE>mode</REPLACEABLE>               None
+   mtime              <REPLACEABLE>mtime</REPLACEABLE>              None
+   owner              <REPLACEABLE>owner</REPLACEABLE>              Empty string
+   type               <REPLACEABLE>type</REPLACEABLE>               <FUNCTION>f</FUNCTION>
+
+   uid                <REPLACEABLE>uid</REPLACEABLE>                undefined
+   archive_path    <REPLACEABLE>archive_path</REPLACEABLE>    empty string    # C701
+   md5sum          <REPLACEABLE>md5sum</REPLACEABLE>      empty string    # impl.
+   sha1sum         <REPLACEABLE>sha1sum</REPLACEABLE>      empty string    # impl.
+   sha512sum       <REPLACEABLE>sha512sum</REPLACEABLE>      empty string    # impl.
+   rdev            <REPLACEABLE>rdev</REPLACEABLE>            empty string    # impl.
+   rpm_fileflags   <REPLACEABLE>rpm_fileflags</REPLACEABLE>   empty string    # impl.
+</PROGRAMLISTING>
+<PARA>
+A PSF must contain <REPLACEABLE>source</REPLACEABLE> attribute.
+A <REPLACEABLE>source</REPLACEABLE>  attribute in an INFO will be
+ignored.
+A PSF should not contain the
+<REPLACEABLE>cksum</REPLACEABLE>,
+<REPLACEABLE>compressed_cksum</REPLACEABLE>,
+<REPLACEABLE>compressed_size</REPLACEABLE>,
+<REPLACEABLE>compression_state</REPLACEABLE>,
+<REPLACEABLE>compression_type</REPLACEABLE>, or  
+<REPLACEABLE>size</REPLACEABLE> attributes.
+</PARA>
+</REFSECT2>
+
+<REFSECT2>
+<TITLE>
+Control File Definition
+</TITLE>
+<VERB><SBR>
+<PROGRAMLISTING>
+ control_file
+   tag                <REPLACEABLE>tag</REPLACEABLE>                None
+   cksum             <REPLACEABLE>cksum</REPLACEABLE>             None
+   compressed_cksum  <REPLACEABLE>compressed_cksum</REPLACEABLE>  None
+   compressed_size    <REPLACEABLE>compressed_size</REPLACEABLE>    None
+   compression_state  <REPLACEABLE>compression_state</REPLACEABLE>  <FUNCTION>uncompressed</FUNCTION>
+
+   compression_type   <REPLACEABLE>compression_type</REPLACEABLE>   Empty string
+   revision           <REPLACEABLE>revision</REPLACEABLE>           Empty string
+   size               <REPLACEABLE>size</REPLACEABLE>               None
+   source             <REPLACEABLE>source</REPLACEABLE>             None
+   path               <REPLACEABLE>path</REPLACEABLE>               None
+   interpreter        <REPLACEABLE>interpreter</REPLACEABLE>        <FUNCTION>sh</FUNCTION>
+
+   result             <REPLACEABLE>result</REPLACEABLE>             <FUNCTION>none</FUNCTION>
+
+</PROGRAMLISTING>
+<PARA>
+A control_file defines a control script such as those listed below (see Extended Control File Definitions)
+or an attribute stored as a file. 
+</PARA>
+</REFSECT2>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+SOFTWARE SELECTIONS
+</TITLE>
+<PARA>
+The Software Selections provide a means to specify and select (possibly with
+a shell matching pattern) specific Software objects.  A selection is made
+using a <FUNCTION>software spec</FUNCTION>.
+A software spec may not contain white space (a list of multiple selections is white space
+delimited).  A software spec consists of <REPLACEABLE>tag</REPLACEABLE> values
+and  <REPLACEABLE>version_id</REPLACEABLE>s.  Multiple tags are '.' (dot) delimited
+with the leftmost specifying the broadest (most general) software object such as a
+bundle or product and the rightmost being most specific (The swbis implementation
+does not support fileset tags in a software spec). The tags may be followed by nothing, or a comma and one
+or more Version Identifiers which are ',' comma delimited. 
+</PARA>
+<PARA>
+<FUNCTION>Dependency Specs</FUNCTION> are software specs.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Version Identifiers
+</TITLE>
+<PARA>
+<FUNCTION>Version Identifiers</FUNCTION> specify specific attributes of a software object.
+There are five (5) specified. They are signified by a single letter: <FUNCTION>r,a,v,l,q</FUNCTION>.
+An implementation may support additional ones and may support qualification
+to a specific object type by prefixing a 'p' or 'b' or 'f' for bundle, product, or
+fileset respectively.  The value of the attribute follows an equals sign '=', or
+in the case of a revision id, a relational operator.
+<PROGRAMLISTING>
+ Letter     Attribute  
+   r    <FUNCTION>revision</FUNCTION>   r\<<REPLACEABLE>relop</REPLACEABLE>\><REPLACEABLE>revsion</REPLACEABLE>   
+                             # A relop may be ==,\<,\>,\<=,\>=
+   v    <FUNCTION>vendor_tag</FUNCTION>    v=<REPLACEABLE>vendor_tag</REPLACEABLE>   
+   q    <FUNCTION>qualifier</FUNCTION>     q=<REPLACEABLE>qualifier</REPLACEABLE>  
+   l    <FUNCTION>location</FUNCTION>      l=<REPLACEABLE>location</REPLACEABLE>  
+   a    <FUNCTION>architecture</FUNCTION>  a=<REPLACEABLE>arch</REPLACEABLE>  
+</PROGRAMLISTING>
+</PARA>
+<PARA>
+Implementation Extension Version Ids are the following:
+<PROGRAMLISTING>
+ Letter     Attribute  
+<!-- 
+   c    <FUNCTION>installed_software.catalog</FUNCTION>   c=<REPLACEABLE>path</REPLACEABLE>  
+-->
+   i    <REPLACEABLE>catalog_instance_id</REPLACEABLE>   i=<REPLACEABLE>number</REPLACEABLE>  
+</PROGRAMLISTING>
+The catalog <REPLACEABLE>instance_id</REPLACEABLE> is a directory in the installed
+software catalog that distinguishes installed instances of packages with the same
+name and revision but at different locations.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Example Software Specs
+</TITLE>
+<PROGRAMLISTING>
+    emacs,r==21.2
+    kde.kdegames # This assumes that 'kde' was specified as the bundle
+                 # in the kdegames package
+    foobar,r\>1.0,v=tycoon003
+    somepackage,r\>1.0,r\<=1.3  # revision is the product revision by default
+    somepackage,pr\>1.0,pr\<=1.3  # explicitly specify revision is the product revision
+</PROGRAMLISTING>
+</REFSECT2>
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+DEPENDENCY SPECS
+</TITLE>
+<PARA>
+A dependency spec is a <FUNCTION>software spec</FUNCTION>.  There are three types:
+<REPLACEABLE>prerequisites</REPLACEABLE>,
+<REPLACEABLE>exrequisites</REPLACEABLE>,
+<REPLACEABLE>corequisites</REPLACEABLE>.
+These attributes apply to the fileset and are placed in the fileset object in a PSF file.
+A <REPLACEABLE>prerequisites</REPLACEABLE> is something that must be installed, and
+a <REPLACEABLE>exrequisites</REPLACEABLE> is something that must not be installed.
+A <REPLACEABLE>corequisites</REPLACEABLE> is something that must be installed with, <REPLACEABLE>corequisites</REPLACEABLE>
+are not supported at this time.
+<REPLACEABLE>prerequisites</REPLACEABLE> map to RPMTAG_REQUIRENAME, RPMTAG_REQUIREVERSION, and RPMTAG_REQUIREFLAGS attributes.
+</PARA>
+<REFSECT2>
+<TITLE>
+Dependency Spec Examples
+</TITLE>
+<PARA>
+<PROGRAMLISTING>
+<VERB>
+   # Alternation  Require a package named foo1 or foo2
+   prerequisite   foo1|foo2
+
+   # Require a package named foo1 and foo2
+   prerequisite   foo1 foo2
+
+   # multiple prerequisite keywords can be used
+   prerequisite  foo1
+   prerequisite  foo2
+
+   # Require a revision range and a certain vendor_tag
+   prerequisite  foo1,r>2,r<3,v=mydist*
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+&swextdef;
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+DISTRIBUTOR KEYWORDS
+</TITLE>
+<PARA>
+A software definition file (INFO, INDEX or psf) may contain keywords not recognized by the standard. 
+Such keywords will be parsed as an attribute keyword, that is as an attribute of the
+containing object (keyword) software definition.
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+PACKAGE SECURITY
+</TITLE>
+<PARA>
+The Package Security Attributes are distribution attributes stored as separate files.  They are implementation extensions.
+They consist of archive digests, catalog signature, catalog signature header, and individual file md5, sha1, and sha512 digests.
+</PARA>
+<PARA>
+</PARA>
+<REFSECT2>
+<TITLE>
+Archive Digests
+</TITLE>
+<PARA>
+<REPLACEABLE>md5sum</REPLACEABLE>, <REPLACEABLE>sha1sum</REPLACEABLE>, and <REPLACEABLE>sha512sum</REPLACEABLE>
+are the md5 and sha1 and sha512 digests (ascii representations) of the
+leading package directories that do not have the <FUNCTION>catalog</FUNCTION> pathname component
+followed by the 
+<REPLACEABLE>software file storage structure</REPLACEABLE>
+portion of the uncompressed serial access package file including all archive format trailer blocks.
+</PARA>
+<PROGRAMLISTING>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>md5sum</FUNCTION><SBR>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>sha1sum</FUNCTION><SBR>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>sha512sum</FUNCTION><SBR>
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Adjunct Md5 Digest
+</TITLE>
+<PARA>
+<REPLACEABLE>adjunct_md5sum</REPLACEABLE>
+is the same as the
+<REPLACEABLE>md5sum</REPLACEABLE> excluding symbolic links.
+If a package does not contain symbolic links the 
+<REPLACEABLE>md5sum</REPLACEABLE> and 
+<REPLACEABLE>adjunct_md5sum</REPLACEABLE> will be identical.<SBR>
+</PARA>
+<PROGRAMLISTING>
+<VERB>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>adjunct_md5sum</FUNCTION>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+Explanation: This attribute is called 'adjunct' because it is a digest of a subset of the files in the package.
+It exists to facilitate verifying file integrity of the directory form of a package
+in an environment where the modification time of symbolic link files are not preserved from the serial
+archive by the tar utility or operating system.
+The ability to verify even the <REPLACEABLE>adjunct_md5sum</REPLACEABLE> from
+the directory form of the package is dependent on the tar creating utility and 
+other attributes of a POSIX.2 environment.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Catalog Signature Header
+</TITLE>
+<PARA>
+The <REPLACEABLE>sig_header</REPLACEABLE> file is a ustar header that is
+identical bit-for-bit to the ustar header of the signature file.  It always precedes the signature
+file archive members.
+</PARA>
+<PROGRAMLISTING>
+<VERB>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>sig_header</FUNCTION>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+The <REPLACEABLE>sig_header</REPLACEABLE> protects the tar header of the signature files from tampering.
+This is required because neither the signature file bytes nor the signature tar header are
+included in the signed data.
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Catalog Signature
+</TITLE>
+<PARA>
+The signature protects the metadata section of the archive.  The contents of payload section are only included
+in the form of a crytographic digest.  The sha1 digest is preferred over the md5 digest for technical reasons.
+If the metadata section does not contain the payload section digests then there is no way to verify the
+payload from the signature.
+<PARA>
+<PROGRAMLISTING>
+<VERB>
+       <<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>signature</FUNCTION>
+</VERB>
+</PROGRAMLISTING>
+<PARA>
+The signed data is the <REPLACEABLE>exported catalog structure</REPLACEABLE> of the uncompressed serial archive package file
+up to but not including the first byte of the <REPLACEABLE>software file storage structure</REPLACEABLE>
+followed by two (2) 512 byte null blocks if tar format, and no trailer bytes if not tar format. 
+The signature file archive member itself is not included in the signed stream, it is intended that the 
+<<REPLACEABLE>path</REPLACEABLE>>/<FUNCTION>catalog</FUNCTION>/<<REPLACEABLE>dfiles</REPLACEABLE>>/<FUNCTION>md5sum</FUNCTION>
+file is included in the signed stream.
+</PARA>
+<PARA>
+The signature file is ASCII armored.
+The last printable character of the signature is followed by one or more
+newline characters (0x0A).
+The total length of the file must match the file size specified
+in the size field of the <FILENAME>sig_header</FILENAME> file.
+The ustar header of every signature archive member shall be identical
+to the <FILENAME>sig_header</FILENAME> file.
+The padded size is predetermined [by swpackage] and currently set
+to be 1024 octets.
+This means the armored sig file has a length limitation of 1023 octets.
+</PARA>
+<PARA>
+If multiple signature archive members exist they must follow one another in the
+archive with no other intervening files; and, the same
+<FILENAME>sig_header</FILENAME> file is the ustar header for all the signature
+archive members.
+A signature archive member, whether alone or one of many, is never
+part of the signed data stream.
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+File Digests
+</TITLE>
+<PARA>
+File digests are attributes of the <FUNCTION>file</FUNCTION> software definition. They appear in
+the INFO file.
+</PARA>
+
+<VERB>
+       <REPLACEABLE>file</REPLACEABLE>.cksum 
+       <REPLACEABLE>file</REPLACEABLE>.md5sum 
+       <REPLACEABLE>file</REPLACEABLE>.sha1sum 
+       <REPLACEABLE>file</REPLACEABLE>.sha512sum
+</VERB>
+<PARA>
+Each file can have none or all of these digests.
+<SBR>
+<SBR>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SOFTWARE DEFINITION FILES
+</TITLE>
+<PARA>
+The metadata files, INDEX, INFO and PSF, contain information about the
+software in the form of <REPLACEABLE>software definitions</REPLACEABLE>. 
+The INDEX and INFO files appear
+in a package directory structure.
+They are automatically generated by the 'swpackage' command.
+The location in the directory structure indicates the higher level object
+to which their data pertains.
+The PSF file does not appear in the package.
+It is created by a person or program and it directs
+the action of the swpackage utility.
+It is internal data unless released by the distributor.
+</PARA>
+<PARA>
+The files contain keywords (and values) to represent the attributes defined in the standard.  There are three (3)
+different keyword types: object, attribute, and, extended. The object keyword type has no value and there are
+eleven (11) of these corresponding to the Software Definitions defined above:
+<FUNCTION>installed_software</FUNCTION>,
+<FUNCTION>distribution</FUNCTION>,
+<FUNCTION>media</FUNCTION>,
+<FUNCTION>bundle</FUNCTION>,
+<FUNCTION>vendor</FUNCTION>,
+<FUNCTION>category</FUNCTION>,
+<FUNCTION>product</FUNCTION>,
+<FUNCTION>subproduct</FUNCTION>,
+<FUNCTION>fileset</FUNCTION>,
+<FUNCTION>control_file</FUNCTION>,
+<FUNCTION>file</FUNCTION>.
+
+Each object keyword is followed by and newline and attributes in the form of keyword/value pairs.  Whitespace separates the keyword and
+value.  Whitespace outside of a quoted value is not significant. 
+A quoted value can span multiple lines.  An object keyword with its list of attribute keywords (and values)
+forms a <REPLACEABLE>Software Definition</REPLACEABLE>.  
+A <REPLACEABLE>Software Definition</REPLACEABLE>
+is terminated by the start of the next <REPLACEABLE>Software Definition</REPLACEABLE>.
+Extended keywords (meaning Extended Definitions) only appear in a PSF file.
+</PARA>
+<PARA>
+The order  of objects (i.e <REPLACEABLE>Software Definition</REPLACEABLE>s) is significant and
+a containment  hierarchy is determined according to parser's grammar.
+</PARA>
+<REFSECT2>
+<TITLE>
+Additional Syntax Rules
+</TITLE>
+<ITEMIZEDLIST>
+<LISTITEM>
+A '#' (pound) character designates a comment.  A comment may begin a line or appear at the
+end of a single line containing the keyword/value pair.
+</LISTITEM>
+<LISTITEM>
+A value may be quoted by the '"' (double quote) character; and, multi-line values must be quoted.
+Trailing white space from an unquoted value will be removed.
+</LISTITEM>
+<LISTITEM>
+The order of attributes is not significant although the INDEX file grammar requires the <REPLACEABLE>layout_version</REPLACEABLE> attribute
+appear first in
+distribution or installed software object.
+</LISTITEM>
+<LISTITEM>
+The ", #, and, \\ characters must be escaped with a backslash (\\) in a quoted value.
+</LISTITEM>
+<LISTITEM>
+If a value begins with a < (less than), the value is interpreted as a filename
+whose contents will be treated as a quoted value although the storage of the attribute
+will be in the form of a control file (i.e. a separate file in the control directory).
+For INDEX files, the filename is relative to the control directory in which this attribute is contained.
+For PSF files, the filename is a path on the host.
+</LISTITEM>
+</ITEMIZEDLIST>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Software Definition File Grammar
+</TITLE>
+<PARA>
+A PSF may contain all <REPLACEABLE>Software Definitions</REPLACEABLE>.  An INDEX file does not contain
+<FUNCTION>control_file</FUNCTION>, 
+or
+<FUNCTION>file</FUNCTION>
+definitions. An INFO file contains only
+<FUNCTION>control_file</FUNCTION>,
+and
+<FUNCTION>file</FUNCTION>
+definitions.
+<PROGRAMLISTING>
+<VERB><SBR>
+     software_definition_file : INDEX 
+                              | INFO 
+                              | PSF
+                              ;
+     
+     PSF :  distribution_definition
+            swo_contents
+            ;
+     
+     INDEX : swo_definition
+             swo_contents
+            ;
+    
+     INFO : fileset_contents
+            ;
+
+     swo_definition : distribution_definition
+                    | <REPLACEABLE>installed_software</REPLACEABLE> 
+                    ;
+    
+     distribution_definition : <REPLACEABLE>distribution</REPLACEABLE> 
+                                         <REPLACEABLE>media</REPLACEABLE> 
+                             ;
+
+     swo_contents : <REPLACEABLE>vendor</REPLACEABLE>(s)
+                   | <REPLACEABLE>category</REPLACEABLE>(s)
+                   | products
+                   | bundles
+                   ;
+     
+     products : <REPLACEABLE>product</REPLACEABLE> 
+                product_contents
+                ;
+     
+     bundles : <REPLACEABLE>bundle</REPLACEABLE> 
+                ;
+     
+     product_contents :  <REPLACEABLE>control_file</REPLACEABLE>s
+       /* control_files not valid in INDEX file */ 
+                     | <REPLACEABLE>subproduct</REPLACEABLE>s
+                     |  filesets
+		     ;
+    
+     filesets : <REPLACEABLE>fileset</REPLACEABLE> 
+      /* fileset_contents not valid in INDEX file */
+                fileset_contents
+                ;
+
+     fileset_contents :  <REPLACEABLE>control_file</REPLACEABLE>s
+                      | <REPLACEABLE>file</REPLACEABLE>s
+                      ;
+
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+</REFSECT2>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+EXAMPLE PACKAGE
+</TITLE>
+<REFSECT2>
+<TITLE>
+Layout
+</TITLE>
+<PARA>
+<PROGRAMLISTING>
+<VERB>
+ swm-1.0/catalog
+ swm-1.0/catalog/INDEX
+ swm-1.0/catalog/dfiles
+ swm-1.0/catalog/dfiles/INFO
+ swm-1.0/catalog/dfiles/md5sum
+ swm-1.0/catalog/dfiles/sha1sum
+ swm-1.0/catalog/dfiles/adjunct_md5sum
+ swm-1.0/catalog/dfiles/sig_header
+ swm-1.0/catalog/dfiles/signature
+ swm-1.0/catalog/gsoft_swm
+ swm-1.0/catalog/gsoft_swm/pfiles
+ swm-1.0/catalog/gsoft_swm/pfiles/INFO
+ swm-1.0/catalog/gsoft_swm/pfiles/remove
+ swm-1.0/catalog/gsoft_swm/pfiles/configure
+ swm-1.0/catalog/gsoft_swm/bin
+ swm-1.0/catalog/gsoft_swm/bin/INFO
+ swm-1.0/catalog/gsoft_swm/bin/postinstall
+ swm-1.0/catalog/gsoft_swm/bin/configure
+ swm-1.0/catalog/gsoft_swm/doc
+ swm-1.0/catalog/gsoft_swm/doc/INFO
+ swm-1.0/catalog/gsoft_swm/doc/postinstall
+ swm-1.0/gsoft_swm
+ swm-1.0/gsoft_swm/bin
+ swm-1.0/gsoft_swm/bin/usr/bin/swpackage
+ swm-1.0/gsoft_swm/bin/usr/bin/sw_build
+ swm-1.0/gsoft_swm/doc
+ swm-1.0/gsoft_swm/doc/usr/man/man1/swpackage.1
+ swm-1.0/gsoft_swm/doc/usr/man/man1/sw_build.1
+</VERB>
+</PROGRAMLISTING>
+</PARA>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+Hypothetical PSF file
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+ 
+ distribution
+   control_directory swm-1.0  #Implementation Extension.
+   vendor
+     the_term_vendor_is_misleading  false # True or False 
+     tag greatsoft 
+     title Greatersoft Corporation
+     description "Greatersoft Corporation, Inc."
+   product
+     tag swm
+     title POSIX 1387 package builder
+     revision 1.0
+     control_directory gsoft_swm
+     vendor_tag greatsoft
+     description A package building Utility.
+     machine_type i386
+     control_file
+     	path remove 
+        source /var/tmp/sw/remove.source
+     configure /var/tmp/sw/configure.source
+     fileset
+        tag bin
+        control_directory bin
+        title Executable Files
+        state available
+     	postinstall /var/tmp/sw/bin/postinstall
+        configure /var/tmp/sw/bin/configure
+        file -m 0755 -o root -g root /var/tmp/sw/build/bin/swpackage  \\
+                     /usr/bin/swpackage
+        file -m 0755 -o root -g root /var/tmp/sw/build/bin/sw_build  \\
+                     /usr/bin/sw_build
+   fileset
+      tag doc
+      control_directory doc
+      title Manual Pages
+      state available
+      postinstall /var/tmp/sw/bin/postinstall
+      file -m 0644 -o root -g root /var/tmp/sw/build/man/swpackage.1 \\
+                /usr/man/man1/swpackage.1
+      file 
+         mode 0644 
+         owner root 
+         group  root
+         source /var/tmp/sw/build/man/sw_build.1  
+         path /usr/man/man1/sw_build.1
+</VERB>
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+INDEX File swm-1.0/catalog/INDEX
+</TITLE>
+<PROGRAMLISTING>
+<VERB><SBR>
+ 
+ distribution
+   layout_version 1.0
+   tag swm-1.0
+   uuid 880ccf8b-de2c-4422-bff0-fd686279da73
+   md5sum < md5sum
+   adjunct_md5sum < adjunct_md5sum
+   sig_header < sig_header
+   signature < signature
+   media
+     sequence_number 1
+   vendor
+     the_term_vendor_is_misleading  false # True or False 
+     tag greatsoft 
+     title Greatersoft Corporation
+     description "Greatersoft Corporation, Inc."
+   product
+     tag swm
+     title POSIX 1387 package builder
+     revision 1.0
+     instance_id 1
+     control_directory gsoft_swm
+     vendor_tag greatsoft
+     description A package building Utility.
+     machine_type i386
+     fileset
+        tag bin
+        control_directory bin
+        size 196643
+        title Executable Files
+        state available
+     fileset
+        tag doc
+        control_directory doc
+        size 19643
+        title Manual Pages
+        state available
+</VERB>
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+INFO File swm-1.0/catalog/dfiles/INFO
+</TITLE>
+<PROGRAMLISTING>
+<VERB> 
+ control_file
+   path INFO
+   tag INFO
+   size 92
+ control_file
+   path md5sum
+   tag md5sum
+   size 36
+ control_file
+   path adjunct_md5sum
+   tag adjunct_md5sum
+   size 36
+ control_file
+   path sig_header
+   tag sig_header
+   size 512
+ control_file
+   path signature
+   tag signature
+   size 512
+</VERB> 
+</PROGRAMLISTING>
+</REFSECT2>
+<REFSECT2>
+<TITLE>
+INFO File swm-1.0/catalog/gsoft_swm/bin/INFO
+</TITLE>
+<PROGRAMLISTING>
+<VERB> 
+ control_file
+   path INFO
+   tag INFO
+   size 337
+ 
+ control_file
+   path postinstall
+   type f
+   size 803
+   cksum 3928827394
+   mode 550
+   uid 0
+   gid 0
+   owner root
+   group root
+   mtime 739080341
+
+ control_file
+   path configure
+   type f
+   size 432
+   cksum 3934546394
+   mode 550
+   uid 0
+   gid 0
+   owner root
+   group root
+   mtime 739340771
+
+ file
+   path /usr/bin/swpackage
+   type f
+   size 80860
+   cksum 3929827394
+   mode 755
+   uid 0
+   gid 0
+   owner root
+   group root
+   mtime 739080771
+
+ file
+   path /usr/bin/sw_build
+   type f
+   size 120860
+   cksum 9894925524
+   mode 755
+   uid 0
+   gid 0
+   owner root
+   group root
+   mtime 7393808731
+</VERB> 
+</PROGRAMLISTING>
+</REFSECT2>
+</REFSECT1>
+
+<REFSECT1>
+&swconventions;
+</REFSECT1>
+
+<REFSECT1>
+<TITLE>
+APPLICABLE STANDARDS
+</TITLE>
+<PARA>
+IEEE Std 1387.2-1995 (Identical to ISO 15068-2:1999),
+Open Group CAE C701
+</PARA>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+SEE ALSO
+</TITLE>
+<VERB>
+ XDSA C701 http://www.opengroup.org/publications/catalog/c701.htm<SBR>
+ swbisparse(1) -- An implementation extension parser utility.<SBR>
+ swcopy(8)
+ swinstall(8)
+ swbis(7)
+ swbis(1)
+ swpackage(5)
+ swpackage(8)
+ swverify(8)
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+IDENTIFICATION
+</TITLE>
+<VERB>
+ Copyright (C) 2005 Jim Lowe
+<!-- External Entity  --> &version;
+Last Updated: 2006-01
+ Copying Terms: GNU Free Documentation License
+</VERB>
+</REFSECT1>
+<REFSECT1>
+<TITLE>
+BUGS
+</TITLE>
+<PARA>
+None
+</PARA>
+</REFSECT1>
+</REFENTRY>

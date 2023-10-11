@@ -1,0 +1,244 @@
+srcdir = @srcdir@
+topdir = @topdir@
+VPATH = $(srcdir)
+
+include $(topdir)/Makefile.inc
+
+CC = @CC@
+CXX = @CXX@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
+
+@SET_MAKE@
+
+# Makefile for rpm library.
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+install_sh_DATA = $(install_sh) -c -m 644
+install_sh_PROGRAM = $(install_sh) -c
+install_sh_SCRIPT = $(install_sh) -c
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_HEADER = $(INSTALL_DATA)
+transform = @program_transform_name@
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+
+EXEEXT = @EXEEXT@
+OBJEXT = @OBJEXT@
+PATH_SEPARATOR = @PATH_SEPARATOR@
+AMTAR = @AMTAR@
+AR = @AR@
+AS = @AS@
+AWK = @AWK@
+BUILD_INCLUDED_LIBINTL = @BUILD_INCLUDED_LIBINTL@
+BUILD_RPMNLSTOOLS = @BUILD_RPMNLSTOOLS@
+BZIP2BIN = @BZIP2BIN@
+CATOBJEXT = @CATOBJEXT@
+DATADIRNAME = @DATADIRNAME@
+DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+FINDPROVIDES = @FINDPROVIDES@
+FINDREQUIRES = @FINDREQUIRES@
+FIXPERMS = @FIXPERMS@
+GENCAT = @GENCAT@
+GLIBC21 = @GLIBC21@
+GMSGFMT = @GMSGFMT@
+GZIPBIN = @GZIPBIN@
+HAVE_LIB = @HAVE_LIB@
+INCPATH = @INCPATH@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
+INTLBISON = @INTLBISON@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
+LDFLAGS_STATIC = @LDFLAGS_STATIC@
+LIB = @LIB@
+LIBDIR = @LIBDIR@
+LIBICONV = @LIBICONV@
+LIBINTL = @LIBINTL@
+LIBMISC = @LIBMISC@
+LIBRPMALIAS_FILENAME = @LIBRPMALIAS_FILENAME@
+LIBRPMRC_FILENAME = @LIBRPMRC_FILENAME@
+LIBS = @LIBS@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+LOCALEDIR = @LOCALEDIR@
+LTLIB = @LTLIB@
+LTLIBICONV = @LTLIBICONV@
+LTLIBINTL = @LTLIBINTL@
+MACROFILES = @MACROFILES@
+MKDIR = @MKDIR@
+MKDIR_P = @MKDIR_P@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+OBJDUMP = @OBJDUMP@
+PACKAGE = @PACKAGE@
+PGPBIN = @PGPBIN@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+ROOT_GROUP = @ROOT_GROUP@
+RPM = @RPM@
+RPMCANONARCH = @RPMCANONARCH@
+RPMCANONOS = @RPMCANONOS@
+RPMCANONVENDOR = @RPMCANONVENDOR@
+RPMCONFIGDIR = @RPMCONFIGDIR@
+STRIP = @STRIP@
+SYSCONFIGDIR = @SYSCONFIGDIR@
+TOP_SOURCEDIR = @TOP_SOURCEDIR@
+U = @U@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+__CAT = @__CAT@
+__CHGRP = @__CHGRP@
+__CHGRP_RHF = @__CHGRP_RHF@
+__CHMOD = @__CHMOD@
+__CHOWN = @__CHOWN@
+__CHOWN_RHF = @__CHOWN_RHF@
+__CP = @__CP@
+__CPIO = @__CPIO@
+__GREP = @__GREP@
+__ID = @__ID@
+__ID_U = @__ID_U@
+__INSTALL = @__INSTALL@
+__LD = @__LD@
+__MAKE = @__MAKE@
+__MKDIR = @__MKDIR@
+__MV = @__MV@
+__NM = @__NM@
+__OBJCOPY = @__OBJCOPY@
+__OBJDUMP = @__OBJDUMP@
+__PATCH = @__PATCH@
+__RM = @__RM@
+__RSH = @__RSH@
+__SED = @__SED@
+__SSH = @__SSH@
+__STRIP = @__STRIP@
+__TAR = @__TAR@
+am__include = @am__include@
+am__quote = @am__quote@
+install_sh = @install_sh@
+testdir = @testdir@
+tmpdir = @tmpdir@
+varprefix = @varprefix@
+
+#########################################################
+#########################################################
+#########################################################
+
+DO_DEBUG = @DO_DEBUG@
+ifeq ($(DO_DEBUG),)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<
+DEBUGLIBOBJECTS =
+else
+.c.o:
+	$(CC) $(CFLAGS) -c -o $*.o  $<; $(CC) $(CFLAGS) -S -gstabs+ -o $*.S $<
+DEBUGLIBOBJECTS = 
+endif
+
+LIBOBJECTS = \
+	falloc.o formats.o  header.o macro.o md5.o md5sum.o \
+	messages.o misc.o package.o rpmerr.o rpmio.o rpmlead.o \
+	rpmmalloc.o signature.o tagName.o tagtable.o url.o setenv.o
+
+LIBTAR = librpm.a
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+everything: $(LIBTAR)
+
+$(LIBTAR): $(LIBOBJECTS) 
+	$(AR) r $@ $(LIBOBJECTS)
+	$(RANLIB) $@
+
+$(PROGS): $(LIBOBJECTS)
+
+clean:
+	rm -f *.S *.a *.o *~ $(PROGS) a.out
+
+distdir:
+install-data:
+install-exec:
+install-html:
+install-dvi:
+install-pdf:
+install-ps:
+install-strip:
+install-info:
+installdirs:
+installcheck:
+install:
+uninstall:
+info:
+dvi:
+html:
+pdf:
+ps:
+dist:
+check:
+tags:
+ctags:
+maintainer-clean: distclean
+mostlyclean: clean
+
+distclean: clean
+	rm -f .depend Makefile
+
+depend:
+	( > .depend )
+
+#	($(CPP) $(CFLAGS) -M $(srcdir)/*.c > .depend; exit 0)
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

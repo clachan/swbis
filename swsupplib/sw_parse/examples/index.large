@@ -1,0 +1,204 @@
+# File: index.large
+
+distribution
+	layout_version		_ layout_version 8 # layout_version must be first attribute
+	dfiles			_ dfiles 6
+	pfiles			_ pfiles 7
+	uuid			_ uuid 9  # not in PSF
+#	path			_ path 10  # not in either PSF not INDEX files
+	media
+		sequence_number		_ sequence_number 11
+
+	bundle 
+		tag			_ tag 15
+		architecture 		_ architecture 16
+		location		_ location 17
+		qualifier		_ qualifier 18
+		revision		_ revision 19
+		vendor_tag		_ vendor_tag 20
+		contents		_ contents 21
+		copyright		_ copyright 22
+		create_time		_ create_time 23
+		description		_ description 24
+		directory		_ directory 25
+		instance_id		_ instance_id 26
+		is_locatable		_ is_locatable 27
+		machine_type		_ machine_type 28
+		mod_time		_ mod_time 29
+		number			_ number 30
+		os_name			_ os_name 31
+		os_release		_ os_release 32
+		os_version		_ os_version 33
+		size			_ size 34
+		title			_ title 35
+	
+	vendor
+		tag		_ tag 38
+		title		_ title 39
+		description	_ description 40
+ 
+	
+	
+	
+	product
+		tag 			_ tag 46
+		architecture 		_ architecture 47
+		qualifier		_ qualifier 48
+		revision		_ revision 49
+		vendor_tag		_ vendor_tag 50
+		all_filesets		_ all_filesets 51
+		control_directory	_ control_directory 52
+		copyright		_ copyright 53
+		create_time		_ create_time 54
+		directory		_ directory 55
+		description		_ description 56
+		instance_id		_ instance_id 57
+		is_locatable		_ is_locatable 58
+		postkernel		_ postkernel 59
+		location		_ location 60
+		machine_type		_ machine_type 61
+		mod_time		_ mod_time 62
+		number			_ number 63
+		os_name			_ os_name 64
+		os_release		_ os_release 65
+		os_version		_ os_version 66
+		size			_ size 67
+		title			_ title 68
+
+# product control file
+#	control_file	_control_file.sh / 71
+#	control_file	_control_file.sh / 72
+#	control_file	
+#		tag			_ tag 74
+#		chksum			_ chksum 75
+#		compressed_chksum	_ compressed_chksum 76
+#		compressed_size		_ compressed_size 77
+#		compression_state	_ compression_state 78
+#		compression_type	_ compression_type 79
+#		interpreter		_ interpreter 80
+#		path			_ path 81
+#		revision		_ revision 82
+#		size			_ size 83
+#		source			_ source 84
+#		result			_ result 85
+#
+# extended product control files	
+#	checkinstall	_ checkinstall /
+#	preinstall	_ preinstall /
+#	postinstall	_ postinstall /
+#	verify		_ verify /
+#	fix		_ fix /
+#	checkremove	_ checkremove /
+#	preremove	_ preremove /
+#	postremove	_ postremove.sh  /
+#	configure	_ configure.sh /
+#	unconfigure	_ unconfigure.sh /
+#	request		_ request.sh /
+#	unpreinstall	_ unpreinstall.sh /
+#	unpostinstall	_ unpostinstall.sh /
+#	space		_ space.sh /
+#	control_file	_ control_file.sh /
+
+	subproduct
+		tag			_ tag 104
+		contents		_ contents 105
+		create_time		_ create_time 106
+		description		_ description 107
+		mod_time		_ mod_time 108
+		size			_ size 109
+		title			_ title 110
+
+	fileset
+		tag			_ tag 113
+		control_directory	_ control_directory 114
+		corequisites		_ corequisites 115
+		create_time		_ create_time 116
+		description		_ description 117
+		exrequisites		_ exrequisites 118
+		is_reboot		_ is_reboot 119
+		is_kernel		_ is_kernel 120
+		is_locatable		_ is_locatable 121
+		location		_ location 122
+		media_sequence_number	_ media_sequence_number 123
+		mod_time		_ mod_time 124
+		prerequisites		_ prerequisites 125
+		revision		_ revision 126
+		size			_ size 127
+		state			_ state 128
+		title			_ title 129
+	
+#	control_file	
+#		tag			_ tag
+#		chksum			_ chksum
+#		compressed_chksum	_ compressed_chksum
+#		compressed_size		_ compressed_size
+#		compression_state	_ compression_state
+#		compression_type	_ compression_type
+#		interpreter		_ interpreter
+#		path			_ path
+#		revision		_ revision
+#		size			_ size
+#		source			_ source
+#		result			_ result
+
+#        file	-t f -m 0777 -o root,0 -g root,0 -n -v  / /
+
+#	file
+#			path			_ path
+#			chksum			_ chksum
+#			compressed_chksum	_ compressed_chksum
+#			compressed_size		_ compressed_size
+#			compression_state	_ compression_state
+#			compression_type	_ compression_type
+#			gid			_ gid
+#			group			_ group
+#			is_volatile		_ is_volatile
+#			link_source		_ link_source
+#			major			_ major
+#			minor			_ minor
+#			mode			_ mode
+#			mtime			_ mtime
+#			owner			_ owner
+#			revision		_ revision
+#			size			_ size
+#			source			_ source
+#			type			_ type
+#			uid			_ uid
+
+# extended control_file definitions
+	
+#	checkinstall	_ checkinstall /
+#	preinstall	_ preinstall /
+#	postinstall	_ postinstall /
+#	verify		_ verify /
+#	fix		_ fix /
+#	checkremove	_ checkremove /
+#	preremove	_ preremove /
+#	postremove	_ postremove.sh  /
+#	configure	_ configure.sh /
+#	unconfigure	_ unconfigure.sh /
+#	request		_ request.sh /
+#	unpreinstall	_ unpreinstall.sh /
+#	unpostinstall	_ unpostinstall.sh /
+#	space		_ space.sh /
+#	control_file	_ control_file.sh /
+
+# extended file definitions
+#	directory 		_ directory 
+#	file_permissions	_ file_permissions
+#	exclude			_ exclude
+#	file			< file
+
+
+
+#	fileset
+#	directory 		_ directory 
+#	
+#	
+#	vendor
+#		tag		_ tag
+#		title		_ title
+#		description	_ description
+#
+
+

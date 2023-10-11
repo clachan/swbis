@@ -1,0 +1,12 @@
+xx-1.2/catalog
+xx-1.2/catalog/INDEX
+xx-1.2/catalog/dfiles
+xx-1.2/catalog/dfiles/INDEX
+xx-1.2/catalog/dfiles/INFO
+xx-1.2/catalog/dfiles/postinstall
+xx-1.2/catalog/dfiles/preinstall
+xx-1.2/src/main.c
+xx-1.2/src/supp.c
+xx-1.2/src/supp.h
+xx-1.2/doc/item.1
+xx-1.2/include/item.h

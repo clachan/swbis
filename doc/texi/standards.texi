@@ -1,0 +1,23 @@
+@c Copyright (C) 2004 Jim Lowe
+@c This is part of the swbis manual.
+@c For copying conditions, see the file gcc.texi.
+
+@node Applicable Standards
+@chapter Applicable Standards
+
+The related standards are IEEE Std 1387.2-1995 (ISO/IEC 15068-2:1999), OpenGroup CAE C701.
+
+ISO/IEC 15068-2:1999 is identical to 1387.2 except for its name.
+
+CAE C701 is nearly identical to 1387.2 and can be viewed online at http://www.opengroup.org/publications/catalog/c701.htm 
+
+The implementation reference specification is a printed postscript
+rendering of the C701 pdf file available at
+http://www.opengroup.org/publications/catalog/c701.htm
+(size: 696095 bytes;  md5sum: a98e5fd7d723db63e27136c70bfff7aa)
+and a copy of IEEE Std 1387.2-1995 (ISBN 1-55937-537-X).  These two
+documents match up line-for-line except for chapter ordering and where
+there are descriptions of C701's additional attributes.
+
+(The IEEE standard is superseded by and identical to ISO/IEC
+15068-2:1999).

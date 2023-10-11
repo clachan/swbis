@@ -1,0 +1,136 @@
+# Generated automatically from Makefile.in by configure.
+include Makefile.inc
+
+srcdir= .
+
+INSTALL= /usr/bin/install -c
+INSTALL_PROGRAM = ${INSTALL}
+INSTALL_DATA = ${INSTALL} -m 644
+#LIBEFENCE = -lefence
+
+#DEBUG = -g
+installprefix=$(ROOT)
+
+#LIBEFENCE = -lefence
+
+
+################################### Leave this stuff alone
+
+### These are variables meant to be exported
+
+WARNINGS = 
+
+BINDIR=$(prefix)/bin
+RPMBINDIR=$(subst usr/bin,bin,$(BINDIR))
+MANDIR=$(prefix)/man/man8
+LIBDIR=$(libdir)
+INCDIR=$(prefix)/include/rpm
+ETCDIR=$(ROOT)/etc
+
+# -----------------------------------------------------------------------
+
+SUBDIRS = uxfio taru tarb strob rpmar_lib
+INSTSUBDIRS = lib 
+OTHERSUBDIRS =
+OBJS =
+PROGS = 2tar tar2tar tar2newc tar2crc
+LIBS =  -L/usr/local/lib
+LIB=swsupplib.a
+LOADLIBES = $(topdir)/taru/taru.a $(topdir)/uxfio/uxfio.a $(topdir)/strob/strob.a $(topdir)/tarb/tarb.a $(topdir)/rpmar_lib/rpmar_lib.a
+
+SOURCES = $(subst .o,.c,$(OBJS))
+
+ifeq (.depend,$(wildcard .depend))
+TARGET=everything
+else
+TARGET=depend everything
+endif
+
+all: $(TARGET)
+
+2tar: $(LIB) $(OBJS) 2tar.o 
+	$(CC) -o 2tar -dynamic $(LDFLAGS) 2tar.o $(OBJS) $(LIBS) $(LIB)  /usr/lib/libz.a \
+		$(LIBEFENCE)
+
+tar2tar: $(LIB) $(OBJS) tar2tar.o 
+	$(CC) -o tar2tar -dynamic $(LDFLAGS) tar2tar.o $(OBJS) $(LIBS) $(LIB) /usr/lib/libz.a \
+		$(LIBEFENCE)
+
+tar2newc: $(LIB) $(OBJS) tar2newc.o 
+	$(CC) -o tar2newc -dynamic $(LDFLAGS) tar2newc.o $(OBJS) $(LIBS) $(LIB)  /usr/lib/libz.a \
+		$(LIBEFENCE)
+
+tar2crc: $(LIB) $(OBJS) tar2crc.o 
+	$(CC) -o tar2crc -dynamic $(LDFLAGS) tar2crc.o $(OBJS) $(LIBS) $(LIB) /usr/lib/libz.a \
+		$(LIBEFENCE)
+
+everything: make-subdirs $(PROGS) $(LIB) 
+
+README.tarformat: docs/README.tarformat.man
+	nroff -man <docs/README.tarformat.man >README.tarformat
+
+make-subdirs:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE)) \
+		  || case "$(MFLAGS)" in *k*) fail=yes;; *) exit 1;; esac;\
+	done && test -z "$$fail"
+
+$(LIB): $(LOADLIBES)
+	(cd tmp && rm -f *)	
+	(cd tmp;  ar x $(topdir)/taru/taru.a)
+	(cd tmp;  ar x $(topdir)/tarb/tarb.a)
+	(cd tmp;  ar x $(topdir)/uxfio/uxfio.a)
+	(cd tmp;  ar x $(topdir)/rpmar_lib/rpmar_lib.a)
+	(cd tmp;  ar x $(topdir)/strob/strob.a)
+	(cd tmp;  $(AR) r ../$@ *$(LIBOBJECTS))
+	(ar -s $@)
+
+$(PROGS): $(OBJS) 
+
+install: all
+	install --mode 644 $(LIB) /usr/local/lib
+	chmod 444 $(LIB)
+	install --mode 644 taru/*.h /usr/local/include
+	install --mode 644 tarb/*.h /usr/local/include
+	install --mode 644 uxfio/*.h /usr/local/include
+	install --mode 644 rpmar_lib/*.h /usr/local/include
+	install --mode 644 strob/*.h /usr/local/include
+	install 2tar /usr/local/bin
+	install tar2tar /usr/local/bin
+	install tar2crc /usr/local/bin
+	install tar2newc /usr/local/bin
+
+
+
+.PHONY:		clean
+clean:
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	rm -f *.a *.o core *~ $(PROGS) rpm.shared tmp/*
+	find . -name "*.orig" -exec rm {} \;
+	find . -name core -exec rm {} \;
+
+.PHONY:		distclean
+distclean:	
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+	rm -f *.a *.o core *~ $(PROGS) rpm.shared librpmrc find-provides.sh find-requires.sh tmp/*
+	rm -f .depend Makefile Makefile.inc config.h config.cache config.status config.log lib-rpmrc
+
+
+.PHONY:		depend
+depend:
+	$(CPP) $(CFLAGS) -M $(srcdir)/$(SOURCES) > .depend
+	for d in $(SUBDIRS); do \
+		(cd $$d; $(MAKE) $@) ;\
+	done
+
+noconfig:
+	find . -name "Makefile" -exec rm {} \; 
+	rm -f *gz *rpm config.*
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif

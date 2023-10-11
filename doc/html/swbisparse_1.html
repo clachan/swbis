@@ -1,0 +1,107 @@
+<HTML>
+<HEAD>
+<TITLE>swbisparse(1)</TITLE>
+<STYLE>
+<!--
+i {color:#000080}
+-->
+</STYLE>
+</HEAD>
+<BODY BGCOLOR="#f0f0f0">
+<H1>swbisparse(1)</H1>
+<h3>Contents</h3><ul>
+<li><a href="#NAME">NAME</a>
+<li><a href="#SYNOPSIS">SYNOPSIS</a>
+<li><a href="#DESCRIPTION">DESCRIPTION</a>
+<ul><li><a href="#Hewlett-Packard SD-UX Compatibility"><font size=-1>Hewlett-Packard SD-UX Compatibility</font></a>
+</ul><li><a href="#OPTIONS">OPTIONS</a>
+<li><a href="#APPLICABLE STANDARDS">APPLICABLE STANDARDS</a>
+<li><a href="#SEE ALSO">SEE ALSO</a>
+<li><a href="#IDENTIFICATION">IDENTIFICATION</a>
+<li><a href="#BUGS">BUGS</a>
+</ul><pre>
+</pre><h3><a name="NAME"><b>NAME</b></a></h3><pre>       swbisparse -- Read and parse POSIX.7.2 metadata.
+</pre><h3><a name="SYNOPSIS"><b>SYNOPSIS</b></a></h3><pre>       <b>swbisparse</b> {--installed|-o,--info|-i,--index|-p,--psf} [-b] [-n] [-l <i>level</i>] [<i>file</i>]
+
+       <b>swbisparse</b> {-d,--decode} [<i>package</i><b>_</b><i>file</i>]
+</pre><h3><a name="DESCRIPTION"><b>DESCRIPTION</b></a></h3><pre>       <b>swbisparse</b> reads and parses POSIX.7.2 metadata files: INDEX, INFO and
+       psf files.
+
+       <b>swbisparse</b> writes an implementation defined format to stdout.  The
+       format indicates the keyword type, (O)bject, (A)ttribute, or,
+       (E)xtended, and, containment level.  Newlines in multi-line values are
+       translated to '\n' and output on a single line.
+
+       When decoding a package file, <i>package</i><b>_</b><i>file</i>, <b>swbisparse</b> emits a format
+       that includes the length (in bytes) of the attribute value.  The format
+       consists of ASCII data.  Binary data in the input will cause an error.
+
+       For Example, the following PSF file:
+
+        distribution
+        layout_version 1.0
+        product
+        description &quot;This is a
+        multi line value&quot;
+        tag p1
+        fileset
+        tag p2
+        file
+        path /etc/passwd
+
+       is translated to:
+
+        F00 PSF:
+        O01 distribution
+        A02  layout_version 1.0
+        O02  product
+        A03   description &quot;This is a\nmulti line value&quot;
+        A03   tag p1
+        O03   fileset
+        A04    tag p2
+        O04    file
+        A05     path /etc/passwd
+
+   <a name="Hewlett-Packard SD-UX Compatibility"><b>Hewlett-Packard SD-UX Compatibility</b></a>
+       This parser does not use nor require the <b>end</b> keyword to terminate
+       objects as is commonly the practice for PSF files written for Hewlett-
+       Packard's SD-UX equipped systems.  The <b>end</b> keyword can appear in PSF,
+       INDEX and INFO files, however, it will merely be scanned and the token
+       discarded.  Another incompatibility is based on this parser's
+       termination of an object definition by the first extended keyword.
+       This restriction may not exist in the SD-UX grammar because the object
+       is bracketed by the nesting of <b>end</b> keywords and not by the existence of
+       the first object or extended keyword.
+</pre><h3><a name="OPTIONS"><b>OPTIONS</b></a></h3><pre>       <b>--info-o</b>     Parse an INFO file.
+
+       <b>--installed</b>     Parse the installed software catalog file INSTALLED.
+
+       <b>--psf-p</b>     Parse a PSF file.
+
+       <b>--index-i</b>     Parse an INDEX file.
+
+       <b>-b</b>     Beautify by indention and emit a file
+              semantically identical to the input file.
+
+       <b>-n</b>     Emit format that is marked up with the
+              value's lengths in bytes.
+
+       <b>-l</b> <i>level</i>     Set initial containment level
+              to <i>level</i>.
+</pre><h3><a name="APPLICABLE STANDARDS"><b>APPLICABLE STANDARDS</b></a></h3><pre>       Conforming to POSIX.7.2, however, A stand-alone parser utility by this
+       (or any) name is not specified in ISO/IEC 15068-2:1999
+</pre><h3><a name="SEE ALSO"><b>SEE ALSO</b></a></h3><pre>       <a href=sw_5.html>sw(5)</a>
+</pre><h3><a name="IDENTIFICATION"><b>IDENTIFICATION</b></a></h3><pre>        Author: Jim Lowe
+        Version: 0.481
+        Last Updated 2006-02-15
+        Copying: GNU Free Documentation License v1.1
+</pre><h3><a name="BUGS"><b>BUGS</b></a></h3><pre>       This program is mainly a testing and development tool.
+
+       Requirements for inclusion (exclusion) of certain keywords in (from)
+       the parsed output is not enforced.  Quoted trailing whitespace in the
+       attribute value is discarded.
+
+
+
+                                                                 <a href=swbisparse_1.html>swbisparse(1)</a>
+</pre><hr></body></html>

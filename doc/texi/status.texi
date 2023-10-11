@@ -1,0 +1,124 @@
+@c Copyright (C) 2004 Jim Lowe
+@c This is part of the swbis manual.
+@c For copying conditions, see the file gcc.texi.
+
+@node Status
+@chapter What features are working?
+
+In summary, the swbis supports network-transparent package management
+but is restricted to packages with a single fileset and product.  It has
+utilities for stand-alone creation of tarballs with meta-data including
+embedded GPG signatures.  There exists also the ability to translate dpkg, rpm, and
+slackware directly into POSIX format.
+
+@command{swpackage} is the most complete utility. It implements all
+of the ISO/IEC 15068-2 features of the Product Specification File,
+the input file of @command{swpackage}.  @command{swpackage} can create
+packages with multiple filesets and products even though the the other
+utilities cannot operate on them.
+
+@command{swpackage} can create POSIX tar archives with a POSIX
+file layout with an embedded GPG signature and
+payload digest (md5 and sha1).  This capability is
+mature and safe, but for those who are paranoid about
+using a new tool to create archives of your data, there
+is @command{swign}. @command{swign} signs the current working directory, presumably
+a directory containing your source tree, and then uses @command{tar} to emit the archive.
+The result is a package, created by GNU tar, which looks like a
+source tar archive with a leading directory.  The archive has 
+the ./catalog/ directory which contains the package metadata,
+GPG signature and digests which are stored as separate regular files,
+and as ascii text of course.
+
+
+Below is more detail about current capabilities.
+
+@itemize @bullet
+
+@item
+Installing POSIX packages
+
+Command: @command{swinstall} can install, make dependency downdate and reinstall checks.
+
+@item
+Copying POSIX packages
+
+Command: @command{swcopy}
+
+@command{swcopy} is missing many features specified in the POSIX
+spec.  Several degenerative basic features work and can be useful.
+It can unpack compressed tar archives handling compression transparently.
+It can copy directories from host to host.
+It can be used as a copying tool for arbitrary data, however this is not
+its intended application.  Unfortunately, many of its intended uses don't
+work yet.
+
+@item
+Handling RPM Packages
+
+Command: @command{swinstall}  or @command{swcopy}
+
+@command{swcopy} can translate RPMs to a tar archive.  This is useful for
+installing the contents of a source RPM into a single directory.
+
+@command{swinstall} can install a RPM as a POSIX package (i.e by translating
+first).
+
+@item
+Package Creation
+
+Command: @command{swpackage} 
+
+@command{swpackage} is at a beta release level.  It supports
+all Product Specification File (PSF) features in the IEEE spec.
+
+@item
+Package Verification
+
+Command: @command{swverify} 
+
+@command{swverify} is used to verify the payload digests and
+GPG signature (if any) of a POSIX package (i.e. tar archive in POSIX format).
+@command{swverify} also is used for verification of installed software.
+
+
+@item
+Package Removal
+
+Command: @command{swremove} 
+
+@command{swremove} is used to remove installed software.
+
+@item
+Package Listing
+
+Command: @command{swlist} 
+
+@command{swlist} is used to list information about the installed software.
+
+@item
+Package Configuration
+
+Command: @command{swconfig} 
+
+@command{swconfig} is used to configure installed software.  It
+provides a stand-alone execution interface to the package configure scripts.
+
+@item
+Creating GPG Signed Source Packages.
+
+Command: @command{swign} 
+
+@command{swign} is a ad-hoc implementation extension utility.
+
+@command{swign} is used to create a GPG signed POSIX package
+from the contents of the current directory.  The intended use
+is for creation of signed source tar archives.
+
+It is a shell script that uses @command{swpackage} and @command{gpg} and
+GNU @command{tar}.  Since the created archive is written to
+stdout by GNU @command{tar} and makes sanity checks using 
+standard utilities it is safe to use.
+
+@end itemize
+

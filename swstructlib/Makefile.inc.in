@@ -1,0 +1,22 @@
+topincdir=@topincdir@
+topdir=@topdir@
+topdirswsupplib=@topdirswsupplib@
+CPP = @CPP@
+prefix= @prefix@
+exec_prefix = @exec_prefix@
+libdir= $(prefix)/lib
+
+AR = ar
+RANLIB = @RANLIB@
+OPTS = @DEFS@
+LIBRPMRC_FILENAME=
+LIBRPMALIAS_FILENAME=
+RPMNLSDIR=
+RPMNLSPACKAGE=
+
+CFLAGS = @CFLAGS@ $(WARNINGS) $(OPTS) -I. -I$(topincdir) -I$(topdir)/include 
+
+LDFLAGS = @LDFLAGS@ -L$(topdir)/lib \
+		-L$(topdir)/swsupplib/tarb -L$(topdir)/swsupplib/misc -L$(topdir)/swsupplib/taru \
+		-L$(topdir)/swsupplib/uxfio -L$(topdir)/swsupplib/strob -L$(topdir)/swsupplib/uinfile
+

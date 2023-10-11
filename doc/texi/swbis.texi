@@ -1,0 +1,528 @@
+\input texinfo   @c -*-texinfo-*-
+
+@comment swbis.texi
+@comment %**start of header
+@setfilename swbis.info
+@include version.texi
+@settitle Swbis Manual 
+@syncodeindex pg cp
+@comment %**end of header
+@copying
+This manual is for swbis
+(version @value{VERSION}, @value{UPDATED}),
+which is an implementation of the POSIX System Administration Standard --
+Part 2: Software Administration IEEE Std 1387.2-1995 (ISO/IEC 15068-2)
+(both now withdrawn) and the Open Group Specification CAE C701.
+Currently, most of the the standard is implemented.  Most notably the implementation
+lacks the ability to operate on packages with multiple fileset or products.
+There are extensions for package authentication using GNU Privacy Guard.
+Extensions to the standard are indicated as such in this document.
+
+Copyright @copyright{} 2008,2014 Jim Lowe
+
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled ``GNU Free Documentation
+License.''
+
+(a) The FSF's Back-Cover Text is: ``You have freedom to copy and modify
+this GNU Manual, like GNU software.  Copies published by the Free
+Software Foundation raise funds for GNU development.''
+@end quotation
+@end copying
+
+
+@dircategory Software development
+@direntry
+* Swbis: (swbis).               POSIX software packaging utilities.
+@end direntry
+
+@titlepage
+@title swbis Manual 
+@subtitle for version @value{VERSION}, @value{UPDATED}
+@author James H. Lowe, Jr.  (@email{jhl@infionline.org})
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c @contents
+
+@ifnottex
+@node Top
+@top swbis
+
+@insertcopying
+@end ifnottex
+
+@menu
+* Copying This Manual::
+* About This Manual:: 
+* Introduction:: 
+* Glossary:: 
+* Status:: What features are working?
+* Applicable Standards::
+* Other Resources::
+* Host Requirements::
+@sp 1
+Swbis Commands
+@sp 1
+* Configuring swbis::
+* Invoking swbis::
+* Command Reference::
+@sp 1
+Using swbis
+@sp 1
+* Making PSFs for Package Creation::
+* Creating Signed Distributions::
+* Signing File System Directories::
+* Creating a Catalog of Installed Packages::
+* Authenticating Software: (swbis_swverify)VERIFYING SIGNATURES
+* Installing POSIX Distributions::
+* Translating and Installing Other Formats::
+@sp 1
+Notable Features of the Swbis Implementation
+@sp 1
+* Remote Host Operations::
+* GNU Toolset Orthogonality::
+* Package Layout and Interchange Format Mimicry::
+@sp 1
+Major Structures of Swbis
+@sp 1
+* Packaging Format: (swbis_swpackage)SWPACKAGE OUTPUT FORMAT
+* Package Security Attributes: (swbis_sw)PACKAGE SECURITY
+* Software Definitions: (swbis_sw)SOFTWARE DEFINITIONS
+* Software Selections: (swbis_sw)SOFTWARE SELECTIONS
+* Extended Definitions: (swbis_sw)EXTENDED DEFINITIONS
+* Software Definitions Files: (swbis_sw)SOFTWARE DEFINITION FILES
+* Packaging Layout: (swbis_sw)SOFTWARE PACKAGING LAYOUT
+* Installed Software Catalog: (swbis_swinstall)INSTALLED SOFTWARE CATALOG
+* User and Distributor Defined Meta-Data: (swbis_sw)DISTRIBUTOR KEYWORDS 
+@sp 1
+Reference
+@sp 1
+* Example Package: (swbis_sw)EXAMPLE PACKAGE
+
+* Index::
+
+@end menu
+
+@include signing.texi
+@include status.texi
+@include invoke.texi
+@include copying.texi
+@include standards.texi
+@include commands.texi
+@include glossary.texi
+@include configure.texi
+
+@node Introduction
+@unnumbered Introduction
+@chapter Introduction
+
+You are reading about GNU Swbis, the GNU implementation of the
+POSIX Software Administration Standard ISO/IEC 15068-2:1999 
+(formerly IEEE Std 1387.2-1995).  This spec describes a interchange
+format, package file layout, meta-data file format and utilities for
+package creation, installation, query, listing, and verification.
+
+The GNU implementation adds capabilities for package authentication 
+using strong cryptographic digests and GPG signatures that are embedded
+in the package as an ordinary control files as allowed by the standard.
+
+The GNU implementation is compatible with traditional free software
+distribution package file layouts by supporting empty names for
+control directories in the POSIX layout.  This makes a swbis package
+no different from current packages except for the addition of the
+meta-data directory.
+
+Other features of the GNU implementation are direct use of GNU Privacy
+Guard for signature creation and verification, direct use of the Ssh client
+for remote host operations, GNU tar format compatibility, no new utility or
+program requirements for remote installation beyond POSIX compatible GNU 
+utilities that are probably already present on all GNU and GNU/Linux hosts.
+
+GNU Swbis also can translate and install packages in RPM format. 
+
+@menu
+* Description: (swbis_swbis)DESCRIPTION
+* Options: (swbis_swbis)OPTIONS
+* Examples: (swbis_swbis)EXAMPLES
+* Commands Overview: (swbis_swbis)COMMANDS OVERVIEW
+* Runtime Configuration: (swbis_swbis)RUNTIME CONFIGURATION
+* Discussion: (swbis_swbis)DISCUSSION
+@end menu
+
+@node About This Manual
+@unnumbered About This Manual
+This manual contains information not found in the Unix-style
+Manual Pages such as a user guides, Tutorials, and Internal design features,
+however, the Manual Pages and this manual share common source
+and many sections transparently reference a different rendering of
+the Manual Page source documents.
+
+@node Other Resources
+@unnumbered Other Resources
+Other sources of documentation include ISO/IEC or IEEE printed standard,
+the online version of the Open Group Specification CAE C701.
+
+The swbis man pages are maintained and may be considered authoritative.
+See also swbis(1) and swbis(7) (via man 7 swbis  or,  man 1 swbis)
+
+Documentation from other implementations based on the Standard likely
+describe features that are a superset of the POSIX spec, whereas, the
+swbis implementation currently is a subset, hence, may not now or
+ever apply to swbis.
+
+@node Making PSFs for Package Creation 
+@unnumbered Making PSFs for Package Creation
+
+The input file to @command{swpackage}is a called a Product Specification File
+or PSF.
+It contains information to direct @command{swpackage} and information that is
+package meta-data [that is merely transferred unchanged into the global
+INDEX file].
+
+   A PSF may contain object keywords, attributes (keyword/value pairs)
+and Extended Definitions (@xref{(swbis_sw)EXTENDED DEFINITIONS}.)  An object keyword connotes
+a logical object or software structure supported by the standard.  An
+object keyword does not have a value field after it, as it contains
+attributes and Extended Definitions.  An attribute keyword conotes an
+attribute (i.e. keyword/value pair) and always has a value.
+
+   Attribute keywords not recognized by the standard are allowed and
+are transferred into the INDEX file.  Object keywords not recognized by
+the standard are not allowed and will generate an error.  Extended
+Definitions may only appear in a PSF (never in a INDEX or INFO created
+by swpackage).  Extended Definitions are translated [by swpackage] into
+object keywords (objects) and attributes recognized by the standard.
+
+   Comments in a PSF are not transferred into the INDEX file by the
+swbis implementation of @command{swpackage}.
+
+   The file syntax is the same as a INDEX, or INFO file.
+@xref{(swbis_sw)SOFTWARE DEFINITION FILES}.
+
+A PSF may contain all objects defined by the standard as well as extended
+definitions.
+
+Currently, @command{swpackage} does not enforce requirements for
+revision and name meta-data that other the 'swinstall' might need.
+Therefore you should perform a test install of your package. The preview '-p' option
+of @command{swinstall} internally simulates most of the install operation
+but does not alter the file system.  The example below previews the package
+on standard input.
+@example
+        swinstall -p -x verbose=6 -s - < your_package
+@end example
+
+Other restrictions of the swbis implementation are the default values for
+the 'dfiles' and 'pfiles' attributes (which are 'dfiles' and 'pfiles') must
+be used for minimal layout packages, i.e. packages that have the product and fileset
+control directories specified as empty strings (i.e have a minimal package layout).
+
+@menu
+* PSF Description: (swbis_swpackage)SWPACKAGE INPUT FILE FORMAT
+* PSF Examples: (swbis_swpackage)SAMPLE PRODUCT SPEC FILES
+* Swbis Packaging Conventions: (swbis_sw)SWBIS PSF CONVENTIONS
+* Extended Definitions: (swbis_sw)EXTENDED DEFINITIONS
+* A Minimal PSF::
+* A PSF for Source Packages::
+@end menu
+
+@node A Minimal PSF
+@unnumberedsec PSF.minimal
+
+@verbatim
+# This PSF packaged all files in the current
+# directory.
+distribution
+dfiles dfiles
+product
+title somepackage version 0.1
+description Source package for somepackage version 0.1
+tag somepackage      # < Change this to your package name
+revision 0.1         # < Change this to your package version
+control_directory ""
+fileset
+tag somepackage-sources   # Not used by swbis currently
+control_directory ""
+file_permissions -o 0  -g 0
+directory .
+file *
+exclude catalog
+@end verbatim
+
+@node A PSF for Source Packages
+@unnumberedsec A PSF for Source Packages
+This PSF packages all the files in the directory where 
+@command{swpackage} is invoked.  It uses NUL control
+directory names which maintain the package directory structure.
+
+@verbatiminclude ./source_PSF
+
+@node Installing POSIX Distributions
+@unnumbered Installing POSIX Distributions
+This is as simple as:
+@verbatim
+     swinstall <your-package
+        # or
+     swinstall -s :foo-1.1.tar.gz  @ 192.168.3.2 <your-package
+        # or
+     swinstall -x reinstall=y <your-package
+        # or
+     swinstall --no-scripts -x reinstall=y <your-package
+        # or
+     swinstall --no-scripts -x reinstall=y @ /tmp/test  <your-package
+@end verbatim
+The default target directory is always '/'.
+@xref{Command Reference}.
+
+@node Host Requirements
+@unnumbered Host Requirements
+
+'swbis' is designed to be as non-intrusive as possible and
+this applies to host requirements which are minimal.
+
+For package creation you need @command{uuidgen} and if creating signed
+distributions you need @command{gpg}.
+
+For package installation you need
+@command{sh}, @command{bash}, @command{dd}, @command{tar},
+@command{hostname}, @command{mkdir}, @command{expr}, @command{echo}, @command{test}, @command{sleep}.
+
+Installation of packages on remote hosts (i.e. using swinstall with a remote host target)
+does not require swbis to be installed there.
+
+The @command{swverify} and @command{swign} commands are shell scripts which may have additional
+requirements.
+
+Here are the technical details about requirements for @command{swinstall}, the same
+apply to @command{swcopy}:
+
+@command{swinstall} requires a POSIX shell accessible by the remote shell command.
+This is the remote command run by ssh (or rsh)  for  all  operations.
+This command can be controlled by the --shell-command option or
+the swbis_shell_command defaults file  option.  The recommended value is 'detect'
+which performs auto-detection of a sutable shell.
+
+Other utilities required to be in $PATH on the remote host are: dd, pax
+(or GNU tar), hostname, mkdir, expr, echo, test, sleep, read (if not builtin).
+
+@menu
+* More on Host Requirments: (swbis_swbis)HOST REQUIREMENTS
+@end menu
+
+@node Signing File System Directories
+@unnumbered Signing File System Directories
+
+To swbis, a signed directory is any directory that contains
+the GPG signed distribution catalog directory @file{./catalog/}.  The signature
+protects the signed bytes which is a tar archive representation
+of @file{./catalog/}.  The contents of directory @file{./catalog/} contain
+meta data about the contents of the current directory @file{./}.
+ 
+Used is this way, the distribution catalog directory, @file{./catalog/}, is
+a GPG signed directory manifest.
+
+The @file{./catalog/} directory is created by @command{swpackage}.  A separate
+ad-hoc utility, @command{swign} makes signing a directory much easier.
+
+@menu
+* Creating a signed directory using @command{swign}::
+@end menu
+
+@node Creating a Catalog of Installed Packages
+@unnumbered Creating a Catalog of Installed Packages
+
+Suppose your distribution uses a packaging format that does not
+provide an installed software catalog.  Using swbis you can 
+create your own provided you have the original package files.
+
+To do this you translate the orignal package (that is already installed)
+to swbis format and install just the catalog.  Like this:
+
+@verbatim
+      swinstall --justdb -s- @/
+@end verbatim
+
+which writes that catalog at @file{/var/lib/swbis/catalog}.  You can control
+the location of the catalog via the command line option.
+
+@verbatim
+      swinstall --justdb -x installed_software_catalog=/$HOME/my_catalog
+@end verbatim
+
+Translation is done by the @command{lxpsf} utility.  It can be invoked transparently
+using @command{swpackage} and sent via a pipe to swinstall:
+
+@verbatim
+        swpackage --to-swbis -s /Your/system/somepackage-1.0.type |
+        swinstall --justdb
+@end verbatim
+
+Then the catalog can be queried and used for verification purposes.
+
+@verbatim
+     swlist somepackage;  # list the package 
+     swlist;   # list all the installed software
+     swverify --sig-level=0 -vv somepackage @ / ;  # Use sig-level=1 if you
+                                                      # signed the package
+@end verbatim
+
+This works really well for RPM distributions.  Users of Debian and Slackware
+may want to take more detailed control to exclude extraneous system directories
+that hamper clean verification.  Like this:
+
+@verbatim
+     lxpsf --psf-form3  --exclude-system-dirs somepackage-1.0.tar.xz |
+     swpackage -Wsource=- -s @PSF @- | # Use special options to swpackage
+     swinstall --justdb
+@end verbatim
+
+Then verify.  Slackware users may use the specific option to ignore the
+@file{./install} directory and its files.
+
+@verbatim
+     swlist;
+     swverify --ignore-slack -x check_volatile=no somepackage @ /
+@end verbatim
+
+All of package signing and security options are available when using 
+swpackage as shown above.  In fact it was assumed that they were all
+on by default.  Creating a catalog without signatures or file
+digests or file list is of little use.  Here is a last example
+showing some of these options.
+
+The @command{lxpsf} is located in the LIBEXEC directory, for example
+@file{/usr/lib/swbis/lxpsf}.
+
+@verbatim
+    lxpsf --psf-form3  --exclude-system-dirs somepackage-1.0.tar.xz |
+    swpackage \
+       --files \
+       --sha2  \
+       --sha1  \
+       --sign  \
+       --passphrase=fd=agent \
+       --gpg-name=NAME \
+       -Wsource=- -s @PSF @- |
+     swinstall --justdb
+@end verbatim
+
+@node Translating and Installing Other Formats
+@unnumbered Translating and Installing Other Formats
+
+Translation of supported formats are done in memory. No temporary files are
+created.  Large RPMs or RPMs with many small files may take many seconds
+or several minutes to translate.
+
+Translation is performed by the swbis library executable @command{lxpsf} and
+@command{swpackage}.  Internally, this is
+@verbatim
+     /usr/lib/swbis/lxpsf --psf-form3 -H ustar |
+     swpackage -Wsource=- -s@PSF @-
+@end verbatim
+
+The @command{lxpsf} is the only swbis program with RPM library dependencies, and
+this is the program that does the actual meta-data translation.
+
+The easiest way to invoke translation is with the @option{--unrpm} of
+@command{swpackage} and @command{swcopy}.
+@verbatim
+       swcopy --unrpm -s - @- <your-0.1.arch.rpm | tar tvf -
+           -or-
+       swpackage --unrpm @- <your-0.1.arch.rpm | tar tvf -
+           -or-
+       swpackage --to-sw <your-0.1.arch.rpm | tar tvf -
+@end verbatim
+
+To verbosely preview the translated RPM:
+@verbatim
+       swcopy --unrpm -s - @- | swinstall -p -x verbose=5
+@end verbatim
+
+@menu
+* More Specifics on Translating Other Formats: (swbis_user)TRANSLATING OTHER FORMATS
+@end menu
+
+
+@node Remote Host Operations
+@unnumbered
+swbis is network transparent from the ground up.  It uses ssh (or rsh) to
+establish remote connections.  Communication then takes place on standard
+input, output and error as established by the remote shell client on the
+local host.  Operations which are entirely local are symmetric with
+remote operations in that swbis communicates via Unix pipes and makes
+no distinction based on the locality of the communication endpoints.
+
+swbis uses the ssh client program 'ssh' as found by the PATH variable.
+swbis adds the '-T' option to disable pseudo-tty allocation.
+
+swbis supports an extension to the POSIX target syntax to support
+multiple host hops.  Use of password authentication for multi-hop
+targets requires use of the SSH_ASKPASS program and redirection
+of X11 connections over the secure ssh channel.  See the 'ForwardX11'
+option in the ssh client configuration.  Use of public key authentication
+is more reliable since the authentication agent is forwarded by use of
+the '-A' ssh option.
+
+Important Note:  When making a multi-hop connection
+using either authentication method, the authentication credentials appear
+on the intermediate hosts and are subject to hijack, hence, the intermediate
+hosts' trust requirement should be no less than the terminal host's.
+
+@node GNU Toolset Orthogonality
+@unnumbered
+One overriding design goal of swbis is zero re-invention.  To that
+end, swbis uses '/usr/bin/gpg' for signing and authentication.  It uses
+'rsh' and 'ssh' for remote connections.  It uses 'bash' (as a POSIX shell)
+for command processing.
+It uses 'pax' or 'tar' for archive installation.
+It uses a file system directory structure as the database for installed 
+software.
+
+@node Package Layout and Interchange Format Mimicry
+@unnumbered
+swbis is non-intrusive relative to current practice
+for data interchange and storage using tar archives.
+
+swbis supports a 'minimal package layout'
+(@xref{(swbis_sw)Minimal Package Layout}.)
+This layout follows the POSIX spec but has nil control directories
+(Note: nil control directories are not attested to in the POSIX specification).
+
+By specifying control directories as empty strings and specifying a non-empty
+leading directory for the archive, a swbis POSIX package may be used
+inter-changeably with free software tar archive source packages which commonly
+have a leading package directory.
+
+Binary (run-time) packages follow the same pattern except the leading
+directory is specified as an empty string as well.  The result is a run-time
+package directly installable by @command{tar}.
+
+The non-inventive nature of swbis extends into the format level as well.
+swbis has its own archive writing utility, @command{swpackage}, and it is
+self contained, however, it writes tar archives which are identical to
+archives produced by GNU tar.  
+
+This data format mimicry has several advantages.  It forms the basis for
+a very brittle regression test, namely bit-for-bit sameness with GNU tar.
+This also preserves symmetry between a package archive and package directory in
+that swbis archives installed with tar can be repackaged with GNU tar with no
+bit-wise change relative to the original.
+
+Together, these layers of mimicry are put to practical application
+in the @command{swign} program @xref{(swbis_swign)}, which 
+creates GPG signed POSIX packages without any data copying except by GNU tar.
+@node Index
+@unnumbered Index
+
+@c @printindex cp
+
+@bye
+

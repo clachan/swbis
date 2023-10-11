@@ -1,0 +1,919 @@
+README for the swbis Documentation (Last Updated: July 2014)
+
+The contents of the ./source directory are the source.
+
+The contents of ./info ./html ./man ./texi are generated
+from the source, therefore always make changes to files
+in ./source.  Changes to files in ./texi ./info ./man 
+./html will be lost.
+  
+The root of the info tree is info/swbis.info
+You can read it without installing by
+
+     info -f info/swbis.info
+
+The root of the html tree is html/swbis.html 
+
+Making the documentation
+------------------------
+The official documentation is made on Slackware 14.1 (formerly
+Slackware 12.1 and before that Debian 3.1) using the packages
+described below.  Several packages are patched with the patches show below.
+
+To delete all generated files and remake from scratch do:   
+
+	make realclean text man info html  # In this directory
+
+BUG:
+The sgml source files produce so many warnings that
+you may have to edit the sgml parser wrapper shell script (which launches the
+sgml parser) to allow more parser warnings before quitting with an
+error (This is a command line switch to the parser found in the
+shell script).
+
+Here is the sort of change you need to make to /usr/local/bin/docbook-to-man
+to get around the excessive warning problem.
+- $PARSER -gl -m$CATALOG $DECL $INSTANCE |
++ $PARSER -E 8000 -gl -m$CATALOG $DECL $INSTANCE |
+
+You will need the following packages:
+
+3991798ddca05a72fbe7c8dfb10c50c1  docbk241.tar.Z
+96489411b5f1aff644abc12ef50510e7  man2texi-0.01.tar.bz2
+ccefdac569c96641ee8f67cf99eb0ef4  yman2html-0_22.tar.gz 
+b28ddaaa8eb4b775100c67fd1205240a  docbook-to-man.tar.gz
+[uncompressed  ad8499879f076b301893724081b12f2e  docbook-to-man.tar]
+
+docbook-to-man is a free tool from the OSF.
+There seem to be two versions both named the same.  The older
+version (circa Aug 1996) is the version with the md5's given
+above.  There does seem to be a small formatting difference when using
+the newer version (uncompressed md5 e2fd3b51fccd3ac73dc1491bb6e6708d)
+which has a date of circa Dec 1996. The older version is preferred.
+
+docbk241.tar.Z is the docbook DTD v2.41 package from Davenport Co.
+The dtd goes here by default:
+	(umask 022; mkdir -p  /usr/local/lib/sgml/Davenport/dtd)
+	cat docbk241.tar.Z |
+		( cd /usr/local/lib/sgml/Davenport/dtd && tar xvpf - -Z )
+
+
+Here is the patch to get docbook-to-man (md5=ad8499879f076b301893724081b12f2e)
+to compile. (You also probably need to add the ''PARSER -E 8000'' patch above
+for it to work).
+
+--- docbook-to-man.orig/Instant/tptregexp/regexp.c      1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man/Instant/tptregexp/regexp.c   2014-07-23 22:15:37.095121439 -0400
+@@ -196,7 +196,7 @@
+        register char *longest;
+        register int len;
+        int flags;
+-       extern char *malloc();
++       /* extern char *malloc(); */
+ 
+        if (exp == NULL)
+                FAIL("NULL argument");
+@@ -705,7 +705,7 @@
+ register char *string;
+ {
+        register char *s;
+-       extern char *strchr();
++       /* extern char *strchr(); */
+ 
+        /* Be paranoid... */
+        if (prog == NULL || string == NULL) {
+@@ -804,7 +804,7 @@
+ {
+        register char *scan;    /* Current node. */
+        char *next;             /* Next node. */
+-       extern char *strchr();
++       /* extern char *strchr(); */
+ 
+        scan = prog;
+ #ifdef DEBUG
+
+
+The as-shipped SGML parser, /usr/bin/nsgmls,  is probably OK.
+Try
+   /usr/bin/nsgmls --version
+
+"OpenSP" version "1.5.2" and "OpenSP" version "1.5" have been used successfully.
+
+Compiling the documentation on a modern Debian System:
+-------------------------------------------------------
+
+The documentation can be compiled on Debian GNU/Linux 3.1r0a
+with the following additions/changes:
+
+Add the man2texi and yman2html-0_22 packages
+
+Then, install the Debian docbook-to-man package (which is part of the
+Debian distribution, it was on CD#3 of my CD set) then modify the
+docbook-to-man shell script, /usr/bin/docbook-to-man, and the translation
+spec file as indicated by the following patches:
+
+(Note: this patch applies to Debian3.1 (Sarge) only)
+--- docbook-to-man.orig	2005-01-07 09:18:19.000000000 -0500
++++ docbook-to-man	2005-09-04 21:18:02.277772736 -0400
+@@ -177,10 +177,9 @@
+ #fi
+ 
+ (#cat /tmp/dtm.$$.psinc;
+- $PARSER -gl -m$CATALOG $DECL $INSTANCE |
++ $PARSER -E 8000 -gl -m$CATALOG $DECL $INSTANCE |
+ 	$INSTANT -croff.cmap -sroff.sdata -tdocbook-to-man.ts $INSTANT_OPT |
+-	sed 's/^[	 ]*//
+-	     s/$/ /
++	sed 's/$/ /
+ 	     s/--/\\-\\-/g
+ 	     s/^-/\\-/
+ 	     s/\([^A-Za-z0-9\-]\)-/\1\\-/g' )
+
+Then modify the '/usr/share/sgml/transpec/docbook-to-man.ts' file according to
+the patch below.  Note, this change reverts some of the changes made by the ANS
+Modifications back to being in line with Fred Dalrymple's original package.
+
+# diff -u /usr/share/sgml/transpec/docbook-to-man.ts.deb-sarge /usr/share/sgml/transpec/docbook-to-man.ts
+--- /usr/share/sgml/transpec/docbook-to-man.ts.deb-sarge        2005-01-07 09:18:19.000000000 -0500
++++ /usr/share/sgml/transpec/docbook-to-man.ts  2005-09-05 18:32:00.000000000 -0400
+@@ -1699,8 +1699,7 @@
+ #
+ GI:            COMMAND
+ StartText:     \\fB
+-#EndText:      \\fP
+-EndText:       \\fR
++EndText:       \\fP
+ -
+ #
+ GI:            COMPUTEROUTPUT
+@@ -1850,8 +1849,7 @@
+ #
+ GI:            REPLACEABLE
+ StartText:     \\fI
+-#EndText:      \\fP
+-EndText:       \\fR
++EndText:       \\fP
+ -
+ #
+ GI:            RETURNVALUE
+
+<-- End of patch
+
+
+MAN2TEXI PATCH TO WRITE THE MENU AT THE END OF THE NODE
+--------------------------------------------------------
+Here's the patch to man2texi.  It is optional. Using this
+patch places the menu at the end of the texi documents "@node".
+This the the preferred way.
+
+diff -ruN man2texi-0.01/man2texi.awk man2texi-0.01-jhl1/man2texi.awk
+--- man2texi-0.01/man2texi.awk	2002-12-23 21:16:36.000000000 -0500
++++ man2texi-0.01-jhl1/man2texi.awk	2006-05-18 22:21:30.000000000 -0400
+@@ -39,7 +39,10 @@
+ 
+ 						{ copy($0); next }
+ 
+-END						{ terminate() }
++END						{ 
++							#terminate() 
++							terminate2() 
++						  }
+ 
+ ### ====================================================================
+ 
+@@ -431,6 +434,7 @@
+ 	begin_environment("quotation")
+     else if (s ~ "^[.]SH")
+     {
++        writeln("@comment MAN2TEXI: EON")
+ 	end_open_environments()
+ 	t = unquote(substr(s,4))
+ 	add_menu("Top",t)
+@@ -441,6 +445,7 @@
+     }
+     else if (s ~ "^[.]SS")
+     {
++        writeln("@comment MAN2TEXI: EON")
+ 	end_open_environments()
+ 	t = unquote(substr(s,4))
+ 	add_menu(Section,t)
+@@ -480,7 +485,6 @@
+ 	writeln("@comment " s)
+ }
+ 
+-
+ function terminate( k)
+ {
+     end_open_environments()
+@@ -495,6 +499,28 @@
+     }
+ }
+ 
++function terminate2( k)
++{
++    key=""
++    end_open_environments()
++    writeln("@bye")
++    for (k = 1; k < Nlines; ++k)
++    {
++	if (Lines[k] ~ "@chapter") {
++	    key="Top"
++	    printf("%s", Lines[k])
++	} else if (Lines[k] ~ "@section") {
++	    key=trim_newline(substr(Lines[k],9))
++	    printf("%s", Lines[k])
++	} else if (Lines[k] ~ /@comment MAN2TEXI: EON/) {
++	    if (key != "") print_menu(key)
++	    printf("%s", Lines[k])
++	    key=""
++    	} else {
++	    printf("%s", Lines[k])
++	}
++    }
++}
+ 
+ function trim(s)
+ {
+
+<-- End of patch
+
+DOCBOOK-TO-MAN DIFFERENCES
+--------------------------
+Here is the differnce between the old and new
+docbook-to-man.tar.gz files.  Historically this package's
+docs have used the old version 
+
+
+diff -ruN docbook-to-man_aug96/Doc/transpec.1 docbook-to-man_dec96/Doc/transpec.1
+--- docbook-to-man_aug96/Doc/transpec.1	1996-06-16 23:50:30.000000000 -0400
++++ docbook-to-man_dec96/Doc/transpec.1	1996-09-23 16:40:04.000000000 -0400
+@@ -154,6 +154,7 @@
+ Set@name value@set variable \fIname\fP to \fIvalue\fP
+ SpecID@spec-id@unique Spec ID (int) of this spec
+ StartText@text@text for start of element
++Verbatim@none@transfer content without mapping
+ .TE
+ 'br\" labeled list
+ .IP "\fBAction:\fP \fIspec-id\fP"
+@@ -198,6 +199,9 @@
+ This is used for cases where several specs to perform the exact same action.
+ .IP "\fBStartText:\fP \fItext\fP"
+ This specifies text to be output when the start tag is processed.
++.IP "\fBVerbatim:\fP"
++When present in a transpec, causes the content for the element
++to be passed to the output without character mapping being applied.
+ 'br\" labeled list end
+ .SS "Other Fields"
+ .PP
+@@ -296,7 +300,11 @@
+ "\fB${_followrel child TITLE 15t}\fR"), will cause the criteria statements
+ in the named translation spec to evaluate successfully before that translation
+ spec will be processed.
+-.P
++.PP
++If it necessary to pass an argument that contains spaces to a special
++variable, that argument should be surrounded by ^G (BEL, octal 007)
++characters.
++.PP
+ .TS
+ tab(@);
+ l l.
+@@ -318,6 +326,7 @@
+ \fB_infile\fP [\fBline\fP]@instance filename [and line number]
+ \fB_insertnode\fP S|E \fIspec-id\fP@do spec-id when element is traversed
+ \fB_isset\fP \fIvar\fP [\fIvalue\fP] \fIspec-id\fP@do spec-id if variable matches
++\fB_issete\fP \fIvar\fP [\fIvalue\fP] \fIspec-id\fP@do spec-id if variable matches expanded value
+ \fB_location\fP@print location of current element
+ \fB_namelist\fP \fIspec-id\fP [\fIspec-id\fP]@content is namelist, do spec-id for each
+ \fB_nchild\fP [\fIgi\fP]@number of child elements [named \fIattname\fP]
+@@ -445,6 +454,10 @@
+ .IP "\fB_isset\fP \fIvarname\fP [\fIvalue\fP] \fIspec-id\fP"
+ If the value of the variable \fIvarname\fP is set to \fIvalue\fP, then perform action referred to by \fIspec-id\fP. 
+ If \fIvalue\fP is not specified, action will be performed if \fIvarname\fP is set to any value.
++.IP "\fB_issete\fP \fIvarname\fP [\fIvalue\fP] \fIspec-id\fP"
++If the value of the variable \fIvarname\fP is set to
++the expanded value of \fIvalue\fP, then perform action referred to by \fIspec-id\fP. 
++If \fIvalue\fP is not specified, action will be performed if \fIvarname\fP is set to any value.
+ .IP "\fB_!\fP \fIcommand\fP"
+ Run the command \fIcommand\fP, directing its standard output into the output stream.
+ 'br\" labeled list end
+@@ -455,7 +468,9 @@
+ variables are processed later, near when the final output is being generated).
+ The general syntax of immediate variables is \fB${+\fIimmediate_variable\ ...\fB}\fR.
+ .PP
+-There is currently only one immediate variable defined:
++.IP "\fB+caps\fP"
++This special variable is replaced by the data content of the current element,
++with all lower characters replaced by their upp case counterparts.
+ .IP "\fB+content\fP"
+ This special variable is replaced by the data content of the current element.
+ .SH "Examples"
+diff -ruN docbook-to-man_aug96/Instant/allVersion.c docbook-to-man_dec96/Instant/allVersion.c
+--- docbook-to-man_aug96/Instant/allVersion.c	1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man_dec96/Instant/allVersion.c	1996-12-02 00:34:51.000000000 -0500
+@@ -1,13 +1,13 @@
+-/* version summary file created by makeVersionFile on Fri Jun 14 23:45:41 1996 */
++/* version summary file created by makeVersionFile on Mon Dec  2  0:34:50 1996 */
+ 
+ char _HeadVeRsIoN_[] = "$Id: general.h 1.5 1996/06/11 20:25:03;
+ translate.h 1.3 1996/06/02 21:47:32;
+-main.c 1.8 1996/06/12 03:32:48;
+-util.c 1.4 1996/06/02 21:47:32;
++main.c 1.10 1996/12/02 05:34:03;
++util.c 1.5 1996/09/14 16:32:37;
+ info.c 1.2 1996/06/02 21:46:10;
+-translate.c 1.10 1996/06/11 22:43:59;
++translate.c 1.13 1996/12/02 05:34:03;
+ traninit.c 1.5 1996/06/02 21:47:32;
+-tranvar.c 1.5 1996/06/11 22:43:15;
+-tables.c 1.11 1996/06/15 03:45:02;
++tranvar.c 1.6 1996/09/14 16:35:48;
++tables.c 1.13 1996/12/02 05:34:03;
+ browse.c 1.2 1996/06/02 21:46:10;
+-Makefile 1.9 1996/06/06 14:45:16 $";
++Makefile 1.10 1996/06/15 22:49:42 $";
+diff -ruN docbook-to-man_aug96/Instant/main.c docbook-to-man_dec96/Instant/main.c
+--- docbook-to-man_aug96/Instant/main.c	1996-06-16 23:50:28.000000000 -0400
++++ docbook-to-man_dec96/Instant/main.c	1996-12-02 00:34:46.000000000 -0500
+@@ -66,7 +66,7 @@
+ 
+ #ifndef lint
+ static char *RCSid =
+-  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+ #endif
+ 
+ #include <stdio.h>
+@@ -532,7 +532,7 @@
+ }
+ 
+ /*  Read ESIS lines.
+- *  Limitation?  Max 5000 children per node.  (done for efficiency --
++ *  Limitation?  Max 50000 children per node.  (done for efficiency --
+  *  should do some malloc and bookkeeping games later).
+  */
+ 
+@@ -545,7 +545,7 @@
+     char	*buf;
+     int		i, c, ncont;
+     Element_t	*e;
+-    Content_t	cont[5000];
++    Content_t	cont[50000];
+ 
+     Malloc( LINESIZE+1, buf, char );
+ 
+@@ -563,10 +563,8 @@
+ 	    case CMD_DATA:	/* -data */
+ 		fgets(buf, LINESIZE, fp);
+ 		stripNL(buf);
+-		if (do_DATAhack && (buf[0] == '\\') && (buf[1] == 'n'))	{
+-			if ( ! buf[2] )
+-				break;
+-			buf[0] = ' ';
++		if (do_DATAhack && (buf[0] == '\\') && (buf[1] == 'n') )	{
++			buf[0] = -1;		/* simulate "^" command */
+ 			memcpy(&buf[1], &buf[2], strlen(buf)-1);
+ 		}
+ 		cont[ncont].ch.data = strdup(buf);
+diff -ruN docbook-to-man_aug96/Instant/masterVersion.c docbook-to-man_dec96/Instant/masterVersion.c
+--- docbook-to-man_aug96/Instant/masterVersion.c	1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man_dec96/Instant/masterVersion.c	1996-12-02 00:34:51.000000000 -0500
+@@ -1,3 +1,3 @@
+-/* version summary file created by makeVersionFile on Fri Jun 14 23:45:42 1996 */
++/* version summary file created by makeVersionFile on Mon Dec  2  0:34:51 1996 */
+ 
+-char _HeadVeRsIoN_[] = "$Id: README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++char _HeadVeRsIoN_[] = "$Id: README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+diff -ruN docbook-to-man_aug96/Instant/tables.c docbook-to-man_dec96/Instant/tables.c
+--- docbook-to-man_aug96/Instant/tables.c	1996-06-16 23:50:28.000000000 -0400
++++ docbook-to-man_dec96/Instant/tables.c	1996-12-02 00:34:47.000000000 -0500
+@@ -73,7 +73,7 @@
+ 
+ #ifndef lint
+ static char *RCSid =
+-  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+ #endif
+ 
+ #include <stdio.h>
+@@ -1690,14 +1690,20 @@
+ {
+ 	register int i;
+ 	register Element_t * ep2;
+-	register bool sawPI;
++	register bool sawPIorPara;
+ 
+ 
+-	for ( i=0, sawPI=FALSE;  (i < ep->ncont) && !sawPI;  i++ )
+-		if ( ep->cont[i].type == '?' )
+-			sawPI = TRUE;
++	for ( i=0, sawPIorPara=FALSE;  i < ep->ncont;  i++ )	{
++		if ( (ep->cont[i].type == '?') ||
++		     (i &&
++		      (ep->cont[i].type == '(') &&
++		      !strcmp(ep->cont[i].ch.elem->gi, "PARA")) )	{
++			sawPIorPara = TRUE;
++			break;
++		}
++	}
+ 
+-	if ( sawPI || (TblCountContent(ep) > BOFTTextThresh) )	{
++	if ( sawPIorPara || (TblCountContent(ep) > BOFTTextThresh) )	{
+ 		tblBOFTCount++;
+ 		OutputString("T{^", fP, 1);
+ 		tblinBOFT = TRUE;	/* within a boft now */
+@@ -1715,13 +1721,16 @@
+ TblCountContent(Element_t * ep)		/* the element to look under */
+ {
+ 	register int i, count;
++	register char * cp;
+ 
+ 
+ 	count = 0;
+ 
+ 	for ( i=0;  i < ep->ncont;  i++ )	{
+ 		if ( ep->cont[i].type == '-' )	{
+-			count += strlen(ep->cont[i].ch.data);
++			for ( cp=ep->cont[i].ch.data; *cp; cp++, count++ )
++				if ( *cp == -1 )
++					return BOFTTextThresh + 1;
+ 		} else
+ 		if ( ep->cont[i].type == '(' )	{
+ 			count += TblCountContent(ep->cont[i].ch.elem);
+diff -ruN docbook-to-man_aug96/Instant/translate.c docbook-to-man_dec96/Instant/translate.c
+--- docbook-to-man_aug96/Instant/translate.c	1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man_dec96/Instant/translate.c	1996-12-02 00:34:47.000000000 -0500
+@@ -58,7 +58,7 @@
+ 
+ #ifndef lint
+ static char *RCSid =
+-  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+ #endif
+ 
+ #include <stdio.h>
+@@ -193,7 +193,7 @@
+     Element_t	*e
+ )
+ {
+-    register int i, j;
++    register int i, j, k;
+     char	*ip, *vp, *op;
+     char	*def_val, *s, *atval, *modifier;
+     char	vbuf[500];
+@@ -249,6 +249,19 @@
+ 	    	    	}
+ 	    	    }
+ 
++	    	} else
++
++	    	if ( ! strcmp(vp, "+caps") )	{
++	    	    for ( i=k=0;  i<e->ncont; i++ )	{
++	    	    	if ( IsContData(e, i) )	{
++	    	    	    for ( j=0;  ContData(e, i)[j];  j++ )
++	    	    	    	op[k++] = toupper(ContData(e, i)[j]);
++	    	    	} else	{
++	    	    	    fprintf(stderr, "warning: ${+caps} skipped element content\n");
++	    	    	}
++	    	    }
++	    	    op[k] = 0;
++
+ 	    	} else	{
+ 	    	    fprintf(stderr, "unknown immediate variable: %s\n", vp);
+ 	    	}
+@@ -643,6 +656,7 @@
+ 		mapped = 1;
+ 		break;
+ 	    }
++	    if ( *cp == -1 )	*cp = '^';
+ 	    if (!mapped) *dp++ = *cp;
+ 	    prev = *cp;
+ 	}
+diff -ruN docbook-to-man_aug96/Instant/tranvar.c docbook-to-man_dec96/Instant/tranvar.c
+--- docbook-to-man_aug96/Instant/tranvar.c	1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man_dec96/Instant/tranvar.c	1996-09-14 12:36:00.000000000 -0400
+@@ -55,7 +55,7 @@
+ 
+ #ifndef lint
+ static char *RCSid =
+-  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+ #endif
+ 
+ #include <stdio.h>
+@@ -99,7 +99,7 @@
+ )
+ {
+     FILE	*infile;
+-    char	buf[LINESIZE], *cp, *atval;
++    char	buf[LINESIZE], *cp, *cp2, *atval;
+     char	**tok;
+     int		ntok, n, i, actioni;
+     char	*action, *action1;
+@@ -400,12 +400,21 @@
+ 
+     /* Do action if variable is set, optionally to value.
+      * If not set, do nothing.
+-     * Format: _isset varname [value] action */
+-    else if (StrEq(tok[0], "isset")) {
++     * Format: _isset varname [value] action 
++     * Format: _issete varname [value] action  --  expands value */
++    else if (StrEq(tok[0], "isset") || StrEq(tok[0], "issete")) {
+ 	if ((cp = FindMappingVal(Variables, tok[1]))) {
+ 	    if (ntok == 3) TranTByAction(e, tok[2], fp);
+-	    else if (ntok > 3 && !strcmp(cp, tok[2]))
+-		TranTByAction(e, tok[3], fp);
++	    else
++	    if (ntok > 3)	{
++	    	if ( StrEq(tok[0], "issete") )	{
++			ExpandVariables(tok[2], buf, e);
++			cp2 = buf;
++		} else
++			cp2 = tok[2];
++	    	if ( !strcmp(cp, cp2))
++			TranTByAction(e, tok[3], fp);
++	    }
+ 	}
+     }
+ 
+diff -ruN docbook-to-man_aug96/Instant/util.c docbook-to-man_dec96/Instant/util.c
+--- docbook-to-man_aug96/Instant/util.c	1996-06-16 23:50:29.000000000 -0400
++++ docbook-to-man_dec96/Instant/util.c	1996-09-14 12:32:47.000000000 -0400
+@@ -72,7 +72,7 @@
+ 
+ #ifndef lint
+ static char *RCSid =
+-  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
++  "$Header: /sources/swbis/swbis/doc/README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $";
+ #endif
+ 
+ #include <stdio.h>
+@@ -119,7 +119,7 @@
+     int		flag		/* dup string? allocate a vector? */
+ )
+ {
+-    int		maxnt, i=0;
++    int		quote, maxnt, i=0;
+     int		n_alloc;
+     char	**tokens;
+     static char	*local_tokens[100];
+@@ -155,6 +155,8 @@
+     i = 0;			/* index into vector */
+     tokens[0] = s;		/* s already points to 1st token */
+     while (i<maxnt) {
++	quote = (*s == '\007');
++	if ( quote )	s++;	/* skip quote */
+ 	tokens[i] = s;		/* point vector member at start of token */
+ 	i++;
+ 	/* If we allocated vector, see if we need more space. */
+@@ -163,7 +165,12 @@
+ 	    Realloc(n_alloc, tokens, char *);
+ 	}
+ 	if (i >= maxnt) break;			/* is this the last one? */
+-	while (*s && !IsWhite(*s)) s++;		/* skip past end of token */
++	while (*s && (quote || !IsWhite(*s)) &&
++	             (!quote || (*s != '\007'))) s++;	/* skip past end of token */
++	if ( *s && quote )	{
++		*s = EOS;
++		s++;
++	}
+ 	if (*s == EOS) break;			/* at end of input string? */
+ 	if (*s) *s++ = EOS;			/* terminate token string */
+ 	while (*s && IsWhite(*s)) s++;		/* skip space - to next token */
+diff -ruN docbook-to-man_aug96/README docbook-to-man_dec96/README
+--- docbook-to-man_aug96/README	1996-06-16 23:50:30.000000000 -0400
++++ docbook-to-man_dec96/README	1996-12-02 18:38:10.000000000 -0500
+@@ -136,3 +136,15 @@
+ 
+ Please send correspondence to fld@veloce.com
+ 
++
++
++NOTES:  12/2/96
++===============
++
++The docbook-to-man package made available on 12/2/96 includes the
++following changes from the previous version (circa August '96):
++
++ 1.  A fix for missing newlines in the -man output
++
++ 2.  The &minus; character entity is now mapped to "-" (rather than
++     "\(mi").
+diff -ruN docbook-to-man_aug96/Transpec/docbook-to-man.ts docbook-to-man_dec96/Transpec/docbook-to-man.ts
+--- docbook-to-man_aug96/Transpec/docbook-to-man.ts	1996-06-16 23:50:28.000000000 -0400
++++ docbook-to-man_dec96/Transpec/docbook-to-man.ts	1996-12-02 00:13:41.000000000 -0500
+@@ -261,6 +261,18 @@
+ #	nothing in this context
+ -
+ #
++GI:		PARA
++Relation:	parent ENTRY
++NthChild:	1
++#	first one does nothing in this context
++-
++#
++GI:		PARA
++Relation:	parent ENTRY
++StartText:	^.br^
++-
++#
++#
+ #
+ #############################################################################
+ #
+@@ -845,7 +857,7 @@
+ -
+ #
+ GI:		SEGMENTEDLIST
+-Relation:	ancestor ORDETERLIST
++Relation:	ancestor ORDEREDLIST
+ StartText:	^.RS^${_followrel child TITLE 400}^.TS^tab();^l l l l l l l l l l l l l l l l l l.^
+ EndText:	^.TE^.RE^
+ -
+diff -ruN docbook-to-man_aug96/Transpec/roff.sdata docbook-to-man_dec96/Transpec/roff.sdata
+--- docbook-to-man_aug96/Transpec/roff.sdata	1996-06-16 23:50:28.000000000 -0400
++++ docbook-to-man_dec96/Transpec/roff.sdata	1996-12-02 18:35:45.000000000 -0500
+@@ -530,7 +530,7 @@
+ # [lang  ]		/langle O: =left angle bracket
+ # [lArr  ]		/Leftarrow A: =is implied by
+ [le    ]		\\(<=
+-[minus ]		\\(mi
++[minus ]		-
+ # [mnplus]		/mp B: =minus-or-plus sign
+ # [nabla ]		/nabla =del, Hamilton operator
+ [ne    ]		\\(!=
+<-- End of patch
+
+
+THE DOCBOOK TRANSLATION SPEC FILE  /usr/local/lib/tpt/docbook-to-man.ts
+------------------------------------------------------------------------
+
+Here is a working diff against the pristine docbook-to-man.ts applied on
+a Slackware system used to generate the docs for release 1.12 (July 2014)
+It turns off hypenation and created ragged right edges.
+
+
+bash-4.2$ diff /work/docbook-to-man/Transpec/docbook-to-man.ts  /usr/local/lib/tpt/docbook-to-man.ts
+59c59,62
+< EndText:      ^...\\" created by instant / docbook-to-man, ${date}^
+---
+>               ^.hy 0 ^.if n .na
+> EndText:      ^.\\" created by instant / docbook-to-man, ${date}^
+> 
+> #EndText:     ^...\\" created by instant / docbook-to-man, ${date}^
+
+
+
+Here is the actual diff of the docbook-to-man.ts used to make the documentation.
+It is based on a Debian 3.1 Systems docbook-to-man package with changes.  The
+difference is from the 1996 original file from the package described above.
+(b28ddaaa8eb4b775100c67fd1205240a  docbook-to-man.tar.gz).  The main feature is
+that it deletes hyphenation in favor of ragged edged man pages.  It keeps some
+of the diffs from Debian3.1 but reverts some that caused breakage.
+	NOTE: TO MAKE RAGGED RIGHT EDGE AND TURN OF HYPHENATION
+    .hy 0
+    .if n .na
+diff -u /usr/local/lib/tpt/docbook-to-man.ts.orig /usr/local/lib/tpt/docbook-to-man.ts
+--- /usr/local/lib/tpt/docbook-to-man.ts.orig	2009-03-07 19:11:13.941991609 -0500
++++ /usr/local/lib/tpt/docbook-to-man.ts	2009-03-07 19:15:17.544608248 -0500
+@@ -36,6 +36,10 @@
+ #
+ #############################################################################
+ #
++# $Id: README,v 1.8 2009/06/08 23:40:20 jhlowe Exp $
++#
++#############################################################################
++#
+ #  Variables
+ #
+ Var:	callout 0
+@@ -52,11 +56,13 @@
+ #
+ #   ####     #####     #####     #####     #####     #####     ####     #####     
+ #
++
+ GI:		REFENTRY
+-StartText:	^.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n
+-		^.TH "${_followrel descendant REFENTRYTITLE 1000}"
++#StartText:	^'\\" t^${_action 1001}
++StartText:	^${_action 1001}.TH "${_followrel descendant REFENTRYTITLE 1000}"
+ 		"${_followrel descendant MANVOLNUM 1000}"^
+-EndText:	^...\\" created by instant / docbook-to-man, ${date}^
++		^.hy 0 ^.if n .na
++EndText:	^.\\" created by instant / docbook-to-man, ${date}^
+ -
+ #
+ GI:		DOCINFO
+@@ -67,6 +73,26 @@
+ Context:	DOCINFO
+ #	inside DocInfo, which we're ignoring
+ -
++GI:		COPYRIGHT
++Context:	DOCINFO
++#	inside DocInfo, which we're ignoring
++-
++GI:		HOLDER
++Context:	COPYRIGHT
++#	inside DocInfo, which we're ignoring
++-
++GI:		YEAR
++Context:	COPYRIGHT
++#	inside DocInfo, which we're ignoring
++-
++#
++GI:		REFENTRYINFO
++Ignore:		all
++-
++#
++GI:		COPYRIGHT
++Context:	REFENTRYINFO
++-
+ #
+ GI:		REFMETA
+ Ignore:		all
+@@ -133,6 +159,11 @@
+ -
+ #
+ GI:		TITLE
++Context:	REFSYNOPSISDIV
++Ignore:		all
++-
++#
++GI:		TITLE
+ Context:	REFSECT1
+ Ignore:		all
+ -
+@@ -297,13 +328,17 @@
+ -
+ #
+ GI:		PROGRAMLISTING
+-StartText:	^.PP^.nf^\\f(CW
+-EndText:	\\fR^.fi^.PP^
++#StartText:	^.PP^.nf^${_action 1001}^\\f(CW
++StartText:	^.PP^.nf^${_action 1001}^
++#EndText:	\\fR^.fi^.PP^
++EndText:	^.fi^.PP^
++Verbatim:
+ -
+ #
+ GI:		LITERALLAYOUT
+-StartText:	^.PP^.nf^
++StartText:	^.PP^.nf^${_action 1001}^
+ EndText:	^.fi^
++Verbatim:
+ -
+ #
+ GI:		BLOCKQUOTE
+@@ -376,8 +411,9 @@
+ -
+ #
+ GI:		SCREEN
+-StartText:	^.PP^.nf^
++StartText:	^.PP^.nf^${_action 1001}^
+ EndText:	^.fi^
++Verbatim:
+ -
+ #
+ GI:		SCREENCO
+@@ -489,8 +525,9 @@
+ #   ####     #####     #####     #####     #####     #####     ####     #####     
+ #
+ GI:		ADDRESS
+-StartText:	^.PP^.nf^
++StartText:	^.PP^.nf^${_action 1001}^
+ EndText:	^.fi^
++Verbatim:
+ -
+ #
+ GI:		STREET
+@@ -662,7 +699,9 @@
+ #
+ GI:		LISTITEM
+ Context:	ITEMIZEDLIST
+-StartText:	^.IP "\ \ \ \\(bu" 6^
++StartText:	^.IP "\ \ \ \*" 6^
++
++# StartText:	^.IP "\ \ \ \\(bu" 6^
+ -
+ #
+ GI:		ORDEREDLIST
+@@ -1155,8 +1194,9 @@
+ #   ####     #####     #####     #####     #####     #####     ####     #####     
+ #
+ GI:		SYNOPSIS
+-StartText:	^.PP^.nf^
++StartText:	^.PP^.nf^${_action 1001}^
+ EndText:	^.fi^
++Verbatim:
+ -
+ #
+ GI:		CMDSYNOPSIS
+@@ -1237,8 +1277,9 @@
+ -
+ #
+ GI:		FUNCSYNOPSIS
+-StartText:	^.PP^.nf^
++StartText:	^.PP^.nf^${_action 1001}^
+ EndText:	^.fi^
++Verbatim:
+ -
+ #
+ GI:		FUNCSYNOPSISINFO
+@@ -1313,16 +1354,29 @@
+ #
+ GI:		XREF
+ AttValue:	ENDTERM
+-StartText:	\\fI(cross-reference to ``${_followlink ENDTERM 1000}'')\\fR\s
++StartText:	\\fI"${_followlink ENDTERM 1000}"\\fR\s
+ -
+ #
+ GI:		XREF
+-StartText:	\\fI(cross-reference to ``${_followlink LINKEND 600})''\\fR\s
++StartText:	\\fI"${_followlink LINKEND 600}"\\fR\s
+ -
+ #
+ GI:		_xref
+ SpecID:		600
+-StartText:	${XREFLABEL}
++StartText:	${_set xreflabel no}${_isset XREFLABEL 601}${_isset xreflabel no 602}
++Ignore:		all
++-
++#
++GI:		_xref_label
++SpecID:		601
++StartText:	${_set xreflabel yes}${XREFLABEL}
++Ignore:		all
++-
++#
++GI:		_xref_title
++SpecID:		602
++Set:             
++StartText:	${_followrel child TITLE 1000}
+ Ignore:		all
+ -
+ #
+@@ -1603,6 +1657,9 @@
+ StartText:	\\fI
+ EndText:	\\fP
+ -
++GI:		ENVAR
++#	no special presentation
++-
+ #
+ GI:		FIRSTTERM
+ StartText:	\\fI
+@@ -1654,6 +1711,11 @@
+ EndText:	\\fP
+ -
+ #
++GI:		CONSTANT
++StartText:	\\fB
++EndText:	\\fP
++-
++#
+ GI:		DATABASE
+ #	no special presentation
+ -
+@@ -1757,6 +1819,10 @@
+ #	no special presentation
+ -
+ #
++GI:		PROMPT
++#	no special presentation
++-
++#
+ GI:		SHORTCUT
+ #	no special presentation
+ -
+@@ -1865,6 +1931,11 @@
+ EndText:	\\fP
+ -
+ #
++GI:		VARNAME
++StartText:	\\fB
++EndText:	\\fP
++-
++#
+ GI:		AUTHOR
+ #	no special presentation - defer to content
+ -
+@@ -1967,6 +2038,17 @@
+ SpecID:		1000
+ -
+ #
++# Used to reset trap positions, either at start of file or when .nf is
++# restarted, such as for literal output.  Assumes caller is responsible
++# for line starting characters as appropriate.  (it helps the calling
++# definitions read more logically).
++#
++GI:		_tabset
++SpecID:		1001
++#StartText:	.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n
++Ignore:		all
++-
++#
+ GI:		_doTitle
+ SpecID:		1010
+ StartText:	^.PP^\\fB
+<-- End of patch
+<-- END of README

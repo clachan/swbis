@@ -1,0 +1,373 @@
+====================================== running test 001
+../../testing/lib/rpm/rh-4.0/bash-1.14.7-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/basic-1.20-7.i386.rpm
+../../testing/lib/rpm/rh-4.0/bc-1.03-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bdflush-1.5-5.i386.rpm
+../../testing/lib/rpm/rh-4.0/bin86-0.3-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-utils-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/binutils-2.7.0.2-4.i386.rpm
+../../testing/lib/rpm/rh-4.0/bison-1.25-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-devel-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bm2font-3.0-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootp-2.4.3-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootpc-050-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bsd-games-1.3-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/byacc-1.9-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash-1.14.7-16.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-doc-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bc-1.05a-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bdflush-1.5-10.i386.rpm
+../../testing/lib/rpm/rh-6.0/bin86-0.4-7.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-devel-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-utils-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/binutils-2.9.1.0.23-1.i386.rpm
+../../testing/lib/rpm/rh-6.0/bison-1.27-3.i386.rpm
+../../testing/lib/rpm/rh-6.0/blt-2.4g-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bootparamd-0.10-22.i386.rpm
+../../testing/lib/rpm/rh-6.0/byacc-1.9-11.i386.rpm
+../../testing/lib/rpm/rh-6.0/bzip2-0.9.0c-1.i386.rpm
+finished =============================
+====================================== running test 002
+../../testing/lib/rpm/rh-4.0/bash-1.14.7-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/basic-1.20-7.i386.rpm
+../../testing/lib/rpm/rh-4.0/bc-1.03-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bdflush-1.5-5.i386.rpm
+../../testing/lib/rpm/rh-4.0/bin86-0.3-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-utils-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/binutils-2.7.0.2-4.i386.rpm
+../../testing/lib/rpm/rh-4.0/bison-1.25-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-devel-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bm2font-3.0-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootp-2.4.3-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootpc-050-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bsd-games-1.3-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/byacc-1.9-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash-1.14.7-16.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-doc-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bc-1.05a-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bdflush-1.5-10.i386.rpm
+../../testing/lib/rpm/rh-6.0/bin86-0.4-7.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-devel-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-utils-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/binutils-2.9.1.0.23-1.i386.rpm
+../../testing/lib/rpm/rh-6.0/bison-1.27-3.i386.rpm
+../../testing/lib/rpm/rh-6.0/blt-2.4g-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bootparamd-0.10-22.i386.rpm
+../../testing/lib/rpm/rh-6.0/byacc-1.9-11.i386.rpm
+../../testing/lib/rpm/rh-6.0/bzip2-0.9.0c-1.i386.rpm
+finished =============================
+====================================== running test 003
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+finished =============================
+====================================== running test 004
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+finished =============================
+====================================== running test 005
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+finished =============================
+====================================== running test 006
+../../testing/lib/rpm/rh-4.0/bash-1.14.7-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/basic-1.20-7.i386.rpm
+../../testing/lib/rpm/rh-4.0/bc-1.03-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bdflush-1.5-5.i386.rpm
+../../testing/lib/rpm/rh-4.0/bin86-0.3-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bind-utils-4.9.4-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/binutils-2.7.0.2-4.i386.rpm
+../../testing/lib/rpm/rh-4.0/bison-1.25-1.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/blt-devel-1.9-3.i386.rpm
+../../testing/lib/rpm/rh-4.0/bm2font-3.0-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootp-2.4.3-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bootpc-050-2.i386.rpm
+../../testing/lib/rpm/rh-4.0/bsd-games-1.3-6.i386.rpm
+../../testing/lib/rpm/rh-4.0/byacc-1.9-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash-1.14.7-16.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bash2-doc-2.03-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bc-1.05a-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bdflush-1.5-10.i386.rpm
+../../testing/lib/rpm/rh-6.0/bin86-0.4-7.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-devel-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/bind-utils-8.2-6.i386.rpm
+../../testing/lib/rpm/rh-6.0/binutils-2.9.1.0.23-1.i386.rpm
+../../testing/lib/rpm/rh-6.0/bison-1.27-3.i386.rpm
+../../testing/lib/rpm/rh-6.0/blt-2.4g-4.i386.rpm
+../../testing/lib/rpm/rh-6.0/bootparamd-0.10-22.i386.rpm
+../../testing/lib/rpm/rh-6.0/byacc-1.9-11.i386.rpm
+../../testing/lib/rpm/rh-6.0/bzip2-0.9.0c-1.i386.rpm
+finished =============================
+====================================== running test 007
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+finished =============================
+====================================== running test 010
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm
+finished =============================
+====================================== running test 011
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm      11
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm       3
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm       5
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm       3
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm       5
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm       4
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm      21
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm      11
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm      87
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm      10
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm       8
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm       5
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm       7
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm      72
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm       4
+finished =============================
+====================================== running test 012
+../../testing/lib/rpm/rh-4.0/bash-1.14.7-1.i386.rpm 9c219bd7240b2a460737b996569ebc79  -
+../../testing/lib/rpm/rh-4.0/basic-1.20-7.i386.rpm 352b77b4e29b0f15fb0028d5dd4290de  -
+../../testing/lib/rpm/rh-4.0/bc-1.03-6.i386.rpm 8e853ea09b07ef7f220cdec159748905  -
+../../testing/lib/rpm/rh-4.0/bdflush-1.5-5.i386.rpm 6f41ce667fffe5aaa285981509628f44  -
+../../testing/lib/rpm/rh-4.0/bin86-0.3-3.i386.rpm e1a4fd7c43adea0386ce73888229d3b9  -
+../../testing/lib/rpm/rh-4.0/bind-4.9.4-3.i386.rpm b4d72b32089162d2dbb93f6603b778d4  -
+../../testing/lib/rpm/rh-4.0/bind-utils-4.9.4-3.i386.rpm 73c72b3b745144f34c1dc821b34d5f7f  -
+../../testing/lib/rpm/rh-4.0/binutils-2.7.0.2-4.i386.rpm 516f130e1d3d2d6e659b76c8b858cb65  -
+../../testing/lib/rpm/rh-4.0/bison-1.25-1.i386.rpm 8a6305220db32bea9ce88e2186839f6f  -
+../../testing/lib/rpm/rh-4.0/blt-1.9-3.i386.rpm cd8f376180a9458eecd28b51e052a1db  -
+../../testing/lib/rpm/rh-4.0/blt-devel-1.9-3.i386.rpm 767bd4aabcab03b18d1c5ce2f6d1a238  -
+../../testing/lib/rpm/rh-4.0/bm2font-3.0-6.i386.rpm eba208c64a8c275dbf20fe7f9e27a850  -
+../../testing/lib/rpm/rh-4.0/bootp-2.4.3-2.i386.rpm b436ce6ee9900ebfd45fb13b94a60bc4  -
+../../testing/lib/rpm/rh-4.0/bootpc-050-2.i386.rpm ca17e193a5752a55da333cfbd18eacd1  -
+../../testing/lib/rpm/rh-4.0/bsd-games-1.3-6.i386.rpm b713cd74b7149d8c3e15785c405fae23  -
+../../testing/lib/rpm/rh-4.0/byacc-1.9-4.i386.rpm 4b01c9d8c9b1c4507f5140cbba50f2b0  -
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm 22945e1797b1cd29d1b4bde04c962746  -
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm 7971aab4d23eac57ffa1a34546e4680d  -
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm 6a4ae999c3aa9c6297c0016eb9f0e2ef  -
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm 043492340f753e9dd8e89e9a1099acca  -
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm 6effa9a9343053916c071929c6f39489  -
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm b505f45b81adb0e7f6c68ba37c158131  -
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm c83cf7ef3380f85cd0a7ee491ab7122b  -
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm a298d07274837bbc684e70357300edfd  -
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm 93023066bef3821e9c3d802ab71f3e03  -
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm 72841c5f9415f32a3584cc6ff46c0654  -
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm 818de5fa604609bae06b2d68dd94c36d  -
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm 6b20296eda93c646011ea90ab47af02d  -
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm 2a6c44ea9d4a1c19a25cd30dddaa4e0d  -
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm fed6605bc984166513687765eed6f49c  -
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm e720a081000ce2202e69aa3f8fc19ee8  -
+finished =============================
+====================================== running test 013
+../../testing/lib/rpm/rh-4.0/bash-1.14.7-1.i386.rpm 
+../../testing/lib/rpm/rh-4.0/basic-1.20-7.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bc-1.03-6.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bdflush-1.5-5.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bin86-0.3-3.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bind-4.9.4-3.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bind-utils-4.9.4-3.i386.rpm 
+../../testing/lib/rpm/rh-4.0/binutils-2.7.0.2-4.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bison-1.25-1.i386.rpm 
+../../testing/lib/rpm/rh-4.0/blt-1.9-3.i386.rpm 
+../../testing/lib/rpm/rh-4.0/blt-devel-1.9-3.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bm2font-3.0-6.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bootp-2.4.3-2.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bootpc-050-2.i386.rpm 
+../../testing/lib/rpm/rh-4.0/bsd-games-1.3-6.i386.rpm 
+../../testing/lib/rpm/rh-4.0/byacc-1.9-4.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bash-1.14.7-6.i386.rpm 
+../../testing/lib/rpm/rh-5.0/basic-1.20-8.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bc-1.04-2.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bdflush-1.5-7.i386.rpm 
+../../testing/lib/rpm/rh-5.0/biff-0.10-1.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bin86-0.4-3.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bind-4.9.6-6.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bind-utils-4.9.6-6.i386.rpm 
+../../testing/lib/rpm/rh-5.0/binutils-2.8.1.0.1-1.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bison-1.25-3.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bootp-2.4.3-4.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bootparamd-0.10-2.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bootpc-061-4.i386.rpm 
+../../testing/lib/rpm/rh-5.0/bsd-games-1.3-8.i386.rpm 
+../../testing/lib/rpm/rh-5.0/byacc-1.9-6.i386.rpm 
+finished =============================
+====================================== running test 014
+s1: newc sums                                               PASSED
+s2: ustar sums                                              PASSED
+finished =============================
+====================================== running test 015
+It looks like you have a suitable version of GNU tar.
+s0: ../tests/filelist2tar and ../swsupplib/tests/testtar sums           PASSED.
+s1: GNU tar and ../swsupplib/tests/testtar sums                         PASSED.
+s2: GNU tar ../tests/filelist2tar sums                                  PASSED.
+finished =============================
+====================================== running test 016
+testpathr test: ../tests/testfiles/testpath.1               PASSED.
+testpathr test: ../tests/testfiles/testpath.2               PASSED.
+testpathr test: ../tests/testfiles/testpath.3               PASSED.
+testpathr test: ../tests/testfiles/testpath.4               PASSED.
+testpathr test: ../tests/testfiles/testpath.5               PASSED.
+testpathr test: ../tests/testfiles/testpath.6               PASSED.
+testpathr test: ../tests/testfiles/testpath.7               PASSED.
+testpathr test: ../tests/testfiles/testpath.8               PASSED.
+testswpath test: ../tests/testfiles/testpath.1                PASSED.
+testswpath test: ../tests/testfiles/testpath.2                PASSED.
+testswpath test: ../tests/testfiles/testpath.3                PASSED.
+testswpath test: ../tests/testfiles/testpath.4                PASSED.
+testswpath test: ../tests/testfiles/testpath.5                PASSED.
+testswpath test: ../tests/testfiles/testpath.6                PASSED.
+testswpath test: ../tests/testfiles/testpath.7                PASSED.
+testswpath test: ../tests/testfiles/testpath.8                PASSED.
+finished =============================
+====================================== running test 017
+../examples/packages/posix-software-2.0.sw.tar.gz: File size check(1)                  PASSED
+../examples/packages/posix-software-2.0.sw.tar.gz: File size check(2)                  PASSED
+../examples/packages/posix-software-2.0.sw.tar.gz: FileSum                             PASSED
+../examples/packages/posix-software-2.0.sw.tar.gz: CatSum                              PASSED
+../examples/packages/posix-software-2.0.sw.tar.gz: Total Sum                           PASSED
+/usr/tmp/signtest_uncompressed_file: File size check(1)                  PASSED
+/usr/tmp/signtest_uncompressed_file: File size check(2)                  PASSED
+/usr/tmp/signtest_uncompressed_file: FileSum                             PASSED
+/usr/tmp/signtest_uncompressed_file: CatSum                              PASSED
+/usr/tmp/signtest_uncompressed_file: Total Sum                           PASSED
+../examples/packages/posix-software-2.0.sw.cpio-odc.gz: File size check(1)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-odc.gz: File size check(2)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-odc.gz: FileSum                             PASSED
+../examples/packages/posix-software-2.0.sw.cpio-odc.gz: CatSum                              PASSED
+../examples/packages/posix-software-2.0.sw.cpio-odc.gz: Total Sum                           PASSED
+../examples/packages/posix-software-2.0.sw.cpio-newc.gz: File size check(1)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-newc.gz: File size check(2)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-newc.gz: FileSum                             PASSED
+../examples/packages/posix-software-2.0.sw.cpio-newc.gz: CatSum                              PASSED
+../examples/packages/posix-software-2.0.sw.cpio-newc.gz: Total Sum                           PASSED
+../examples/packages/posix-software-2.0.sw.cpio-crc.gz: File size check(1)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-crc.gz: File size check(2)                  PASSED
+../examples/packages/posix-software-2.0.sw.cpio-crc.gz: FileSum                             PASSED
+../examples/packages/posix-software-2.0.sw.cpio-crc.gz: CatSum                              PASSED
+../examples/packages/posix-software-2.0.sw.cpio-crc.gz: Total Sum                           PASSED
+finished =============================
+====================================== running test 008
+test008                                                    PASSED
+finished =============================
+====================================== running test 009
+test009                                                    PASSED
+finished =============================

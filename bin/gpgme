@@ -1,0 +1,37 @@
+#!/bin/sh 
+
+case $# in
+	2)
+		;;
+	*)
+		exit 2
+		;;
+esac
+
+GPG="$1"
+TMPGNUPGDIR="$2"
+
+rm -fr "$TMPGNUPGDIR"
+mkdir -p "$TMPGNUPGDIR"
+mkdir -p "$TMPGNUPGDIR"/source
+chmod  700 "$TMPGNUPGDIR"
+cp -p var/gnupg/* "$TMPGNUPGDIR"/source
+GNUPGHOME="$TMPGNUPGDIR"
+export GNUPGHOME
+homedir="$TMPGNUPGDIR"
+sourcedir="$homedir/source"
+
+test -d "$homedir" || exit 1
+test -d "$sourcedir" || exit 1
+
+(
+$GPG --homedir="$homedir" --list-secret-keys  && \
+$GPG --homedir="$homedir" --import "$sourcedir"/secring.gpg  && \
+$GPG --homedir="$homedir" --list-secret-keys  && \
+$GPG --homedir="$homedir" --list-public-keys  && \
+$GPG --homedir="$homedir" --import "$sourcedir"/pubring.gpg  && \
+$GPG --homedir="$homedir" --list-public-keys
+exit $?
+) 1>/dev/null 2>&1
+
+exit $?

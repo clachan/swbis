@@ -1,0 +1,16 @@
+distribution
+	description "Devices"
+
+product
+	tag devices
+	control_directory ""
+
+fileset
+	tag input
+	control_directory ""
+	file /etc/issue /etc/issue
+	directory /dev/ /dev/
+	file hdd2
+	file -o uucp -g bin /dev/ttyS2
+#		source /dev/ttyS2
+#		group bin

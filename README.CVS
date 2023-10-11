@@ -1,0 +1,23 @@
+# README.CVS
+
+# The repository is located at:
+#     cvs -d:pserver:anonymous@cvs.savannah.gnu.org:/sources/swbis
+# 'swbis' is the top level module name.  All CVS commits as of
+# July 2007 are (and have been) on the main trunk.
+
+# If you are building from sources obtained from a CVS export
+# you may encounter problems with the automake/conf files due to
+# non-preservation of the file time stamps.
+# Try the following to work around this:
+
+# touch -c aclocal.m4 configure config.h.in Makefile.in && ./configure && make
+
+touch -c aclocal.m4 configure config.h.in Makefile.in
+
+# To modify the revision 
+# ----------------------
+#    For example:
+# 	sh bin/reversion.sh 1.4my001
+# 	./configure && make && make distclean
+
+# End of README.CVS
